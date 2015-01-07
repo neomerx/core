@@ -2,11 +2,11 @@
 
 use \Log;
 use \Neomerx\Core\Events\Event;
+use \Neomerx\Core\Models\Region;
+use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Auth\Permission;
 use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\Region as RegionModel;
-use \Neomerx\Core\Models\Address as AddressModel;
 
 class Addresses implements AddressesInterface
 {
@@ -14,20 +14,20 @@ class Addresses implements AddressesInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var AddressModel
+     * @var Address
      */
     private $addressModel;
 
     /**
-     * @var RegionModel
+     * @var Region
      */
     private $regionModel;
 
     /**
-     * @param AddressModel $addressModel
-     * @param RegionModel  $regionModel
+     * @param Address $addressModel
+     * @param Region  $regionModel
      */
-    public function __construct(AddressModel $addressModel, RegionModel $regionModel)
+    public function __construct(Address $addressModel, Region $regionModel)
     {
         $this->addressModel = $addressModel;
         $this->regionModel  = $regionModel;
@@ -44,7 +44,7 @@ class Addresses implements AddressesInterface
         DB::beginTransaction();
         try {
 
-            /** @var AddressModel $address */
+            /** @var Address $address */
             $address = $this->addressModel->createOrFailResource($input);
             Permissions::check($address, Permission::create());
 
@@ -65,7 +65,7 @@ class Addresses implements AddressesInterface
      */
     public function read($addressId)
     {
-        /** @var AddressModel $resource */
+        /** @var Address $resource */
         /** @noinspection PhpUndefinedMethodInspection */
         $resource = $this->addressModel->newQuery()->withRegionAndCountry()->findOrFail($addressId);
         Permissions::check($resource, Permission::view());
@@ -77,7 +77,7 @@ class Addresses implements AddressesInterface
      */
     public function update($addressId, array $input)
     {
-        /** @var AddressModel $address */
+        /** @var Address $address */
         $address = $this->addressModel->findOrFail($addressId);
         $this->updateModel($address, $input);
     }
@@ -85,7 +85,7 @@ class Addresses implements AddressesInterface
     /**
      * @inheritdoc
      */
-    public function updateModel(AddressModel $address, array $input)
+    public function updateModel(Address $address, array $input)
     {
         Permissions::check($address, Permission::edit());
         $address->updateOrFail($this->replaceRegionCodeWithId($input));
@@ -97,7 +97,7 @@ class Addresses implements AddressesInterface
      */
     public function delete($addressId)
     {
-        /** @var AddressModel $address */
+        /** @var Address $address */
         $address = $this->addressModel->newQuery()->findOrFail($addressId);
         $this->deleteModel($address);
     }
@@ -105,7 +105,7 @@ class Addresses implements AddressesInterface
     /**
      * @inheritdoc
      */
-    public function deleteModel(AddressModel $address)
+    public function deleteModel(Address $address)
     {
         Permissions::check($address, Permission::delete());
         $address->deleteOrFail();
@@ -115,23 +115,23 @@ class Addresses implements AddressesInterface
     private function replaceRegionCodeWithId(array $input)
     {
         // unset ID if someone decided to bypass check providing ID instead of code
-        if (isset($input[AddressModel::FIELD_ID_REGION])) {
-            unset($input[AddressModel::FIELD_ID_REGION]);
+        if (isset($input[Address::FIELD_ID_REGION])) {
+            unset($input[Address::FIELD_ID_REGION]);
             // TODO move string to resources and add similar checks + logging to app
             Log::warning('Security bypass attempt occurred. @' . __FILE__ . '#' . __LINE__);
         }
 
         if (isset($input[self::PARAM_REGION_CODE])) {
 
-            /** @var RegionModel $region */
+            /** @var Region $region */
             $region = $this->regionModel
                 ->selectByCode($input[self::PARAM_REGION_CODE])
-                ->firstOrFail([RegionModel::FIELD_ID]);
+                ->firstOrFail([Region::FIELD_ID]);
             unset($input[self::PARAM_REGION_CODE]);
 
             Permissions::check($region, Permission::view());
 
-            $input[AddressModel::FIELD_ID_REGION] = $region->{RegionModel::FIELD_ID};
+            $input[Address::FIELD_ID_REGION] = $region->{Region::FIELD_ID};
         }
         return $input;
     }
