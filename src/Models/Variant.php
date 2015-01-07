@@ -1,0 +1,297 @@
+<?php namespace Neomerx\Core\Models;
+
+use \Carbon\Carbon;
+use \Neomerx\Core\Support as S;
+use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Exceptions\LogicException;
+use \Illuminate\Database\Eloquent\Builder;
+use \Illuminate\Database\Eloquent\Collection;
+
+/**
+ * @property      int        id_variant
+ * @property      int        id_product
+ * @property      string     sku
+ * @property      float      price_wo_tax
+ * @property-read Carbon     created_at
+ * @property-read Carbon     updated_at
+ * @property      Product    product
+ * @property      Collection properties
+ * @property      Collection specification
+ * @property      Collection images
+ * @method        Builder    withDefaultCategoryManufacturerAndTaxType()
+ *
+ * @SuppressWarnings(PHPMD.TooManyMethods)
+ */
+class Variant extends BaseModel implements SelectByCodeInterface
+{
+    const BIND_NAME  = __CLASS__;
+    const TABLE_NAME = 'variants';
+
+    const SKU_MAX_LENGTH = Product::SKU_MAX_LENGTH;
+
+    const FIELD_ID            = 'id_variant';
+    const FIELD_ID_PRODUCT    = Product::FIELD_ID;
+    const FIELD_SKU           = 'sku';
+    const FIELD_PRICE_WO_TAX  = 'price_wo_tax';
+    const FIELD_CREATED_AT    = 'created_at';
+    const FIELD_UPDATED_AT    = 'updated_at';
+    const FIELD_PRODUCT       = 'product';
+    const FIELD_PROPERTIES    = 'properties';
+    const FIELD_SPECIFICATION = 'specification';
+    const FIELD_IMAGES        = 'images';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $table = self::TABLE_NAME;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $primaryKey = self::FIELD_ID;
+
+    /**
+     * {@inheritdoc}
+     */
+    public $incrementing = true;
+
+    /**
+     * {@inheritdoc}
+     */
+    public $timestamps = true;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $fillable = [
+        self::FIELD_ID_PRODUCT,
+        self::FIELD_SKU,
+        self::FIELD_PRICE_WO_TAX,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $hidden = [
+        self::FIELD_ID,
+        self::FIELD_ID_PRODUCT,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $touches = [
+        self::FIELD_PRODUCT,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getInputOnCreateRules()
+    {
+        return [
+            self::FIELD_ID_PRODUCT   => 'required|integer|min:1|max:4294967295',
+            self::FIELD_SKU          => 'required|alpha_dash|min:1|max:' . self::SKU_MAX_LENGTH,
+            self::FIELD_PRICE_WO_TAX => 'sometimes|required|numeric|min:0',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getDataOnCreateRules()
+    {
+        return [
+            self::FIELD_ID_PRODUCT   => 'required|integer|min:1|max:4294967295',
+            self::FIELD_SKU          => 'required|alpha_dash|min:1|max:' . self::SKU_MAX_LENGTH,
+            self::FIELD_PRICE_WO_TAX => 'sometimes|required|numeric|min:0',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getInputOnUpdateRules()
+    {
+        return [
+            self::FIELD_ID_PRODUCT   => 'sometimes|required|forbidden',
+            self::FIELD_SKU          => 'sometimes|required|forbidden',
+            self::FIELD_PRICE_WO_TAX => 'sometimes|numeric|min:0',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getDataOnUpdateRules()
+    {
+        return [
+            self::FIELD_ID_PRODUCT   => 'sometimes|required|forbidden',
+            self::FIELD_SKU          => 'sometimes|required|forbidden',
+            self::FIELD_PRICE_WO_TAX => 'sometimes|numeric|min:0',
+        ];
+    }
+
+    // TODO check if model scopes combination could be avoided and multiple scopes be used instead
+
+    /**
+     * @param Builder $query
+     *
+     * @return Builder
+     */
+    public function scopeWithDefaultCategoryManufacturerAndTaxType(Builder $query)
+    {
+        return $query->with([
+            camel_case(self::FIELD_PRODUCT.'.'.Product::FIELD_TAX_TYPE),
+            camel_case(self::FIELD_PRODUCT.'.'.Product::FIELD_MANUFACTURER),
+            camel_case(self::FIELD_PRODUCT.'.'.Product::FIELD_DEFAULT_CATEGORY),
+        ]);
+    }
+
+    /**
+     * Get variant price if specified otherwise return parent's product price.
+     *
+     * @param $value
+     *
+     * @return float
+     */
+    public function getPriceWoTaxAttribute($value)
+    {
+        return $value !== null ? $value : $this->product->price_wo_tax;
+    }
+
+    /**
+     * Relation to product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::BIND_NAME, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
+    }
+
+    /**
+     * Relation to specification.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function specification()
+    {
+        return $this->hasMany(Specification::BIND_NAME, Specification::FIELD_ID_VARIANT, self::FIELD_ID);
+    }
+
+    /**
+     * Relation to images.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function images()
+    {
+        return $this->hasMany(ProductImage::BIND_NAME, ProductImage::FIELD_ID_VARIANT, self::FIELD_ID);
+    }
+
+    /**
+     * Relation to product language properties (translations).
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    public function properties()
+    {
+        return $this->hasMany(VariantProperties::BIND_NAME, VariantProperties::FIELD_ID_VARIANT, self::FIELD_ID);
+    }
+
+    /**
+     * Reset variant to default (move all specifications back to product and clean variant properties).
+     */
+    public function resetToDefault()
+    {
+        /** @noinspection PhpUndefinedFieldInspection */
+        $product = $this->product;
+
+        // check if the variant is default and the only for product otherwise throw exception
+        self::isDefault($this, $product) ?: S\throwEx(new LogicException());
+        count($product->variants) === 1  ?: S\throwEx(new LogicException());
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        DB::beginTransaction();
+        try {
+
+            // we are here if the variant is default and only for product
+            // so we have to return all specifications back to product and clear variant properties
+            /** @var Specification $specRow */
+            foreach ($this->specification as $specRow) {
+                $specRow->makeNonVariable();
+            }
+            $this->properties()->delete();
+
+            $allExecutedOk = true;
+
+        } finally {
+            /** @noinspection PhpUndefinedMethodInspection */
+            isset($allExecutedOk) ? DB::commit() : DB::rollBack();
+        }
+    }
+
+    /**
+     * Check if variant is default for a product.
+     *
+     * @param Variant $variant
+     * @param Product $product
+     *
+     * @return bool
+     */
+    public static function isDefault(Variant $variant, Product $product)
+    {
+        return $variant->sku === $product->sku;
+    }
+
+    /**
+     * Select default variant for product.
+     *
+     * @param Product $product
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function selectDefault(Product $product)
+    {
+        return static::query()->where(self::FIELD_SKU, '=', $product->sku);
+    }
+
+    /**
+     * @param string $sku
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function selectByCode($sku)
+    {
+        return $this->newQuery()->where(self::FIELD_SKU, '=', $sku);
+    }
+
+    /**
+     * @param array $variantSKUs
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function selectByCodes(array $variantSKUs)
+    {
+        $builder = $this->newQuery();
+        $builder->getQuery()->whereIn(self::FIELD_SKU, $variantSKUs);
+        return $builder;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * If an ordinary non-default variant is deleted then no specific. Just delete it with its properties.
+     * Default variant could not be 'deleted'. Use 'reset to default' instead.
+     */
+    protected function onDeleting()
+    {
+        $parentOnDeleting = parent::onDeleting();
+
+        // only non-default variant could actually be deleted.
+        $onDeleting = !self::isDefault($this, $this->product);
+
+        return $parentOnDeleting and $onDeleting;
+    }
+}
