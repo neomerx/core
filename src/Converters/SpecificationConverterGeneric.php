@@ -1,8 +1,8 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Illuminate\Support\Collection;
 use \Neomerx\Core\Models\Characteristic;
+use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Models\CharacteristicValue;
 use \Neomerx\Core\Models\MeasurementProperties;
 use \Neomerx\Core\Models\Specification as Model;

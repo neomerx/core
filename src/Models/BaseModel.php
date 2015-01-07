@@ -2,10 +2,10 @@
 
 use \Validator;
 use \Neomerx\Core\Support as S;
-use \Illuminate\Support\Collection;
 use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Exceptions\Exception;
 use \Illuminate\Database\Eloquent\Model;
+use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Auth\ObjectIdentityInterface;
 use \Neomerx\Core\Exceptions\ValidationException;
 use \Illuminate\Database\Eloquent\Relations\HasOne;

@@ -50,7 +50,7 @@ class Characteristics implements CharacteristicsInterface
      *
      * @var array
      */
-    private static $searchRules   = [
+    protected static $searchRules   = [
         Model::FIELD_CODE         => SearchGrammar::TYPE_STRING,
         'created'                 => [SearchGrammar::TYPE_DATE, Model::FIELD_CREATED_AT],
         'updated'                 => [SearchGrammar::TYPE_DATE, Model::FIELD_UPDATED_AT],
@@ -199,7 +199,7 @@ class Characteristics implements CharacteristicsInterface
 
         // add search parameters if required
         if (!empty($parameters)) {
-            $parser  = new SearchParser(new SearchGrammar($builder), self::$searchRules);
+            $parser  = new SearchParser(new SearchGrammar($builder), static::$searchRules);
             $builder = $parser->buildQuery($parameters);
         }
 

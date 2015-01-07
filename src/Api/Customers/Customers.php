@@ -50,7 +50,7 @@ class Customers extends CustomerAddresses implements CustomersInterface
      *
      * @var array
      */
-    private static $searchRules = [
+    protected static $searchRules = [
         Model::FIELD_FIRST_NAME   => SearchGrammar::TYPE_STRING,
         Model::FIELD_LAST_NAME    => SearchGrammar::TYPE_STRING,
         Model::FIELD_EMAIL        => SearchGrammar::TYPE_STRING,
@@ -192,7 +192,7 @@ class Customers extends CustomerAddresses implements CustomersInterface
 
         // add search parameters if required
         if (!empty($parameters)) {
-            $parser  = new SearchParser(new SearchGrammar($builder), self::$searchRules);
+            $parser  = new SearchParser(new SearchGrammar($builder), static::$searchRules);
             $builder = $parser->buildQuery($parameters);
         }
 

@@ -84,15 +84,19 @@ trait ImageTrait
             $allExecutedOk = true;
 
         } finally {
-            /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) ? DB::commit() : DB::rollBack();
 
-            if (!isset($allExecutedOk)) {
+            if (isset($allExecutedOk)) {
+                /** @noinspection PhpUndefinedMethodInspection */
+                DB::commit();
+            } else {
+                /** @noinspection PhpUndefinedMethodInspection */
+                DB::rollBack();
                 foreach ($createdFiles as $fileToDelete) {
                     /** @noinspection PhpUndefinedMethodInspection */
                     File::delete(ImageModel::getUploadFolderPath($fileToDelete));
                 }
             }
+
         }
 
         Event::fire(new ProductArgs(Products::EVENT_PREFIX . 'addedImages', $product));

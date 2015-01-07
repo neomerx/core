@@ -3,11 +3,12 @@
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Auth\Permission;
+use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Support\SearchParser;
 use \Neomerx\Core\Support\SearchGrammar;
-use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Models\Product as Model;
 use \Neomerx\Core\Auth\Facades\Permissions;
+use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Exceptions\ValidationException;
 use \Neomerx\Core\Models\Category as CategoryModel;
 use \Neomerx\Core\Models\Language as LanguageModel;
@@ -41,7 +42,7 @@ class ProductCrud
      *
      * @var array
      */
-    private static $searchRules = [
+    protected static $searchRules = [
         'sku'     => 'string',
         'created' => ['date', 'created_at'],
         'updated' => ['date', 'updated_at'],
@@ -166,7 +167,7 @@ class ProductCrud
      *
      * @param string $code
      *
-     * @return array
+     * @return Model
      */
     public function read($code)
     {
@@ -182,7 +183,7 @@ class ProductCrud
      *
      * @param array $parameters
      *
-     * @return array
+     * @return Collection
      */
     public function search(array $parameters = [])
     {
@@ -191,7 +192,7 @@ class ProductCrud
 
         // add search parameters if required
         if (!empty($parameters)) {
-            $parser  = new SearchParser(new SearchGrammar($builder), self::$searchRules);
+            $parser  = new SearchParser(new SearchGrammar($builder), static::$searchRules);
             $builder = $parser->buildQuery($parameters);
         }
 

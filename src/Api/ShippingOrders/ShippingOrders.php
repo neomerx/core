@@ -54,7 +54,7 @@ class ShippingOrders implements ShippingOrdersInterface
      *
      * @var array
      */
-    private static $searchRules = [
+    protected static $searchRules = [
         ShippingOrderModel::FIELD_ID_ORDER        => SearchGrammar::TYPE_INT,
         ShippingOrderModel::FIELD_TRACKING_NUMBER => SearchGrammar::TYPE_STRING,
         'created'                                 => [SearchGrammar::TYPE_DATE, ShippingOrderModel::FIELD_CREATED_AT],
@@ -217,7 +217,7 @@ class ShippingOrders implements ShippingOrdersInterface
 
         // add search parameters if required
         if (!empty($parameters)) {
-            $parser  = new SearchParser(new SearchGrammar($builder), self::$searchRules);
+            $parser  = new SearchParser(new SearchGrammar($builder), static::$searchRules);
             $builder = $parser->buildQuery($parameters);
         }
 

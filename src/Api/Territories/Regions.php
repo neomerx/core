@@ -27,7 +27,7 @@ class Regions implements RegionsInterface
     /**
      * @var array
      */
-    private static $regionRelations = [
+    protected static $regionRelations = [
         Model::FIELD_COUNTRY,
     ];
 
@@ -37,7 +37,7 @@ class Regions implements RegionsInterface
      *
      * @var array
      */
-    private static $searchRules = [
+    protected static $searchRules = [
         Model::FIELD_CODE         => SearchGrammar::TYPE_STRING,
         Model::FIELD_NAME         => SearchGrammar::TYPE_STRING,
         SearchGrammar::LIMIT_SKIP => SearchGrammar::TYPE_LIMIT,
@@ -146,7 +146,7 @@ class Regions implements RegionsInterface
 
         // add search parameters if required
         if (!empty($parameters)) {
-            $parser  = new SearchParser(new SearchGrammar($builder), self::$searchRules);
+            $parser  = new SearchParser(new SearchGrammar($builder), static::$searchRules);
             $builder = $parser->buildQuery($parameters);
         }
 

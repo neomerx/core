@@ -76,7 +76,7 @@ class Orders implements OrdersInterface
      */
     private $warehouseModel;
 
-    private static $orderRelations = [
+    protected static $orderRelations = [
         'shippingAddress.region.country',
         'billingAddress.region.country',
         'store.address.region.country',
@@ -92,7 +92,7 @@ class Orders implements OrdersInterface
      *
      * @var array
      */
-    private static $searchRules = [
+    protected static $searchRules = [
         'created'                 => [SearchGrammar::TYPE_DATE, Order::FIELD_CREATED_AT],
         'updated'                 => [SearchGrammar::TYPE_DATE, Order::FIELD_UPDATED_AT],
         SearchGrammar::LIMIT_SKIP => SearchGrammar::TYPE_LIMIT,
@@ -219,7 +219,7 @@ class Orders implements OrdersInterface
     public function read($orderId)
     {
         /** @var Order $order */
-        $order = $this->orderModel->with(self::$orderRelations)->findOrFail($orderId);
+        $order = $this->orderModel->with(static::$orderRelations)->findOrFail($orderId);
 
         Permissions::check($order, Permission::view());
 
@@ -274,11 +274,11 @@ class Orders implements OrdersInterface
     public function search(array $parameters = [])
     {
         /** @noinspection PhpParamsInspection */
-        $builder = $this->orderModel->newQuery()->with(self::$orderRelations);
+        $builder = $this->orderModel->newQuery()->with(static::$orderRelations);
 
         // add search parameters if required
         if (!empty($parameters)) {
-            $parser  = new SearchParser(new SearchGrammar($builder), self::$searchRules);
+            $parser  = new SearchParser(new SearchGrammar($builder), static::$searchRules);
             $builder = $parser->buildQuery($parameters);
         }
 

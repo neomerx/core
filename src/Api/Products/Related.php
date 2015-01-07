@@ -7,10 +7,14 @@ use \Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Models\Product as Model;
 use \Neomerx\Core\Auth\Facades\Permissions;
+use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Exceptions\ValidationException;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
 use \Neomerx\Core\Models\ProductRelated as ProductRelatedModel;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class Related
 {
     /**
@@ -45,7 +49,7 @@ class Related
      *
      * @param Model $product
      *
-     * @return array
+     * @return Collection
      */
     public function showRelated(Model $product)
     {

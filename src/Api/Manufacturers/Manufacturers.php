@@ -52,7 +52,7 @@ class Manufacturers implements ManufacturersInterface
      *
      * @var array
      */
-    private static $searchRules = [
+    protected static $searchRules = [
         Model::FIELD_CODE         => SearchGrammar::TYPE_STRING,
         'created'                 => [SearchGrammar::TYPE_DATE, Model::FIELD_CREATED_AT],
         'updated'                 => [SearchGrammar::TYPE_DATE, Model::FIELD_UPDATED_AT],
@@ -89,6 +89,8 @@ class Manufacturers implements ManufacturersInterface
         $addressInput = S\array_get_value($input, self::PARAM_ADDRESS);
         !empty($addressInput) ?: S\throwEx(new InvalidArgumentException(self::PARAM_ADDRESS));
         unset($input[self::PARAM_ADDRESS]);
+
+        $manufacturer = null;
 
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
@@ -205,7 +207,7 @@ class Manufacturers implements ManufacturersInterface
 
         // add search parameters if required
         if (!empty($parameters)) {
-            $parser  = new SearchParser(new SearchGrammar($builder), self::$searchRules);
+            $parser  = new SearchParser(new SearchGrammar($builder), static::$searchRules);
             $builder = $parser->buildQuery($parameters);
         }
 

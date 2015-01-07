@@ -36,7 +36,7 @@ class SupplyOrders implements SupplyOrdersInterface
     /**
      * @var array
      */
-    private static $supplyOrderRelations = [
+    protected static $supplyOrderRelations = [
         Model::FIELD_LANGUAGE,
         Model::FIELD_WAREHOUSE,
         'supplier.properties.language',
@@ -50,7 +50,7 @@ class SupplyOrders implements SupplyOrdersInterface
      *
      * @var array
      */
-    private static $searchRules = [
+    protected static $searchRules = [
         Model::FIELD_STATUS       => SearchGrammar::TYPE_STRING,
         'expected'                => [SearchGrammar::TYPE_DATE, Model::FIELD_EXPECTED_AT],
         'created'                 => [SearchGrammar::TYPE_DATE, Model::FIELD_CREATED_AT],
@@ -320,7 +320,7 @@ class SupplyOrders implements SupplyOrdersInterface
 
         // add search parameters if required
         if (!empty($parameters)) {
-            $parser  = new SearchParser(new SearchGrammar($builder), self::$searchRules);
+            $parser  = new SearchParser(new SearchGrammar($builder), static::$searchRules);
             $builder = $parser->buildQuery($parameters);
         }
 

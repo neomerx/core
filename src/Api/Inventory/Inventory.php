@@ -56,7 +56,7 @@ class Inventory implements InventoryInterface
     /**
      * @var array
      */
-    private static $relations = [
+    protected static $relations = [
         'warehouse',
     ];
 
@@ -91,7 +91,7 @@ class Inventory implements InventoryInterface
     {
         return $this->inventoryModel
             ->selectBySkuAndWarehouse($variant->{Variant::FIELD_SKU}, $warehouse->{Warehouse::FIELD_ID})
-            ->with(self::$relations)
+            ->with(static::$relations)
             ->first();
     }
 
@@ -106,6 +106,8 @@ class Inventory implements InventoryInterface
 
         $sku = $variant->{Variant::FIELD_SKU};
         $warehouseId = $warehouse->{Warehouse::FIELD_ID};
+
+        $inventoryRow = null;
 
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
@@ -148,6 +150,8 @@ class Inventory implements InventoryInterface
         if (!(is_int($quantity) or ctype_digit($quantity)) or ($quantity = (int)$quantity) <= 0) {
             throw new InvalidArgumentException('quantity');
         }
+
+        $inventoryRow = null;
 
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();

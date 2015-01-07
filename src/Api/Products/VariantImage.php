@@ -16,7 +16,7 @@ class VariantImage
     /**
      * @var array Used model relations.
      */
-    private static $relations = [
+    protected static $relations = [
         'image.paths.format',
         'image.properties.language',
     ];
@@ -58,7 +58,7 @@ class VariantImage
     public function showVariantImages(VariantModel $variant)
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $images = $variant->images()->with(self::$relations)->get();
+        $images = $variant->images()->with(static::$relations)->get();
         return $images;
     }
 

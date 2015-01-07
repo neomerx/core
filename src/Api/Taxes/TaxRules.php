@@ -29,7 +29,7 @@ class TaxRules implements TaxRulesInterface
     const EVENT_PREFIX = 'Api.TaxRule.';
     const BIND_NAME    = __CLASS__;
 
-    private static $relations = [
+    protected static $relations = [
         Model::FIELD_TAX,
         'territories.territory',
         Model::FIELD_POSTCODES,
@@ -133,7 +133,7 @@ class TaxRules implements TaxRulesInterface
     {
 
         /** @var Model $resource */
-        $resource = $this->ruleModel->with(self::$relations)->findOrFail($ruleId);
+        $resource = $this->ruleModel->with(static::$relations)->findOrFail($ruleId);
         Permissions::check($resource, Permission::view());
         return $resource;
     }
@@ -150,7 +150,7 @@ class TaxRules implements TaxRulesInterface
         try {
 
             /** @var Model $rule */
-            $rule = $this->ruleModel->with(self::$relations)->findOrFail($ruleId);
+            $rule = $this->ruleModel->with(static::$relations)->findOrFail($ruleId);
             Permissions::check($rule, Permission::edit());
             $rule->fill($ruleData);
             $rule->{Tax::FIELD_ID} = $taxId;
@@ -199,7 +199,7 @@ class TaxRules implements TaxRulesInterface
      */
     public function all()
     {
-        $resources = $this->ruleModel->with(self::$relations)->get();
+        $resources = $this->ruleModel->with(static::$relations)->get();
 
         foreach ($resources as $resource) {
             Permissions::check($resource, Permission::view());

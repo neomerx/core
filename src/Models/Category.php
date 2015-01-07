@@ -466,8 +466,6 @@ class Category extends BaseModel implements SelectByCodeInterface
         // affect almost every record in the database when only a couple of changes are significant for user.
         $usesTimestamps = $this->timestamps;
 
-        /** @noinspection PhpUnusedLocalVariableInspection */
-        $allExecutedOk = false;
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
         try {
@@ -517,7 +515,7 @@ class Category extends BaseModel implements SelectByCodeInterface
             $this->timestamps = $usesTimestamps;
 
             /** @noinspection PhpUndefinedMethodInspection */
-            $allExecutedOk ? DB::commit() : DB::rollBack();
+            isset($allExecutedOk) ? DB::commit() : DB::rollBack();
         }
     }
 
