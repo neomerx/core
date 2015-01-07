@@ -1,0 +1,10 @@
+{
+    "name": "neomerx/core",
+    "description": "Neomerx framework Core REST API",
+    "require": {
+        "php": ">=5.5.0",
+        "laravel/framework":           "4.2.*",
+        "intervention/image":          "2.0.*",
+        "symfony/expression-language": "2.5.*"
+    }
+}
