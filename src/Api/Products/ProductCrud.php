@@ -2,22 +2,22 @@
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
+use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Auth\Permission;
+use \Neomerx\Core\Models\Category;
+use \Neomerx\Core\Models\Language;
 use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Models\Manufacturer;
 use \Neomerx\Core\Support\SearchParser;
+use \Neomerx\Core\Models\ProductTaxType;
 use \Neomerx\Core\Support\SearchGrammar;
-use \Neomerx\Core\Models\Product as Model;
+use \Neomerx\Core\Models\ProductProperties;
 use \Neomerx\Core\Auth\Facades\Permissions;
 use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Exceptions\ValidationException;
-use \Neomerx\Core\Models\Category as CategoryModel;
-use \Neomerx\Core\Models\Language as LanguageModel;
 use \Neomerx\Core\Exceptions\NullArgumentException;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Models\ProductTaxType as TaxTypeModel;
-use \Neomerx\Core\Models\Manufacturer as ManufacturerModel;
-use \Neomerx\Core\Models\ProductProperties as PropertiesModel;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -30,7 +30,7 @@ class ProductCrud
      * @var array
      */
     public static $relations = [
-        'manufacturer',
+        Product::FIELD_MANUFACTURER,
         'defaultCategory',
         'properties.language',
         'taxType',
@@ -43,58 +43,58 @@ class ProductCrud
      * @var array
      */
     protected static $searchRules = [
-        'sku'     => 'string',
-        'created' => ['date', 'created_at'],
-        'updated' => ['date', 'updated_at'],
-        'skip'    => 'limit',
-        'take'    => 'limit',
+        Product::FIELD_SKU        => SearchGrammar::TYPE_STRING,
+        'created'                 => [SearchGrammar::TYPE_DATE, Product::FIELD_CREATED_AT],
+        'updated'                 => [SearchGrammar::TYPE_DATE, Product::FIELD_UPDATED_AT],
+        SearchGrammar::LIMIT_SKIP => SearchGrammar::TYPE_LIMIT,
+        SearchGrammar::LIMIT_TAKE => SearchGrammar::TYPE_LIMIT,
     ];
 
     /**
-     * @var Model
+     * @var Product
      */
     private $productModel;
 
     /**
-     * @var PropertiesModel
+     * @var ProductProperties
      */
     private $propertiesModel;
 
     /**
-     * @var CategoryModel
+     * @var Category
      */
     private $categoryModel;
 
     /**
-     * @var ManufacturerModel
+     * @var Manufacturer
      */
     private $manufacturerModel;
 
     /**
-     * @var TaxTypeModel
+     * @var ProductTaxType
      */
     private $taxTypeModel;
 
     /**
-     * @var LanguageModel
+     * @var Language
      */
     private $languageModel;
 
     /**
-     * @param Model             $product
-     * @param PropertiesModel   $properties
-     * @param CategoryModel     $category
-     * @param ManufacturerModel $manufacturer
-     * @param TaxTypeModel      $taxType
-     * @param LanguageModel     $language
+     * @param Product           $product
+     * @param ProductProperties $properties
+     * @param Category          $category
+     * @param Manufacturer      $manufacturer
+     * @param ProductTaxType    $taxType
+     * @param Language          $language
      */
     public function __construct(
-        Model $product,
-        PropertiesModel $properties,
-        CategoryModel $category,
-        ManufacturerModel $manufacturer,
-        TaxTypeModel $taxType,
-        LanguageModel $language
+        Product $product,
+        ProductProperties $properties,
+        Category $category,
+        Manufacturer $manufacturer,
+        ProductTaxType $taxType,
+        Language $language
     ) {
         $this->productModel      = $product;
         $this->propertiesModel   = $properties;
@@ -112,7 +112,7 @@ class ProductCrud
      * @throws NullArgumentException
      * @throws InvalidArgumentException
      *
-     * @return Model
+     * @return Product
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
@@ -139,15 +139,15 @@ class ProductCrud
         DB::beginTransaction();
         try {
 
-            /** @var Model $product */
+            /** @var Product $product */
             $product = $this->productModel->createOrFailResource($input);
             Permissions::check($product, Permission::create());
-            $productId = $product->{Model::FIELD_ID};
+            $productId = $product->{Product::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
-                $this->propertiesModel->createOrFail(array_merge(
-                    [Model::FIELD_ID => $productId, LanguageModel::FIELD_ID => $languageId],
-                    $propertyInput
-                ));
+                $this->propertiesModel->createOrFail(array_merge($propertyInput, [
+                    ProductProperties::FIELD_ID_PRODUCT  => $productId,
+                    ProductProperties::FIELD_ID_LANGUAGE => $languageId,
+                ]));
             }
 
             $allExecutedOk = true;
@@ -167,13 +167,13 @@ class ProductCrud
      *
      * @param string $code
      *
-     * @return Model
+     * @return Product
      */
     public function read($code)
     {
         /** @noinspection PhpParamsInspection */
-        /** @var Model $product */
-        $product = $this->productModel->selectByCode($code)->with(self::$relations)->firstOrFail();
+        /** @var Product $product */
+        $product = $this->productModel->selectByCode($code)->with(static::$relations)->firstOrFail();
         Permissions::check($product, Permission::view());
         return $product;
     }
@@ -188,7 +188,7 @@ class ProductCrud
     public function search(array $parameters = [])
     {
         /** @noinspection PhpParamsInspection */
-        $builder = $this->productModel->newQuery()->with(self::$relations);
+        $builder = $this->productModel->newQuery()->with(static::$relations);
 
         // add search parameters if required
         if (!empty($parameters)) {
@@ -199,7 +199,7 @@ class ProductCrud
         $products = $builder->get();
 
         foreach ($products as $product) {
-            /** @var Model $product */
+            /** @var Product $product */
             Permissions::check($product, Permission::view());
         }
 
@@ -225,18 +225,18 @@ class ProductCrud
         DB::beginTransaction();
         try {
             // update resource
-            /** @var Model $product */
+            /** @var Product $product */
             $product = $this->productModel->selectByCode($sku)->firstOrFail();
             Permissions::check($product, Permission::edit());
             empty($input) ?: $product->updateOrFail($input);
 
             // update language properties
-            $productId = $product->{Model::FIELD_ID};
+            $productId = $product->{Product::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
-                $property = $this->propertiesModel->updateOrCreate(
-                    [Model::FIELD_ID => $productId, LanguageModel::FIELD_ID => $languageId],
-                    $propertyInput
-                );
+                $property = $this->propertiesModel->updateOrCreate($propertyInput, [
+                    ProductProperties::FIELD_ID_PRODUCT  => $productId,
+                    ProductProperties::FIELD_ID_LANGUAGE => $languageId
+                ]);
                 /** @noinspection PhpUndefinedMethodInspection */
                 $property->exists ?: S\throwEx(new ValidationException($property->getValidator()));
             }
@@ -260,7 +260,7 @@ class ProductCrud
      */
     public function delete($sku)
     {
-        /** @var Model $product */
+        /** @var Product $product */
         $product = $this->productModel->selectByCode($sku)->firstOrFail();
         Permissions::check($product, Permission::delete());
         $product->deleteOrFail();
@@ -281,18 +281,18 @@ class ProductCrud
             $manufacturer = $this->manufacturerModel
                 ->selectByCode($input[Products::PARAM_MANUFACTURER_CODE])->firstOrFail();
             unset($input[Products::PARAM_MANUFACTURER_CODE]);
-            $extraFields[ManufacturerModel::FIELD_ID] = $manufacturer->{ManufacturerModel::FIELD_ID};
+            $extraFields[Manufacturer::FIELD_ID] = $manufacturer->{Manufacturer::FIELD_ID};
         }
 
         if (isset($input[Products::PARAM_TAX_TYPE_CODE])) {
             $taxType = $this->taxTypeModel
                 ->selectByCode($input[Products::PARAM_TAX_TYPE_CODE])->firstOrFail();
             unset($input[Products::PARAM_TAX_TYPE_CODE]);
-            $extraFields[TaxTypeModel::FIELD_ID] = $taxType->{TaxTypeModel::FIELD_ID};
+            $extraFields[ProductTaxType::FIELD_ID] = $taxType->{ProductTaxType::FIELD_ID};
         }
 
         if (isset($input[Products::PARAM_DEFAULT_CATEGORY_CODE])) {
-            /** @var CategoryModel $category */
+            /** @var Category $category */
             $category = $this->categoryModel
                 ->selectByCode($input[Products::PARAM_DEFAULT_CATEGORY_CODE])->firstOrFail();
             unset($input[Products::PARAM_DEFAULT_CATEGORY_CODE]);

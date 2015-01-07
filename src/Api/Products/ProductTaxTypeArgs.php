@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Products;
 
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\ProductTaxType as Model;
+use \Neomerx\Core\Models\ProductTaxType;
 
 class ProductTaxTypeArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var ProductTaxType
      */
-    private $model;
+    private $productTaxType;
 
     /**
-     * @param string    $name
-     * @param Model     $model
-     * @param EventArgs $args
+     * @param string         $name
+     * @param ProductTaxType $productTaxType
+     * @param EventArgs      $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, ProductTaxType $productTaxType, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->productTaxType = $productTaxType;
     }
 
     /**
-     * @return Model
+     * @return ProductTaxType
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->productTaxType;
     }
 }

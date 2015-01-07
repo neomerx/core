@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Images;
 
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\ImageFormat as Model;
+use \Neomerx\Core\Models\ImageFormat;
 
 class ImageFormatArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var ImageFormat
      */
-    private $model;
+    private $imageFormat;
 
     /**
-     * @param string    $name
-     * @param Model     $model
-     * @param EventArgs $args
+     * @param string      $name
+     * @param ImageFormat $imageFormat
+     * @param EventArgs   $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, ImageFormat $imageFormat, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->imageFormat = $imageFormat;
     }
 
     /**
-     * @return Model
+     * @return ImageFormat
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->imageFormat;
     }
 }

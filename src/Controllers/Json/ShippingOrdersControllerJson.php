@@ -1,8 +1,8 @@
 <?php namespace Neomerx\Core\Controllers\Json;
 
-use \Neomerx\Core\Models\ShippingOrder;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\Facades\Input;
+use \Neomerx\Core\Models\ShippingOrder;
 use \Neomerx\Core\Api\Facades\ShippingOrders;
 use \Neomerx\Core\Converters\ShippingOrderConverterGeneric;
 use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;

@@ -2,23 +2,22 @@
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
+use \Neomerx\Core\Models\Order;
 use \Neomerx\Core\Models\Carrier;
 use \Neomerx\Core\Auth\Permission;
+use \Illuminate\Support\Facades\DB;
+use \Illuminate\Support\Facades\App;
+use \Neomerx\Core\Models\OrderDetails;
+use \Neomerx\Core\Models\ShippingOrder;
 use \Neomerx\Core\Api\Facades\Carriers;
 use \Neomerx\Core\Support\SearchParser;
-use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Support\SearchGrammar;
-use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Auth\Facades\Permissions;
 use \Neomerx\Core\Api\Carriers\ShippingData;
-use \Neomerx\Core\Models\Order as OrderModel;
+use \Neomerx\Core\Models\ShippingOrderStatus;
 use \Neomerx\Core\Api\Carriers\CarriersInterface;
-use \Neomerx\Core\Models\Carrier as CarrierModel;
 use \Neomerx\Core\Exceptions\ValidationException;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Models\OrderDetails as OrderDetailsModel;
-use \Neomerx\Core\Models\ShippingOrder as ShippingOrderModel;
-use \Neomerx\Core\Models\ShippingOrderStatus as ShippingOrderStatusModel;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -29,22 +28,22 @@ class ShippingOrders implements ShippingOrdersInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var OrderModel
+     * @var Order
      */
     private $orderModel;
 
     /**
-     * @var ShippingOrderModel
+     * @var ShippingOrder
      */
     private $shippingOrderModel;
 
     /**
-     * @var ShippingOrderStatusModel
+     * @var ShippingOrderStatus
      */
     private $shippingOrderStatusModel;
 
     /**
-     * @var CarrierModel
+     * @var Carrier
      */
     private $carrierModel;
 
@@ -55,25 +54,25 @@ class ShippingOrders implements ShippingOrdersInterface
      * @var array
      */
     protected static $searchRules = [
-        ShippingOrderModel::FIELD_ID_ORDER        => SearchGrammar::TYPE_INT,
-        ShippingOrderModel::FIELD_TRACKING_NUMBER => SearchGrammar::TYPE_STRING,
-        'created'                                 => [SearchGrammar::TYPE_DATE, ShippingOrderModel::FIELD_CREATED_AT],
-        'updated'                                 => [SearchGrammar::TYPE_DATE, ShippingOrderModel::FIELD_UPDATED_AT],
-        SearchGrammar::LIMIT_SKIP                 => SearchGrammar::TYPE_LIMIT,
-        SearchGrammar::LIMIT_TAKE                 => SearchGrammar::TYPE_LIMIT,
+        ShippingOrder::FIELD_ID_ORDER        => SearchGrammar::TYPE_INT,
+        ShippingOrder::FIELD_TRACKING_NUMBER => SearchGrammar::TYPE_STRING,
+        'created'                            => [SearchGrammar::TYPE_DATE, ShippingOrder::FIELD_CREATED_AT],
+        'updated'                            => [SearchGrammar::TYPE_DATE, ShippingOrder::FIELD_UPDATED_AT],
+        SearchGrammar::LIMIT_SKIP            => SearchGrammar::TYPE_LIMIT,
+        SearchGrammar::LIMIT_TAKE            => SearchGrammar::TYPE_LIMIT,
     ];
 
     /**
-     * @param OrderModel               $order
-     * @param CarrierModel             $carrier
-     * @param ShippingOrderModel       $shippingOrder
-     * @param ShippingOrderStatusModel $shippingOrderStatus
+     * @param Order               $order
+     * @param Carrier             $carrier
+     * @param ShippingOrder       $shippingOrder
+     * @param ShippingOrderStatus $shippingOrderStatus
      */
     public function __construct(
-        OrderModel $order,
-        CarrierModel $carrier,
-        ShippingOrderModel $shippingOrder,
-        ShippingOrderStatusModel $shippingOrderStatus
+        Order $order,
+        Carrier $carrier,
+        ShippingOrder $shippingOrder,
+        ShippingOrderStatus $shippingOrderStatus
     ) {
         $this->orderModel               = $order;
         $this->carrierModel             = $carrier;
@@ -88,8 +87,8 @@ class ShippingOrders implements ShippingOrdersInterface
      */
     public function create(array $input)
     {
-        $orderId             =  S\array_get_value($input, OrderModel::FIELD_ID);
-        $orderId            !== null ?: S\throwEx(new InvalidArgumentException(OrderModel::FIELD_ID));
+        $orderId             =  S\array_get_value($input, Order::FIELD_ID);
+        $orderId            !== null ?: S\throwEx(new InvalidArgumentException(Order::FIELD_ID));
 
         $carrierCode         =  S\array_get_value($input, self::PARAM_CARRIER_CODE);
         $carrierCode        !== null ?: S\throwEx(new InvalidArgumentException(self::PARAM_CARRIER_CODE));
@@ -104,42 +103,42 @@ class ShippingOrders implements ShippingOrdersInterface
         $detailsIds =  S\array_get_value($input, self::PARAM_DETAIL_IDS);
 
         $statusId = $this->shippingOrderStatusModel->selectByCode($shippingStatusCode)
-            ->firstOrFail([shippingOrderStatusModel::FIELD_ID])->{shippingOrderStatusModel::FIELD_ID};
+            ->firstOrFail([ShippingOrderStatus::FIELD_ID])->{ShippingOrderStatus::FIELD_ID};
 
-        /** @var OrderModel $order */
+        /** @var Order $order */
         $order = $this->orderModel->findOrFail($orderId);
         Permissions::check($order, Permission::edit());
 
-        /** @var CarrierModel $carrier */
-        $carrier = $this->carrierModel->selectByCode($carrierCode)->firstOrFail([CarrierModel::FIELD_ID]);
+        /** @var Carrier $carrier */
+        $carrier = $this->carrierModel->selectByCode($carrierCode)->firstOrFail([Carrier::FIELD_ID]);
         Permissions::check($carrier, Permission::view());
 
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
         try {
 
-            /** @var ShippingOrderModel $shippingOrder */
+            /** @var ShippingOrder $shippingOrder */
             $shippingOrder = $this->shippingOrderModel->createOrFailResource([
-                ShippingOrderModel::FIELD_ID_ORDER                 => $orderId,
-                ShippingOrderModel::FIELD_ID_CARRIER               => $carrier->{CarrierModel::FIELD_ID},
-                ShippingOrderModel::FIELD_ID_SHIPPING_ORDER_STATUS => $statusId,
-                ShippingOrderModel::FIELD_TRACKING_NUMBER          => $trackingNumber,
+                ShippingOrder::FIELD_ID_ORDER                 => $orderId,
+                ShippingOrder::FIELD_ID_CARRIER               => $carrier->{Carrier::FIELD_ID},
+                ShippingOrder::FIELD_ID_SHIPPING_ORDER_STATUS => $statusId,
+                ShippingOrder::FIELD_TRACKING_NUMBER          => $trackingNumber,
             ]);
             Permissions::check($shippingOrder, Permission::create());
-            $shippingOrderId = $shippingOrder->{ShippingOrderModel::FIELD_ID};
+            $shippingOrderId = $shippingOrder->{ShippingOrder::FIELD_ID};
 
             // update order details with shipping order info
             /** @noinspection PhpUndefinedMethodInspection */
-            $detailsRelation = $order->details()->whereNull(OrderDetailsModel::FIELD_ID_SHIPPING_ORDER);
+            $detailsRelation = $order->details()->whereNull(OrderDetails::FIELD_ID_SHIPPING_ORDER);
 
             // if specific order details IDs were specified will add it to the filter
             if (!empty($detailsIds)) {
                 /** @noinspection PhpUndefinedMethodInspection */
-                $detailsRelation = $detailsRelation->whereIn(OrderDetailsModel::FIELD_ID, $detailsIds);
+                $detailsRelation = $detailsRelation->whereIn(OrderDetails::FIELD_ID, $detailsIds);
             }
 
             /** @noinspection PhpUndefinedMethodInspection */
-            $detailsRelation->update([ShippingOrderModel::FIELD_ID => $shippingOrderId]);
+            $detailsRelation->update([ShippingOrder::FIELD_ID => $shippingOrderId]);
 
             $allExecutedOk = true;
 
@@ -160,7 +159,7 @@ class ShippingOrders implements ShippingOrdersInterface
      */
     public function read($shippingOrderId)
     {
-        /** @var ShippingOrderModel $shippingOrder */
+        /** @var ShippingOrder $shippingOrder */
         /** @noinspection PhpUndefinedMethodInspection */
         $shippingOrder = $this->shippingOrderModel->newQuery()->withCarrierAndStatus()->findOrFail($shippingOrderId);
 
@@ -178,13 +177,13 @@ class ShippingOrders implements ShippingOrdersInterface
         $shippingStatusCode = S\array_get_value($input, self::PARAM_STATUS_CODE);
         !is_null($shippingStatusCode) ?: S\throwEx(new InvalidArgumentException(self::PARAM_STATUS_CODE));
 
-        /** @var ShippingOrderModel $shippingOrder */
+        /** @var ShippingOrder $shippingOrder */
         $shippingOrder = $this->shippingOrderModel->newQuery()->findOrFail($shippingOrderId);
         Permissions::check($shippingOrder, Permission::edit());
 
-        $shippingOrder->{ShippingOrderStatusModel::FIELD_ID} = $this->shippingOrderStatusModel
-            ->selectByCode($shippingStatusCode)->firstOrFail([ShippingOrderStatusModel::FIELD_ID])
-            ->{ShippingOrderStatusModel::FIELD_ID};
+        $shippingOrder->{ShippingOrderStatus::FIELD_ID} = $this->shippingOrderStatusModel
+            ->selectByCode($shippingStatusCode)->firstOrFail([ShippingOrderStatus::FIELD_ID])
+            ->{ShippingOrderStatus::FIELD_ID};
 
         $shippingOrder->save() ?: S\throwEx(new ValidationException($shippingOrder->getValidator()));
 
@@ -196,7 +195,7 @@ class ShippingOrders implements ShippingOrdersInterface
      */
     public function delete($shippingOrderId)
     {
-        /** @var ShippingOrderModel $shippingOrder */
+        /** @var ShippingOrder $shippingOrder */
         $shippingOrder = $this->shippingOrderModel->newQuery()->findOrFail($shippingOrderId);
 
         Permissions::check($shippingOrder, Permission::delete());
@@ -224,7 +223,7 @@ class ShippingOrders implements ShippingOrdersInterface
         $shippingOrders = $builder->get();
 
         foreach ($shippingOrders as $shippingOrder) {
-            /** @var ShippingOrderModel $shippingOrder */
+            /** @var ShippingOrder $shippingOrder */
             Permissions::check($shippingOrder, Permission::view());
         }
 

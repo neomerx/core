@@ -2,25 +2,25 @@
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
+use \Neomerx\Core\Models\Image;
+use \Neomerx\Core\Models\Product;
+use \Neomerx\Core\Models\Variant;
+use \Neomerx\Core\Models\Language;
 use \Illuminate\Support\Facades\DB;
-use \Neomerx\Core\Models\Product as Model;
+use \Neomerx\Core\Models\ProductImage;
 use \Illuminate\Support\Facades\File;
-use \Neomerx\Core\Models\Image as ImageModel;
-use \Neomerx\Core\Models\Variant as VariantModel;
-use \Neomerx\Core\Models\Language as LanguageModel;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Models\ProductImage as ProductImageModel;
 use \Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait ImageTrait
 {
     /**
-     * @param array             $descriptions
-     * @param array             $files
-     * @param LanguageModel     $languageModel
-     * @param ProductImageModel $productImageModel
-     * @param Model             $product
-     * @param VariantModel      $variant
+     * @param array        $descriptions
+     * @param array        $files
+     * @param Language     $languageModel
+     * @param ProductImage $productImageModel
+     * @param Product      $product
+     * @param Variant      $variant
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -28,10 +28,10 @@ trait ImageTrait
     private function saveImages(
         array $descriptions,
         array $files,
-        LanguageModel $languageModel,
-        ProductImageModel $productImageModel,
-        Model $product,
-        VariantModel $variant = null
+        Language $languageModel,
+        ProductImage $productImageModel,
+        Product $product,
+        Variant $variant = null
     ) {
         count($descriptions) === count($files) ?: S\throwEx(new InvalidArgumentException('files'));
 
@@ -63,12 +63,12 @@ trait ImageTrait
                         $languageId = $isoCodeCache[$isoCode];
                     } else {
                         $languageId = $languageModel->selectByCode($isoCode)
-                            ->firstOrFail([LanguageModel::FIELD_ID])->{LanguageModel::FIELD_ID};
+                            ->firstOrFail([Language::FIELD_ID])->{Language::FIELD_ID};
                         $isoCodeCache[$isoCode] = $languageId;
                     }
 
                     $imageProperties[] = [
-                        LanguageModel::FIELD_ID => $languageId,
+                        Language::FIELD_ID => $languageId,
                         'alt' => $alt,
                     ];
 
@@ -93,7 +93,7 @@ trait ImageTrait
                 DB::rollBack();
                 foreach ($createdFiles as $fileToDelete) {
                     /** @noinspection PhpUndefinedMethodInspection */
-                    File::delete(ImageModel::getUploadFolderPath($fileToDelete));
+                    File::delete(Image::getUploadFolderPath($fileToDelete));
                 }
             }
 
@@ -115,7 +115,7 @@ trait ImageTrait
     {
         // will check all files with mask '/full/path/to/$baseFileName-*.ext'
         $originalFileExt  = $file->getClientOriginalExtension();
-        $uploadFolderPath = ImageModel::getUploadFolderPath();
+        $uploadFolderPath = Image::getUploadFolderPath();
         $fileMask = "$uploadFolderPath$baseFileName-*.$originalFileExt";
 
         // find latest modified file name which starts with $baseFileName
@@ -136,7 +136,7 @@ trait ImageTrait
         ++$latestIndex;
         /** @noinspection PhpUndefinedMethodInspection */
         while (File::exists("$uploadFolderPath$baseFileName-$latestIndex.$originalFileExt") or
-            ImageModel::where('original_file', '=', "$baseFileName-$latestIndex.$originalFileExt")->first() !== null
+            Image::where(Image::FIELD_ORIGINAL_FILE, "$baseFileName-$latestIndex.$originalFileExt")->first() !== null
         ) {
             ++$latestIndex;
         }

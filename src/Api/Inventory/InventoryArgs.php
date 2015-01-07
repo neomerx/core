@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Inventory;
 
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\Inventory as Model;
+use \Neomerx\Core\Models\Inventory;
 
 class InventoryArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var Inventory
      */
-    private $model;
+    private $inventory;
 
     /**
      * @param string    $name
-     * @param Model     $model
+     * @param Inventory $inventory
      * @param EventArgs $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, Inventory $inventory, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->inventory = $inventory;
     }
 
     /**
-     * @return Model
+     * @return Inventory
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->inventory;
     }
 }

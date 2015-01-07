@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Users;
 
+use \Neomerx\Core\Models\Role;
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\Role as Model;
 
 class RoleArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var Role
      */
-    private $model;
+    private $role;
 
     /**
      * @param string    $name
-     * @param Model     $model
+     * @param Role      $role
      * @param EventArgs $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, Role $role, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->role = $role;
     }
 
     /**
-     * @return Model
+     * @return Role
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->role;
     }
 }

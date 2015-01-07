@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Users;
 
+use \Neomerx\Core\Models\User;
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\User as Model;
 
 class UserArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var User
      */
-    private $model;
+    private $user;
 
     /**
      * @param string    $name
-     * @param Model     $model
+     * @param User      $user
      * @param EventArgs $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, User $user, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->user = $user;
     }
 
     /**
-     * @return Model
+     * @return User
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->user;
     }
 }

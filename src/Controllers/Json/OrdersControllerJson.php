@@ -1,8 +1,8 @@
 <?php namespace Neomerx\Core\Controllers\Json;
 
 use \Neomerx\Core\Models\Order;
-use \Neomerx\Core\Api\Facades\Orders;
 use \Illuminate\Support\Facades\App;
+use \Neomerx\Core\Api\Facades\Orders;
 use \Illuminate\Support\Facades\Input;
 use \Neomerx\Core\Converters\OrderConverterGeneric;
 use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;

@@ -3,8 +3,8 @@
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Auth\Permission;
 use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Models\ImageFormat;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\ImageFormat as Model;
 
 class ImageFormats implements ImageFormatsInterface
 {
@@ -12,18 +12,18 @@ class ImageFormats implements ImageFormatsInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var Model
+     * @var ImageFormat
      */
-    private $model;
+    private $imageFormat;
 
     /**
      * Constructor.
      *
-     * @param Model $model
+     * @param ImageFormat $imageFormat
      */
-    public function __construct(Model $model)
+    public function __construct(ImageFormat $imageFormat)
     {
-        $this->model = $model;
+        $this->imageFormat = $imageFormat;
     }
 
     /**
@@ -35,8 +35,8 @@ class ImageFormats implements ImageFormatsInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $format */
-            $format = $this->model->createOrFailResource($input);
+            /** @var ImageFormat $format */
+            $format = $this->imageFormat->createOrFailResource($input);
             Permissions::check($format, Permission::create());
 
             $allExecutedOk = true;
@@ -58,8 +58,8 @@ class ImageFormats implements ImageFormatsInterface
      */
     public function read($name)
     {
-        /** @var Model $format */
-        $format = $this->model->selectByName($name)->firstOrFail();
+        /** @var ImageFormat $format */
+        $format = $this->imageFormat->selectByName($name)->firstOrFail();
         Permissions::check($format, Permission::view());
         return $format;
     }
@@ -69,8 +69,8 @@ class ImageFormats implements ImageFormatsInterface
      */
     public function update($name, array $input)
     {
-        /** @var Model $format */
-        $format = $this->model->selectByName($name)->firstOrFail();
+        /** @var ImageFormat $format */
+        $format = $this->imageFormat->selectByName($name)->firstOrFail();
         Permissions::check($format, Permission::edit());
         empty($input) ?: $format->updateOrFail($input);
 
@@ -82,8 +82,8 @@ class ImageFormats implements ImageFormatsInterface
      */
     public function delete($name)
     {
-        /** @var Model $format */
-        $format = $this->model->selectByName($name)->firstOrFail();
+        /** @var ImageFormat $format */
+        $format = $this->imageFormat->selectByName($name)->firstOrFail();
         Permissions::check($format, Permission::delete());
         $format->deleteOrFail();
 
@@ -95,7 +95,7 @@ class ImageFormats implements ImageFormatsInterface
      */
     public function all(array $parameters = [])
     {
-        $formats = $this->model->all();
+        $formats = $this->imageFormat->all();
 
         foreach ($formats as $format) {
             Permissions::check($format, Permission::view());

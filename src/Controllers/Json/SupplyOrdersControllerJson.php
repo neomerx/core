@@ -1,9 +1,9 @@
 <?php namespace Neomerx\Core\Controllers\Json;
 
-use \Neomerx\Core\Models\SupplyOrder;
 use \Illuminate\Support\Facades\App;
-use \Neomerx\Core\Api\Facades\SupplyOrders;
+use \Neomerx\Core\Models\SupplyOrder;
 use \Illuminate\Support\Facades\Input;
+use \Neomerx\Core\Api\Facades\SupplyOrders;
 use \Neomerx\Core\Models\SupplyOrderDetails;
 use \Neomerx\Core\Converters\SupplyOrderConverterGeneric;
 use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;

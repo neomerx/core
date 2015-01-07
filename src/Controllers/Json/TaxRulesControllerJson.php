@@ -1,8 +1,8 @@
 <?php namespace Neomerx\Core\Controllers\Json;
 
 use \Neomerx\Core\Models\TaxRule;
-use \Neomerx\Core\Api\Facades\TaxRules;
 use \Illuminate\Support\Facades\App;
+use \Neomerx\Core\Api\Facades\TaxRules;
 use \Neomerx\Core\Converters\TaxRuleConverterGeneric;
 use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 

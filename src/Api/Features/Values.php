@@ -3,15 +3,15 @@
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Auth\Permission;
+use \Neomerx\Core\Models\Language;
 use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Models\Characteristic;
 use \Neomerx\Core\Auth\Facades\Permissions;
+use \Neomerx\Core\Models\CharacteristicValue;
 use \Neomerx\Core\Exceptions\ValidationException;
-use \Neomerx\Core\Models\Language as LanguageModel;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
-use \Neomerx\Core\Models\CharacteristicValue as Model;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Models\Characteristic as CharacteristicModel;
-use \Neomerx\Core\Models\CharacteristicValueProperties as PropertiesModel;
+use \Neomerx\Core\Models\CharacteristicValueProperties;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -23,53 +23,53 @@ class Values implements ValuesInterface
     const EVENT_PREFIX = 'Api.Feature.';
 
     /**
-     * @var Model
+     * @var CharacteristicValue
      */
-    private $model;
+    private $characteristicValue;
 
     /**
-     * @var PropertiesModel
+     * @var CharacteristicValueProperties
      */
     private $properties;
 
     /**
-     * @var LanguageModel
+     * @var Language
      */
     private $language;
 
     /**
-     * @var CharacteristicModel
+     * @var Characteristic
      */
     private $characteristic;
 
     /**
-     * @param Model               $model
-     * @param PropertiesModel     $properties
-     * @param LanguageModel       $language
-     * @param CharacteristicModel $characteristic
+     * @param CharacteristicValue           $characteristicValue
+     * @param CharacteristicValueProperties $properties
+     * @param Language                      $language
+     * @param Characteristic                $characteristic
      */
     public function __construct(
-        Model $model,
-        PropertiesModel $properties,
-        LanguageModel $language,
-        CharacteristicModel $characteristic
+        CharacteristicValue $characteristicValue,
+        CharacteristicValueProperties $properties,
+        Language $language,
+        Characteristic $characteristic
     ) {
-        $this->model          = $model;
-        $this->properties     = $properties;
-        $this->language       = $language;
-        $this->characteristic = $characteristic;
+        $this->characteristicValue = $characteristicValue;
+        $this->properties          = $properties;
+        $this->language            = $language;
+        $this->characteristic      = $characteristic;
     }
 
     /**
      * @inheritdoc
      */
-    public function all(CharacteristicModel $characteristic)
+    public function all(Characteristic $characteristic)
     {
         /** @noinspection PhpParamsInspection */
         /** @noinspection PhpUndefinedMethodInspection */
         $resources = $characteristic->values()->withProperties()->get();
 
-        /** @var Model $resource */
+        /** @var CharacteristicValue $resource */
         foreach ($resources as $resource) {
             Permissions::check($resource, Permission::view());
         }
@@ -80,20 +80,20 @@ class Values implements ValuesInterface
     /**
      * Add values to characteristic.
      *
-     * @param CharacteristicModel $characteristic
+     * @param Characteristic $characteristic
      * @param array          $values
      */
-    public function addValues(CharacteristicModel $characteristic, array $values)
+    public function addValues(Characteristic $characteristic, array $values)
     {
         Permissions::check($characteristic, Permission::edit());
 
-        $characteristicId = $characteristic->{CharacteristicModel::FIELD_ID};
+        $characteristicId = $characteristic->{Characteristic::FIELD_ID};
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
         try {
 
             foreach ($values as $value) {
-                $value[Model::FIELD_ID_CHARACTERISTIC] = $characteristicId;
+                $value[CharacteristicValue::FIELD_ID_CHARACTERISTIC] = $characteristicId;
                 $this->create($value);
             }
 
@@ -115,16 +115,16 @@ class Values implements ValuesInterface
         // check language properties are not empty
         count($propertiesInput) ? null : S\throwEx(new InvalidArgumentException('properties'));
 
-        /** @var Model $characteristicValue */
-        $characteristicValue = $this->model->createOrFailResource($input);
+        /** @var CharacteristicValue $characteristicValue */
+        $characteristicValue = $this->characteristicValue->createOrFailResource($input);
 
         Permissions::check($characteristicValue, Permission::create());
 
-        $valueId = $characteristicValue->{Model::FIELD_ID};
+        $valueId = $characteristicValue->{CharacteristicValue::FIELD_ID};
         foreach ($propertiesInput as $languageId => $propertyInput) {
             $this->properties->createOrFailResource(array_merge([
-                PropertiesModel::FIELD_ID_CHARACTERISTIC_VALUE => $valueId,
-                PropertiesModel::FIELD_ID_LANGUAGE             => $languageId
+                CharacteristicValueProperties::FIELD_ID_CHARACTERISTIC_VALUE => $valueId,
+                CharacteristicValueProperties::FIELD_ID_LANGUAGE             => $languageId
             ], $propertyInput));
         }
 
@@ -136,9 +136,9 @@ class Values implements ValuesInterface
      */
     public function read($code)
     {
-        /** @var Model $resource */
+        /** @var CharacteristicValue $resource */
         /** @noinspection PhpParamsInspection */
-        $resource = $this->model->selectByCode($code)->withProperties()->firstOrFail();
+        $resource = $this->characteristicValue->selectByCode($code)->withProperties()->firstOrFail();
         Permissions::check($resource, Permission::view());
         return $resource;
     }
@@ -155,19 +155,19 @@ class Values implements ValuesInterface
         DB::beginTransaction();
         try {
             // update resource
-            /** @var Model $characteristicValue */
-            $characteristicValue = $this->model->selectByCode($code)->firstOrFail();
+            /** @var CharacteristicValue $characteristicValue */
+            $characteristicValue = $this->characteristicValue->selectByCode($code)->firstOrFail();
 
             Permissions::check($characteristicValue, Permission::edit());
 
             empty($input) ?: $characteristicValue->updateOrFail($input);
 
             // update language properties
-            $valueId = $characteristicValue->{Model::FIELD_ID};
+            $valueId = $characteristicValue->{CharacteristicValue::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
                 $property = $this->properties->updateOrCreate([
-                    PropertiesModel::FIELD_ID_CHARACTERISTIC_VALUE => $valueId,
-                    PropertiesModel::FIELD_ID_LANGUAGE             => $languageId
+                    CharacteristicValueProperties::FIELD_ID_CHARACTERISTIC_VALUE => $valueId,
+                    CharacteristicValueProperties::FIELD_ID_LANGUAGE             => $languageId
                     // TODO Swap [] and $propertyInput order. Otherwise relation IDs could be overwritten. Everywhere.
                 ], $propertyInput);
                 /** @noinspection PhpUndefinedMethodInspection */
@@ -191,8 +191,8 @@ class Values implements ValuesInterface
      */
     public function delete($code)
     {
-        /** @var Model $characteristicValue */
-        $characteristicValue = $this->model->selectByCode($code)->firstOrFail();
+        /** @var CharacteristicValue $characteristicValue */
+        $characteristicValue = $this->characteristicValue->selectByCode($code)->firstOrFail();
 
         Permissions::check($characteristicValue, Permission::delete());
 

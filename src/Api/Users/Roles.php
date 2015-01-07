@@ -1,10 +1,10 @@
 <?php namespace Neomerx\Core\Api\Users;
 
+use \Neomerx\Core\Models\Role;
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Auth\Permission;
 use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\Role as Model;
 
 class Roles implements RolesInterface
 {
@@ -12,18 +12,18 @@ class Roles implements RolesInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var Model
+     * @var Role
      */
-    private $model;
+    private $role;
 
     /**
      * Constructor.
      *
-     * @param Model $model
+     * @param Role $role
      */
-    public function __construct(Model $model)
+    public function __construct(Role $role)
     {
-        $this->model = $model;
+        $this->role = $role;
     }
 
     /**
@@ -35,8 +35,8 @@ class Roles implements RolesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $role */
-            $role = $this->model->createOrFailResource($input);
+            /** @var Role $role */
+            $role = $this->role->createOrFailResource($input);
             Permissions::check($role, Permission::create());
 
             $allExecutedOk = true;
@@ -58,8 +58,8 @@ class Roles implements RolesInterface
      */
     public function read($code)
     {
-        /** @var Model $role */
-        $role = $this->model->selectByCode($code)->firstOrFail();
+        /** @var Role $role */
+        $role = $this->role->selectByCode($code)->firstOrFail();
         Permissions::check($role, Permission::view());
         return $role;
     }
@@ -69,8 +69,8 @@ class Roles implements RolesInterface
      */
     public function update($code, array $input)
     {
-        /** @var Model $role */
-        $role = $this->model->selectByCode($code)->firstOrFail();
+        /** @var Role $role */
+        $role = $this->role->selectByCode($code)->firstOrFail();
         Permissions::check($role, Permission::edit());
         empty($input) ?: $role->updateOrFail($input);
 
@@ -82,8 +82,8 @@ class Roles implements RolesInterface
      */
     public function delete($isoCode)
     {
-        /** @var Model $role */
-        $role = $this->model->selectByCode($isoCode)->firstOrFail();
+        /** @var Role $role */
+        $role = $this->role->selectByCode($isoCode)->firstOrFail();
         Permissions::check($role, Permission::delete());
         $role->deleteOrFail();
 
@@ -95,7 +95,7 @@ class Roles implements RolesInterface
      */
     public function all()
     {
-        $roles = $this->model->all();
+        $roles = $this->role->all();
 
         foreach ($roles as $role) {
             Permissions::check($role, Permission::view());

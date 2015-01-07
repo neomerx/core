@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Suppliers;
 
+use \Neomerx\Core\Models\Supplier;
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\Supplier as Model;
 
 class SupplierArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var Supplier
      */
-    private $model;
+    private $supplier;
 
     /**
      * @param string    $name
-     * @param Model     $model
+     * @param Supplier  $supplier
      * @param EventArgs $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, Supplier $supplier, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->supplier = $supplier;
     }
 
     /**
-     * @return Model
+     * @return Supplier
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->supplier;
     }
 }

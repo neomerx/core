@@ -5,10 +5,10 @@ use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\BaseModel;
 use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Models\Characteristic;
+use \Neomerx\Core\Models\CharacteristicValue;
 use \Neomerx\Core\Exceptions\NullArgumentException;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Models\Characteristic as CharacteristicModel;
-use \Neomerx\Core\Models\CharacteristicValue as CharacteristicValueModel;
 
 trait SpecificationTrait
 {
@@ -31,11 +31,11 @@ trait SpecificationTrait
     }
 
     /**
-     * @param CharacteristicValueModel $chValueModel
-     * @param array                    $parameters
-     * @param mixed                    $model        Product or Variant
+     * @param CharacteristicValue $chValueModel
+     * @param array               $parameters
+     * @param mixed               $model        Product or Variant
      */
-    private function updateSpecification(CharacteristicValueModel $chValueModel, array $parameters, BaseModel $model)
+    private function updateSpecification(CharacteristicValue $chValueModel, array $parameters, BaseModel $model)
     {
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
@@ -48,11 +48,11 @@ trait SpecificationTrait
                 // update
                 /** @noinspection PhpUndefinedMethodInspection */
                 $spec = $model->specification()
-                    ->where(CharacteristicValueModel::FIELD_ID, '=', $oldValue->{CharacteristicValueModel::FIELD_ID})
+                    ->where(CharacteristicValue::FIELD_ID, '=', $oldValue->{CharacteristicValue::FIELD_ID})
                     ->firstOrFail();
                 /** @noinspection PhpUndefinedMethodInspection */
                 $spec->updateOrFail([
-                    CharacteristicValueModel::FIELD_ID => $newValue->{CharacteristicValueModel::FIELD_ID}
+                    CharacteristicValue::FIELD_ID => $newValue->{CharacteristicValue::FIELD_ID}
                 ]);
 
                 Event::fire(new SpecificationArgs(Products::EVENT_PREFIX . 'updatedSpecification', $spec));
@@ -67,12 +67,12 @@ trait SpecificationTrait
     }
 
     /**
-     * @param CharacteristicValueModel $chValueModel
-     * @param array                    $valueCodesPair
+     * @param CharacteristicValue $chValueModel
+     * @param array               $valueCodesPair
      *
      * @return array
      */
-    private function readAndCheckValues(CharacteristicValueModel $chValueModel, array $valueCodesPair)
+    private function readAndCheckValues(CharacteristicValue $chValueModel, array $valueCodesPair)
     {
         isset($valueCodesPair['oldValueCode']) ? : S\throwEx(new NullArgumentException('oldValueCode'));
         isset($valueCodesPair['newValueCode']) ? : S\throwEx(new NullArgumentException('newValueCode'));
@@ -84,7 +84,7 @@ trait SpecificationTrait
         $newValue = $chValueModel->selectByCode($newValueCode)->firstOrFail();
 
         // check both values belong to the same characteristic
-        $sameParent =  $oldValue->{CharacteristicModel::FIELD_ID} === $newValue->{CharacteristicModel::FIELD_ID};
+        $sameParent =  $oldValue->{Characteristic::FIELD_ID} === $newValue->{Characteristic::FIELD_ID};
         $sameParent ?: S\throwEx(new InvalidArgumentException($newValueCode));
 
         return [$oldValue, $newValue];

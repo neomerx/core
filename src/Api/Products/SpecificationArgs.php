@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Products;
 
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\Specification as Model;
+use \Neomerx\Core\Models\Specification;
 
 class SpecificationArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var Specification
      */
-    private $model;
+    private $specification;
 
     /**
-     * @param string    $name
-     * @param Model     $model
-     * @param EventArgs $args
+     * @param string        $name
+     * @param Specification $specification
+     * @param EventArgs     $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, Specification $specification, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->specification = $specification;
     }
 
     /**
-     * @return Model
+     * @return Specification
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->specification;
     }
 }

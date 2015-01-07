@@ -10,13 +10,13 @@ use \Neomerx\Core\Models\Currency;
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\Supplier;
 use \Neomerx\Core\Models\Warehouse;
-use \Neomerx\Core\Support\SearchParser;
-use \Neomerx\Core\Support\SearchGrammar;
 use \Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Facades\App;
+use \Neomerx\Core\Models\SupplyOrder;
+use \Neomerx\Core\Support\SearchParser;
+use \Neomerx\Core\Support\SearchGrammar;
 use \Neomerx\Core\Auth\Facades\Permissions;
 use \Neomerx\Core\Models\SupplyOrderDetails;
-use \Neomerx\Core\Models\SupplyOrder as Model;
 use \Neomerx\Core\Exceptions\ValidationException;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
@@ -37,8 +37,8 @@ class SupplyOrders implements SupplyOrdersInterface
      * @var array
      */
     protected static $supplyOrderRelations = [
-        Model::FIELD_LANGUAGE,
-        Model::FIELD_WAREHOUSE,
+        SupplyOrder::FIELD_LANGUAGE,
+        SupplyOrder::FIELD_WAREHOUSE,
         'supplier.properties.language',
         'currency.properties.language',
         'details.variant.properties.language',
@@ -51,16 +51,16 @@ class SupplyOrders implements SupplyOrdersInterface
      * @var array
      */
     protected static $searchRules = [
-        Model::FIELD_STATUS       => SearchGrammar::TYPE_STRING,
-        'expected'                => [SearchGrammar::TYPE_DATE, Model::FIELD_EXPECTED_AT],
-        'created'                 => [SearchGrammar::TYPE_DATE, Model::FIELD_CREATED_AT],
-        'updated'                 => [SearchGrammar::TYPE_DATE, Model::FIELD_UPDATED_AT],
+        SupplyOrder::FIELD_STATUS => SearchGrammar::TYPE_STRING,
+        'expected'                => [SearchGrammar::TYPE_DATE, SupplyOrder::FIELD_EXPECTED_AT],
+        'created'                 => [SearchGrammar::TYPE_DATE, SupplyOrder::FIELD_CREATED_AT],
+        'updated'                 => [SearchGrammar::TYPE_DATE, SupplyOrder::FIELD_UPDATED_AT],
         SearchGrammar::LIMIT_SKIP => SearchGrammar::TYPE_LIMIT,
         SearchGrammar::LIMIT_TAKE => SearchGrammar::TYPE_LIMIT,
     ];
 
     /**
-     * @var Model
+     * @var SupplyOrder
      */
     private $orderModel;
 
@@ -100,7 +100,7 @@ class SupplyOrders implements SupplyOrdersInterface
     private $variantModel;
 
     /**
-     * @param Model              $order
+     * @param SupplyOrder        $order
      * @param SupplyOrderDetails $details
      * @param Supplier           $supplier
      * @param Warehouse          $warehouse
@@ -110,7 +110,7 @@ class SupplyOrders implements SupplyOrdersInterface
      * @param Variant            $variant
      */
     public function __construct(
-        Model $order,
+        SupplyOrder $order,
         SupplyOrderDetails  $details,
         Supplier $supplier,
         Warehouse $warehouse,
@@ -119,8 +119,8 @@ class SupplyOrders implements SupplyOrdersInterface
         Product $product,
         Variant $variant
     ) {
-        $this->detailsModel   = $details;
         $this->orderModel     = $order;
+        $this->detailsModel   = $details;
         $this->supplierModel  = $supplier;
         $this->warehouseModel = $warehouse;
         $this->currencyModel  = $currency;
@@ -140,7 +140,7 @@ class SupplyOrders implements SupplyOrdersInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $supplyOrder */
+            /** @var SupplyOrder $supplyOrder */
             $supplyOrder = $this->orderModel->createOrFailResource($orderData);
             Permissions::check($supplyOrder, Permission::create());
 
@@ -172,7 +172,7 @@ class SupplyOrders implements SupplyOrdersInterface
     /**
      * {@inheritdoc}
      */
-    public function createDetails(Model $supplyOrder, array $input)
+    public function createDetails(SupplyOrder $supplyOrder, array $input)
     {
         $detailsData = $this->parseDetailInputOnCreate($input);
         /** @var SupplyOrderDetails $details */
@@ -211,7 +211,7 @@ class SupplyOrders implements SupplyOrdersInterface
      */
     public function read($supplyOrderId)
     {
-        /** @var Model $supplyOrder */
+        /** @var SupplyOrder $supplyOrder */
         $supplyOrder = $this->orderModel->with(static::$supplyOrderRelations)->findOrFail($supplyOrderId);
         Permissions::check($supplyOrder, Permission::view());
         return $supplyOrder;
@@ -233,7 +233,7 @@ class SupplyOrders implements SupplyOrdersInterface
      */
     public function update($supplyOrderId, array $input)
     {
-        /** @var Model $supplyOrder */
+        /** @var SupplyOrder $supplyOrder */
         list($supplyOrder, $orderInput) = $this->parseInputOnUpdate($supplyOrderId, $input);
         Permissions::check($supplyOrder, Permission::edit());
 
@@ -285,7 +285,7 @@ class SupplyOrders implements SupplyOrdersInterface
      */
     public function delete($supplyOrderId)
     {
-        /** @var Model $supplyOrder */
+        /** @var SupplyOrder $supplyOrder */
         $supplyOrder = $this->orderModel->findOrFail($supplyOrderId);
 
         Permissions::check($supplyOrder, Permission::delete());
@@ -327,7 +327,7 @@ class SupplyOrders implements SupplyOrdersInterface
         $resources = $builder->get();
 
         foreach ($resources as $order) {
-            /** @var Model $order */
+            /** @var SupplyOrder $order */
             Permissions::check($order, Permission::view());
         }
 
@@ -366,8 +366,8 @@ class SupplyOrders implements SupplyOrdersInterface
         $expectedAt  !== false ?: S\throwEx(new InvalidArgumentException(self::PARAM_EXPECTED_AT));
         Carbon::now()->lt($expectedAt) ?: S\throwEx(new InvalidArgumentException(self::PARAM_EXPECTED_AT));
 
-        $statusName    = S\array_get_value($input, self::PARAM_STATUS, Model::STATUS_DRAFT);
-        $isStatusValid = in_array($statusName, [Model::STATUS_DRAFT, Model::STATUS_VALIDATED]);
+        $statusName    = S\array_get_value($input, self::PARAM_STATUS, SupplyOrder::STATUS_DRAFT);
+        $isStatusValid = in_array($statusName, [SupplyOrder::STATUS_DRAFT, SupplyOrder::STATUS_VALIDATED]);
         $isStatusValid ? : S\throwEx(new InvalidArgumentException(self::PARAM_STATUS));
 
         $details = S\array_get_value($input, self::PARAM_DETAILS);
@@ -375,7 +375,7 @@ class SupplyOrders implements SupplyOrdersInterface
         unset($input[self::PARAM_DETAILS]);
 
         // order should have details, if no details in validated order throw exception
-        $noDetailsInValidated = ($statusName === Model::STATUS_VALIDATED and empty($details));
+        $noDetailsInValidated = ($statusName === SupplyOrder::STATUS_VALIDATED and empty($details));
         $noDetailsInValidated ? S\throwEx(new InvalidArgumentException(self::PARAM_DETAILS)) : null;
 
         /** @var Supplier $supplier */
@@ -399,13 +399,13 @@ class SupplyOrders implements SupplyOrdersInterface
             $parsedDetails[] = $this->parseDetailInputOnCreate($detailsRow);
         }
 
-        $orderData = array_merge([
-            Warehouse::FIELD_ID => $warehouse->{Warehouse::FIELD_ID},
-            Supplier::FIELD_ID  => $supplier->{Supplier::FIELD_ID},
-            Currency::FIELD_ID  => $currency->{Currency::FIELD_ID},
-            Language::FIELD_ID  => $language->{Language::FIELD_ID},
-            'status'            => $statusName,
-        ], $input);
+        $orderData = array_merge($input, [
+            SupplyOrder::FIELD_ID_WAREHOUSE => $warehouse->{Warehouse::FIELD_ID},
+            SupplyOrder::FIELD_ID_SUPPLIER  => $supplier->{Supplier::FIELD_ID},
+            SupplyOrder::FIELD_ID_CURRENCY  => $currency->{Currency::FIELD_ID},
+            SupplyOrder::FIELD_ID_LANGUAGE  => $language->{Language::FIELD_ID},
+            SupplyOrder::FIELD_STATUS       => $statusName,
+        ]);
 
         return [$orderData, $parsedDetails];
     }
@@ -444,16 +444,16 @@ class SupplyOrders implements SupplyOrdersInterface
         }
 
         $parsedOrderInput = [];
-        /** @var Model $supplyOrder */
+        /** @var SupplyOrder $supplyOrder */
         $supplyOrder = $this->orderModel->findOrFail($supplyOrderId);
 
         $statusName = S\array_get_value($input, self::PARAM_STATUS);
         if ($statusName !== null) {
             $currentStatus = $supplyOrder->status;
-            if ($currentStatus === Model::STATUS_DRAFT) {
-                $isStatusValid = in_array($statusName, [Model::STATUS_VALIDATED, Model::STATUS_CANCELLED]);
-            } elseif ($currentStatus === Model::STATUS_VALIDATED) {
-                $isStatusValid = in_array($statusName, [Model::STATUS_CANCELLED]);
+            if ($currentStatus === SupplyOrder::STATUS_DRAFT) {
+                $isStatusValid = in_array($statusName, [SupplyOrder::STATUS_VALIDATED, SupplyOrder::STATUS_CANCELLED]);
+            } elseif ($currentStatus === SupplyOrder::STATUS_VALIDATED) {
+                $isStatusValid = in_array($statusName, [SupplyOrder::STATUS_CANCELLED]);
             } else {
                 $isStatusValid = false;
             }
@@ -489,7 +489,7 @@ class SupplyOrders implements SupplyOrdersInterface
             $parsedOrderInput[Language::FIELD_ID] = $language->{Language::FIELD_ID};
         }
 
-        return [$supplyOrder, array_merge($parsedOrderInput, $input)];
+        return [$supplyOrder, array_merge($input, $parsedOrderInput)];
     }
 
     /**

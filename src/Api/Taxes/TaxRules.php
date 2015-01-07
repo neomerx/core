@@ -5,18 +5,17 @@ use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Country;
+use \Neomerx\Core\Models\TaxRule;
 use \Neomerx\Core\Auth\Permission;
-use \Neomerx\Core\Models\CustomerType;
-use \Neomerx\Core\Models\ProductTaxType;
 use \Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Facades\App;
+use \Neomerx\Core\Models\CustomerType;
+use \Neomerx\Core\Models\ProductTaxType;
 use \Neomerx\Core\Models\TaxRulePostcode;
 use \Neomerx\Core\Models\TaxRuleTerritory;
-use \Neomerx\Core\Models\TaxRule as Model;
 use \Neomerx\Core\Auth\Facades\Permissions;
 use \Neomerx\Core\Models\TaxRuleProductType;
 use \Neomerx\Core\Models\TaxRuleCustomerType;
-use \Neomerx\Core\Api\Taxes\TaxRuleArgs as Args;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 /**
@@ -30,15 +29,15 @@ class TaxRules implements TaxRulesInterface
     const BIND_NAME    = __CLASS__;
 
     protected static $relations = [
-        Model::FIELD_TAX,
+        TaxRule::FIELD_TAX,
         'territories.territory',
-        Model::FIELD_POSTCODES,
+        TaxRule::FIELD_POSTCODES,
         'productTypes.type',
         'customerTypes.type',
     ];
 
     /**
-     * @var Model
+     * @var TaxRule
      */
     private $ruleModel;
 
@@ -68,7 +67,7 @@ class TaxRules implements TaxRulesInterface
     private $taxModel;
 
     /**
-     * @param Model          $ruleModel
+     * @param TaxRule        $ruleModel
      * @param Country        $countryModel
      * @param Region         $regionModel
      * @param CustomerType   $customerTypeModel
@@ -76,7 +75,7 @@ class TaxRules implements TaxRulesInterface
      * @param Tax            $taxModel
      */
     public function __construct(
-        Model $ruleModel,
+        TaxRule $ruleModel,
         Country $countryModel,
         Region $regionModel,
         CustomerType $customerTypeModel,
@@ -102,15 +101,15 @@ class TaxRules implements TaxRulesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $rule */
+            /** @var TaxRule $rule */
             /** @noinspection PhpUndefinedMethodInspection */
-            $rule = App::make(Model::BIND_NAME);
+            $rule = App::make(TaxRule::BIND_NAME);
             $rule->fill($ruleData);
             $rule->{Tax::FIELD_ID} = $taxId;
             $rule->saveOrFail();
             Permissions::check($rule, Permission::create());
 
-            $this->addRuleFilters($rule->{Model::FIELD_ID}, $territories, $postcodes, $customerTypes, $productTypes);
+            $this->addRuleFilters($rule->{TaxRule::FIELD_ID}, $territories, $postcodes, $customerTypes, $productTypes);
 
             $allExecutedOk = true;
 
@@ -121,7 +120,7 @@ class TaxRules implements TaxRulesInterface
 
         }
 
-        Event::fire(new Args(self::EVENT_PREFIX . 'created', $rule));
+        Event::fire(new TaxRuleArgs(self::EVENT_PREFIX . 'created', $rule));
 
         return $rule;
     }
@@ -132,7 +131,7 @@ class TaxRules implements TaxRulesInterface
     public function read($ruleId)
     {
 
-        /** @var Model $resource */
+        /** @var TaxRule $resource */
         $resource = $this->ruleModel->with(static::$relations)->findOrFail($ruleId);
         Permissions::check($resource, Permission::view());
         return $resource;
@@ -149,7 +148,7 @@ class TaxRules implements TaxRulesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $rule */
+            /** @var TaxRule $rule */
             $rule = $this->ruleModel->with(static::$relations)->findOrFail($ruleId);
             Permissions::check($rule, Permission::edit());
             $rule->fill($ruleData);
@@ -167,7 +166,7 @@ class TaxRules implements TaxRulesInterface
             $rule->productTypes()->delete();
 
             // ... add new ones
-            $this->addRuleFilters($rule->{Model::FIELD_ID}, $territories, $postcodes, $customerTypes, $productTypes);
+            $this->addRuleFilters($rule->{TaxRule::FIELD_ID}, $territories, $postcodes, $customerTypes, $productTypes);
 
             $allExecutedOk = true;
 
@@ -178,7 +177,7 @@ class TaxRules implements TaxRulesInterface
 
         }
 
-        Event::fire(new Args(self::EVENT_PREFIX . 'updated', $rule));
+        Event::fire(new TaxRuleArgs(self::EVENT_PREFIX . 'updated', $rule));
     }
 
     /**
@@ -186,12 +185,12 @@ class TaxRules implements TaxRulesInterface
      */
     public function delete($ruleId)
     {
-        /** @var Model $resource */
+        /** @var TaxRule $resource */
         $resource = $this->ruleModel->findOrFail($ruleId);
         Permissions::check($resource, Permission::delete());
         $resource->deleteOrFail();
 
-        Event::fire(new Args(self::EVENT_PREFIX . 'deleted', $resource));
+        Event::fire(new TaxRuleArgs(self::EVENT_PREFIX . 'deleted', $resource));
     }
 
     /**
@@ -271,25 +270,25 @@ class TaxRules implements TaxRulesInterface
     ) {
         /** @var TaxRuleTerritory $territory */
         foreach ($territories as $territory) {
-            $territory->{Model::FIELD_ID} = $ruleId;
+            $territory->{TaxRule::FIELD_ID} = $ruleId;
             $territory->saveOrFail();
         }
 
         /** @var TaxRulePostcode $postcode */
         foreach ($postcodes as $postcode) {
-            $postcode->{Model::FIELD_ID} = $ruleId;
+            $postcode->{TaxRule::FIELD_ID} = $ruleId;
             $postcode->saveOrFail();
         }
 
         /** @var TaxRuleCustomerType $type */
         foreach ($customerTypes as $type) {
-            $type->{Model::FIELD_ID} = $ruleId;
+            $type->{TaxRule::FIELD_ID} = $ruleId;
             $type->saveOrFail();
         }
 
         /** @var TaxRuleProductType $type */
         foreach ($productTypes as $type) {
-            $type->{Model::FIELD_ID} = $ruleId;
+            $type->{TaxRule::FIELD_ID} = $ruleId;
             $type->saveOrFail();
         }
     }

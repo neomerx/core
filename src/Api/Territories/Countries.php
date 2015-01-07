@@ -2,17 +2,17 @@
 
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Support as S;
+use \Neomerx\Core\Models\Region;
+use \Neomerx\Core\Models\Country;
 use \Neomerx\Core\Auth\Permission;
+use \Neomerx\Core\Models\Language;
 use \Illuminate\Support\Facades\DB;
-use \Neomerx\Core\Models\Country as Model;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\Region as RegionModel;
-use \Neomerx\Core\Exceptions\ValidationException;
+use \Neomerx\Core\Models\CountryProperties;
 use \Illuminate\Database\Eloquent\Collection;
-use \Neomerx\Core\Models\Language as LanguageModel;
+use \Neomerx\Core\Exceptions\ValidationException;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Models\CountryProperties as PropertiesModel;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -25,28 +25,28 @@ class Countries implements CountriesInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var Model
+     * @var Country
      */
-    private $model;
+    private $country;
 
     /**
-     * @var PropertiesModel
+     * @var CountryProperties
      */
     private $properties;
 
     /**
-     * @var LanguageModel
+     * @var Language
      */
     private $language;
 
     /**
-     * @param Model           $model
-     * @param PropertiesModel $properties
-     * @param LanguageModel   $language
+     * @param Country           $country
+     * @param CountryProperties $properties
+     * @param Language          $language
      */
-    public function __construct(Model $model, PropertiesModel $properties, LanguageModel $language)
+    public function __construct(Country $country, CountryProperties $properties, Language $language)
     {
-        $this->model      = $model;
+        $this->country    = $country;
         $this->properties = $properties;
         $this->language   = $language;
     }
@@ -65,16 +65,16 @@ class Countries implements CountriesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $country */
-            $country = $this->model->createOrFailResource($input);
+            /** @var Country $country */
+            $country = $this->country->createOrFailResource($input);
             Permissions::check($country, Permission::create());
 
-            $countryId = $country->{Model::FIELD_ID};
+            $countryId = $country->{Country::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
-                $this->properties->createOrFail(array_merge(
-                    [Model::FIELD_ID => $countryId, LanguageModel::FIELD_ID => $languageId],
-                    $propertyInput
-                ));
+                $this->properties->createOrFail(array_merge($propertyInput, [
+                    CountryProperties::FIELD_ID_COUNTRY  => $countryId,
+                    CountryProperties::FIELD_ID_LANGUAGE => $languageId
+                ]));
             }
 
             $allExecutedOk = true;
@@ -94,8 +94,8 @@ class Countries implements CountriesInterface
      */
     public function read($code)
     {
-        /** @var Model $country */
-        $country = $this->model->selectByCode($code)->withProperties()->firstOrFail();
+        /** @var Country $country */
+        $country = $this->country->selectByCode($code)->withProperties()->firstOrFail();
         Permissions::check($country, Permission::view());
 
         return $country;
@@ -112,18 +112,21 @@ class Countries implements CountriesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $country */
-            $country = $this->model->selectByCode($code)->firstOrFail();
+            /** @var Country $country */
+            $country = $this->country->selectByCode($code)->firstOrFail();
 
             Permissions::check($country, Permission::edit());
 
             empty($input) ?: $country->updateOrFail($input);
 
-            $countryId = $country->{Model::FIELD_ID};
+            $countryId = $country->{Country::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
-                /** @var PropertiesModel $property */
+                /** @var CountryProperties $property */
                 $property = $this->properties->updateOrCreate(
-                    [Model::FIELD_ID => $countryId, LanguageModel::FIELD_ID => $languageId],
+                    [
+                        CountryProperties::FIELD_ID_COUNTRY  => $countryId,
+                        CountryProperties::FIELD_ID_LANGUAGE => $languageId
+                    ],
                     $propertyInput
                 );
                 $property->exists ?: S\throwEx(new ValidationException($property->getValidator()));
@@ -132,8 +135,10 @@ class Countries implements CountriesInterface
             $allExecutedOk = true;
 
         } finally {
+
             /** @noinspection PhpUndefinedMethodInspection */
             isset($allExecutedOk) ? DB::commit() : DB::rollBack();
+
         }
 
         Event::fire(new CountryArgs(self::EVENT_PREFIX . 'updated', $country));
@@ -144,8 +149,8 @@ class Countries implements CountriesInterface
      */
     public function delete($code)
     {
-        /** @var Model $country */
-        $country = $this->model->selectByCode($code)->firstOrFail();
+        /** @var Country $country */
+        $country = $this->country->selectByCode($code)->firstOrFail();
 
         Permissions::check($country, Permission::delete());
 
@@ -160,10 +165,10 @@ class Countries implements CountriesInterface
     public function all()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $countries = $this->model->newQuery()->withProperties()->get();
+        $countries = $this->country->newQuery()->withProperties()->get();
 
         foreach ($countries as $country) {
-            /** @var Model $country */
+            /** @var Country $country */
             Permissions::check($country, Permission::view());
         }
 
@@ -173,13 +178,13 @@ class Countries implements CountriesInterface
     /**
      * {@inheritdoc}
      */
-    public function regions(Model $country)
+    public function regions(Country $country)
     {
         Permissions::check($country, Permission::view());
 
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var Collection $regions */
-        $regions = $country->regions()->orderBy(RegionModel::FIELD_POSITION, 'asc')->get();
+        $regions = $country->regions()->orderBy(Region::FIELD_POSITION, 'asc')->get();
 
         foreach ($regions as $region) {
             Permissions::check($region, Permission::view());

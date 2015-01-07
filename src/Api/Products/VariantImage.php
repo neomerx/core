@@ -2,12 +2,12 @@
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
+use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Auth\Permission;
+use \Neomerx\Core\Models\Language;
+use \Neomerx\Core\Models\ProductImage;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\Variant as VariantModel;
 use \Illuminate\Database\Eloquent\Collection;
-use \Neomerx\Core\Models\Language as LanguageModel;
-use \Neomerx\Core\Models\ProductImage as ProductImageModel;
 
 class VariantImage
 {
@@ -22,26 +22,26 @@ class VariantImage
     ];
 
     /**
-     * @var VariantModel
+     * @var Variant
      */
     private $variantModel;
 
     /**
-     * @var ProductImageModel
+     * @var ProductImage
      */
     private $productImageModel;
 
     /**
-     * @var LanguageModel
+     * @var Language
      */
     private $languageModel;
 
     /**
-     * @param VariantModel      $variant
-     * @param ProductImageModel $productImage
-     * @param LanguageModel     $language
+     * @param Variant      $variant
+     * @param ProductImage $productImage
+     * @param Language     $language
      */
-    public function __construct(VariantModel $variant, ProductImageModel $productImage, LanguageModel $language)
+    public function __construct(Variant $variant, ProductImage $productImage, Language $language)
     {
         $this->variantModel      = $variant;
         $this->productImageModel = $productImage;
@@ -51,11 +51,11 @@ class VariantImage
     /**
      * Read variant images.
      *
-     * @param VariantModel $variant
+     * @param Variant $variant
      *
      * @return Collection
      */
-    public function showVariantImages(VariantModel $variant)
+    public function showVariantImages(Variant $variant)
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $images = $variant->images()->with(static::$relations)->get();
@@ -65,13 +65,13 @@ class VariantImage
     /**
      * Add variant images.
      *
-     * @param VariantModel $variant
-     * @param array        $descriptions
-     * @param array        $files
+     * @param Variant $variant
+     * @param array   $descriptions
+     * @param array   $files
      *
      * @return void
      */
-    public function storeVariantImages(VariantModel $variant, array $descriptions, array $files)
+    public function storeVariantImages(Variant $variant, array $descriptions, array $files)
     {
         Permissions::check($variant->product, Permission::edit());
 
@@ -88,19 +88,19 @@ class VariantImage
     /**
      * Remove variant images.
      *
-     * @param VariantModel $variant
-     * @param int          $imageId
+     * @param Variant $variant
+     * @param int     $imageId
      *
      * @return void
      */
-    public function destroyVariantImage(VariantModel $variant, $imageId)
+    public function destroyVariantImage(Variant $variant, $imageId)
     {
         Permissions::check($variant->product, Permission::edit());
 
         // re-select them to check that they do belong to $product
         /** @noinspection PhpUndefinedMethodInspection */
         $image = $variant->images()
-            ->where(ProductImageModel::FIELD_ID, $imageId)->lists(ProductImageModel::FIELD_ID);
+            ->where(ProductImage::FIELD_ID, $imageId)->lists(ProductImage::FIELD_ID);
 
         $this->productImageModel->destroy($image);
 

@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Controllers\Json;
 
-use \Neomerx\Core\Api\Facades\Regions;
 use \Illuminate\Support\Facades\App;
+use \Neomerx\Core\Api\Facades\Regions;
 use \Illuminate\Support\Facades\Input;
 use \Neomerx\Core\Converters\RegionConverterGeneric;
 

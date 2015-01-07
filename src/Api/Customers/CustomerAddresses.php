@@ -2,17 +2,16 @@
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
+use \Neomerx\Core\Models\Region;
+use \Neomerx\Core\Models\Address;
+use \Neomerx\Core\Models\Customer;
 use \Neomerx\Core\Auth\Permission;
 use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Models\CustomerAddress;
+use \Neomerx\Core\Api\Addresses\Addresses;
 use \Neomerx\Core\Auth\Facades\Permissions;
 use \Neomerx\Core\Api\Addresses\AddressArgs;
-use \Neomerx\Core\Models\Region as RegionModel;
-use \Neomerx\Core\Models\Address as AddressModel;
-use \Neomerx\Core\Models\Customer as CustomerModel;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Api\Addresses\Addresses as AddressesApi;
-use \Neomerx\Core\Models\CustomerAddress as CustomerAddressModel;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -23,36 +22,36 @@ class CustomerAddresses implements CustomerAddressesInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var CustomerModel
+     * @var Customer
      */
     private $customerModel;
 
     /**
-     * @var AddressesApi
+     * @var Addresses
      */
     private $addressApi;
 
     /**
-     * @var CustomerAddressModel
+     * @var CustomerAddress
      */
     private $customerAddressModel;
 
     /**
-     * @var RegionModel
+     * @var Region
      */
     private $regionModel;
 
     /**
-     * @param CustomerModel        $customer
-     * @param AddressesApi         $addressApi
-     * @param CustomerAddressModel $customerAddress
-     * @param RegionModel          $region
+     * @param Customer        $customer
+     * @param Addresses       $addressApi
+     * @param CustomerAddress $customerAddress
+     * @param Region          $region
      */
     public function __construct(
-        CustomerModel $customer,
-        AddressesApi $addressApi,
-        CustomerAddressModel $customerAddress,
-        RegionModel $region
+        Customer $customer,
+        Addresses $addressApi,
+        CustomerAddress $customerAddress,
+        Region $region
     ) {
         $this->customerModel        = $customer;
         $this->addressApi           = $addressApi;
@@ -63,12 +62,12 @@ class CustomerAddresses implements CustomerAddressesInterface
     /**
      * {@inheritdoc}
      */
-    public function getAddresses(CustomerModel $customer)
+    public function getAddresses(Customer $customer)
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $addresses = $customer->addresses()->withRegionAndCountry()->get();
 
-        /** @var AddressModel $address */
+        /** @var Address $address */
         foreach ($addresses as $address) {
             Permissions::check($address, Permission::view());
         }
@@ -79,7 +78,7 @@ class CustomerAddresses implements CustomerAddressesInterface
     /**
      * {@inheritdoc}
      */
-    public function getAddress(CustomerModel $customer, $addressId)
+    public function getAddress(Customer $customer, $addressId)
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $address = $customer->addresses()
@@ -95,7 +94,7 @@ class CustomerAddresses implements CustomerAddressesInterface
     /**
      * {@inheritdoc}
      */
-    public function createAddress(CustomerModel $customer, array $input)
+    public function createAddress(Customer $customer, array $input)
     {
         Permissions::check($customer, Permission::edit());
 
@@ -110,21 +109,21 @@ class CustomerAddresses implements CustomerAddressesInterface
         try {
 
             // create address
-            /** @var AddressModel $address */
+            /** @var Address $address */
             $address = $this->addressApi->create($input);
 
             // create link between address and customer
             $this->customerAddressModel->createOrFailResource([
-                CustomerAddress::FIELD_ID_CUSTOMER => $customer->{CustomerModel::FIELD_ID},
-                CustomerAddress::FIELD_ID_ADDRESS  => $address->{AddressModel::FIELD_ID},
+                CustomerAddress::FIELD_ID_CUSTOMER => $customer->{Customer::FIELD_ID},
+                CustomerAddress::FIELD_ID_ADDRESS  => $address->{Address::FIELD_ID},
                 CustomerAddress::FIELD_TYPE        => $addressType,
             ]);
 
             // mark address as default if necessary
             if ($isDefault == true) {
                 $this->setDefaultAddressImpl(
-                    $customer->{CustomerModel::FIELD_ID},
-                    $address->{AddressModel::FIELD_ID},
+                    $customer->{Customer::FIELD_ID},
+                    $address->{Address::FIELD_ID},
                     $addressType
                 );
             }
@@ -147,11 +146,11 @@ class CustomerAddresses implements CustomerAddressesInterface
     /**
      * {@inheritdoc}
      */
-    public function deleteAddress(CustomerModel $customer, AddressModel $address, $type)
+    public function deleteAddress(Customer $customer, Address $address, $type)
     {
         $customerAddress = $this->getCustomerAndAddressLink(
-            $customer->{CustomerModel::FIELD_ID},
-            $address->{AddressModel::FIELD_ID},
+            $customer->{Customer::FIELD_ID},
+            $address->{Address::FIELD_ID},
             $type
         );
 
@@ -181,11 +180,11 @@ class CustomerAddresses implements CustomerAddressesInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultAddress(CustomerModel $customer, AddressModel $address, $type)
+    public function setDefaultAddress(Customer $customer, Address $address, $type)
     {
         Permissions::check($customer, Permission::edit());
 
-        $this->setDefaultAddressImpl($customer->{CustomerModel::FIELD_ID}, $address->{AddressModel::FIELD_ID}, $type);
+        $this->setDefaultAddressImpl($customer->{Customer::FIELD_ID}, $address->{Address::FIELD_ID}, $type);
 
         $addressArgs = new AddressArgs(self::EVENT_PREFIX . 'updated', $address);
         Event::fire(new CustomerArgs(Customers::EVENT_PREFIX . 'updated', $customer, $addressArgs));
@@ -212,7 +211,7 @@ class CustomerAddresses implements CustomerAddressesInterface
 
             /** @noinspection PhpUndefinedMethodInspection */
             $this->customerAddressModel
-                ->where(CustomerAddressModel::FIELD_ID, '=', $customerAddress->{CustomerAddressModel::FIELD_ID})
+                ->where(CustomerAddress::FIELD_ID, '=', $customerAddress->{CustomerAddress::FIELD_ID})
                 ->update([CustomerAddress::FIELD_IS_DEFAULT => true]);
 
             $allExecutedOk = true;
@@ -234,7 +233,7 @@ class CustomerAddresses implements CustomerAddressesInterface
      */
     private function getCustomerAndAddressLink($customerId, $addressId, $type)
     {
-        /** @var CustomerAddressModel $customerAddress */
+        /** @var CustomerAddress $customerAddress */
         /** @noinspection PhpUndefinedMethodInspection */
         $customerAddress = $this->customerAddressModel->where([
             CustomerAddress::FIELD_ID_CUSTOMER => $customerId,

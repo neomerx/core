@@ -2,19 +2,19 @@
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
+use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Auth\Permission;
+use \Neomerx\Core\Models\Language;
+use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Models\Manufacturer;
 use \Neomerx\Core\Support\SearchParser;
 use \Neomerx\Core\Support\SearchGrammar;
-use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Api\Addresses\Addresses;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\Manufacturer as Model;
-use \Neomerx\Core\Models\Address as AddressModel;
+use \Neomerx\Core\Models\ManufacturerProperties;
 use \Neomerx\Core\Exceptions\ValidationException;
-use \Neomerx\Core\Models\Language as LanguageModel;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Api\Addresses\Addresses as AddressesApi;
-use \Neomerx\Core\Models\ManufacturerProperties as PropertiesModel;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -27,22 +27,22 @@ class Manufacturers implements ManufacturersInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var Model
+     * @var Manufacturer
      */
-    private $model;
+    private $manufacturer;
 
     /**
-     * @var PropertiesModel
+     * @var ManufacturerProperties
      */
     private $properties;
 
     /**
-     * @var AddressesApi
+     * @var Addresses
      */
     private $addressApi;
 
     /**
-     * @var LanguageModel
+     * @var Language
      */
     private $language;
 
@@ -53,29 +53,29 @@ class Manufacturers implements ManufacturersInterface
      * @var array
      */
     protected static $searchRules = [
-        Model::FIELD_CODE         => SearchGrammar::TYPE_STRING,
-        'created'                 => [SearchGrammar::TYPE_DATE, Model::FIELD_CREATED_AT],
-        'updated'                 => [SearchGrammar::TYPE_DATE, Model::FIELD_UPDATED_AT],
+        Manufacturer::FIELD_CODE  => SearchGrammar::TYPE_STRING,
+        'created'                 => [SearchGrammar::TYPE_DATE, Manufacturer::FIELD_CREATED_AT],
+        'updated'                 => [SearchGrammar::TYPE_DATE, Manufacturer::FIELD_UPDATED_AT],
         SearchGrammar::LIMIT_SKIP => SearchGrammar::TYPE_LIMIT,
         SearchGrammar::LIMIT_TAKE => SearchGrammar::TYPE_LIMIT,
     ];
 
     /**
-     * @param Model           $model
-     * @param PropertiesModel $properties
-     * @param AddressesApi    $addressApi
-     * @param LanguageModel   $language
+     * @param Manufacturer           $manufacturer
+     * @param ManufacturerProperties $properties
+     * @param Addresses              $addressApi
+     * @param Language               $language
      */
     public function __construct(
-        Model $model,
-        PropertiesModel $properties,
-        AddressesApi $addressApi,
-        LanguageModel $language
+        Manufacturer $manufacturer,
+        ManufacturerProperties $properties,
+        Addresses $addressApi,
+        Language $language
     ) {
-        $this->model      = $model;
-        $this->properties = $properties;
-        $this->addressApi = $addressApi;
-        $this->language   = $language;
+        $this->manufacturer = $manufacturer;
+        $this->properties   = $properties;
+        $this->addressApi   = $addressApi;
+        $this->language     = $language;
     }
 
     /**
@@ -84,7 +84,7 @@ class Manufacturers implements ManufacturersInterface
     public function create(array $input)
     {
         list($input, $propertiesInput) = $this->extractPropertiesInput($this->language, $input);
-        !empty($propertiesInput) ?: S\throwEx(new InvalidArgumentException(Model::FIELD_PROPERTIES));
+        !empty($propertiesInput) ?: S\throwEx(new InvalidArgumentException(Manufacturer::FIELD_PROPERTIES));
 
         $addressInput = S\array_get_value($input, self::PARAM_ADDRESS);
         !empty($addressInput) ?: S\throwEx(new InvalidArgumentException(self::PARAM_ADDRESS));
@@ -97,15 +97,15 @@ class Manufacturers implements ManufacturersInterface
         try {
 
             // create address, update input and add resource
-            $input[AddressModel::FIELD_ID] = $this->addressApi->create($addressInput)->{AddressModel::FIELD_ID};
-            /** @var Model $manufacturer */
-            $manufacturer = $this->model->createOrFailResource($input);
+            $input[Address::FIELD_ID] = $this->addressApi->create($addressInput)->{Address::FIELD_ID};
+            /** @var Manufacturer $manufacturer */
+            $manufacturer = $this->manufacturer->createOrFailResource($input);
             Permissions::check($manufacturer, Permission::create());
-            $manufacturerId = $manufacturer->{Model::FIELD_ID};
+            $manufacturerId = $manufacturer->{Manufacturer::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
                 $this->properties->createOrFail(array_merge([
-                    PropertiesModel::FIELD_ID_MANUFACTURER => $manufacturerId,
-                    PropertiesModel::FIELD_ID_LANGUAGE     => $languageId
+                    ManufacturerProperties::FIELD_ID_MANUFACTURER => $manufacturerId,
+                    ManufacturerProperties::FIELD_ID_LANGUAGE     => $languageId
                 ], $propertyInput));
             }
 
@@ -126,9 +126,9 @@ class Manufacturers implements ManufacturersInterface
      */
     public function read($code)
     {
-        /** @var Model $manufacturer */
+        /** @var Manufacturer $manufacturer */
         /** @noinspection PhpUndefinedMethodInspection */
-        $manufacturer = $this->model->selectByCode($code)->withAddress()->withProperties()->firstOrFail();
+        $manufacturer = $this->manufacturer->selectByCode($code)->withAddress()->withProperties()->firstOrFail();
         Permissions::check($manufacturer, Permission::view());
         return $manufacturer;
     }
@@ -148,8 +148,8 @@ class Manufacturers implements ManufacturersInterface
         DB::beginTransaction();
         try {
             // update manufacturer
-            /** @var Model $manufacturer */
-            $manufacturer = $this->model->selectByCode($code)->firstOrFail();
+            /** @var Manufacturer $manufacturer */
+            $manufacturer = $this->manufacturer->selectByCode($code)->firstOrFail();
             // we always check manufacturer as later we change its properties. Don't move into 'if'.
             Permissions::check($manufacturer, Permission::edit());
             if (!empty($input)) {
@@ -162,10 +162,10 @@ class Manufacturers implements ManufacturersInterface
             }
 
             // update language properties
-            $manufacturerId = $manufacturer->{Model::FIELD_ID};
+            $manufacturerId = $manufacturer->{Manufacturer::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
                 $property = $this->properties->updateOrCreate(
-                    [Model::FIELD_ID => $manufacturerId, LanguageModel::FIELD_ID => $languageId],
+                    [Manufacturer::FIELD_ID => $manufacturerId, Language::FIELD_ID => $languageId],
                     $propertyInput
                 );
                 /** @noinspection PhpUndefinedMethodInspection */
@@ -187,8 +187,8 @@ class Manufacturers implements ManufacturersInterface
      */
     public function delete($code)
     {
-        /** @var Model $manufacturer */
-        $manufacturer = $this->model->selectByCode($code)->firstOrFail();
+        /** @var Manufacturer $manufacturer */
+        $manufacturer = $this->manufacturer->selectByCode($code)->firstOrFail();
 
         Permissions::check($manufacturer, Permission::delete());
 
@@ -203,7 +203,7 @@ class Manufacturers implements ManufacturersInterface
     public function search(array $parameters = [])
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $builder = $this->model->newQuery()->withAddress()->withProperties();
+        $builder = $this->manufacturer->newQuery()->withAddress()->withProperties();
 
         // add search parameters if required
         if (!empty($parameters)) {
@@ -214,7 +214,7 @@ class Manufacturers implements ManufacturersInterface
         $manufacturers = $builder->get();
 
         foreach ($manufacturers as $manufacturer) {
-            /** @var Model $manufacturer */
+            /** @var Manufacturer $manufacturer */
             Permissions::check($manufacturer, Permission::view());
         }
 

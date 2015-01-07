@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Territories;
 
+use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\Region as Model;
 
 class RegionArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var Region
      */
-    private $model;
+    private $region;
 
     /**
      * @param string    $name
-     * @param Model     $model
+     * @param Region    $region
      * @param EventArgs $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, Region $region, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->region = $region;
     }
 
     /**
-     * @return Model
+     * @return Region
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->region;
     }
 }

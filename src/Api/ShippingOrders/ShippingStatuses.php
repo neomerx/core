@@ -4,7 +4,7 @@ use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Auth\Permission;
 use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\ShippingOrderStatus as Model;
+use \Neomerx\Core\Models\ShippingOrderStatus;
 
 class ShippingStatuses implements ShippingStatusesInterface
 {
@@ -12,18 +12,18 @@ class ShippingStatuses implements ShippingStatusesInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var Model
+     * @var ShippingOrderStatus
      */
-    private $model;
+    private $shippingOrderStatus;
 
     /**
      * Constructor.
      *
-     * @param Model $model
+     * @param ShippingOrderStatus $shippingOrderStatus
      */
-    public function __construct(Model $model)
+    public function __construct(ShippingOrderStatus $shippingOrderStatus)
     {
-        $this->model = $model;
+        $this->shippingOrderStatus = $shippingOrderStatus;
     }
 
     /**
@@ -35,8 +35,8 @@ class ShippingStatuses implements ShippingStatusesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $status */
-            $status = $this->model->createOrFailResource($input);
+            /** @var ShippingOrderStatus $status */
+            $status = $this->shippingOrderStatus->createOrFailResource($input);
             Permissions::check($status, Permission::create());
             $allExecutedOk = true;
 
@@ -57,8 +57,8 @@ class ShippingStatuses implements ShippingStatusesInterface
      */
     public function read($code)
     {
-        /** @var Model $status */
-        $status = $this->model->selectByCode($code)->firstOrFail();
+        /** @var ShippingOrderStatus $status */
+        $status = $this->shippingOrderStatus->selectByCode($code)->firstOrFail();
         Permissions::check($status, Permission::view());
         return $status;
     }
@@ -68,8 +68,8 @@ class ShippingStatuses implements ShippingStatusesInterface
      */
     public function update($code, array $input)
     {
-        /** @var Model $status */
-        $status = $this->model->selectByCode($code)->firstOrFail();
+        /** @var ShippingOrderStatus $status */
+        $status = $this->shippingOrderStatus->selectByCode($code)->firstOrFail();
         Permissions::check($status, Permission::edit());
         empty($input) ?: $status->updateOrFail($input);
 
@@ -81,8 +81,8 @@ class ShippingStatuses implements ShippingStatusesInterface
      */
     public function delete($code)
     {
-        /** @var Model $status */
-        $status = $this->model->selectByCode($code)->firstOrFail();
+        /** @var ShippingOrderStatus $status */
+        $status = $this->shippingOrderStatus->selectByCode($code)->firstOrFail();
         Permissions::check($status, Permission::delete());
         $status->deleteOrFail();
 
@@ -94,7 +94,7 @@ class ShippingStatuses implements ShippingStatusesInterface
      */
     public function all()
     {
-        $statuses = $this->model->all();
+        $statuses = $this->shippingOrderStatus->all();
 
         foreach ($statuses as $status) {
             Permissions::check($status, Permission::view());

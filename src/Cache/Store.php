@@ -1,8 +1,8 @@
 <?php namespace Neomerx\Core\Cache;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Illuminate\Support\Facades\Cache as SysCache;
+use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 class Store implements StoreInterface
 {

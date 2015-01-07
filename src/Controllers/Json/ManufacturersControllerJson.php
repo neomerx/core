@@ -2,9 +2,9 @@
 
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\Facades\Input;
-use \Neomerx\Core\Api\Facades\Manufacturers as ApiFacade;
+use \Neomerx\Core\Api\Facades\Manufacturers;
+use \Neomerx\Core\Converters\ManufacturerConverterGeneric;
 use \Neomerx\Core\Controllers\Json\Traits\LanguageFilterTrait;
-use \Neomerx\Core\Converters\ManufacturerConverterGeneric as Converter;
 
 final class ManufacturersControllerJson extends BaseControllerJson
 {
@@ -16,7 +16,7 @@ final class ManufacturersControllerJson extends BaseControllerJson
     public function __construct()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        parent::__construct(ApiFacade::INTERFACE_BIND_NAME, App::make(Converter::BIND_NAME));
+        parent::__construct(Manufacturers::INTERFACE_BIND_NAME, App::make(ManufacturerConverterGeneric::BIND_NAME));
     }
 
     /**
@@ -39,7 +39,7 @@ final class ManufacturersControllerJson extends BaseControllerJson
      */
     protected function searchImpl(array $parameters, $languageFilter)
     {
-        /** @var Converter $converter */
+        /** @var ManufacturerConverterGeneric $converter */
         $converter = $this->getConverter();
         $converter->setLanguageFilter($languageFilter);
 

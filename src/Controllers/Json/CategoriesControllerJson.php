@@ -2,9 +2,9 @@
 
 use \Neomerx\Core\Models\Category;
 use \Illuminate\Support\Facades\App;
+use \Illuminate\Support\Facades\Input;
 use \Neomerx\Core\Api\Facades\Categories;
 use \Neomerx\Core\Models\ProductCategory;
-use \Illuminate\Support\Facades\Input;
 use \Neomerx\Core\Converters\ProductConverterGeneric;
 use \Neomerx\Core\Converters\CategoryConverterGeneric;
 use \Neomerx\Core\Controllers\Json\Traits\LanguageFilterTrait;

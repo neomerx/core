@@ -3,10 +3,10 @@
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Variant;
-use \Neomerx\Core\Models\ProductImage;
-use \Neomerx\Core\Api\Facades\Products;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\Facades\Input;
+use \Neomerx\Core\Models\ProductImage;
+use \Neomerx\Core\Api\Facades\Products;
 use \Neomerx\Core\Converters\ConverterInterface;
 use \Neomerx\Core\Converters\ProductConverterGeneric;
 use \Neomerx\Core\Converters\CategoryConverterGeneric;

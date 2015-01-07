@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Categories;
 
+use \Neomerx\Core\Models\Category;
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\Category as Model;
 
 class CategoryArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var Category
      */
-    private $model;
+    private $category;
 
     /**
      * @param string    $name
-     * @param Model     $model
+     * @param Category  $category
      * @param EventArgs $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, Category $category, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->category = $category;
     }
 
     /**
-     * @return Model
+     * @return Category
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->category;
     }
 }

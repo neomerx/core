@@ -1,13 +1,13 @@
 <?php namespace Neomerx\Core\Api\Territories;
 
 use \Neomerx\Core\Events\Event;
+use \Neomerx\Core\Models\Region;
+use \Neomerx\Core\Models\Country;
 use \Neomerx\Core\Auth\Permission;
+use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Support\SearchParser;
 use \Neomerx\Core\Support\SearchGrammar;
-use \Illuminate\Support\Facades\DB;
-use \Neomerx\Core\Models\Region as Model;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\Country as CountryModel;
 
 class Regions implements RegionsInterface
 {
@@ -15,12 +15,12 @@ class Regions implements RegionsInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var Model
+     * @var Region
      */
-    private $model;
+    private $regionModel;
 
     /**
-     * @var CountryModel
+     * @var Country
      */
     private $countryModel;
 
@@ -28,7 +28,7 @@ class Regions implements RegionsInterface
      * @var array
      */
     protected static $regionRelations = [
-        Model::FIELD_COUNTRY,
+        Region::FIELD_COUNTRY,
     ];
 
     /**
@@ -38,19 +38,19 @@ class Regions implements RegionsInterface
      * @var array
      */
     protected static $searchRules = [
-        Model::FIELD_CODE         => SearchGrammar::TYPE_STRING,
-        Model::FIELD_NAME         => SearchGrammar::TYPE_STRING,
+        Region::FIELD_CODE        => SearchGrammar::TYPE_STRING,
+        Region::FIELD_NAME        => SearchGrammar::TYPE_STRING,
         SearchGrammar::LIMIT_SKIP => SearchGrammar::TYPE_LIMIT,
         SearchGrammar::LIMIT_TAKE => SearchGrammar::TYPE_LIMIT,
     ];
 
     /**
-     * @param Model        $model
-     * @param CountryModel $country
+     * @param Region  $region
+     * @param Country $country
      */
-    public function __construct(Model $model, CountryModel $country)
+    public function __construct(Region $region, Country $country)
     {
-        $this->model        = $model;
+        $this->regionModel  = $region;
         $this->countryModel = $country;
     }
 
@@ -65,8 +65,8 @@ class Regions implements RegionsInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $region */
-            $region = $this->model->createOrFailResource($input);
+            /** @var Region $region */
+            $region = $this->regionModel->createOrFailResource($input);
             Permissions::check($region, Permission::create());
 
             $allExecutedOk = true;
@@ -86,9 +86,9 @@ class Regions implements RegionsInterface
      */
     public function read($code)
     {
-        /** @var Model $region */
+        /** @var Region $region */
         /** @noinspection PhpParamsInspection */
-        $region = $this->model->selectByCode($code)->with(static::$regionRelations)->firstOrFail();
+        $region = $this->regionModel->selectByCode($code)->with(static::$regionRelations)->firstOrFail();
         Permissions::check($region, Permission::view());
 
         return $region;
@@ -107,8 +107,8 @@ class Regions implements RegionsInterface
             DB::beginTransaction();
             try {
 
-                /** @var Model $region */
-                $region = $this->model->selectByCode($code)->firstOrFail();
+                /** @var Region $region */
+                $region = $this->regionModel->selectByCode($code)->firstOrFail();
                 Permissions::check($region, Permission::edit());
                 $region->updateOrFail($input);
 
@@ -128,8 +128,8 @@ class Regions implements RegionsInterface
      */
     public function delete($code)
     {
-        /** @var Model $region */
-        $region = $this->model->selectByCode($code)->firstOrFail();
+        /** @var Region $region */
+        $region = $this->regionModel->selectByCode($code)->firstOrFail();
         Permissions::check($region, Permission::delete());
         $region->deleteOrFail();
 
@@ -142,7 +142,7 @@ class Regions implements RegionsInterface
     public function search(array $parameters = [])
     {
         /** @noinspection PhpParamsInspection */
-        $builder = $this->model->newQuery()->with(static::$regionRelations);
+        $builder = $this->regionModel->newQuery()->with(static::$regionRelations);
 
         // add search parameters if required
         if (!empty($parameters)) {
@@ -153,7 +153,7 @@ class Regions implements RegionsInterface
         $regions = $builder->get();
 
         foreach ($regions as $region) {
-            /** @var Model $region */
+            /** @var Region $region */
             Permissions::check($region, Permission::view());
         }
 
@@ -168,9 +168,8 @@ class Regions implements RegionsInterface
     private function replaceCountryCodeToId(array $input)
     {
         if (isset($input[self::PARAM_COUNTRY_CODE])) {
-            $countryId = $this->countryModel->selectByCode($input[self::PARAM_COUNTRY_CODE])
-                ->firstOrFail([CountryModel::FIELD_ID])->{CountryModel::FIELD_ID};
-            $input = array_add($input, CountryModel::FIELD_ID, $countryId);
+            $input[Region::FIELD_ID_COUNTRY] = $this->countryModel->selectByCode($input[self::PARAM_COUNTRY_CODE])
+                ->firstOrFail([Country::FIELD_ID])->{Country::FIELD_ID};
             unset($input[self::PARAM_COUNTRY_CODE]);
         }
         return $input;

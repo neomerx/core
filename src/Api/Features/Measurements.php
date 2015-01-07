@@ -3,14 +3,14 @@
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Auth\Permission;
+use \Neomerx\Core\Models\Language;
 use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Models\Measurement;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\Measurement as Model;
+use \Neomerx\Core\Models\MeasurementProperties;
 use \Neomerx\Core\Exceptions\ValidationException;
-use \Neomerx\Core\Models\Language as LanguageModel;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Models\MeasurementProperties as PropertiesModel;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -23,31 +23,31 @@ class Measurements implements MeasurementsInterface
     const BIND_NAME = __CLASS__;
 
     /**
-     * @var Model
+     * @var Measurement
      */
-    private $model;
+    private $measurement;
 
     /**
-     * @var PropertiesModel
+     * @var MeasurementProperties
      */
     private $properties;
 
     /**
-     * @var LanguageModel
+     * @var Language
      */
     private $language;
 
     /**
-     * @param Model           $model
-     * @param PropertiesModel $properties
-     * @param LanguageModel   $language
+     * @param Measurement           $measurement
+     * @param MeasurementProperties $properties
+     * @param Language              $language
      */
     public function __construct(
-        Model $model,
-        PropertiesModel $properties,
-        LanguageModel $language
+        Measurement $measurement,
+        MeasurementProperties $properties,
+        Language $language
     ) {
-        $this->model      = $model;
+        $this->measurement      = $measurement;
         $this->properties = $properties;
         $this->language   = $language;
     }
@@ -66,14 +66,14 @@ class Measurements implements MeasurementsInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $measurement */
-            $measurement = $this->model->createOrFailResource($input);
+            /** @var Measurement $measurement */
+            $measurement = $this->measurement->createOrFailResource($input);
             Permissions::check($measurement, Permission::create());
 
-            $measurementId = $measurement->{Model::FIELD_ID};
+            $measurementId = $measurement->{Measurement::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
                 $this->properties->createOrFail(array_merge(
-                    [Model::FIELD_ID => $measurementId, LanguageModel::FIELD_ID => $languageId],
+                    [Measurement::FIELD_ID => $measurementId, Language::FIELD_ID => $languageId],
                     $propertyInput
                 ));
             }
@@ -95,8 +95,8 @@ class Measurements implements MeasurementsInterface
      */
     public function read($code)
     {
-        /** @var Model $measurement */
-        $measurement = $this->model->selectByCode($code)->withProperties()->firstOrFail();
+        /** @var Measurement $measurement */
+        $measurement = $this->measurement->selectByCode($code)->withProperties()->firstOrFail();
         Permissions::check($measurement, Permission::view());
         return $measurement;
     }
@@ -113,16 +113,16 @@ class Measurements implements MeasurementsInterface
         DB::beginTransaction();
         try {
             // update resource
-            /** @var Model $measurement */
-            $measurement = $this->model->selectByCode($code)->firstOrFail();
+            /** @var Measurement $measurement */
+            $measurement = $this->measurement->selectByCode($code)->firstOrFail();
             Permissions::check($measurement, Permission::edit());
             empty($input) ?: $measurement->updateOrFail($input);
 
             // update language properties
-            $measurementId = $measurement->{Model::FIELD_ID};
+            $measurementId = $measurement->{Measurement::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
                 $property = $this->properties->updateOrCreate(
-                    [Model::FIELD_ID => $measurementId, LanguageModel::FIELD_ID => $languageId],
+                    [Measurement::FIELD_ID => $measurementId, Language::FIELD_ID => $languageId],
                     $propertyInput
                 );
                 /** @noinspection PhpUndefinedMethodInspection */
@@ -143,8 +143,8 @@ class Measurements implements MeasurementsInterface
      */
     public function delete($code)
     {
-        /** @var Model $measurement */
-        $measurement = $this->model->selectByCode($code)->firstOrFail();
+        /** @var Measurement $measurement */
+        $measurement = $this->measurement->selectByCode($code)->firstOrFail();
 
         Permissions::check($measurement, Permission::delete());
 
@@ -159,10 +159,10 @@ class Measurements implements MeasurementsInterface
     public function all()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $measurements = $this->model->newQuery()->withProperties()->get();
+        $measurements = $this->measurement->newQuery()->withProperties()->get();
 
         foreach ($measurements as $resource) {
-            /** @var Model $resource */
+            /** @var Measurement $resource */
             Permissions::check($resource, Permission::view());
         }
 

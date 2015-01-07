@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Controllers\Json;
 
-use \Neomerx\Core\Api\Facades\Languages;
 use \Illuminate\Support\Facades\App;
+use \Neomerx\Core\Api\Facades\Languages;
 use \Neomerx\Core\Converters\LanguageConverterGeneric;
 
 final class LanguagesControllerJson extends BaseControllerJson

@@ -8,18 +8,18 @@ use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Models\Customer;
 use \Neomerx\Core\Auth\Permission;
+use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Api\Cart\CartItem;
 use \Neomerx\Core\Models\OrderStatus;
 use \Neomerx\Core\Models\OrderDetails;
 use \Neomerx\Core\Api\Carriers\Tariff;
-use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Api\Facades\Warehouses;
 use \Neomerx\Core\Models\CustomerAddress;
 use \Neomerx\Core\Api\Taxes\TaxCalculation;
 use \Neomerx\Core\Auth\Facades\Permissions;
 use \Neomerx\Core\Api\Carriers\ShippingData;
 use \Neomerx\Core\Exceptions\ValidationException;
-use \Neomerx\Core\Api\Inventory\InventoryInterface;
+use \Neomerx\Core\Api\Inventory\InventoriesInterface;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Customers\CustomerAddressesInterface;
 
@@ -31,7 +31,7 @@ trait CreateTrait
      * @param TaxCalculation     $taxCalculation
      * @param Tariff             $shippingTariff
      * @param OrderStatus        $orderStatusModel
-     * @param InventoryInterface $inventoryApi
+     * @param InventoriesInterface $inventoryApi
      *
      * @return Order
      *
@@ -43,7 +43,7 @@ trait CreateTrait
         TaxCalculation $taxCalculation,
         Tariff $shippingTariff,
         OrderStatus $orderStatusModel,
-        InventoryInterface $inventoryApi
+        InventoriesInterface $inventoryApi
     ) {
         $newOrderStatusId = $orderStatusModel->selectByCode(OrderStatus::STATUS_NEW_ORDER)
             ->firstOrFail([OrderStatus::FIELD_ID])->{OrderStatus::FIELD_ID};

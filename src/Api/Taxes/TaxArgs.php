@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Taxes;
 
+use \Neomerx\Core\Models\Tax;
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\Tax as Model;
 
 class TaxArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var Tax
      */
-    private $model;
+    private $tax;
 
     /**
      * @param string    $name
-     * @param Model     $model
+     * @param Tax       $tax
      * @param EventArgs $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, Tax $tax, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->tax = $tax;
     }
 
     /**
-     * @return Model
+     * @return Tax
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->tax;
     }
 }

@@ -3,9 +3,8 @@
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Auth\Permission;
 use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Models\CustomerType;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\CustomerType as Model;
-use \Neomerx\Core\Api\Customers\CustomerTypeArgs as Args;
 
 class CustomerTypes implements CustomerTypesInterface
 {
@@ -13,18 +12,18 @@ class CustomerTypes implements CustomerTypesInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var Model
+     * @var CustomerType
      */
-    private $model;
+    private $customerType;
 
     /**
      * Constructor.
      *
-     * @param Model $model
+     * @param CustomerType $customerType
      */
-    public function __construct(Model $model)
+    public function __construct(CustomerType $customerType)
     {
-        $this->model = $model;
+        $this->customerType = $customerType;
     }
 
     /**
@@ -36,8 +35,8 @@ class CustomerTypes implements CustomerTypesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $resource */
-            $resource = $this->model->createOrFailResource($input);
+            /** @var CustomerType $resource */
+            $resource = $this->customerType->createOrFailResource($input);
             Permissions::check($resource, Permission::create());
 
             $allExecutedOk = true;
@@ -49,7 +48,7 @@ class CustomerTypes implements CustomerTypesInterface
 
         }
 
-        Event::fire(new Args(self::EVENT_PREFIX . 'created', $resource));
+        Event::fire(new CustomerTypeArgs(self::EVENT_PREFIX . 'created', $resource));
 
         return $resource;
     }
@@ -59,8 +58,8 @@ class CustomerTypes implements CustomerTypesInterface
      */
     public function read($code)
     {
-        /** @var Model $resource */
-        $resource = $this->model->selectByCode($code)->firstOrFail();
+        /** @var CustomerType $resource */
+        $resource = $this->customerType->selectByCode($code)->firstOrFail();
         Permissions::check($resource, Permission::view());
         return $resource;
     }
@@ -70,12 +69,12 @@ class CustomerTypes implements CustomerTypesInterface
      */
     public function update($code, array $input)
     {
-        /** @var Model $resource */
-        $resource = $this->model->selectByCode($code)->firstOrFail();
+        /** @var CustomerType $resource */
+        $resource = $this->customerType->selectByCode($code)->firstOrFail();
         Permissions::check($resource, Permission::edit());
         empty($input) ?: $resource->updateOrFail($input);
 
-        Event::fire(new Args(self::EVENT_PREFIX . 'updated', $resource));
+        Event::fire(new CustomerTypeArgs(self::EVENT_PREFIX . 'updated', $resource));
     }
 
     /**
@@ -83,12 +82,12 @@ class CustomerTypes implements CustomerTypesInterface
      */
     public function delete($code)
     {
-        /** @var Model $resource */
-        $resource = $this->model->selectByCode($code)->firstOrFail();
+        /** @var CustomerType $resource */
+        $resource = $this->customerType->selectByCode($code)->firstOrFail();
         Permissions::check($resource, Permission::delete());
         $resource->deleteOrFail();
 
-        Event::fire(new Args(self::EVENT_PREFIX . 'deleted', $resource));
+        Event::fire(new CustomerTypeArgs(self::EVENT_PREFIX . 'deleted', $resource));
     }
 
     /**
@@ -96,7 +95,7 @@ class CustomerTypes implements CustomerTypesInterface
      */
     public function all()
     {
-        $resources = $this->model->all();
+        $resources = $this->customerType->all();
 
         foreach ($resources as $resource) {
             Permissions::check($resource, Permission::view());

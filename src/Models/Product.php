@@ -53,6 +53,8 @@ class Product extends BaseModel implements SelectByCodeInterface
     const FIELD_LINK                = 'link';
     const FIELD_PRICE_WO_TAX        = 'price_wo_tax';
     const FIELD_ENABLED             = 'enabled';
+    const FIELD_CREATED_AT          = 'created_at';
+    const FIELD_UPDATED_AT          = 'updated_at';
     const FIELD_TAX_TYPE            = 'tax_type';
     const FIELD_DEFAULT_CATEGORY    = 'default_category';
     const FIELD_ASSIGNED_CATEGORIES = 'assigned_categories';

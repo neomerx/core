@@ -2,17 +2,17 @@
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
+use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Auth\Permission;
+use \Neomerx\Core\Models\Category;
+use \Neomerx\Core\Models\Language;
 use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Models\ProductCategory;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\Category as Model;
-use \Neomerx\Core\Models\Product as ProductModel;
+use \Neomerx\Core\Models\CategoryProperties;
 use \Neomerx\Core\Exceptions\ValidationException;
-use \Neomerx\Core\Models\Language as LanguageModel;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Models\CategoryProperties as PropertiesModel;
-use \Neomerx\Core\Models\ProductCategory as ProductCategoryModel;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -26,43 +26,43 @@ class Categories implements CategoriesInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var Model
+     * @var Category
      */
     private $categoryModel;
 
     /**
-     * @var PropertiesModel
+     * @var CategoryProperties
      */
     private $propertiesModel;
 
     /**
-     * @var LanguageModel
+     * @var Language
      */
     private $languageModel;
 
     /**
-     * @var ProductModel
+     * @var Product
      */
     private $productModel;
 
     /**
-     * @var ProductCategoryModel
+     * @var ProductCategory
      */
     private $productCategoryModel;
 
     /**
-     * @param Model                $category
-     * @param PropertiesModel      $properties
-     * @param LanguageModel        $language
-     * @param ProductModel         $product
-     * @param ProductCategoryModel $productCategory
+     * @param Category           $category
+     * @param CategoryProperties $properties
+     * @param Language           $language
+     * @param Product            $product
+     * @param ProductCategory    $productCategory
      */
     public function __construct(
-        Model $category,
-        PropertiesModel $properties,
-        LanguageModel $language,
-        ProductModel $product,
-        ProductCategoryModel $productCategory
+        Category $category,
+        CategoryProperties $properties,
+        Language $language,
+        Product $product,
+        ProductCategory $productCategory
     ) {
         $this->categoryModel        = $category;
         $this->propertiesModel      = $properties;
@@ -85,14 +85,14 @@ class Categories implements CategoriesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $category */
+            /** @var Category $category */
             $category = $this->categoryModel->createOrFailResource($input);
             Permissions::check($category, Permission::create());
 
-            $categoryId = $category->{Model::FIELD_ID};
+            $categoryId = $category->{Category::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
                 $this->propertiesModel->createOrFail(array_merge(
-                    [Model::FIELD_ID => $categoryId, LanguageModel::FIELD_ID => $languageId],
+                    [Category::FIELD_ID => $categoryId, Language::FIELD_ID => $languageId],
                     $propertyInput
                 ));
             }
@@ -114,7 +114,7 @@ class Categories implements CategoriesInterface
      */
     public function read($code)
     {
-        /** @var Model $category */
+        /** @var Category $category */
         $category = $this->categoryModel->selectByCode($code)->withProperties()->firstOrFail();
         Permissions::check($category, Permission::view());
         return $category;
@@ -123,7 +123,7 @@ class Categories implements CategoriesInterface
     /**
      * {@inheritdoc}
      */
-    public function readDescendants(Model $parent)
+    public function readDescendants(Category $parent)
     {
         Permissions::check($parent, Permission::view());
         return $parent->getDescendants();
@@ -136,7 +136,7 @@ class Categories implements CategoriesInterface
     {
         list($input, $propertiesInput) = $this->extractPropertiesInput($this->languageModel, $input);
 
-        /** @var Model $category */
+        /** @var Category $category */
         $category = $this->categoryModel->selectByCode($code)->firstOrFail();
         Permissions::check($category, Permission::edit());
 
@@ -146,11 +146,11 @@ class Categories implements CategoriesInterface
 
             empty($input) ?: $category->updateOrFail($input);
 
-            $categoryId = $category->{Model::FIELD_ID};
+            $categoryId = $category->{Category::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
-                /** @var PropertiesModel $property */
+                /** @var CategoryProperties $property */
                 $property = $this->propertiesModel->updateOrCreate(
-                    [Model::FIELD_ID => $categoryId, LanguageModel::FIELD_ID => $languageId],
+                    [Category::FIELD_ID => $categoryId, Language::FIELD_ID => $languageId],
                     $propertyInput
                 );
                 $property->exists ?: S\throwEx(new ValidationException($property->getValidator()));
@@ -171,7 +171,7 @@ class Categories implements CategoriesInterface
      */
     public function delete($code)
     {
-        /** @var Model $category */
+        /** @var Category $category */
         $category = $this->categoryModel->selectByCode($code)->firstOrFail();
         Permissions::check($category, Permission::delete());
         $category->deleteOrFail();
@@ -182,7 +182,7 @@ class Categories implements CategoriesInterface
     /**
      * {@inheritdoc}
      */
-    public function moveUp(Model $category)
+    public function moveUp(Category $category)
     {
         Permissions::check($category, Permission::edit());
         $category->moveLeft();
@@ -192,7 +192,7 @@ class Categories implements CategoriesInterface
     /**
      * {@inheritdoc}
      */
-    public function moveDown(Model $category)
+    public function moveDown(Category $category)
     {
         Permissions::check($category, Permission::edit());
         $category->moveRight();
@@ -202,7 +202,7 @@ class Categories implements CategoriesInterface
     /**
      * {@inheritdoc}
      */
-    public function attach(Model $category, Model $newParent)
+    public function attach(Category $category, Category $newParent)
     {
         Permissions::check($category, Permission::edit());
         Permissions::check($newParent, Permission::edit());
@@ -213,7 +213,7 @@ class Categories implements CategoriesInterface
     /**
      * {@inheritdoc}
      */
-    public function showProducts(Model $category)
+    public function showProducts(Category $category)
     {
         Permissions::check($category, Permission::view());
 
@@ -222,7 +222,7 @@ class Categories implements CategoriesInterface
 
         $result = [];
         foreach ($productsInCategory as $categoryProduct) {
-            $position = $categoryProduct->pivot->{ProductCategoryModel::FIELD_POSITION};
+            $position = $categoryProduct->pivot->{ProductCategory::FIELD_POSITION};
             $result[] = [$categoryProduct, $position];
         }
 
@@ -232,9 +232,9 @@ class Categories implements CategoriesInterface
     /**
      * {@inheritdoc}
      */
-    public function updatePositions(Model $category, array $productPositions)
+    public function updatePositions(Category $category, array $productPositions)
     {
-        $categoryId = $category->{Model::FIELD_ID};
+        $categoryId = $category->{Category::FIELD_ID};
         Permissions::check($category, Permission::edit());
 
         /** @noinspection PhpUndefinedMethodInspection */
@@ -243,14 +243,14 @@ class Categories implements CategoriesInterface
 
             foreach ($productPositions as $sku => $position) {
 
-                /** @var ProductModel $product */
-                $product = $this->productModel->selectByCode($sku)->firstOrFail([ProductModel::FIELD_ID]);
-                $productId = $product->{ProductModel::FIELD_ID};
+                /** @var Product $product */
+                $product = $this->productModel->selectByCode($sku)->firstOrFail([Product::FIELD_ID]);
+                $productId = $product->{Product::FIELD_ID};
                 /** @noinspection PhpUndefinedMethodInspection */
                 $this->productCategoryModel
-                    ->where(ProductCategoryModel::FIELD_ID_CATEGORY, '=', $categoryId)
-                    ->where(ProductCategoryModel::FIELD_ID_PRODUCT, '=', $productId)
-                    ->update([ProductCategoryModel::FIELD_POSITION => $position]);
+                    ->where(ProductCategory::FIELD_ID_CATEGORY, '=', $categoryId)
+                    ->where(ProductCategory::FIELD_ID_PRODUCT, '=', $productId)
+                    ->update([ProductCategory::FIELD_POSITION => $position]);
 
             }
 

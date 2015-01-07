@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Api\Users;
 
+use \Neomerx\Core\Models\User;
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Auth\Permission;
-use \Neomerx\Core\Models\User as Model;
+use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Support\SearchParser;
 use \Neomerx\Core\Support\SearchGrammar;
-use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Auth\Facades\Permissions;
 
 class Users implements UsersInterface
@@ -14,9 +14,9 @@ class Users implements UsersInterface
     const BIND_NAME = __CLASS__;
 
     /**
-     * @var Model
+     * @var User
      */
-    private $model;
+    private $user;
 
     /**
      * Searchable fields of the resource.
@@ -25,20 +25,20 @@ class Users implements UsersInterface
      * @var array
      */
     protected static $searchRules = [
-        Model::FIELD_FIRST_NAME   => SearchGrammar::TYPE_STRING,
-        Model::FIELD_LAST_NAME    => SearchGrammar::TYPE_STRING,
-        Model::FIELD_EMAIL        => SearchGrammar::TYPE_STRING,
-        Model::FIELD_ACTIVE       => SearchGrammar::TYPE_BOOL,
+        User::FIELD_FIRST_NAME    => SearchGrammar::TYPE_STRING,
+        User::FIELD_LAST_NAME     => SearchGrammar::TYPE_STRING,
+        User::FIELD_EMAIL         => SearchGrammar::TYPE_STRING,
+        User::FIELD_ACTIVE        => SearchGrammar::TYPE_BOOL,
         SearchGrammar::LIMIT_SKIP => SearchGrammar::TYPE_LIMIT,
         SearchGrammar::LIMIT_TAKE => SearchGrammar::TYPE_LIMIT,
     ];
 
     /**
-     * @param Model $model
+     * @param User $user
      */
-    public function __construct(Model $model)
+    public function __construct(User $user)
     {
-        $this->model = $model;
+        $this->user = $user;
     }
 
     /**
@@ -55,8 +55,8 @@ class Users implements UsersInterface
             $userRoles = S\array_get_value($input, self::PARAM_ROLES);
             unset($input[self::PARAM_ROLES]);
 
-            /** @var Model $user */
-            $user = $this->model->createOrFailResource($input);
+            /** @var User $user */
+            $user = $this->user->createOrFailResource($input);
             Permissions::check($user, Permission::create());
 
             if (!empty($userRoles)) {
@@ -82,9 +82,9 @@ class Users implements UsersInterface
      */
     public function read($userId)
     {
-        /** @var Model $user */
+        /** @var User $user */
         /** @noinspection PhpUndefinedMethodInspection */
-        $user = $this->model->selectById($userId)->withRoles()->firstOrFail();
+        $user = $this->user->selectById($userId)->withRoles()->firstOrFail();
         Permissions::check($user, Permission::view());
         return $user;
     }
@@ -97,8 +97,8 @@ class Users implements UsersInterface
         $userRoles = S\array_get_value($input, self::PARAM_ROLES);
         unset($input[self::PARAM_ROLES]);
 
-        /** @var Model $user */
-        $user = $this->model->findOrFail($userId);
+        /** @var User $user */
+        $user = $this->user->findOrFail($userId);
         Permissions::check($user, Permission::edit());
 
         if ($userRoles !== null) {
@@ -141,8 +141,8 @@ class Users implements UsersInterface
      */
     public function delete($userId)
     {
-        /** @var Model $user */
-        $user = $this->model->findOrFail($userId);
+        /** @var User $user */
+        $user = $this->user->findOrFail($userId);
 
         Permissions::check($user, Permission::delete());
 
@@ -157,7 +157,7 @@ class Users implements UsersInterface
     public function search(array $parameters = [])
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $builder = $this->model->newQuery()->withRoles();
+        $builder = $this->user->newQuery()->withRoles();
 
         // add search parameters if required
         if (!empty($parameters)) {
@@ -168,7 +168,7 @@ class Users implements UsersInterface
         $users = $builder->get();
 
         foreach ($users as $user) {
-            /** @var Model $user */
+            /** @var User $user */
             Permissions::check($user, Permission::view());
         }
 

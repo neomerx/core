@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Orders;
 
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\OrderStatusRule as Model;
+use \Neomerx\Core\Models\OrderStatusRule;
 
 class OrderStatusRuleArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var OrderStatusRule
      */
-    private $model;
+    private $orderStatusRule;
 
     /**
-     * @param string    $name
-     * @param Model     $model
-     * @param EventArgs $args
+     * @param string          $name
+     * @param OrderStatusRule $orderStatusRule
+     * @param EventArgs       $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, OrderStatusRule $orderStatusRule, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->orderStatusRule = $orderStatusRule;
     }
 
     /**
-     * @return Model
+     * @return OrderStatusRule
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->orderStatusRule;
     }
 }

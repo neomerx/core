@@ -2,15 +2,15 @@
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
+use \Neomerx\Core\Models\Currency;
 use \Neomerx\Core\Auth\Permission;
+use \Neomerx\Core\Models\Language;
 use \Illuminate\Support\Facades\DB;
-use \Neomerx\Core\Models\Currency as Model;
 use \Neomerx\Core\Auth\Facades\Permissions;
+use \Neomerx\Core\Models\CurrencyProperties;
 use \Neomerx\Core\Exceptions\ValidationException;
-use \Neomerx\Core\Models\Language as LanguageModel;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Models\CurrencyProperties as PropertiesModel;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -23,28 +23,28 @@ class Currencies implements CurrenciesInterface
     const BIND_NAME = __CLASS__;
 
     /**
-     * @var Model
+     * @var Currency
      */
-    private $model;
+    private $currency;
 
     /**
-     * @var PropertiesModel
+     * @var CurrencyProperties
      */
     private $properties;
 
     /**
-     * @var LanguageModel
+     * @var Language
      */
     private $language;
 
     /**
-     * @param Model           $model
-     * @param PropertiesModel $properties
-     * @param LanguageModel   $language
+     * @param Currency           $currency
+     * @param CurrencyProperties $properties
+     * @param Language           $language
      */
-    public function __construct(Model $model, PropertiesModel $properties, LanguageModel $language)
+    public function __construct(Currency $currency, CurrencyProperties $properties, Language $language)
     {
-        $this->model      = $model;
+        $this->currency      = $currency;
         $this->properties = $properties;
         $this->language   = $language;
     }
@@ -63,14 +63,14 @@ class Currencies implements CurrenciesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $currency */
-            $currency = $this->model->createOrFailResource($input);
+            /** @var Currency $currency */
+            $currency = $this->currency->createOrFailResource($input);
             Permissions::check($currency, Permission::create());
 
-            $currencyId = $currency->{Model::FIELD_ID};
+            $currencyId = $currency->{Currency::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
                 $this->properties->createOrFail(array_merge(
-                    [Model::FIELD_ID => $currencyId, LanguageModel::FIELD_ID => $languageId],
+                    [Currency::FIELD_ID => $currencyId, Language::FIELD_ID => $languageId],
                     $propertyInput
                 ));
             }
@@ -92,8 +92,8 @@ class Currencies implements CurrenciesInterface
      */
     public function read($code)
     {
-        /** @var Model $currency */
-        $currency = $this->model->selectByCode($code)->withProperties()->firstOrFail();
+        /** @var Currency $currency */
+        $currency = $this->currency->selectByCode($code)->withProperties()->firstOrFail();
 
         Permissions::check($currency, Permission::view());
 
@@ -111,18 +111,18 @@ class Currencies implements CurrenciesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $currency */
-            $currency = $this->model->selectByCode($code)->firstOrFail();
+            /** @var Currency $currency */
+            $currency = $this->currency->selectByCode($code)->firstOrFail();
 
             Permissions::check($currency, Permission::edit());
 
             empty($input) ?: $currency->updateOrFail($input);
 
-            $currencyId = $currency->{Model::FIELD_ID};
+            $currencyId = $currency->{Currency::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
-                /** @var PropertiesModel $property */
+                /** @var CurrencyProperties $property */
                 $property = $this->properties->updateOrCreate(
-                    [Model::FIELD_ID => $currencyId, LanguageModel::FIELD_ID => $languageId],
+                    [Currency::FIELD_ID => $currencyId, Language::FIELD_ID => $languageId],
                     $propertyInput
                 );
                 $property->exists ?: S\throwEx(new ValidationException($property->getValidator()));
@@ -143,8 +143,8 @@ class Currencies implements CurrenciesInterface
      */
     public function delete($code)
     {
-        /** @var Model $currency */
-        $currency = $this->model->selectByCode($code)->firstOrFail();
+        /** @var Currency $currency */
+        $currency = $this->currency->selectByCode($code)->firstOrFail();
 
         Permissions::check($currency, Permission::delete());
 
@@ -159,10 +159,10 @@ class Currencies implements CurrenciesInterface
     public function all()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $currencies = $this->model->newQuery()->withProperties()->get();
+        $currencies = $this->currency->newQuery()->withProperties()->get();
 
         foreach ($currencies as $currency) {
-            /** @var Model $currency */
+            /** @var Currency $currency */
             Permissions::check($currency, Permission::view());
         }
 

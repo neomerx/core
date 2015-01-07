@@ -2,15 +2,15 @@
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
+use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Auth\Permission;
+use \Neomerx\Core\Models\Category;
 use \Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Facades\App;
-use \Neomerx\Core\Models\Product as Model;
+use \Neomerx\Core\Models\ProductCategory;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Exceptions\ValidationException;
 use \Illuminate\Database\Eloquent\Collection;
-use \Neomerx\Core\Models\Category as CategoryModel;
-use \Neomerx\Core\Models\ProductCategory as ProductCategoryModel;
+use \Neomerx\Core\Exceptions\ValidationException;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -19,26 +19,26 @@ class Categories
 {
 
     /**
-     * @var Model
+     * @var Product
      */
     private $productModel;
 
     /**
-     * @var CategoryModel
+     * @var Category
      */
     private $categoryModel;
 
     /**
-     * @var ProductCategoryModel
+     * @var ProductCategory
      */
     private $productCategoryModel;
 
     /**
-     * @param Model                $product
-     * @param CategoryModel        $category
-     * @param ProductCategoryModel $productCategory
+     * @param Product         $product
+     * @param Category        $category
+     * @param ProductCategory $productCategory
      */
-    public function __construct(Model $product, CategoryModel $category, ProductCategoryModel $productCategory)
+    public function __construct(Product $product, Category $category, ProductCategory $productCategory)
     {
         $this->productModel         = $product;
         $this->categoryModel        = $category;
@@ -48,11 +48,11 @@ class Categories
     /**
      * Show product categories.
      *
-     * @param Model $product
+     * @param Product $product
      *
      * @return Collection
      */
-    public function showCategories(Model $product)
+    public function showCategories(Product $product)
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $categories = $product->assignedCategories()->withProperties()->get();
@@ -62,18 +62,18 @@ class Categories
     /**
      * Set categories to product.
      *
-     * @param Model $product
+     * @param Product $product
      * @param array $categoryCodes
      *
      * @return void
      */
-    public function updateCategories(Model $product, array $categoryCodes)
+    public function updateCategories(Product $product, array $categoryCodes)
     {
         Permissions::check($product, Permission::edit());
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $currentCategoryIds = $product->productCategories()->lists(CategoryModel::FIELD_ID);
-        $categoryIds        = $this->categoryModel->selectByCodes($categoryCodes)->lists(CategoryModel::FIELD_ID);
+        $currentCategoryIds = $product->productCategories()->lists(Category::FIELD_ID);
+        $categoryIds        = $this->categoryModel->selectByCodes($categoryCodes)->lists(Category::FIELD_ID);
 
         $toAddIds    = array_diff($categoryIds, $currentCategoryIds);
         $toRemoveIds = array_diff($currentCategoryIds, $categoryIds);
@@ -87,12 +87,12 @@ class Categories
                 /** @noinspection PhpUndefinedMethodInspection */
                 $lastPosInTheCategory = $this->productCategoryModel->selectMaxPosition($newCategoryId);
                 $lastPosInTheCategory = ($lastPosInTheCategory === null ? 1 : ++$lastPosInTheCategory);
-                /** @var ProductCategoryModel $productCategory */
+                /** @var ProductCategory $productCategory */
                 /** @noinspection PhpUndefinedMethodInspection */
-                $productCategory = App::make(ProductCategoryModel::BIND_NAME);
+                $productCategory = App::make(ProductCategory::BIND_NAME);
                 $productCategory->fill([
-                    ProductCategoryModel::FIELD_ID_CATEGORY => $newCategoryId,
-                    ProductCategoryModel::FIELD_POSITION    => $lastPosInTheCategory,
+                    ProductCategory::FIELD_ID_CATEGORY => $newCategoryId,
+                    ProductCategory::FIELD_POSITION    => $lastPosInTheCategory,
                 ]);
 
                 /** @noinspection PhpUndefinedMethodInspection */
@@ -105,8 +105,8 @@ class Categories
             // Remove
             /** @noinspection PhpUndefinedMethodInspection */
             $toRemove = $product->productCategories()
-                ->whereIn(CategoryModel::FIELD_ID, $toRemoveIds)
-                ->lists(ProductCategoryModel::FIELD_ID);
+                ->whereIn(Category::FIELD_ID, $toRemoveIds)
+                ->lists(ProductCategory::FIELD_ID);
             $this->productCategoryModel->destroy($toRemove);
 
             $allExecutedOk = true;

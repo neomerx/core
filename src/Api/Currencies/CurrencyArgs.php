@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Currencies;
 
+use \Neomerx\Core\Models\Currency;
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\Currency as Model;
 
 class CurrencyArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var Currency
      */
-    private $model;
+    private $currency;
 
     /**
      * @param string    $name
-     * @param Model     $model
+     * @param Currency  $currency
      * @param EventArgs $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, Currency $currency, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->currency = $currency;
     }
 
     /**
-     * @return Model
+     * @return Currency
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->currency;
     }
 }

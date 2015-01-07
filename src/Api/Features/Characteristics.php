@@ -3,17 +3,17 @@
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Auth\Permission;
+use \Neomerx\Core\Models\Language;
+use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Models\Measurement;
 use \Neomerx\Core\Support\SearchParser;
 use \Neomerx\Core\Support\SearchGrammar;
-use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Models\Characteristic;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\Characteristic as Model;
 use \Neomerx\Core\Exceptions\ValidationException;
-use \Neomerx\Core\Models\Language as LanguageModel;
+use \Neomerx\Core\Models\CharacteristicProperties;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Models\Measurement as MeasurementModel;
-use \Neomerx\Core\Models\CharacteristicProperties as PropertiesModel;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -25,22 +25,22 @@ class Characteristics implements CharacteristicsInterface
     const EVENT_PREFIX = 'Api.Feature.';
 
     /**
-     * @var Model
+     * @var Characteristic
      */
-    private $model;
+    private $characteristicModel;
 
     /**
-     * @var PropertiesModel
+     * @var CharacteristicProperties
      */
     private $propertiesModel;
 
     /**
-     * @var LanguageModel
+     * @var Language
      */
     private $languageModel;
 
     /**
-     * @var MeasurementModel
+     * @var Measurement
      */
     private $measurementModel;
 
@@ -50,30 +50,30 @@ class Characteristics implements CharacteristicsInterface
      *
      * @var array
      */
-    protected static $searchRules   = [
-        Model::FIELD_CODE         => SearchGrammar::TYPE_STRING,
-        'created'                 => [SearchGrammar::TYPE_DATE, Model::FIELD_CREATED_AT],
-        'updated'                 => [SearchGrammar::TYPE_DATE, Model::FIELD_UPDATED_AT],
-        SearchGrammar::LIMIT_SKIP => SearchGrammar::TYPE_LIMIT,
-        SearchGrammar::LIMIT_TAKE => SearchGrammar::TYPE_LIMIT,
+    protected static $searchRules  = [
+        Characteristic::FIELD_CODE => SearchGrammar::TYPE_STRING,
+        'created'                  => [SearchGrammar::TYPE_DATE, Characteristic::FIELD_CREATED_AT],
+        'updated'                  => [SearchGrammar::TYPE_DATE, Characteristic::FIELD_UPDATED_AT],
+        SearchGrammar::LIMIT_SKIP  => SearchGrammar::TYPE_LIMIT,
+        SearchGrammar::LIMIT_TAKE  => SearchGrammar::TYPE_LIMIT,
     ];
 
     /**
-     * @param Model            $model
-     * @param PropertiesModel  $properties
-     * @param LanguageModel    $language
-     * @param MeasurementModel $measurement
+     * @param Characteristic           $characteristic
+     * @param CharacteristicProperties $properties
+     * @param Language                 $language
+     * @param Measurement              $measurement
      */
     public function __construct(
-        Model $model,
-        PropertiesModel $properties,
-        LanguageModel $language,
-        MeasurementModel $measurement
+        Characteristic $characteristic,
+        CharacteristicProperties $properties,
+        Language $language,
+        Measurement $measurement
     ) {
-        $this->model            = $model;
-        $this->propertiesModel  = $properties;
-        $this->languageModel    = $language;
-        $this->measurementModel = $measurement;
+        $this->characteristicModel = $characteristic;
+        $this->propertiesModel     = $properties;
+        $this->languageModel       = $language;
+        $this->measurementModel    = $measurement;
     }
 
     /**
@@ -92,16 +92,16 @@ class Characteristics implements CharacteristicsInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $characteristic */
-            $characteristic = $this->model->createOrFailResource($input);
+            /** @var Characteristic $characteristic */
+            $characteristic = $this->characteristicModel->createOrFailResource($input);
 
             Permissions::check($characteristic, Permission::create());
 
-            $resourceId = $characteristic->{Model::FIELD_ID};
+            $resourceId = $characteristic->{Characteristic::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
                 $this->propertiesModel->createOrFail(array_merge([
-                    PropertiesModel::FIELD_ID_CHARACTERISTIC => $resourceId,
-                    PropertiesModel::FIELD_ID_LANGUAGE       => $languageId
+                    CharacteristicProperties::FIELD_ID_CHARACTERISTIC => $resourceId,
+                    CharacteristicProperties::FIELD_ID_LANGUAGE       => $languageId
                 ], $propertyInput));
             }
 
@@ -122,9 +122,9 @@ class Characteristics implements CharacteristicsInterface
      */
     public function read($code)
     {
-        /** @var Model $resource */
+        /** @var Characteristic $resource */
         /** @noinspection PhpUndefinedMethodInspection */
-        $resource = $this->model->selectByCode($code)->withProperties()->withMeasurement()->firstOrFail();
+        $resource = $this->characteristicModel->selectByCode($code)->withProperties()->withMeasurement()->firstOrFail();
 
         Permissions::check($resource, Permission::view());
 
@@ -144,20 +144,20 @@ class Characteristics implements CharacteristicsInterface
         DB::beginTransaction();
         try {
             // update resource
-            /** @var Model $characteristic */
-            $characteristic = $this->model->selectByCode($code)->firstOrFail();
+            /** @var Characteristic $characteristic */
+            $characteristic = $this->characteristicModel->selectByCode($code)->firstOrFail();
 
             Permissions::check($characteristic, Permission::edit());
 
             empty($input) ?: $characteristic->updateOrFail($input);
 
             // update language properties
-            $resourceId = $characteristic->{Model::FIELD_ID};
+            $resourceId = $characteristic->{Characteristic::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
-                /** @var PropertiesModel $property */
+                /** @var CharacteristicProperties $property */
                 $property = $this->propertiesModel->updateOrCreate([
-                    PropertiesModel::FIELD_ID_CHARACTERISTIC => $resourceId,
-                    PropertiesModel::FIELD_ID_LANGUAGE       => $languageId
+                    CharacteristicProperties::FIELD_ID_CHARACTERISTIC => $resourceId,
+                    CharacteristicProperties::FIELD_ID_LANGUAGE       => $languageId
                 ], $propertyInput);
                 $property->exists ?: S\throwEx(new ValidationException($property->getValidator()));
             }
@@ -179,8 +179,8 @@ class Characteristics implements CharacteristicsInterface
      */
     public function delete($code)
     {
-        /** @var Model $characteristic */
-        $characteristic = $this->model->selectByCode($code)->firstOrFail();
+        /** @var Characteristic $characteristic */
+        $characteristic = $this->characteristicModel->selectByCode($code)->firstOrFail();
 
         Permissions::check($characteristic, Permission::delete());
 
@@ -195,7 +195,7 @@ class Characteristics implements CharacteristicsInterface
     public function search(array $parameters = [])
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $builder = $this->model->newQuery()->withProperties()->withMeasurement();
+        $builder = $this->characteristicModel->newQuery()->withProperties()->withMeasurement();
 
         // add search parameters if required
         if (!empty($parameters)) {
@@ -205,7 +205,7 @@ class Characteristics implements CharacteristicsInterface
 
         $resources = $builder->get();
 
-        /** @var Model $resource */
+        /** @var Characteristic $resource */
         foreach ($resources as $resource) {
             Permissions::check($resource, Permission::view());
         }
@@ -221,10 +221,10 @@ class Characteristics implements CharacteristicsInterface
     private function replaceMeasurementCodeWithId(array &$input)
     {
         $code = $input[self::PARAM_MEASUREMENT_CODE];
-        $input[MeasurementModel::FIELD_ID] = $this->measurementModel
+        $input[Measurement::FIELD_ID] = $this->measurementModel
             ->selectByCode($code)
-            ->firstOrFail([MeasurementModel::FIELD_ID])
-            ->{MeasurementModel::FIELD_ID};
+            ->firstOrFail([Measurement::FIELD_ID])
+            ->{Measurement::FIELD_ID};
         unset($input[self::PARAM_MEASUREMENT_CODE]);
     }
 }

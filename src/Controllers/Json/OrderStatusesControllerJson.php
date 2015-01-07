@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Controllers\Json;
 
-use \Neomerx\Core\Models\OrderStatus;
 use \Illuminate\Support\Facades\App;
+use \Neomerx\Core\Models\OrderStatus;
 use \Neomerx\Core\Api\Facades\OrderStatuses;
 use \Neomerx\Core\Converters\OrderStatusConverterGeneric;
 

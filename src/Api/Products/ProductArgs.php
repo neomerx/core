@@ -3,25 +3,25 @@
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Variant;
+use \Neomerx\Core\Models\BaseModel;
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\BaseModel as Model;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 class ProductArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var BaseModel
      */
     private $model;
 
     /**
      * @param string    $name
-     * @param Model     $model
+     * @param BaseModel $model
      * @param EventArgs $args
      *
      * @throws InvalidArgumentException
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, BaseModel $model, EventArgs $args = null)
     {
         parent::__construct($name, $args);
 
@@ -32,7 +32,7 @@ class ProductArgs extends EventArgs
     }
 
     /**
-     * @return Model
+     * @return BaseModel
      */
     public function getModel()
     {

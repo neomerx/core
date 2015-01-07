@@ -1,6 +1,7 @@
 <?php namespace Neomerx\Core\Api\Taxes;
 
 use \Neomerx\Core\Config;
+use \Neomerx\Core\Models\Tax;
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Models\Region;
@@ -14,7 +15,6 @@ use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Api\Cart\CartItem;
 use \Neomerx\Core\Api\Carriers\Tariff;
 use \Neomerx\Core\Models\CustomerType;
-use \Neomerx\Core\Models\Tax as Model;
 use \Neomerx\Core\Models\ProductTaxType;
 use \Neomerx\Core\Auth\Facades\Permissions;
 use \Neomerx\Core\Api\Carriers\ShippingData;
@@ -33,7 +33,7 @@ class Taxes implements TaxesInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var Model
+     * @var Tax
      */
     private $taxModel;
 
@@ -53,14 +53,14 @@ class Taxes implements TaxesInterface
     private $variantModel;
 
     /**
-     * @param Model    $model
+     * @param Tax      $taxModel
      * @param Address  $addressModel
      * @param Customer $customerModel
      * @param Variant  $variantModel
      */
-    public function __construct(Model $model, Address $addressModel, Customer $customerModel, Variant $variantModel)
+    public function __construct(Tax $taxModel, Address $addressModel, Customer $customerModel, Variant $variantModel)
     {
-        $this->taxModel      = $model;
+        $this->taxModel      = $taxModel;
         $this->addressModel  = $addressModel;
         $this->customerModel = $customerModel;
         $this->variantModel  = $variantModel;
@@ -75,7 +75,7 @@ class Taxes implements TaxesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $tax */
+            /** @var Tax $tax */
             $tax = $this->taxModel->createOrFailResource($input);
             Permissions::check($tax, Permission::create());
 
@@ -98,7 +98,7 @@ class Taxes implements TaxesInterface
      */
     public function read($code)
     {
-        /** @var Model $tax */
+        /** @var Tax $tax */
         $tax = $this->taxModel->selectByCode($code)->firstOrFail();
         Permissions::check($tax, Permission::view());
         return $tax;
@@ -109,7 +109,7 @@ class Taxes implements TaxesInterface
      */
     public function update($code, array $input)
     {
-        /** @var Model $tax */
+        /** @var Tax $tax */
         $tax = $this->taxModel->selectByCode($code)->firstOrFail();
         Permissions::check($tax, Permission::edit());
         empty($input) ?: $tax->updateOrFail($input);
@@ -122,7 +122,7 @@ class Taxes implements TaxesInterface
      */
     public function delete($code)
     {
-        /** @var Model $tax */
+        /** @var Tax $tax */
         $tax = $this->taxModel->selectByCode($code)->firstOrFail();
         Permissions::check($tax, Permission::delete());
         $tax->deleteOrFail();
@@ -183,9 +183,9 @@ class Taxes implements TaxesInterface
         // format objects for tax calculation formula
         /** @noinspection PhpUndefinedMethodInspection */
         $taxParameters   = [
-            Model::PARAM_CUSTOMER     => (object)App::make(CustomerConverterGeneric::BIND_NAME)->convert($customer),
-            Model::PARAM_ADDRESS_TO   => (object)App::make(AddressConverterGeneric::BIND_NAME)->convert($addressTo),
-            Model::PARAM_ADDRESS_FROM => (object)App::make(AddressConverterGeneric::BIND_NAME)->convert($addressFrom),
+            Tax::PARAM_CUSTOMER     => (object)App::make(CustomerConverterGeneric::BIND_NAME)->convert($customer),
+            Tax::PARAM_ADDRESS_TO   => (object)App::make(AddressConverterGeneric::BIND_NAME)->convert($addressTo),
+            Tax::PARAM_ADDRESS_FROM => (object)App::make(AddressConverterGeneric::BIND_NAME)->convert($addressFrom),
         ];
 
         /** @var ConverterInterface $variantConverter */
@@ -206,9 +206,9 @@ class Taxes implements TaxesInterface
             );
 
             $this->sumTaxes($taxes, array_merge($taxParameters, [
-                Model::PARAM_PRODUCT  => (object)$variantConverter->convert($currentVariant),
-                Model::PARAM_PRICE    => $currentVariant->price_wo_tax,
-                Model::PARAM_QUANTITY => $cartItem->getQuantity(),
+                Tax::PARAM_PRODUCT  => (object)$variantConverter->convert($currentVariant),
+                Tax::PARAM_PRICE    => $currentVariant->price_wo_tax,
+                Tax::PARAM_QUANTITY => $cartItem->getQuantity(),
             ]), $totalOrderTaxes, $taxDetails);
         }
 
@@ -222,8 +222,8 @@ class Taxes implements TaxesInterface
             Config::get(Config::FILE_APP, Config::KEY_SHIPPING_TAX_TYPE_ID)
         );
         $this->sumTaxes($shippingTaxes, array_merge($taxParameters, [
-            Model::PARAM_PRICE    => $shippingCost,
-            Model::PARAM_QUANTITY => 1,
+            Tax::PARAM_PRICE    => $shippingCost,
+            Tax::PARAM_QUANTITY => 1,
         ]), $totalOrderTaxes, $taxDetails);
 
         return new TaxCalculation($totalOrderTaxes, array_values($taxDetails), $shippingCost);
@@ -232,10 +232,10 @@ class Taxes implements TaxesInterface
     private function sumTaxes(Collection $taxes, array $parameters, &$total, array &$details)
     {
         $totalItemTaxes = 0;
-        /** @var Model $tax */
+        /** @var Tax $tax */
         foreach ($taxes as $tax) {
             $itemTax = $tax->calculate(
-                array_merge($parameters, [Model::PARAM_CUMULATIVE_TAX => $totalItemTaxes])
+                array_merge($parameters, [Tax::PARAM_CUMULATIVE_TAX => $totalItemTaxes])
             );
             $totalItemTaxes += $itemTax;
             $taxCode = $tax->code;

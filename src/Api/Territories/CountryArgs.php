@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Territories;
 
+use \Neomerx\Core\Models\Country;
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\Country as Model;
 
 class CountryArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var Country
      */
-    private $model;
+    private $country;
 
     /**
      * @param string    $name
-     * @param Model     $model
+     * @param Country   $country
      * @param EventArgs $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, Country $country, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->country = $country;
     }
 
     /**
-     * @return Model
+     * @return Country
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->country;
     }
 }

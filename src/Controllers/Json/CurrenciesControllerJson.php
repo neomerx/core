@@ -1,8 +1,8 @@
 <?php namespace Neomerx\Core\Controllers\Json;
 
-use \Neomerx\Core\Api\Facades\Currencies;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\Facades\Input;
+use \Neomerx\Core\Api\Facades\Currencies;
 use \Neomerx\Core\Converters\CurrencyConverterGeneric;
 use \Neomerx\Core\Controllers\Json\Traits\LanguageFilterTrait;
 

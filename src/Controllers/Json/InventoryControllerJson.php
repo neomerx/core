@@ -3,13 +3,13 @@
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Models\Warehouse;
-use \Neomerx\Core\Api\Facades\Inventory;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\Facades\Input;
-use \Neomerx\Core\Controllers\BaseController;
 use \Illuminate\Support\Facades\Response;
+use \Neomerx\Core\Api\Facades\Inventories;
+use \Neomerx\Core\Controllers\BaseController;
 use \Neomerx\Core\Converters\ConverterInterface;
-use \Neomerx\Core\Api\Inventory\InventoryInterface;
+use \Neomerx\Core\Api\Inventory\InventoriesInterface;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Converters\InventoryConverterGeneric;
 
@@ -19,7 +19,7 @@ use \Neomerx\Core\Converters\InventoryConverterGeneric;
 class InventoryControllerJson extends BaseController
 {
     /**
-     * @var InventoryInterface
+     * @var InventoriesInterface
      */
     private $apiFacade;
 
@@ -29,7 +29,7 @@ class InventoryControllerJson extends BaseController
     public function __construct()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->apiFacade = App::make(Inventory::INTERFACE_BIND_NAME);
+        $this->apiFacade = App::make(Inventories::INTERFACE_BIND_NAME);
     }
 
     /**

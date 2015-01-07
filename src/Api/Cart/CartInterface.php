@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Api\Cart;
 
-use \Neomerx\Core\Models\OrderDetails;
 use \Neomerx\Core\Models\Variant;
+use \Neomerx\Core\Models\OrderDetails;
 
 interface CartInterface
 {

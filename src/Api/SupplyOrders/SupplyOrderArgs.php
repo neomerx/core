@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\SupplyOrders;
 
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\SupplyOrder as Model;
+use \Neomerx\Core\Models\SupplyOrder;
 
 class SupplyOrderArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var SupplyOrder
      */
-    private $model;
+    private $supplyOrder;
 
     /**
-     * @param string    $name
-     * @param Model     $model
-     * @param EventArgs $args
+     * @param string      $name
+     * @param SupplyOrder $supplyOrder
+     * @param EventArgs   $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, SupplyOrder $supplyOrder, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->supplyOrder = $supplyOrder;
     }
 
     /**
-     * @return Model
+     * @return SupplyOrder
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->supplyOrder;
     }
 }

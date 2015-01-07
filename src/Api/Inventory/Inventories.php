@@ -2,54 +2,52 @@
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
+use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Variant;
+use \Neomerx\Core\Models\Supplier;
+use \Neomerx\Core\Models\Inventory;
 use \Neomerx\Core\Models\Warehouse;
 use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Models\SupplyOrder;
 use \Neomerx\Core\Exceptions\LogicException;
-use \Neomerx\Core\Models\Product as ProductModel;
-use \Neomerx\Core\Models\Variant as VariantModel;
-use \Neomerx\Core\Models\Supplier as SupplierModel;
-use \Neomerx\Core\Models\Inventory as InventoryModel;
-use \Neomerx\Core\Models\Warehouse as WarehouseModel;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Models\SupplyOrder as SupplyOrderModel;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Inventory implements InventoryInterface
+class Inventories implements InventoriesInterface
 {
-    const EVENT_PREFIX = 'Api.Inventory.';
+    const EVENT_PREFIX = 'Api.Inventories.';
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var InventoryModel
+     * @var Inventory
      */
     private $inventoryModel;
 
     /**
-     * @var ProductModel
+     * @var Product
      */
     private $productModel;
 
     /**
-     * @var VariantModel
+     * @var Variant
      */
     private $variantModel;
 
     /**
-     * @var SupplierModel
+     * @var Supplier
      */
     private $supplierModel;
 
     /**
-     * @var WarehouseModel
+     * @var Warehouse
      */
     private $warehouseModel;
 
     /**
-     * @var SupplyOrderModel
+     * @var SupplyOrder
      */
     private $supplyOrderModel;
 
@@ -61,20 +59,20 @@ class Inventory implements InventoryInterface
     ];
 
     /**
-     * @param InventoryModel   $inventory
-     * @param ProductModel     $product
-     * @param VariantModel     $variant
-     * @param SupplierModel    $supplier
-     * @param WarehouseModel   $warehouse
-     * @param SupplyOrderModel $supplyOrder
+     * @param Inventory   $inventory
+     * @param Product     $product
+     * @param Variant     $variant
+     * @param Supplier    $supplier
+     * @param Warehouse   $warehouse
+     * @param SupplyOrder $supplyOrder
      */
     public function __construct(
-        InventoryModel $inventory,
-        ProductModel $product,
-        VariantModel $variant,
-        SupplierModel $supplier,
-        WarehouseModel $warehouse,
-        SupplyOrderModel $supplyOrder
+        Inventory $inventory,
+        Product $product,
+        Variant $variant,
+        Supplier $supplier,
+        Warehouse $warehouse,
+        SupplyOrder $supplyOrder
     ) {
         $this->inventoryModel   = $inventory;
         $this->productModel     = $product;
@@ -115,16 +113,16 @@ class Inventory implements InventoryInterface
 
             $this->setIsolationSerializable();
 
-            /** @var InventoryModel $inventoryRow */
+            /** @var Inventory $inventoryRow */
             $inventoryRow = $this->inventoryModel->selectBySkuAndWarehouse($sku, $warehouseId)->first();
 
             if ($inventoryRow !== null) {
                 $inventoryRow->incrementIn($quantity);
             } else {
                 $inventoryData = [
-                    InventoryModel::FIELD_SKU          => $sku,
-                    InventoryModel::FIELD_ID_WAREHOUSE => $warehouseId,
-                    InventoryModel::FIELD_IN           => $quantity,
+                    Inventory::FIELD_SKU          => $sku,
+                    Inventory::FIELD_ID_WAREHOUSE => $warehouseId,
+                    Inventory::FIELD_IN           => $quantity,
                 ];
                 $inventoryRow = $this->inventoryModel->createOrFailResource($inventoryData);
             }
@@ -159,7 +157,7 @@ class Inventory implements InventoryInterface
 
             $this->setIsolationSerializable();
 
-            /** @var InventoryModel $inventoryRow */
+            /** @var Inventory $inventoryRow */
             $inventoryRow = $this->inventoryModel->selectBySkuAndWarehouse(
                 $variant->{Variant::FIELD_SKU},
                 $warehouse->{Warehouse::FIELD_ID}
@@ -236,7 +234,7 @@ class Inventory implements InventoryInterface
      * @param Warehouse $warehouse
      * @param int       $quantity
      *
-     * @return InventoryModel
+     * @return Inventory
      */
     private function checkInputAndFindInventoryRow(Variant $item, Warehouse $warehouse, $quantity)
     {
@@ -249,10 +247,10 @@ class Inventory implements InventoryInterface
     }
 
     /**
-     * @param InventoryModel $inventoryRow
-     * @param int            $quantity
+     * @param Inventory $inventoryRow
+     * @param int       $quantity
      */
-    private function incrementReserveInternal(InventoryModel $inventoryRow, $quantity)
+    private function incrementReserveInternal(Inventory $inventoryRow, $quantity)
     {
         $availableForReserve = (int)$inventoryRow->in - $inventoryRow->out - $inventoryRow->reserved;
         $availableForReserve >= $quantity ?: S\throwEx(new InvalidArgumentException('quantity'));
@@ -263,10 +261,10 @@ class Inventory implements InventoryInterface
     }
 
     /**
-     * @param InventoryModel $inventoryRow
-     * @param int            $quantity
+     * @param Inventory $inventoryRow
+     * @param int       $quantity
      */
-    private function decrementReserveInternal(InventoryModel $inventoryRow, $quantity)
+    private function decrementReserveInternal(Inventory $inventoryRow, $quantity)
     {
         $inventoryRow->reserved >= $quantity ?: S\throwEx(new InvalidArgumentException('quantity'));
 

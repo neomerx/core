@@ -3,9 +3,9 @@
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Country;
+use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Models\CustomerType;
 use \Neomerx\Core\Models\ProductTaxType;
-use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Models\TaxRulePostcode;
 use \Neomerx\Core\Models\TaxRuleTerritory;
 use \Neomerx\Core\Models\TaxRuleProductType;

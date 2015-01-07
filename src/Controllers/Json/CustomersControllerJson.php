@@ -2,9 +2,9 @@
 
 use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Customer;
-use \Neomerx\Core\Api\Facades\Customers;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\Facades\Input;
+use \Neomerx\Core\Api\Facades\Customers;
 use \Neomerx\Core\Converters\AddressConverterCustomer;
 use \Neomerx\Core\Converters\CustomerConverterWithAddress;
 use \Symfony\Component\HttpFoundation\Response as SymfonyResponse;

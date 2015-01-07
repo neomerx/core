@@ -1,5 +1,6 @@
 <?php namespace Neomerx\Core\Api\Login;
 
+use \Neomerx\Core\Models\User;
 use \Illuminate\Support\Facades\Auth;
 
 class LoginService implements LoginInterface
@@ -12,7 +13,11 @@ class LoginService implements LoginInterface
     public function login($login, $password)
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $success = Auth::attempt(['email' => $login, 'password' => $password, 'active' => 1]);
+        $success = Auth::attempt([
+            User::FIELD_EMAIL    => $login,
+            User::FIELD_PASSWORD => $password,
+            User::FIELD_ACTIVE   => 1
+        ]);
         return $success ? LoginInterface::CODE_OK : LoginInterface::CODE_ERROR;
     }
 

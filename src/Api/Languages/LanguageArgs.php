@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Languages;
 
+use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\Language as Model;
 
 class LanguageArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var Language
      */
-    private $model;
+    private $language;
 
     /**
      * @param string    $name
-     * @param Model     $model
+     * @param Language  $language
      * @param EventArgs $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, Language $language, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->language = $language;
     }
 
     /**
-     * @return Model
+     * @return Language
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->language;
     }
 }

@@ -3,9 +3,8 @@
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Auth\Permission;
 use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Models\ProductTaxType;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\ProductTaxType as Model;
-use \Neomerx\Core\Api\Products\ProductTaxTypeArgs as Args;
 
 class ProductTaxTypes implements ProductTaxTypesInterface
 {
@@ -13,18 +12,18 @@ class ProductTaxTypes implements ProductTaxTypesInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var Model
+     * @var ProductTaxType
      */
-    private $model;
+    private $productTaxType;
 
     /**
      * Constructor.
      *
-     * @param Model $model
+     * @param ProductTaxType $productTaxType
      */
-    public function __construct(Model $model)
+    public function __construct(ProductTaxType $productTaxType)
     {
-        $this->model = $model;
+        $this->productTaxType = $productTaxType;
     }
 
     /**
@@ -36,8 +35,8 @@ class ProductTaxTypes implements ProductTaxTypesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $resource */
-            $resource = $this->model->createOrFailResource($input);
+            /** @var ProductTaxType $resource */
+            $resource = $this->productTaxType->createOrFailResource($input);
             Permissions::check($resource, Permission::create());
 
             $allExecutedOk = true;
@@ -49,7 +48,7 @@ class ProductTaxTypes implements ProductTaxTypesInterface
 
         }
 
-        Event::fire(new Args(self::EVENT_PREFIX . 'created', $resource));
+        Event::fire(new ProductTaxTypeArgs(self::EVENT_PREFIX . 'created', $resource));
 
         return $resource;
     }
@@ -59,8 +58,8 @@ class ProductTaxTypes implements ProductTaxTypesInterface
      */
     public function read($code)
     {
-        /** @var Model $resource */
-        $resource = $this->model->selectByCode($code)->firstOrFail();
+        /** @var ProductTaxType $resource */
+        $resource = $this->productTaxType->selectByCode($code)->firstOrFail();
         Permissions::check($resource, Permission::view());
         return $resource;
     }
@@ -70,12 +69,12 @@ class ProductTaxTypes implements ProductTaxTypesInterface
      */
     public function update($code, array $input)
     {
-        /** @var Model $resource */
-        $resource = $this->model->selectByCode($code)->firstOrFail();
+        /** @var ProductTaxType $resource */
+        $resource = $this->productTaxType->selectByCode($code)->firstOrFail();
         Permissions::check($resource, Permission::edit());
         empty($input) ?: $resource->updateOrFail($input);
 
-        Event::fire(new Args(self::EVENT_PREFIX . 'updated', $resource));
+        Event::fire(new ProductTaxTypeArgs(self::EVENT_PREFIX . 'updated', $resource));
     }
 
     /**
@@ -83,12 +82,12 @@ class ProductTaxTypes implements ProductTaxTypesInterface
      */
     public function delete($code)
     {
-        /** @var Model $resource */
-        $resource = $this->model->selectByCode($code)->firstOrFail();
+        /** @var ProductTaxType $resource */
+        $resource = $this->productTaxType->selectByCode($code)->firstOrFail();
         Permissions::check($resource, Permission::delete());
         $resource->deleteOrFail();
 
-        Event::fire(new Args(self::EVENT_PREFIX . 'deleted', $resource));
+        Event::fire(new ProductTaxTypeArgs(self::EVENT_PREFIX . 'deleted', $resource));
     }
 
     /**
@@ -96,7 +95,7 @@ class ProductTaxTypes implements ProductTaxTypesInterface
      */
     public function all(array $parameters = [])
     {
-        $resources = $this->model->all();
+        $resources = $this->productTaxType->all();
 
         foreach ($resources as $resource) {
             Permissions::check($resource, Permission::view());

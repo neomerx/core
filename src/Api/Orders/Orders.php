@@ -22,7 +22,7 @@ use \Neomerx\Core\Api\Carriers\ShippingData;
 use \Neomerx\Core\Api\Orders\ParseInputTrait;
 use \Neomerx\Core\Exceptions\ValidationException;
 use \Neomerx\Core\Api\Customers\CustomersInterface;
-use \Neomerx\Core\Api\Inventory\InventoryInterface;
+use \Neomerx\Core\Api\Inventory\InventoriesInterface;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\ShippingOrders\ShippingOrdersInterface;
 
@@ -52,7 +52,7 @@ class Orders implements OrdersInterface
     private $shippingOrdersApi;
 
     /**
-     * @var InventoryInterface
+     * @var InventoriesInterface
      */
     private $inventoryApi;
 
@@ -101,7 +101,7 @@ class Orders implements OrdersInterface
 
     /**
      * @param CustomersInterface      $customers
-     * @param InventoryInterface      $inventory
+     * @param InventoriesInterface      $inventory
      * @param Order                   $order
      * @param OrderStatus             $orderStatus
      * @param ShippingOrdersInterface $shippingOrders
@@ -111,7 +111,7 @@ class Orders implements OrdersInterface
      */
     public function __construct(
         CustomersInterface $customers,
-        InventoryInterface $inventory,
+        InventoriesInterface $inventory,
         Order $order,
         OrderStatus $orderStatus,
         ShippingOrdersInterface $shippingOrders,

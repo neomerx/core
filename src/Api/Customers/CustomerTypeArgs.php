@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Customers;
 
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\CustomerType as Model;
+use \Neomerx\Core\Models\CustomerType;
 
 class CustomerTypeArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var CustomerType
      */
-    private $model;
+    private $customerType;
 
     /**
-     * @param string    $name
-     * @param Model     $model
-     * @param EventArgs $args
+     * @param string       $name
+     * @param CustomerType $customerType
+     * @param EventArgs    $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, CustomerType $customerType, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->customerType = $customerType;
     }
 
     /**
-     * @return Model
+     * @return CustomerType
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->customerType;
     }
 }

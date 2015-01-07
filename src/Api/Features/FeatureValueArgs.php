@@ -1,31 +1,31 @@
 <?php namespace Neomerx\Core\Api\Features;
 
 use \Neomerx\Core\Events\EventArgs;
-use \Neomerx\Core\Models\CharacteristicValue as Model;
+use \Neomerx\Core\Models\CharacteristicValue;
 
 class FeatureValueArgs extends EventArgs
 {
     /**
-     * @var Model
+     * @var CharacteristicValue
      */
-    private $model;
+    private $characteristicValue;
 
     /**
-     * @param string    $name
-     * @param Model     $model
-     * @param EventArgs $args
+     * @param string              $name
+     * @param CharacteristicValue $characteristicValue
+     * @param EventArgs           $args
      */
-    public function __construct($name, Model $model, EventArgs $args = null)
+    public function __construct($name, CharacteristicValue $characteristicValue, EventArgs $args = null)
     {
         parent::__construct($name, $args);
-        $this->model = $model;
+        $this->characteristicValue = $characteristicValue;
     }
 
     /**
-     * @return Model
+     * @return CharacteristicValue
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->characteristicValue;
     }
 }

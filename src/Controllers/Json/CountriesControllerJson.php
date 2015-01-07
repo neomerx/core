@@ -1,9 +1,9 @@
 <?php namespace Neomerx\Core\Controllers\Json;
 
 use \Neomerx\Core\Models\Country;
-use \Neomerx\Core\Api\Facades\Countries;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\Facades\Input;
+use \Neomerx\Core\Api\Facades\Countries;
 use \Neomerx\Core\Converters\RegionConverterGeneric;
 use \Neomerx\Core\Converters\CountryConverterGeneric;
 use \Neomerx\Core\Controllers\Json\Traits\LanguageFilterTrait;

@@ -3,7 +3,7 @@
 use \Illuminate\Support\Str;
 use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Models\SupplyOrder;
-use \Neomerx\Core\Api\Facades\Inventory;
+use \Neomerx\Core\Api\Facades\Inventories;
 use \Neomerx\Core\Models\SupplyOrderDetails;
 
 class SupplyOrdersHandler
@@ -34,7 +34,7 @@ class SupplyOrdersHandler
                 foreach ($supplyOrder->details as $details) {
                     $quantity = $details->quantity;
                     /** @noinspection PhpUndefinedFieldInspection */
-                    Inventory::increment($details->variant, $supplyOrder->warehouse, $quantity);
+                    Inventories::increment($details->variant, $supplyOrder->warehouse, $quantity);
                 }
 
                 $allExecutedOk = true;

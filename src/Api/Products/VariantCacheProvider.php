@@ -4,9 +4,9 @@ use \Neomerx\Core\Cache\TagTrait;
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Models\Category;
+use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Models\Manufacturer;
 use \Neomerx\Core\Models\ProductTaxType;
-use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Cache\ItemProviderInterface;
 
 class VariantCacheProvider implements ItemProviderInterface
@@ -32,9 +32,9 @@ class VariantCacheProvider implements ItemProviderInterface
     public function __construct()
     {
         $this->relations = [
-            'Product.defaultCategory',
-            'Product.manufacturer',
-            'Product.taxType',
+            'product.defaultCategory',
+            'product.manufacturer',
+            'product.taxType',
         ];
         /** @noinspection PhpUndefinedMethodInspection */
         $this->variantModel = App::make(Variant::BIND_NAME);

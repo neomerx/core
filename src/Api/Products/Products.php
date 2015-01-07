@@ -1,27 +1,19 @@
 <?php namespace Neomerx\Core\Api\Products;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\Product as Model;
-use \Neomerx\Core\Models\Variant as VariantModel;
-use \Neomerx\Core\Models\Category as CategoryModel;
-use \Neomerx\Core\Models\Language as LanguageModel;
-use \Neomerx\Core\Api\Products\Related as RelatedApi;
-use \Neomerx\Core\Models\ProductTaxType as TaxTypeModel;
-use \Neomerx\Core\Models\Manufacturer as ManufacturerModel;
-use \Neomerx\Core\Models\ProductImage as ProductImageModel;
-use \Neomerx\Core\Api\Products\Categories as CategoriesApi;
-use \Neomerx\Core\Models\Specification as SpecificationModel;
-use \Neomerx\Core\Api\Products\ProductCrud as ProductCrudApi;
-use \Neomerx\Core\Api\Products\VariantCrud as VariantCrudApi;
-use \Neomerx\Core\Models\ProductProperties as PropertiesModel;
-use \Neomerx\Core\Models\ProductRelated as ProductRelatedModel;
-use \Neomerx\Core\Api\Products\ProductImage as ProductImageApi;
-use \Neomerx\Core\Api\Products\VariantImage as VariantImageApi;
-use \Neomerx\Core\Models\ProductCategory as ProductCategoryModel;
-use \Neomerx\Core\Models\VariantProperties as VariantPropertiesModel;
-use \Neomerx\Core\Models\CharacteristicValue as CharacteristicValueModel;
-use \Neomerx\Core\Api\Products\ProductSpecification as ProductSpecificationApi;
-use \Neomerx\Core\Api\Products\VariantSpecification as VariantSpecificationApi;
+use \Neomerx\Core\Models\Product;
+use \Neomerx\Core\Models\Variant;
+use \Neomerx\Core\Models\Category;
+use \Neomerx\Core\Models\Language;
+use \Neomerx\Core\Models\Manufacturer;
+use \Neomerx\Core\Models\ProductImage;
+use \Neomerx\Core\Models\Specification;
+use \Neomerx\Core\Models\ProductRelated;
+use \Neomerx\Core\Models\ProductTaxType;
+use \Neomerx\Core\Models\ProductCategory;
+use \Neomerx\Core\Models\ProductProperties;
+use \Neomerx\Core\Models\VariantProperties;
+use \Neomerx\Core\Models\CharacteristicValue;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -33,94 +25,94 @@ class Products implements ProductsInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var CategoriesApi
+     * @var Categories
      */
     private $categories;
 
     /**
-     * @var RelatedApi
+     * @var Related
      */
     private $related;
 
     /**
-     * @var ProductSpecificationApi
+     * @var ProductSpecification
      */
     private $productSpecification;
 
     /**
-     * @var VariantSpecificationApi
+     * @var VariantSpecification
      */
     private $variantSpecification;
 
     /**
-     * @var ProductImageApi
+     * @var ProductImages
      */
     private $productImage;
 
     /**
-     * @var VariantImageApi
+     * @var VariantImage
      */
     private $variantImage;
 
     /**
-     * @var ProductCrudApi
+     * @var ProductCrud
      */
     private $productCrud;
 
     /**
-     * @var VariantCrudApi
+     * @var VariantCrud
      */
     private $variantCrud;
 
     /**
-     * @param Model                    $model
-     * @param PropertiesModel          $properties
-     * @param LanguageModel            $language
-     * @param ManufacturerModel        $manufacturer
-     * @param CategoryModel            $category
-     * @param ProductCategoryModel     $productCategory
-     * @param ProductRelatedModel      $productRelated
-     * @param CharacteristicValueModel $characteristicValue
-     * @param VariantModel             $variant
-     * @param SpecificationModel       $specification
-     * @param ProductImageModel        $productImage
-     * @param VariantPropertiesModel   $variantProperties
-     * @param TaxTypeModel             $taxType
+     * @param Product             $product
+     * @param ProductProperties   $properties
+     * @param Language            $language
+     * @param Manufacturer        $manufacturer
+     * @param Category            $category
+     * @param ProductCategory     $productCategory
+     * @param ProductRelated      $productRelated
+     * @param CharacteristicValue $characteristicValue
+     * @param Variant             $variant
+     * @param Specification       $specification
+     * @param ProductImage        $productImage
+     * @param VariantProperties   $variantProperties
+     * @param ProductTaxType      $taxType
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
-        Model $model,
-        PropertiesModel $properties,
-        LanguageModel $language,
-        ManufacturerModel $manufacturer,
-        CategoryModel $category,
-        ProductCategoryModel $productCategory,
-        ProductRelatedModel $productRelated,
-        CharacteristicValueModel $characteristicValue,
-        VariantModel $variant,
-        SpecificationModel $specification,
-        ProductImageModel $productImage,
-        VariantPropertiesModel $variantProperties,
-        TaxTypeModel $taxType
+        Product $product,
+        ProductProperties $properties,
+        Language $language,
+        Manufacturer $manufacturer,
+        Category $category,
+        ProductCategory $productCategory,
+        ProductRelated $productRelated,
+        CharacteristicValue $characteristicValue,
+        Variant $variant,
+        Specification $specification,
+        ProductImage $productImage,
+        VariantProperties $variantProperties,
+        ProductTaxType $taxType
     ) {
-        $this->productCrud = new ProductCrudApi($model, $properties, $category, $manufacturer, $taxType, $language);
-        $this->variantCrud = new VariantCrudApi($model, $variant, $variantProperties, $language);
+        $this->productCrud = new ProductCrud($product, $properties, $category, $manufacturer, $taxType, $language);
+        $this->variantCrud = new VariantCrud($product, $variant, $variantProperties, $language);
 
-        $this->categories = new CategoriesApi($model, $category, $productCategory);
-        $this->related    = new RelatedApi($model, $productRelated, ProductCrudApi::$relations);
+        $this->categories = new Categories($product, $category, $productCategory);
+        $this->related    = new Related($product, $productRelated, ProductCrud::$relations);
 
-        $this->productImage = new ProductImageApi($model, $productImage, $language);
-        $this->variantImage = new VariantImageApi($variant, $productImage, $language);
+        $this->productImage = new ProductImages($product, $productImage, $language);
+        $this->variantImage = new VariantImage($variant, $productImage, $language);
 
-        $this->productSpecification = new ProductSpecificationApi($model, $specification, $characteristicValue);
-        $this->variantSpecification = new VariantSpecificationApi($variant, $characteristicValue);
+        $this->productSpecification = new ProductSpecification($product, $specification, $characteristicValue);
+        $this->variantSpecification = new VariantSpecification($variant, $characteristicValue);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function showCategories(Model $product)
+    public function showCategories(Product $product)
     {
         return $this->categories->showCategories($product);
     }
@@ -128,7 +120,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function updateCategories(Model $product, array $categoryCodes)
+    public function updateCategories(Product $product, array $categoryCodes)
     {
         $this->categories->updateCategories($product, $categoryCodes);
     }
@@ -136,7 +128,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function showRelated(Model $product)
+    public function showRelated(Product $product)
     {
         return $this->related->showRelated($product);
     }
@@ -144,7 +136,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function updateRelated(Model $product, array $productSKUs)
+    public function updateRelated(Product $product, array $productSKUs)
     {
         $this->related->updateRelated($product, $productSKUs);
     }
@@ -152,7 +144,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function showProductSpecification(Model $product)
+    public function showProductSpecification(Product $product)
     {
         return $this->productSpecification->showProductSpecification($product);
     }
@@ -160,7 +152,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function storeProductSpecification(Model $product, array $valueCodes)
+    public function storeProductSpecification(Product $product, array $valueCodes)
     {
         $this->productSpecification->storeProductSpecification($product, $valueCodes);
     }
@@ -168,7 +160,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function destroyProductSpecification(Model $product, array $valueCodes)
+    public function destroyProductSpecification(Product $product, array $valueCodes)
     {
         $this->productSpecification->destroyProductSpecification($product, $valueCodes);
     }
@@ -176,7 +168,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function updateProductSpecification(Model $product, array $parameters = [])
+    public function updateProductSpecification(Product $product, array $parameters = [])
     {
         $this->productSpecification->updateProductSpecification($product, $parameters);
     }
@@ -184,7 +176,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function makeSpecificationVariable(Model $product, $valueCode)
+    public function makeSpecificationVariable(Product $product, $valueCode)
     {
         $this->productSpecification->makeSpecificationVariable($product, $valueCode);
     }
@@ -192,7 +184,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function updateVariantSpecification(VariantModel $variant, array $parameters = [])
+    public function updateVariantSpecification(Variant $variant, array $parameters = [])
     {
         $this->variantSpecification->updateVariantSpecification($variant, $parameters);
     }
@@ -200,7 +192,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function makeSpecificationNonVariable(VariantModel $variant, $valueCode)
+    public function makeSpecificationNonVariable(Variant $variant, $valueCode)
     {
         $this->variantSpecification->makeSpecificationNonVariable($variant, $valueCode);
     }
@@ -208,7 +200,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function showProductImages(Model $product)
+    public function showProductImages(Product $product)
     {
         return $this->productImage->showProductImages($product);
     }
@@ -216,7 +208,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function storeProductImages(Model $product, array $descriptions, array $files)
+    public function storeProductImages(Product $product, array $descriptions, array $files)
     {
         $this->productImage->storeProductImages($product, $descriptions, $files);
     }
@@ -224,7 +216,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultProductImage(Model $product, $imageId)
+    public function setDefaultProductImage(Product $product, $imageId)
     {
         $this->productImage->setDefaultProductImage($product, $imageId);
     }
@@ -232,7 +224,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function destroyProductImage(Model $product, $imageId)
+    public function destroyProductImage(Product $product, $imageId)
     {
         $this->productImage->destroyProductImage($product, $imageId);
     }
@@ -240,7 +232,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function showVariantImages(VariantModel $variant)
+    public function showVariantImages(Variant $variant)
     {
         return $this->variantImage->showVariantImages($variant);
     }
@@ -248,7 +240,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function storeVariantImages(VariantModel $variant, array $descriptions, array $files)
+    public function storeVariantImages(Variant $variant, array $descriptions, array $files)
     {
         $this->variantImage->storeVariantImages($variant, $descriptions, $files);
     }
@@ -256,7 +248,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function destroyVariantImage(VariantModel $variant, $imageId)
+    public function destroyVariantImage(Variant $variant, $imageId)
     {
         $this->variantImage->destroyVariantImage($variant, $imageId);
     }
@@ -304,7 +296,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function storeVariant(Model $product, array $input)
+    public function storeVariant(Product $product, array $input)
     {
         $this->variantCrud->create($product, $input);
     }
@@ -312,7 +304,7 @@ class Products implements ProductsInterface
     /**
      * {@inheritdoc}
      */
-    public function updateVariant(VariantModel $variant, array $input)
+    public function updateVariant(Variant $variant, array $input)
     {
         $this->variantCrud->update($variant, $input);
     }

@@ -1,9 +1,9 @@
 <?php namespace Neomerx\Core\Controllers\Json;
 
-use \Neomerx\Core\Api\Facades\Features;
-use \Neomerx\Core\Models\Characteristic;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\Facades\Input;
+use \Neomerx\Core\Api\Facades\Features;
+use \Neomerx\Core\Models\Characteristic;
 use \Neomerx\Core\Converters\CharacteristicConverterGeneric;
 use \Neomerx\Core\Controllers\Json\Traits\LanguageFilterTrait;
 use \Neomerx\Core\Converters\CharacteristicValueConverterGeneric;

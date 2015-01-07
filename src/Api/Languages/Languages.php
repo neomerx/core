@@ -2,9 +2,9 @@
 
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Auth\Permission;
+use \Neomerx\Core\Models\Language;
 use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\Language as Model;
 
 class Languages implements LanguagesInterface
 {
@@ -12,18 +12,18 @@ class Languages implements LanguagesInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var Model
+     * @var Language
      */
-    private $model;
+    private $language;
 
     /**
      * Constructor.
      *
-     * @param Model $model
+     * @param Language $language
      */
-    public function __construct(Model $model)
+    public function __construct(Language $language)
     {
-        $this->model = $model;
+        $this->language = $language;
     }
 
     /**
@@ -35,8 +35,8 @@ class Languages implements LanguagesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Model $language */
-            $language = $this->model->createOrFailResource($input);
+            /** @var Language $language */
+            $language = $this->language->createOrFailResource($input);
             Permissions::check($language, Permission::create());
 
             $allExecutedOk = true;
@@ -58,8 +58,8 @@ class Languages implements LanguagesInterface
      */
     public function read($isoCode)
     {
-        /** @var Model $language */
-        $language = $this->model->selectByCode($isoCode)->firstOrFail();
+        /** @var Language $language */
+        $language = $this->language->selectByCode($isoCode)->firstOrFail();
         Permissions::check($language, Permission::view());
         return $language;
     }
@@ -69,8 +69,8 @@ class Languages implements LanguagesInterface
      */
     public function update($isoCode, array $input)
     {
-        /** @var Model $language */
-        $language = $this->model->selectByCode($isoCode)->firstOrFail();
+        /** @var Language $language */
+        $language = $this->language->selectByCode($isoCode)->firstOrFail();
         Permissions::check($language, Permission::edit());
         empty($input) ?: $language->updateOrFail($input);
 
@@ -82,8 +82,8 @@ class Languages implements LanguagesInterface
      */
     public function delete($isoCode)
     {
-        /** @var Model $language */
-        $language = $this->model->selectByCode($isoCode)->firstOrFail();
+        /** @var Language $language */
+        $language = $this->language->selectByCode($isoCode)->firstOrFail();
         Permissions::check($language, Permission::delete());
         $language->deleteOrFail();
 
@@ -95,7 +95,7 @@ class Languages implements LanguagesInterface
      */
     public function all()
     {
-        $languages = $this->model->all();
+        $languages = $this->language->all();
 
         foreach ($languages as $language) {
             Permissions::check($language, Permission::view());

@@ -26,6 +26,7 @@ interface SuppliersInterface extends CrudInterface
      * @return Supplier
      */
     public function read($code);
+
     /**
      * Search suppliers.
      *

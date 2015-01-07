@@ -1,8 +1,8 @@
 <?php namespace Neomerx\Core\Queues;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\ImagePath;
 use \Illuminate\Queue\Jobs\Job;
+use \Neomerx\Core\Models\ImagePath;
 use \Neomerx\Core\Models\ImageFormat;
 use \Illuminate\Support\Facades\Log;
 

@@ -3,7 +3,7 @@
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\Inventory as Model;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Api\Inventory\InventoryInterface as Api;
+use \Neomerx\Core\Api\Inventory\InventoriesInterface as Api;
 
 class InventoryConverterGeneric implements ConverterInterface
 {
