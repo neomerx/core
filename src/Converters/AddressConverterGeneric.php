@@ -15,7 +15,7 @@ class AddressConverterGeneric implements ConverterInterface
      *
      * @param Address $address
      *
-     * @return null|array<mixed,string|boolean>
+     * @return null|array<mixed,mixed>
      */
     public function convert($address = null)
     {

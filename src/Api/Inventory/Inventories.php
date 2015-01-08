@@ -87,10 +87,12 @@ class Inventories implements InventoriesInterface
      */
     public function read(Variant $variant, Warehouse $warehouse)
     {
-        return $this->inventoryModel
+        /** @var \Neomerx\Core\Models\Inventory $inventory */
+        $inventory = $this->inventoryModel
             ->selectBySkuAndWarehouse($variant->{Variant::FIELD_SKU}, $warehouse->{Warehouse::FIELD_ID})
             ->with(static::$relations)
             ->first();
+        return $inventory;
     }
 
     /**
@@ -240,10 +242,11 @@ class Inventories implements InventoriesInterface
     {
         (is_int($quantity) and $quantity > 0) ?: S\throwEx(new InvalidArgumentException('quantity'));
 
-        /** @noinspection PhpUndefinedFieldInspection */
-        return $this->inventoryModel
+        /** @var \Neomerx\Core\Models\Inventory $inventory */
+        $inventory = $this->inventoryModel
             ->selectBySkuAndWarehouse($item->sku, $warehouse->{Warehouse::FIELD_ID})
             ->firstOrFail();
+        return $inventory;
     }
 
     /**

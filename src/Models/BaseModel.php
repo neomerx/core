@@ -5,6 +5,7 @@ use \Neomerx\Core\Support as S;
 use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Exceptions\Exception;
 use \Illuminate\Database\Eloquent\Model;
+use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Auth\ObjectIdentityInterface;
 use \Neomerx\Core\Exceptions\ValidationException;
@@ -32,7 +33,8 @@ use \Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * multiply by 2 (e.g. hashing passwords, additional fields that should be checked but not saved).
  * If you don't need different checks on create and save (e.g. check unique) multiply by 1 otherwise by 2.
  *
- * @method static BaseModel with($condition)
+ * @method static Builder with($condition)
+ * @method        Builder where($field, $operation, $value)
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
