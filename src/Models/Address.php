@@ -163,7 +163,7 @@ class Address extends BaseModel
     /**
      * Relation to customers.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function billingCustomers()
     {
@@ -178,7 +178,7 @@ class Address extends BaseModel
     /**
      * Relation to customers.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function shippingCustomers()
     {

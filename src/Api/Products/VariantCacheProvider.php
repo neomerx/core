@@ -103,7 +103,7 @@ class VariantCacheProvider implements ItemProviderInterface
     /**
      * @param Variant $variant
      *
-     * @return array
+     * @return string[]
      */
     private function getTags(Variant $variant)
     {

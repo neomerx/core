@@ -121,7 +121,7 @@ class Image extends BaseModel
     /**
      * Relation to image paths with image formats.
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function paths()
     {
@@ -131,7 +131,7 @@ class Image extends BaseModel
     /**
      * Relation to image language properties (alt translations).
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function properties()
     {

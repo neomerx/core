@@ -101,7 +101,7 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
     /**
      * Return validation result.
      *
-     * @return \Illuminate\Support\Facades\Validator Validation result.
+     * @return \Illuminate\Validation\Validator Validation result.
      */
     public function getValidator()
     {

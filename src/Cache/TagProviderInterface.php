@@ -5,9 +5,9 @@ interface TagProviderInterface
     /**
      * Get tags for object.
      *
-     * @param mixed $object
+     * @param \Neomerx\Core\Models\Variant $object
      *
-     * @return array
+     * @return string[]
      */
     public function getTags($object);
 }

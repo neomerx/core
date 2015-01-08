@@ -227,7 +227,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @return string
+     * @return integer
      */
     public function getNumberOfDescendantsAttribute()
     {
@@ -237,7 +237,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     /**
      * Relation to categories language properties (name translations).
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function properties()
     {
