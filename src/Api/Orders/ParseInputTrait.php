@@ -58,7 +58,7 @@ trait ParseInputTrait
 
         if ($isDelivery) {
             // delivery by carrier
-            /** @var Carrier $carrierModel */
+            /** @var \Neomerx\Core\Models\Carrier $carrierModel */
             /** @noinspection PhpUndefinedMethodInspection */
             $carrierModel = App::make(Carrier::BIND_NAME);
             $carrier = $carrierModel->selectByCode(
@@ -68,7 +68,7 @@ trait ParseInputTrait
         } else {
             // pickup from store
             $carrier = null;
-            /** @var Store $storeModel */
+            /** @var \Neomerx\Core\Models\Store $storeModel */
             /** @noinspection PhpUndefinedMethodInspection */
             $storeModel = App::make(Store::BIND_NAME);
             /** @noinspection PhpUndefinedMethodInspection */

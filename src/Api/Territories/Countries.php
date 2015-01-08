@@ -65,7 +65,7 @@ class Countries implements CountriesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Country $country */
+            /** @var \Neomerx\Core\Models\Country $country */
             $country = $this->country->createOrFailResource($input);
             Permissions::check($country, Permission::create());
 
@@ -94,7 +94,7 @@ class Countries implements CountriesInterface
      */
     public function read($code)
     {
-        /** @var Country $country */
+        /** @var \Neomerx\Core\Models\Country $country */
         $country = $this->country->selectByCode($code)->withProperties()->firstOrFail();
         Permissions::check($country, Permission::view());
 
@@ -112,7 +112,7 @@ class Countries implements CountriesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Country $country */
+            /** @var \Neomerx\Core\Models\Country $country */
             $country = $this->country->selectByCode($code)->firstOrFail();
 
             Permissions::check($country, Permission::edit());
@@ -149,7 +149,7 @@ class Countries implements CountriesInterface
      */
     public function delete($code)
     {
-        /** @var Country $country */
+        /** @var \Neomerx\Core\Models\Country $country */
         $country = $this->country->selectByCode($code)->firstOrFail();
 
         Permissions::check($country, Permission::delete());
@@ -168,7 +168,7 @@ class Countries implements CountriesInterface
         $countries = $this->country->newQuery()->withProperties()->get();
 
         foreach ($countries as $country) {
-            /** @var Country $country */
+            /** @var \Neomerx\Core\Models\Country $country */
             Permissions::check($country, Permission::view());
         }
 

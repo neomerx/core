@@ -55,7 +55,7 @@ class Users implements UsersInterface
             $userRoles = S\array_get_value($input, self::PARAM_ROLES);
             unset($input[self::PARAM_ROLES]);
 
-            /** @var User $user */
+            /** @var \Neomerx\Core\Models\User $user */
             $user = $this->user->createOrFailResource($input);
             Permissions::check($user, Permission::create());
 
@@ -82,7 +82,7 @@ class Users implements UsersInterface
      */
     public function read($userId)
     {
-        /** @var User $user */
+        /** @var \Neomerx\Core\Models\User $user */
         /** @noinspection PhpUndefinedMethodInspection */
         $user = $this->user->selectById($userId)->withRoles()->firstOrFail();
         Permissions::check($user, Permission::view());
@@ -97,7 +97,7 @@ class Users implements UsersInterface
         $userRoles = S\array_get_value($input, self::PARAM_ROLES);
         unset($input[self::PARAM_ROLES]);
 
-        /** @var User $user */
+        /** @var \Neomerx\Core\Models\User $user */
         $user = $this->user->findOrFail($userId);
         Permissions::check($user, Permission::edit());
 
@@ -141,7 +141,7 @@ class Users implements UsersInterface
      */
     public function delete($userId)
     {
-        /** @var User $user */
+        /** @var \Neomerx\Core\Models\User $user */
         $user = $this->user->findOrFail($userId);
 
         Permissions::check($user, Permission::delete());
@@ -168,7 +168,7 @@ class Users implements UsersInterface
         $users = $builder->get();
 
         foreach ($users as $user) {
-            /** @var User $user */
+            /** @var \Neomerx\Core\Models\User $user */
             Permissions::check($user, Permission::view());
         }
 

@@ -92,7 +92,7 @@ class Characteristics implements CharacteristicsInterface
         DB::beginTransaction();
         try {
 
-            /** @var Characteristic $characteristic */
+            /** @var \Neomerx\Core\Models\Characteristic $characteristic */
             $characteristic = $this->characteristicModel->createOrFailResource($input);
 
             Permissions::check($characteristic, Permission::create());
@@ -122,7 +122,7 @@ class Characteristics implements CharacteristicsInterface
      */
     public function read($code)
     {
-        /** @var Characteristic $resource */
+        /** @var \Neomerx\Core\Models\Characteristic $resource */
         /** @noinspection PhpUndefinedMethodInspection */
         $resource = $this->characteristicModel->selectByCode($code)->withProperties()->withMeasurement()->firstOrFail();
 
@@ -144,7 +144,7 @@ class Characteristics implements CharacteristicsInterface
         DB::beginTransaction();
         try {
             // update resource
-            /** @var Characteristic $characteristic */
+            /** @var \Neomerx\Core\Models\Characteristic $characteristic */
             $characteristic = $this->characteristicModel->selectByCode($code)->firstOrFail();
 
             Permissions::check($characteristic, Permission::edit());
@@ -179,7 +179,7 @@ class Characteristics implements CharacteristicsInterface
      */
     public function delete($code)
     {
-        /** @var Characteristic $characteristic */
+        /** @var \Neomerx\Core\Models\Characteristic $characteristic */
         $characteristic = $this->characteristicModel->selectByCode($code)->firstOrFail();
 
         Permissions::check($characteristic, Permission::delete());
@@ -205,7 +205,7 @@ class Characteristics implements CharacteristicsInterface
 
         $resources = $builder->get();
 
-        /** @var Characteristic $resource */
+        /** @var \Neomerx\Core\Models\Characteristic $resource */
         foreach ($resources as $resource) {
             Permissions::check($resource, Permission::view());
         }

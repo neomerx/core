@@ -35,7 +35,7 @@ class ImageFormats implements ImageFormatsInterface
         DB::beginTransaction();
         try {
 
-            /** @var ImageFormat $format */
+            /** @var \Neomerx\Core\Models\ImageFormat $format */
             $format = $this->imageFormat->createOrFailResource($input);
             Permissions::check($format, Permission::create());
 
@@ -58,7 +58,7 @@ class ImageFormats implements ImageFormatsInterface
      */
     public function read($name)
     {
-        /** @var ImageFormat $format */
+        /** @var \Neomerx\Core\Models\ImageFormat $format */
         $format = $this->imageFormat->selectByName($name)->firstOrFail();
         Permissions::check($format, Permission::view());
         return $format;
@@ -69,7 +69,7 @@ class ImageFormats implements ImageFormatsInterface
      */
     public function update($name, array $input)
     {
-        /** @var ImageFormat $format */
+        /** @var \Neomerx\Core\Models\ImageFormat $format */
         $format = $this->imageFormat->selectByName($name)->firstOrFail();
         Permissions::check($format, Permission::edit());
         empty($input) ?: $format->updateOrFail($input);
@@ -82,7 +82,7 @@ class ImageFormats implements ImageFormatsInterface
      */
     public function delete($name)
     {
-        /** @var ImageFormat $format */
+        /** @var \Neomerx\Core\Models\ImageFormat $format */
         $format = $this->imageFormat->selectByName($name)->firstOrFail();
         Permissions::check($format, Permission::delete());
         $format->deleteOrFail();
@@ -98,6 +98,7 @@ class ImageFormats implements ImageFormatsInterface
         $formats = $this->imageFormat->all();
 
         foreach ($formats as $format) {
+            /** @var \Neomerx\Core\Models\ImageFormat $format */
             Permissions::check($format, Permission::view());
         }
 

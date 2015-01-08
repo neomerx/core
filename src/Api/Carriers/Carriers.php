@@ -34,7 +34,7 @@ class Carriers implements CarriersInterface
     {
         $tariffs = [];
 
-        /** @var Carrier $carrier */
+        /** @var \Neomerx\Core\Models\Carrier $carrier */
         foreach ($this->selectCarriers($shippingData) as $carrier) {
             $tariffs[] = [$carrier, $this->calculateTariff($shippingData, $carrier)];
         }

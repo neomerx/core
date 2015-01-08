@@ -69,7 +69,7 @@ class Values implements ValuesInterface
         /** @noinspection PhpUndefinedMethodInspection */
         $resources = $characteristic->values()->withProperties()->get();
 
-        /** @var CharacteristicValue $resource */
+        /** @var \Neomerx\Core\Models\CharacteristicValue $resource */
         foreach ($resources as $resource) {
             Permissions::check($resource, Permission::view());
         }
@@ -115,7 +115,7 @@ class Values implements ValuesInterface
         // check language properties are not empty
         count($propertiesInput) ? null : S\throwEx(new InvalidArgumentException('properties'));
 
-        /** @var CharacteristicValue $characteristicValue */
+        /** @var \Neomerx\Core\Models\CharacteristicValue $characteristicValue */
         $characteristicValue = $this->characteristicValue->createOrFailResource($input);
 
         Permissions::check($characteristicValue, Permission::create());
@@ -136,7 +136,7 @@ class Values implements ValuesInterface
      */
     public function read($code)
     {
-        /** @var CharacteristicValue $resource */
+        /** @var \Neomerx\Core\Models\CharacteristicValue $resource */
         /** @noinspection PhpParamsInspection */
         $resource = $this->characteristicValue->selectByCode($code)->withProperties()->firstOrFail();
         Permissions::check($resource, Permission::view());
@@ -155,7 +155,7 @@ class Values implements ValuesInterface
         DB::beginTransaction();
         try {
             // update resource
-            /** @var CharacteristicValue $characteristicValue */
+            /** @var \Neomerx\Core\Models\CharacteristicValue $characteristicValue */
             $characteristicValue = $this->characteristicValue->selectByCode($code)->firstOrFail();
 
             Permissions::check($characteristicValue, Permission::edit());
@@ -191,7 +191,7 @@ class Values implements ValuesInterface
      */
     public function delete($code)
     {
-        /** @var CharacteristicValue $characteristicValue */
+        /** @var \Neomerx\Core\Models\CharacteristicValue $characteristicValue */
         $characteristicValue = $this->characteristicValue->selectByCode($code)->firstOrFail();
 
         Permissions::check($characteristicValue, Permission::delete());

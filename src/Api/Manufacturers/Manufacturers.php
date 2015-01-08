@@ -98,7 +98,7 @@ class Manufacturers implements ManufacturersInterface
 
             // create address, update input and add resource
             $input[Address::FIELD_ID] = $this->addressApi->create($addressInput)->{Address::FIELD_ID};
-            /** @var Manufacturer $manufacturer */
+            /** @var \Neomerx\Core\Models\Manufacturer $manufacturer */
             $manufacturer = $this->manufacturer->createOrFailResource($input);
             Permissions::check($manufacturer, Permission::create());
             $manufacturerId = $manufacturer->{Manufacturer::FIELD_ID};
@@ -126,7 +126,7 @@ class Manufacturers implements ManufacturersInterface
      */
     public function read($code)
     {
-        /** @var Manufacturer $manufacturer */
+        /** @var \Neomerx\Core\Models\Manufacturer $manufacturer */
         /** @noinspection PhpUndefinedMethodInspection */
         $manufacturer = $this->manufacturer->selectByCode($code)->withAddress()->withProperties()->firstOrFail();
         Permissions::check($manufacturer, Permission::view());
@@ -148,7 +148,7 @@ class Manufacturers implements ManufacturersInterface
         DB::beginTransaction();
         try {
             // update manufacturer
-            /** @var Manufacturer $manufacturer */
+            /** @var \Neomerx\Core\Models\Manufacturer $manufacturer */
             $manufacturer = $this->manufacturer->selectByCode($code)->firstOrFail();
             // we always check manufacturer as later we change its properties. Don't move into 'if'.
             Permissions::check($manufacturer, Permission::edit());
@@ -187,7 +187,7 @@ class Manufacturers implements ManufacturersInterface
      */
     public function delete($code)
     {
-        /** @var Manufacturer $manufacturer */
+        /** @var \Neomerx\Core\Models\Manufacturer $manufacturer */
         $manufacturer = $this->manufacturer->selectByCode($code)->firstOrFail();
 
         Permissions::check($manufacturer, Permission::delete());
@@ -214,7 +214,7 @@ class Manufacturers implements ManufacturersInterface
         $manufacturers = $builder->get();
 
         foreach ($manufacturers as $manufacturer) {
-            /** @var Manufacturer $manufacturer */
+            /** @var \Neomerx\Core\Models\Manufacturer $manufacturer */
             Permissions::check($manufacturer, Permission::view());
         }
 

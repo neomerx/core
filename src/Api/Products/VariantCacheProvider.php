@@ -62,7 +62,7 @@ class VariantCacheProvider implements ItemProviderInterface
      */
     public function getObject($sku)
     {
-        /** @var Variant $variant */
+        /** @var \Neomerx\Core\Models\Variant $variant */
         $variant = $this->variantModel->selectByCode($sku)->with($this->relations)->firstOrFail();
         return [$variant, $this->getTags($variant)];
     }
@@ -79,7 +79,7 @@ class VariantCacheProvider implements ItemProviderInterface
         $variants = $this->variantModel->selectByCodes($skuArray)->with($this->relations)->get();
 
         $result = [];
-        /** @var Variant $variant */
+        /** @var \Neomerx\Core\Models\Variant $variant */
         foreach ($variants as $variant) {
             $result[$variant->sku] = [$variant, $this->getTags($variant)];
         }

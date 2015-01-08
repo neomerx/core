@@ -65,7 +65,7 @@ class Regions implements RegionsInterface
         DB::beginTransaction();
         try {
 
-            /** @var Region $region */
+            /** @var \Neomerx\Core\Models\Region $region */
             $region = $this->regionModel->createOrFailResource($input);
             Permissions::check($region, Permission::create());
 
@@ -86,7 +86,7 @@ class Regions implements RegionsInterface
      */
     public function read($code)
     {
-        /** @var Region $region */
+        /** @var \Neomerx\Core\Models\Region $region */
         /** @noinspection PhpParamsInspection */
         $region = $this->regionModel->selectByCode($code)->with(static::$regionRelations)->firstOrFail();
         Permissions::check($region, Permission::view());
@@ -107,7 +107,7 @@ class Regions implements RegionsInterface
             DB::beginTransaction();
             try {
 
-                /** @var Region $region */
+                /** @var \Neomerx\Core\Models\Region $region */
                 $region = $this->regionModel->selectByCode($code)->firstOrFail();
                 Permissions::check($region, Permission::edit());
                 $region->updateOrFail($input);
@@ -128,7 +128,7 @@ class Regions implements RegionsInterface
      */
     public function delete($code)
     {
-        /** @var Region $region */
+        /** @var \Neomerx\Core\Models\Region $region */
         $region = $this->regionModel->selectByCode($code)->firstOrFail();
         Permissions::check($region, Permission::delete());
         $region->deleteOrFail();
@@ -153,7 +153,7 @@ class Regions implements RegionsInterface
         $regions = $builder->get();
 
         foreach ($regions as $region) {
-            /** @var Region $region */
+            /** @var \Neomerx\Core\Models\Region $region */
             Permissions::check($region, Permission::view());
         }
 

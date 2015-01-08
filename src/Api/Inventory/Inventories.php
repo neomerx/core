@@ -113,7 +113,7 @@ class Inventories implements InventoriesInterface
 
             $this->setIsolationSerializable();
 
-            /** @var Inventory $inventoryRow */
+            /** @var \Neomerx\Core\Models\Inventory $inventoryRow */
             $inventoryRow = $this->inventoryModel->selectBySkuAndWarehouse($sku, $warehouseId)->first();
 
             if ($inventoryRow !== null) {
@@ -157,7 +157,7 @@ class Inventories implements InventoriesInterface
 
             $this->setIsolationSerializable();
 
-            /** @var Inventory $inventoryRow */
+            /** @var \Neomerx\Core\Models\Inventory $inventoryRow */
             $inventoryRow = $this->inventoryModel->selectBySkuAndWarehouse(
                 $variant->{Variant::FIELD_SKU},
                 $warehouse->{Warehouse::FIELD_ID}

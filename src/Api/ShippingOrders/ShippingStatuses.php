@@ -35,7 +35,7 @@ class ShippingStatuses implements ShippingStatusesInterface
         DB::beginTransaction();
         try {
 
-            /** @var ShippingOrderStatus $status */
+            /** @var \Neomerx\Core\Models\ShippingOrderStatus $status */
             $status = $this->shippingOrderStatus->createOrFailResource($input);
             Permissions::check($status, Permission::create());
             $allExecutedOk = true;
@@ -57,7 +57,7 @@ class ShippingStatuses implements ShippingStatusesInterface
      */
     public function read($code)
     {
-        /** @var ShippingOrderStatus $status */
+        /** @var \Neomerx\Core\Models\ShippingOrderStatus $status */
         $status = $this->shippingOrderStatus->selectByCode($code)->firstOrFail();
         Permissions::check($status, Permission::view());
         return $status;
@@ -68,7 +68,7 @@ class ShippingStatuses implements ShippingStatusesInterface
      */
     public function update($code, array $input)
     {
-        /** @var ShippingOrderStatus $status */
+        /** @var \Neomerx\Core\Models\ShippingOrderStatus $status */
         $status = $this->shippingOrderStatus->selectByCode($code)->firstOrFail();
         Permissions::check($status, Permission::edit());
         empty($input) ?: $status->updateOrFail($input);
@@ -81,7 +81,7 @@ class ShippingStatuses implements ShippingStatusesInterface
      */
     public function delete($code)
     {
-        /** @var ShippingOrderStatus $status */
+        /** @var \Neomerx\Core\Models\ShippingOrderStatus $status */
         $status = $this->shippingOrderStatus->selectByCode($code)->firstOrFail();
         Permissions::check($status, Permission::delete());
         $status->deleteOrFail();

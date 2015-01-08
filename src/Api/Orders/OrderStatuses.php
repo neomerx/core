@@ -49,7 +49,7 @@ class OrderStatuses implements OrderStatusesInterface
         DB::beginTransaction();
         try {
 
-            /** @var OrderStatus $status */
+            /** @var \Neomerx\Core\Models\OrderStatus $status */
             $status = $this->orderStatusModel->createOrFailResource($input);
 
             Permissions::check($status, Permission::create());
@@ -81,7 +81,7 @@ class OrderStatuses implements OrderStatusesInterface
      */
     public function read($code)
     {
-        /** @var OrderStatus $status */
+        /** @var \Neomerx\Core\Models\OrderStatus $status */
         /** @noinspection PhpParamsInspection */
         $status = $this->orderStatusModel->selectByCode($code)->withAvailableStatuses()->firstOrFail();
         Permissions::check($status, Permission::view());
@@ -93,7 +93,7 @@ class OrderStatuses implements OrderStatusesInterface
      */
     public function update($code, array $input)
     {
-        /** @var OrderStatus $status */
+        /** @var \Neomerx\Core\Models\OrderStatus $status */
         $status = $this->orderStatusModel->selectByCode($code)->firstOrFail();
         Permissions::check($status, Permission::edit());
         empty($input) ?: $status->updateOrFail($input);
@@ -123,7 +123,7 @@ class OrderStatuses implements OrderStatusesInterface
         Permissions::check($statusTo, Permission::view());
 
         /** @noinspection PhpUndefinedMethodInspection */
-        /** @var OrderStatusRule $rule */
+        /** @var \Neomerx\Core\Models\OrderStatusRule $rule */
         $rule = $this->ruleModel
             ->where(OrderStatusRule::FIELD_ID_ORDER_STATUS_FROM, '=', $statusFrom->{OrderStatus::FIELD_ID})
             ->where(OrderStatusRule::FIELD_ID_ORDER_STATUS_TO, '=', $statusTo->{OrderStatus::FIELD_ID})
@@ -139,7 +139,7 @@ class OrderStatuses implements OrderStatusesInterface
      */
     public function delete($code)
     {
-        /** @var OrderStatus $status */
+        /** @var \Neomerx\Core\Models\OrderStatus $status */
         $status = $this->orderStatusModel->selectByCode($code)->firstOrFail();
         Permissions::check($status, Permission::delete());
         $status->deleteOrFail();
@@ -155,7 +155,7 @@ class OrderStatuses implements OrderStatusesInterface
         $statuses = $this->orderStatusModel->withAvailableStatuses()->get();
 
         foreach ($statuses as $status) {
-            /** @var OrderStatus $status */
+            /** @var \Neomerx\Core\Models\OrderStatus $status */
             Permissions::check($status, Permission::view());
         }
 

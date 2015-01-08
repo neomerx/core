@@ -82,7 +82,7 @@ class ProductSpecification
             $lastPosition = $this->specificationModel->selectMaxPosition($productId);
             $lastPosition = $lastPosition ?: 0;
             foreach ($valueIds as $valueId) {
-                /** @var Specification $spec */
+                /** @var \Neomerx\Core\Models\Specification $spec */
                 /** @noinspection PhpUndefinedMethodInspection */
                 $spec = App::make(Specification::BIND_NAME);
                 $spec->fill([
@@ -166,7 +166,7 @@ class ProductSpecification
             ->firstOrFail()->{CharacteristicValue::FIELD_ID};
 
         /** @noinspection PhpUndefinedMethodInspection */
-        /** @var Specification $spec */
+        /** @var \Neomerx\Core\Models\Specification $spec */
         $spec = $product->specification()->where(CharacteristicValue::FIELD_ID, '=', $valueId)->firstOrFail();
         $spec->makeVariable();
 

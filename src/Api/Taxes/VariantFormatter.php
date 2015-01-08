@@ -60,7 +60,7 @@ class VariantFormatter implements FormatItemInterface
      */
     public function format($variant)
     {
-        /** @var Variant $variant */
+        /** @var \Neomerx\Core\Models\Variant $variant */
 
         return [(object)$this->converter->convert($variant), $this->tagProvider->getTags($variant)];
     }

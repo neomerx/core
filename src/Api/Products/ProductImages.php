@@ -85,7 +85,7 @@ class ProductImages
         Permissions::check($product, Permission::edit());
 
         /** @noinspection PhpUndefinedMethodInspection */
-        /** @var ProductImage $productImage */
+        /** @var \Neomerx\Core\Models\ProductImage $productImage */
         $productImage = $product->productImages()->where(ProductImage::FIELD_ID, '=', $imageId)->firstOrFail();
         $productImage->setAsCover();
 

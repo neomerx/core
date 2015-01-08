@@ -140,13 +140,13 @@ class SupplyOrders implements SupplyOrdersInterface
         DB::beginTransaction();
         try {
 
-            /** @var SupplyOrder $supplyOrder */
+            /** @var \Neomerx\Core\Models\SupplyOrder $supplyOrder */
             $supplyOrder = $this->orderModel->createOrFailResource($orderData);
             Permissions::check($supplyOrder, Permission::create());
 
             foreach ($details as $detailsRow) {
                 $details = new SupplyOrderDetails($detailsRow);
-                /** @var SupplyOrderDetails $saved */
+                /** @var \Neomerx\Core\Models\SupplyOrderDetails $saved */
                 /** @noinspection PhpUndefinedMethodInspection */
                 $saved = $supplyOrder->details()->save($details);
                 ($saved !== false and $saved->exists) ?: S\throwEx(new ValidationException($saved->getValidator()));
@@ -175,7 +175,7 @@ class SupplyOrders implements SupplyOrdersInterface
     public function createDetails(SupplyOrder $supplyOrder, array $input)
     {
         $detailsData = $this->parseDetailInputOnCreate($input);
-        /** @var SupplyOrderDetails $details */
+        /** @var \Neomerx\Core\Models\SupplyOrderDetails $details */
         /** @noinspection PhpUndefinedMethodInspection */
         $details = App::make(SupplyOrderDetails::BIND_NAME);
         $details->fill($detailsData);
@@ -184,7 +184,7 @@ class SupplyOrders implements SupplyOrdersInterface
         DB::beginTransaction();
         try {
 
-            /** @var SupplyOrderDetails $details */
+            /** @var \Neomerx\Core\Models\SupplyOrderDetails $details */
             /** @noinspection PhpUndefinedMethodInspection */
             $details = $supplyOrder->details()->save($details);
             ($details !== false and $details->exists) ?: S\throwEx(new ValidationException($details->getValidator()));
@@ -211,7 +211,7 @@ class SupplyOrders implements SupplyOrdersInterface
      */
     public function read($supplyOrderId)
     {
-        /** @var SupplyOrder $supplyOrder */
+        /** @var \Neomerx\Core\Models\SupplyOrder $supplyOrder */
         $supplyOrder = $this->orderModel->with(static::$supplyOrderRelations)->findOrFail($supplyOrderId);
         Permissions::check($supplyOrder, Permission::view());
         return $supplyOrder;
@@ -222,7 +222,7 @@ class SupplyOrders implements SupplyOrdersInterface
      */
     public function readDetails($detailsId)
     {
-        /** @var SupplyOrderDetails $detailsRow */
+        /** @var \Neomerx\Core\Models\SupplyOrderDetails $detailsRow */
         $detailsRow = $this->detailsModel->findOrFail($detailsId);
         Permissions::check($detailsRow, Permission::view());
         return $detailsRow;
@@ -233,7 +233,7 @@ class SupplyOrders implements SupplyOrdersInterface
      */
     public function update($supplyOrderId, array $input)
     {
-        /** @var SupplyOrder $supplyOrder */
+        /** @var \Neomerx\Core\Models\SupplyOrder $supplyOrder */
         list($supplyOrder, $orderInput) = $this->parseInputOnUpdate($supplyOrderId, $input);
         Permissions::check($supplyOrder, Permission::edit());
 
@@ -285,7 +285,7 @@ class SupplyOrders implements SupplyOrdersInterface
      */
     public function delete($supplyOrderId)
     {
-        /** @var SupplyOrder $supplyOrder */
+        /** @var \Neomerx\Core\Models\SupplyOrder $supplyOrder */
         $supplyOrder = $this->orderModel->findOrFail($supplyOrderId);
 
         Permissions::check($supplyOrder, Permission::delete());
@@ -300,7 +300,7 @@ class SupplyOrders implements SupplyOrdersInterface
      */
     public function deleteDetails($detailsId)
     {
-        /** @var SupplyOrderDetails $details */
+        /** @var \Neomerx\Core\Models\SupplyOrderDetails $details */
         $details = $this->detailsModel->findOrFail($detailsId);
 
         Permissions::check($details, Permission::delete());
@@ -327,7 +327,7 @@ class SupplyOrders implements SupplyOrdersInterface
         $resources = $builder->get();
 
         foreach ($resources as $order) {
-            /** @var SupplyOrder $order */
+            /** @var \Neomerx\Core\Models\SupplyOrder $order */
             Permissions::check($order, Permission::view());
         }
 
@@ -378,19 +378,19 @@ class SupplyOrders implements SupplyOrdersInterface
         $noDetailsInValidated = ($statusName === SupplyOrder::STATUS_VALIDATED and empty($details));
         $noDetailsInValidated ? S\throwEx(new InvalidArgumentException(self::PARAM_DETAILS)) : null;
 
-        /** @var Supplier $supplier */
+        /** @var \Neomerx\Core\Models\Supplier $supplier */
         $supplier = $this->supplierModel->selectByCode($supplierCode)->firstOrFail([Supplier::FIELD_ID]);
         Permissions::check($supplier, Permission::view());
 
-        /** @var Warehouse $warehouse */
+        /** @var \Neomerx\Core\Models\Warehouse $warehouse */
         $warehouse = $this->warehouseModel->selectByCode($warehouseCode)->firstOrFail([Warehouse::FIELD_ID]);
         Permissions::check($warehouse, Permission::view());
 
-        /** @var Currency $currency */
+        /** @var \Neomerx\Core\Models\Currency $currency */
         $currency = $this->currencyModel->selectByCode($currencyCode)->firstOrFail([Currency::FIELD_ID]);
         Permissions::check($currency, Permission::view());
 
-        /** @var Language $language */
+        /** @var \Neomerx\Core\Models\Language $language */
         $language = $this->languageModel->selectByCode($languageCode)->firstOrFail([Language::FIELD_ID]);
         Permissions::check($language, Permission::view());
 
@@ -444,7 +444,7 @@ class SupplyOrders implements SupplyOrdersInterface
         }
 
         $parsedOrderInput = [];
-        /** @var SupplyOrder $supplyOrder */
+        /** @var \Neomerx\Core\Models\SupplyOrder $supplyOrder */
         $supplyOrder = $this->orderModel->findOrFail($supplyOrderId);
 
         $statusName = S\array_get_value($input, self::PARAM_STATUS);
@@ -462,28 +462,28 @@ class SupplyOrders implements SupplyOrdersInterface
         }
 
         if ($supplierCode !== null) {
-            /** @var Supplier $supplier */
+            /** @var \Neomerx\Core\Models\Supplier $supplier */
             $supplier = $this->supplierModel->selectByCode($supplierCode)->firstOrFail([Supplier::FIELD_ID]);
             Permissions::check($supplier, Permission::view());
             $parsedOrderInput[Supplier::FIELD_ID] = $supplier->{Supplier::FIELD_ID};
         }
 
         if ($warehouseCode !== null) {
-            /** @var Warehouse $warehouse */
+            /** @var \Neomerx\Core\Models\Warehouse $warehouse */
             $warehouse = $this->warehouseModel->selectByCode($warehouseCode)->firstOrFail([Warehouse::FIELD_ID]);
             Permissions::check($warehouse, Permission::view());
             $parsedOrderInput[Warehouse::FIELD_ID] = $warehouse->{Warehouse::FIELD_ID};
         }
 
         if ($currencyCode !== null) {
-            /** @var Currency $currency */
+            /** @var \Neomerx\Core\Models\Currency $currency */
             $currency = $this->currencyModel->selectByCode($currencyCode)->firstOrFail([Currency::FIELD_ID]);
             Permissions::check($currency, Permission::view());
             $parsedOrderInput[Currency::FIELD_ID] = $currency->{Currency::FIELD_ID};
         }
 
         if ($languageCode !== null) {
-            /** @var Language $language */
+            /** @var \Neomerx\Core\Models\Language $language */
             $language = $this->languageModel->selectByCode($languageCode)->firstOrFail([Language::FIELD_ID]);
             Permissions::check($language, Permission::view());
             $parsedOrderInput[Language::FIELD_ID] = $language->{Language::FIELD_ID};

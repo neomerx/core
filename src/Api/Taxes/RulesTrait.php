@@ -122,7 +122,7 @@ trait RulesTrait
             $inputTo   = empty($inputTo)   ? null : $inputTo;
             $inputMask = empty($inputMask) ? null : $inputMask;
 
-            /** @var TaxRulePostcode $taxRulePostCode */
+            /** @var \Neomerx\Core\Models\TaxRulePostcode $taxRulePostCode */
             /** @noinspection PhpUndefinedMethodInspection */
             $taxRulePostCode = App::make(TaxRulePostcode::BIND_NAME);
             $taxRulePostCode->fill(S\array_filter_nulls([
@@ -146,7 +146,7 @@ trait RulesTrait
     {
         $result = [];
         foreach ($customerTypes as $typeCode) {
-            /** @var TaxRuleCustomerType $rule */
+            /** @var \Neomerx\Core\Models\TaxRuleCustomerType $rule */
             /** @noinspection PhpUndefinedMethodInspection */
             $rule = App::make(TaxRuleCustomerType::BIND_NAME);
             if ($typeCode !== self::$ruleFilterAll) {
@@ -169,7 +169,7 @@ trait RulesTrait
     {
         $result = [];
         foreach ($productTypes as $typeCode) {
-            /** @var TaxRuleProductType $rule */
+            /** @var \Neomerx\Core\Models\TaxRuleProductType $rule */
             /** @noinspection PhpUndefinedMethodInspection */
             $rule = App::make(TaxRuleProductType::BIND_NAME);
             if ($typeCode !== self::$ruleFilterAll) {

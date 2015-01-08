@@ -63,7 +63,7 @@ class Currencies implements CurrenciesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Currency $currency */
+            /** @var \Neomerx\Core\Models\Currency $currency */
             $currency = $this->currency->createOrFailResource($input);
             Permissions::check($currency, Permission::create());
 
@@ -92,7 +92,7 @@ class Currencies implements CurrenciesInterface
      */
     public function read($code)
     {
-        /** @var Currency $currency */
+        /** @var \Neomerx\Core\Models\Currency $currency */
         $currency = $this->currency->selectByCode($code)->withProperties()->firstOrFail();
 
         Permissions::check($currency, Permission::view());
@@ -111,7 +111,7 @@ class Currencies implements CurrenciesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Currency $currency */
+            /** @var \Neomerx\Core\Models\Currency $currency */
             $currency = $this->currency->selectByCode($code)->firstOrFail();
 
             Permissions::check($currency, Permission::edit());
@@ -143,7 +143,7 @@ class Currencies implements CurrenciesInterface
      */
     public function delete($code)
     {
-        /** @var Currency $currency */
+        /** @var \Neomerx\Core\Models\Currency $currency */
         $currency = $this->currency->selectByCode($code)->firstOrFail();
 
         Permissions::check($currency, Permission::delete());
@@ -162,7 +162,7 @@ class Currencies implements CurrenciesInterface
         $currencies = $this->currency->newQuery()->withProperties()->get();
 
         foreach ($currencies as $currency) {
-            /** @var Currency $currency */
+            /** @var \Neomerx\Core\Models\Currency $currency */
             Permissions::check($currency, Permission::view());
         }
 

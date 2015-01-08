@@ -44,7 +44,7 @@ class Addresses implements AddressesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Address $address */
+            /** @var \Neomerx\Core\Models\Address $address */
             $address = $this->addressModel->createOrFailResource($input);
             Permissions::check($address, Permission::create());
 
@@ -65,7 +65,7 @@ class Addresses implements AddressesInterface
      */
     public function read($addressId)
     {
-        /** @var Address $resource */
+        /** @var \Neomerx\Core\Models\Address $resource */
         /** @noinspection PhpUndefinedMethodInspection */
         $resource = $this->addressModel->newQuery()->withRegionAndCountry()->findOrFail($addressId);
         Permissions::check($resource, Permission::view());
@@ -77,7 +77,7 @@ class Addresses implements AddressesInterface
      */
     public function update($addressId, array $input)
     {
-        /** @var Address $address */
+        /** @var \Neomerx\Core\Models\Address $address */
         $address = $this->addressModel->findOrFail($addressId);
         $this->updateModel($address, $input);
     }
@@ -97,7 +97,7 @@ class Addresses implements AddressesInterface
      */
     public function delete($addressId)
     {
-        /** @var Address $address */
+        /** @var \Neomerx\Core\Models\Address $address */
         $address = $this->addressModel->newQuery()->findOrFail($addressId);
         $this->deleteModel($address);
     }

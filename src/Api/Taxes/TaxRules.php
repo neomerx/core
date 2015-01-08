@@ -11,11 +11,7 @@ use \Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Models\CustomerType;
 use \Neomerx\Core\Models\ProductTaxType;
-use \Neomerx\Core\Models\TaxRulePostcode;
-use \Neomerx\Core\Models\TaxRuleTerritory;
 use \Neomerx\Core\Auth\Facades\Permissions;
-use \Neomerx\Core\Models\TaxRuleProductType;
-use \Neomerx\Core\Models\TaxRuleCustomerType;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 /**
@@ -101,7 +97,7 @@ class TaxRules implements TaxRulesInterface
         DB::beginTransaction();
         try {
 
-            /** @var TaxRule $rule */
+            /** @var \Neomerx\Core\Models\TaxRule $rule */
             /** @noinspection PhpUndefinedMethodInspection */
             $rule = App::make(TaxRule::BIND_NAME);
             $rule->fill($ruleData);
@@ -131,7 +127,7 @@ class TaxRules implements TaxRulesInterface
     public function read($ruleId)
     {
 
-        /** @var TaxRule $resource */
+        /** @var \Neomerx\Core\Models\TaxRule $resource */
         $resource = $this->ruleModel->with(static::$relations)->findOrFail($ruleId);
         Permissions::check($resource, Permission::view());
         return $resource;
@@ -148,7 +144,7 @@ class TaxRules implements TaxRulesInterface
         DB::beginTransaction();
         try {
 
-            /** @var TaxRule $rule */
+            /** @var \Neomerx\Core\Models\TaxRule $rule */
             $rule = $this->ruleModel->with(static::$relations)->findOrFail($ruleId);
             Permissions::check($rule, Permission::edit());
             $rule->fill($ruleData);
@@ -185,7 +181,7 @@ class TaxRules implements TaxRulesInterface
      */
     public function delete($ruleId)
     {
-        /** @var TaxRule $resource */
+        /** @var \Neomerx\Core\Models\TaxRule $resource */
         $resource = $this->ruleModel->findOrFail($ruleId);
         Permissions::check($resource, Permission::delete());
         $resource->deleteOrFail();
@@ -268,25 +264,25 @@ class TaxRules implements TaxRulesInterface
         array $customerTypes,
         array $productTypes
     ) {
-        /** @var TaxRuleTerritory $territory */
+        /** @var \Neomerx\Core\Models\TaxRuleTerritory $territory */
         foreach ($territories as $territory) {
             $territory->{TaxRule::FIELD_ID} = $ruleId;
             $territory->saveOrFail();
         }
 
-        /** @var TaxRulePostcode $postcode */
+        /** @var \Neomerx\Core\Models\TaxRulePostcode $postcode */
         foreach ($postcodes as $postcode) {
             $postcode->{TaxRule::FIELD_ID} = $ruleId;
             $postcode->saveOrFail();
         }
 
-        /** @var TaxRuleCustomerType $type */
+        /** @var \Neomerx\Core\Models\TaxRuleCustomerType $type */
         foreach ($customerTypes as $type) {
             $type->{TaxRule::FIELD_ID} = $ruleId;
             $type->saveOrFail();
         }
 
-        /** @var TaxRuleProductType $type */
+        /** @var \Neomerx\Core\Models\TaxRuleProductType $type */
         foreach ($productTypes as $type) {
             $type->{TaxRule::FIELD_ID} = $ruleId;
             $type->saveOrFail();

@@ -75,7 +75,7 @@ class Taxes implements TaxesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Tax $tax */
+            /** @var \Neomerx\Core\Models\Tax $tax */
             $tax = $this->taxModel->createOrFailResource($input);
             Permissions::check($tax, Permission::create());
 
@@ -98,7 +98,7 @@ class Taxes implements TaxesInterface
      */
     public function read($code)
     {
-        /** @var Tax $tax */
+        /** @var \Neomerx\Core\Models\Tax $tax */
         $tax = $this->taxModel->selectByCode($code)->firstOrFail();
         Permissions::check($tax, Permission::view());
         return $tax;
@@ -109,7 +109,7 @@ class Taxes implements TaxesInterface
      */
     public function update($code, array $input)
     {
-        /** @var Tax $tax */
+        /** @var \Neomerx\Core\Models\Tax $tax */
         $tax = $this->taxModel->selectByCode($code)->firstOrFail();
         Permissions::check($tax, Permission::edit());
         empty($input) ?: $tax->updateOrFail($input);
@@ -122,7 +122,7 @@ class Taxes implements TaxesInterface
      */
     public function delete($code)
     {
-        /** @var Tax $tax */
+        /** @var \Neomerx\Core\Models\Tax $tax */
         $tax = $this->taxModel->selectByCode($code)->firstOrFail();
         Permissions::check($tax, Permission::delete());
         $tax->deleteOrFail();
@@ -232,7 +232,7 @@ class Taxes implements TaxesInterface
     private function sumTaxes(Collection $taxes, array $parameters, &$total, array &$details)
     {
         $totalItemTaxes = 0;
-        /** @var Tax $tax */
+        /** @var \Neomerx\Core\Models\Tax $tax */
         foreach ($taxes as $tax) {
             $itemTax = $tax->calculate(
                 array_merge($parameters, [Tax::PARAM_CUMULATIVE_TAX => $totalItemTaxes])

@@ -98,7 +98,7 @@ class Suppliers implements SuppliersInterface
 
             // create address, update input and add resource
             $input[Address::FIELD_ID] = $this->addressApi->create($addressInput)->{Address::FIELD_ID};
-            /** @var Supplier $supplier */
+            /** @var \Neomerx\Core\Models\Supplier $supplier */
             $supplier = $this->supplier->createOrFailResource($input);
             Permissions::check($supplier, Permission::create());
             $supplierId = $supplier->{Supplier::FIELD_ID};
@@ -126,7 +126,7 @@ class Suppliers implements SuppliersInterface
      */
     public function read($code)
     {
-        /** @var Supplier $supplier */
+        /** @var \Neomerx\Core\Models\Supplier $supplier */
         /** @noinspection PhpUndefinedMethodInspection */
         $supplier = $this->supplier->selectByCode($code)->withAddress()->withProperties()->firstOrFail();
         Permissions::check($supplier, Permission::view());
@@ -148,7 +148,7 @@ class Suppliers implements SuppliersInterface
         DB::beginTransaction();
         try {
             // update resource
-            /** @var Supplier $supplier */
+            /** @var \Neomerx\Core\Models\Supplier $supplier */
             $supplier = $this->supplier->selectByCode($code)->firstOrFail();
             // always check supplier because later we update its properties
             Permissions::check($supplier, Permission::edit());
@@ -190,7 +190,7 @@ class Suppliers implements SuppliersInterface
      */
     public function delete($code)
     {
-        /** @var Supplier $supplier */
+        /** @var \Neomerx\Core\Models\Supplier $supplier */
         $supplier = $this->supplier->selectByCode($code)->firstOrFail();
 
         Permissions::check($supplier, Permission::delete());
@@ -217,7 +217,7 @@ class Suppliers implements SuppliersInterface
         $suppliers = $builder->get();
 
         foreach ($suppliers as $supplier) {
-            /** @var Supplier $supplier */
+            /** @var \Neomerx\Core\Models\Supplier $supplier */
             Permissions::check($supplier, Permission::view());
         }
 

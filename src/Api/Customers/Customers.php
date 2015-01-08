@@ -102,7 +102,7 @@ class Customers extends CustomerAddresses implements CustomersInterface
         DB::beginTransaction();
         try {
 
-            /** @var Customer $customer */
+            /** @var \Neomerx\Core\Models\Customer $customer */
             $customer = $this->customerModel->createOrFailResource($input);
             Permissions::check($customer, Permission::create());
 
@@ -126,7 +126,7 @@ class Customers extends CustomerAddresses implements CustomersInterface
     public function read($customerId)
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        /** @var Customer $customer */
+        /** @var \Neomerx\Core\Models\Customer $customer */
         $customer = $this->customerModel->newQuery()
             ->withTypeRiskAndLanguage()
             ->withDefaultAddresses()
@@ -148,7 +148,7 @@ class Customers extends CustomerAddresses implements CustomersInterface
         DB::beginTransaction();
         try {
 
-            /** @var Customer $customer */
+            /** @var \Neomerx\Core\Models\Customer $customer */
             $customer = $this->customerModel->findOrFail($customerId);
             Permissions::check($customer, Permission::edit());
             empty($input) ?: $customer->updateOrFail($input);
@@ -199,7 +199,7 @@ class Customers extends CustomerAddresses implements CustomersInterface
         $customers = $builder->get();
 
         foreach ($customers as $customer) {
-            /** @var Customer $customer */
+            /** @var \Neomerx\Core\Models\Customer $customer */
             Permissions::check($customer, Permission::view());
         }
 

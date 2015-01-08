@@ -82,7 +82,7 @@ class VariantCrud
         DB::beginTransaction();
         try {
 
-            /** @var Variant $variant */
+            /** @var \Neomerx\Core\Models\Variant $variant */
             $variant = $this->variantModel->createOrFailResource($input);
             $variantId = $variant->{Variant::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
@@ -155,7 +155,7 @@ class VariantCrud
      */
     public function delete($variantSKU)
     {
-        /** @var Variant $variant */
+        /** @var \Neomerx\Core\Models\Variant $variant */
         $variant = $this->variantModel->selectByCode($variantSKU)->firstOrFail();
         Permissions::check($variant->product, Permission::edit());
         $variant->deleteOrFail();

@@ -35,7 +35,7 @@ class CustomerTypes implements CustomerTypesInterface
         DB::beginTransaction();
         try {
 
-            /** @var CustomerType $resource */
+            /** @var \Neomerx\Core\Models\CustomerType $resource */
             $resource = $this->customerType->createOrFailResource($input);
             Permissions::check($resource, Permission::create());
 
@@ -58,7 +58,7 @@ class CustomerTypes implements CustomerTypesInterface
      */
     public function read($code)
     {
-        /** @var CustomerType $resource */
+        /** @var \Neomerx\Core\Models\CustomerType $resource */
         $resource = $this->customerType->selectByCode($code)->firstOrFail();
         Permissions::check($resource, Permission::view());
         return $resource;
@@ -69,7 +69,7 @@ class CustomerTypes implements CustomerTypesInterface
      */
     public function update($code, array $input)
     {
-        /** @var CustomerType $resource */
+        /** @var \Neomerx\Core\Models\CustomerType $resource */
         $resource = $this->customerType->selectByCode($code)->firstOrFail();
         Permissions::check($resource, Permission::edit());
         empty($input) ?: $resource->updateOrFail($input);
@@ -82,7 +82,7 @@ class CustomerTypes implements CustomerTypesInterface
      */
     public function delete($code)
     {
-        /** @var CustomerType $resource */
+        /** @var \Neomerx\Core\Models\CustomerType $resource */
         $resource = $this->customerType->selectByCode($code)->firstOrFail();
         Permissions::check($resource, Permission::delete());
         $resource->deleteOrFail();

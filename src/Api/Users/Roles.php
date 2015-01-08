@@ -35,7 +35,7 @@ class Roles implements RolesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Role $role */
+            /** @var \Neomerx\Core\Models\Role $role */
             $role = $this->role->createOrFailResource($input);
             Permissions::check($role, Permission::create());
 
@@ -58,7 +58,7 @@ class Roles implements RolesInterface
      */
     public function read($code)
     {
-        /** @var Role $role */
+        /** @var \Neomerx\Core\Models\Role $role */
         $role = $this->role->selectByCode($code)->firstOrFail();
         Permissions::check($role, Permission::view());
         return $role;
@@ -69,7 +69,7 @@ class Roles implements RolesInterface
      */
     public function update($code, array $input)
     {
-        /** @var Role $role */
+        /** @var \Neomerx\Core\Models\Role $role */
         $role = $this->role->selectByCode($code)->firstOrFail();
         Permissions::check($role, Permission::edit());
         empty($input) ?: $role->updateOrFail($input);
@@ -82,7 +82,7 @@ class Roles implements RolesInterface
      */
     public function delete($isoCode)
     {
-        /** @var Role $role */
+        /** @var \Neomerx\Core\Models\Role $role */
         $role = $this->role->selectByCode($isoCode)->firstOrFail();
         Permissions::check($role, Permission::delete());
         $role->deleteOrFail();

@@ -5,7 +5,6 @@ use \Neomerx\Core\Models\Store;
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Api\Customers;
 use \Neomerx\Core\Models\Address;
-use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Models\Customer;
 use \Neomerx\Core\Auth\Permission;
 use \Illuminate\Support\Facades\App;
@@ -63,7 +62,7 @@ trait CreateTrait
 
         $orderData = S\array_filter_nulls($orderData);
 
-        /** @var Order $order */
+        /** @var \Neomerx\Core\Models\Order $order */
         /** @noinspection PhpUndefinedMethodInspection */
         $order = App::make(Order::BIND_NAME);
         $order->fill($orderData);
@@ -77,7 +76,7 @@ trait CreateTrait
         /** @var CartItem $cartItem */
         foreach ($shippingData->getCart() as $cartItem) {
 
-            /** @var Variant $item */
+            /** @var \Neomerx\Core\Models\Variant $item */
             $item = $cartItem->getVariant();
 
             $inventoryApi->makeReserve($item, $reserveAtWarehouse, $cartItem->getQuantity());

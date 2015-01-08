@@ -35,7 +35,7 @@ class Languages implements LanguagesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Language $language */
+            /** @var \Neomerx\Core\Models\Language $language */
             $language = $this->language->createOrFailResource($input);
             Permissions::check($language, Permission::create());
 
@@ -58,7 +58,7 @@ class Languages implements LanguagesInterface
      */
     public function read($isoCode)
     {
-        /** @var Language $language */
+        /** @var \Neomerx\Core\Models\Language $language */
         $language = $this->language->selectByCode($isoCode)->firstOrFail();
         Permissions::check($language, Permission::view());
         return $language;
@@ -69,7 +69,7 @@ class Languages implements LanguagesInterface
      */
     public function update($isoCode, array $input)
     {
-        /** @var Language $language */
+        /** @var \Neomerx\Core\Models\Language $language */
         $language = $this->language->selectByCode($isoCode)->firstOrFail();
         Permissions::check($language, Permission::edit());
         empty($input) ?: $language->updateOrFail($input);
@@ -82,7 +82,7 @@ class Languages implements LanguagesInterface
      */
     public function delete($isoCode)
     {
-        /** @var Language $language */
+        /** @var \Neomerx\Core\Models\Language $language */
         $language = $this->language->selectByCode($isoCode)->firstOrFail();
         Permissions::check($language, Permission::delete());
         $language->deleteOrFail();
@@ -98,6 +98,7 @@ class Languages implements LanguagesInterface
         $languages = $this->language->all();
 
         foreach ($languages as $language) {
+            /** @var \Neomerx\Core\Models\Language $language */
             Permissions::check($language, Permission::view());
         }
 

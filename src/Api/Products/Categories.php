@@ -87,7 +87,7 @@ class Categories
                 /** @noinspection PhpUndefinedMethodInspection */
                 $lastPosInTheCategory = $this->productCategoryModel->selectMaxPosition($newCategoryId);
                 $lastPosInTheCategory = ($lastPosInTheCategory === null ? 1 : ++$lastPosInTheCategory);
-                /** @var ProductCategory $productCategory */
+                /** @var \Neomerx\Core\Models\ProductCategory $productCategory */
                 /** @noinspection PhpUndefinedMethodInspection */
                 $productCategory = App::make(ProductCategory::BIND_NAME);
                 $productCategory->fill([

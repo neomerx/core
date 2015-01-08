@@ -139,7 +139,7 @@ class ProductCrud
         DB::beginTransaction();
         try {
 
-            /** @var Product $product */
+            /** @var \Neomerx\Core\Models\Product $product */
             $product = $this->productModel->createOrFailResource($input);
             Permissions::check($product, Permission::create());
             $productId = $product->{Product::FIELD_ID};
@@ -172,7 +172,7 @@ class ProductCrud
     public function read($code)
     {
         /** @noinspection PhpParamsInspection */
-        /** @var Product $product */
+        /** @var \Neomerx\Core\Models\Product $product */
         $product = $this->productModel->selectByCode($code)->with(static::$relations)->firstOrFail();
         Permissions::check($product, Permission::view());
         return $product;
@@ -199,7 +199,7 @@ class ProductCrud
         $products = $builder->get();
 
         foreach ($products as $product) {
-            /** @var Product $product */
+            /** @var \Neomerx\Core\Models\Product $product */
             Permissions::check($product, Permission::view());
         }
 
@@ -225,7 +225,7 @@ class ProductCrud
         DB::beginTransaction();
         try {
             // update resource
-            /** @var Product $product */
+            /** @var \Neomerx\Core\Models\Product $product */
             $product = $this->productModel->selectByCode($sku)->firstOrFail();
             Permissions::check($product, Permission::edit());
             empty($input) ?: $product->updateOrFail($input);
@@ -260,7 +260,7 @@ class ProductCrud
      */
     public function delete($sku)
     {
-        /** @var Product $product */
+        /** @var \Neomerx\Core\Models\Product $product */
         $product = $this->productModel->selectByCode($sku)->firstOrFail();
         Permissions::check($product, Permission::delete());
         $product->deleteOrFail();
@@ -292,11 +292,11 @@ class ProductCrud
         }
 
         if (isset($input[Products::PARAM_DEFAULT_CATEGORY_CODE])) {
-            /** @var Category $category */
+            /** @var \Neomerx\Core\Models\Category $category */
             $category = $this->categoryModel
                 ->selectByCode($input[Products::PARAM_DEFAULT_CATEGORY_CODE])->firstOrFail();
             unset($input[Products::PARAM_DEFAULT_CATEGORY_CODE]);
-            $extraFields['id_category_default'] = $category->getKey();
+            $extraFields[Product::FIELD_ID_CATEGORY_DEFAULT] = $category->getKey();
         }
 
         return array_merge($input, $extraFields);

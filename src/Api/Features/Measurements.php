@@ -95,7 +95,7 @@ class Measurements implements MeasurementsInterface
      */
     public function read($code)
     {
-        /** @var Measurement $measurement */
+        /** @var \Neomerx\Core\Models\Measurement $measurement */
         $measurement = $this->measurement->selectByCode($code)->withProperties()->firstOrFail();
         Permissions::check($measurement, Permission::view());
         return $measurement;
@@ -113,7 +113,7 @@ class Measurements implements MeasurementsInterface
         DB::beginTransaction();
         try {
             // update resource
-            /** @var Measurement $measurement */
+            /** @var \Neomerx\Core\Models\Measurement $measurement */
             $measurement = $this->measurement->selectByCode($code)->firstOrFail();
             Permissions::check($measurement, Permission::edit());
             empty($input) ?: $measurement->updateOrFail($input);
@@ -143,7 +143,7 @@ class Measurements implements MeasurementsInterface
      */
     public function delete($code)
     {
-        /** @var Measurement $measurement */
+        /** @var \Neomerx\Core\Models\Measurement $measurement */
         $measurement = $this->measurement->selectByCode($code)->firstOrFail();
 
         Permissions::check($measurement, Permission::delete());
@@ -162,7 +162,7 @@ class Measurements implements MeasurementsInterface
         $measurements = $this->measurement->newQuery()->withProperties()->get();
 
         foreach ($measurements as $resource) {
-            /** @var Measurement $resource */
+            /** @var \Neomerx\Core\Models\Measurement $resource */
             Permissions::check($resource, Permission::view());
         }
 

@@ -105,11 +105,11 @@ class ShippingOrders implements ShippingOrdersInterface
         $statusId = $this->shippingOrderStatusModel->selectByCode($shippingStatusCode)
             ->firstOrFail([ShippingOrderStatus::FIELD_ID])->{ShippingOrderStatus::FIELD_ID};
 
-        /** @var Order $order */
+        /** @var \Neomerx\Core\Models\Order $order */
         $order = $this->orderModel->findOrFail($orderId);
         Permissions::check($order, Permission::edit());
 
-        /** @var Carrier $carrier */
+        /** @var \Neomerx\Core\Models\Carrier $carrier */
         $carrier = $this->carrierModel->selectByCode($carrierCode)->firstOrFail([Carrier::FIELD_ID]);
         Permissions::check($carrier, Permission::view());
 
@@ -117,7 +117,7 @@ class ShippingOrders implements ShippingOrdersInterface
         DB::beginTransaction();
         try {
 
-            /** @var ShippingOrder $shippingOrder */
+            /** @var \Neomerx\Core\Models\ShippingOrder $shippingOrder */
             $shippingOrder = $this->shippingOrderModel->createOrFailResource([
                 ShippingOrder::FIELD_ID_ORDER                 => $orderId,
                 ShippingOrder::FIELD_ID_CARRIER               => $carrier->{Carrier::FIELD_ID},
@@ -159,7 +159,7 @@ class ShippingOrders implements ShippingOrdersInterface
      */
     public function read($shippingOrderId)
     {
-        /** @var ShippingOrder $shippingOrder */
+        /** @var \Neomerx\Core\Models\ShippingOrder $shippingOrder */
         /** @noinspection PhpUndefinedMethodInspection */
         $shippingOrder = $this->shippingOrderModel->newQuery()->withCarrierAndStatus()->findOrFail($shippingOrderId);
 
@@ -177,7 +177,7 @@ class ShippingOrders implements ShippingOrdersInterface
         $shippingStatusCode = S\array_get_value($input, self::PARAM_STATUS_CODE);
         !is_null($shippingStatusCode) ?: S\throwEx(new InvalidArgumentException(self::PARAM_STATUS_CODE));
 
-        /** @var ShippingOrder $shippingOrder */
+        /** @var \Neomerx\Core\Models\ShippingOrder $shippingOrder */
         $shippingOrder = $this->shippingOrderModel->newQuery()->findOrFail($shippingOrderId);
         Permissions::check($shippingOrder, Permission::edit());
 
@@ -195,7 +195,7 @@ class ShippingOrders implements ShippingOrdersInterface
      */
     public function delete($shippingOrderId)
     {
-        /** @var ShippingOrder $shippingOrder */
+        /** @var \Neomerx\Core\Models\ShippingOrder $shippingOrder */
         $shippingOrder = $this->shippingOrderModel->newQuery()->findOrFail($shippingOrderId);
 
         Permissions::check($shippingOrder, Permission::delete());
@@ -223,7 +223,7 @@ class ShippingOrders implements ShippingOrdersInterface
         $shippingOrders = $builder->get();
 
         foreach ($shippingOrders as $shippingOrder) {
-            /** @var ShippingOrder $shippingOrder */
+            /** @var \Neomerx\Core\Models\ShippingOrder $shippingOrder */
             Permissions::check($shippingOrder, Permission::view());
         }
 

@@ -82,7 +82,7 @@ class Related
 
             // Add
             foreach ($toAdd as $relatedProductId) {
-                /** @var ProductRelated $relatedProduct */
+                /** @var \Neomerx\Core\Models\ProductRelated $relatedProduct */
                 /** @noinspection PhpUndefinedMethodInspection */
                 $relatedProduct = App::make(ProductRelated::BIND_NAME);
                 $relatedProduct->fill([

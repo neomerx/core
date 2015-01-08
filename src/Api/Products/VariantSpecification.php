@@ -3,7 +3,6 @@
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Auth\Permission;
-use \Neomerx\Core\Models\Specification;
 use \Neomerx\Core\Auth\Facades\Permissions;
 use \Neomerx\Core\Models\CharacteristicValue;
 
@@ -47,7 +46,7 @@ class VariantSpecification
             ->selectByCode($valueCode)->firstOrFail()->{CharacteristicValue::FIELD_ID};
 
         /** @noinspection PhpUndefinedMethodInspection */
-        /** @var Specification $spec */
+        /** @var \Neomerx\Core\Models\Specification $spec */
         $spec = $variant->specification()->where(CharacteristicValue::FIELD_ID, '=', $valueId)->firstOrFail();
         $spec->makeNonVariable();
 

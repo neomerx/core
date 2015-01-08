@@ -1,12 +1,9 @@
 <?php namespace Neomerx\Core\Api\Orders;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\Store;
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Models\Order;
-use \Neomerx\Core\Api\Cart\Cart;
 use \Neomerx\Core\Models\Variant;
-use \Neomerx\Core\Models\Customer;
 use \Neomerx\Core\Auth\Permission;
 use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Models\Warehouse;
@@ -137,9 +134,9 @@ class Orders implements OrdersInterface
      */
     public function create(array $input)
     {
-        /** @var Cart $cart */
-        /** @var Customer $customer */
-        /** @var Store $store */
+        /** @var \Neomerx\Core\Api\Cart\Cart $cart */
+        /** @var \Neomerx\Core\Models\Store $store */
+        /** @var \Neomerx\Core\Models\Customer $customer */
 
         list($carrier, $store,
             $isNewCustomer, $customerData, $customer,
@@ -218,7 +215,7 @@ class Orders implements OrdersInterface
      */
     public function read($orderId)
     {
-        /** @var Order $order */
+        /** @var \Neomerx\Core\Models\Order $order */
         $order = $this->orderModel->with(static::$orderRelations)->findOrFail($orderId);
 
         Permissions::check($order, Permission::view());
@@ -235,11 +232,11 @@ class Orders implements OrdersInterface
         $orderStatusCode = S\array_get_value($input, self::PARAM_ORDER_STATUS_CODE);
         !is_null($orderStatusCode) ?: S\throwEx(new InvalidArgumentException(self::PARAM_ORDER_STATUS_CODE));
 
-        /** @var Order $order */
+        /** @var \Neomerx\Core\Models\Order $order */
         $order = $this->orderModel->findOrFail($orderId);
         Permissions::check($order, Permission::edit());
 
-        /** var OrderStatusModel $availableStatus */
+        /** @var \Neomerx\Core\Models\OrderStatus $availableStatus */
         foreach ($order->status->available_statuses as $availableStatus) {
             if ($availableStatus->code === $orderStatusCode) {
                 $order->{OrderStatus::FIELD_ID} = $availableStatus->{OrderStatus::FIELD_ID};
@@ -260,7 +257,7 @@ class Orders implements OrdersInterface
      */
     public function delete($orderId)
     {
-        /** @var Order $order */
+        /** @var \Neomerx\Core\Models\Order $order */
         $order = $this->orderModel->findOrFail($orderId);
         Permissions::check($order, Permission::delete());
         $order->deleteOrFail();
@@ -285,7 +282,7 @@ class Orders implements OrdersInterface
         $orders = $builder->get();
 
         foreach ($orders as $order) {
-            /** @var Order $order */
+            /** @var \Neomerx\Core\Models\Order $order */
             Permissions::check($order, Permission::view());
         }
 

@@ -243,7 +243,7 @@ class Categories implements CategoriesInterface
 
             foreach ($productPositions as $sku => $position) {
 
-                /** @var Product $product */
+                /** @var \Neomerx\Core\Models\Product $product */
                 $product = $this->productModel->selectByCode($sku)->firstOrFail([Product::FIELD_ID]);
                 $productId = $product->{Product::FIELD_ID};
                 /** @noinspection PhpUndefinedMethodInspection */

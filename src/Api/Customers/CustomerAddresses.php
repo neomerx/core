@@ -67,7 +67,7 @@ class CustomerAddresses implements CustomerAddressesInterface
         /** @noinspection PhpUndefinedMethodInspection */
         $addresses = $customer->addresses()->withRegionAndCountry()->get();
 
-        /** @var Address $address */
+        /** @var \Neomerx\Core\Models\Address $address */
         foreach ($addresses as $address) {
             Permissions::check($address, Permission::view());
         }
@@ -109,7 +109,7 @@ class CustomerAddresses implements CustomerAddressesInterface
         try {
 
             // create address
-            /** @var Address $address */
+            /** @var \Neomerx\Core\Models\Address $address */
             $address = $this->addressApi->create($input);
 
             // create link between address and customer
@@ -229,11 +229,11 @@ class CustomerAddresses implements CustomerAddressesInterface
      * @param int    $addressId
      * @param string $type
      *
-     * @return CustomerAddress
+     * @return \Neomerx\Core\Models\CustomerAddress
      */
     private function getCustomerAndAddressLink($customerId, $addressId, $type)
     {
-        /** @var CustomerAddress $customerAddress */
+        /** @var \Neomerx\Core\Models\CustomerAddress $customerAddress */
         /** @noinspection PhpUndefinedMethodInspection */
         $customerAddress = $this->customerAddressModel->where([
             CustomerAddress::FIELD_ID_CUSTOMER => $customerId,

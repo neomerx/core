@@ -35,7 +35,7 @@ class ProductTaxTypes implements ProductTaxTypesInterface
         DB::beginTransaction();
         try {
 
-            /** @var ProductTaxType $resource */
+            /** @var \Neomerx\Core\Models\ProductTaxType $resource */
             $resource = $this->productTaxType->createOrFailResource($input);
             Permissions::check($resource, Permission::create());
 
@@ -58,7 +58,7 @@ class ProductTaxTypes implements ProductTaxTypesInterface
      */
     public function read($code)
     {
-        /** @var ProductTaxType $resource */
+        /** @var \Neomerx\Core\Models\ProductTaxType $resource */
         $resource = $this->productTaxType->selectByCode($code)->firstOrFail();
         Permissions::check($resource, Permission::view());
         return $resource;
@@ -69,7 +69,7 @@ class ProductTaxTypes implements ProductTaxTypesInterface
      */
     public function update($code, array $input)
     {
-        /** @var ProductTaxType $resource */
+        /** @var \Neomerx\Core\Models\ProductTaxType $resource */
         $resource = $this->productTaxType->selectByCode($code)->firstOrFail();
         Permissions::check($resource, Permission::edit());
         empty($input) ?: $resource->updateOrFail($input);
@@ -82,7 +82,7 @@ class ProductTaxTypes implements ProductTaxTypesInterface
      */
     public function delete($code)
     {
-        /** @var ProductTaxType $resource */
+        /** @var \Neomerx\Core\Models\ProductTaxType $resource */
         $resource = $this->productTaxType->selectByCode($code)->firstOrFail();
         Permissions::check($resource, Permission::delete());
         $resource->deleteOrFail();
