@@ -24,7 +24,7 @@ class CustomerAddresses implements CustomerAddressesInterface
     /**
      * @var Customer
      */
-    private $customerModel;
+    protected $customerModel;
 
     /**
      * @var Addresses

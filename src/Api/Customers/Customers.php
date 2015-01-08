@@ -25,11 +25,6 @@ class Customers extends CustomerAddresses implements CustomersInterface
     const BIND_NAME    = __CLASS__;
 
     /**
-     * @var Customer
-     */
-    private $customerModel;
-
-    /**
      * @var CustomerRisk
      */
     private $riskModel;
@@ -82,7 +77,6 @@ class Customers extends CustomerAddresses implements CustomersInterface
     ) {
         parent::__construct($customer, $addressApi, $customerAddress, $region);
 
-        $this->customerModel         = $customer;
         $this->riskModel     = $customerRisk;
         $this->languageModel = $language;
         $this->typeModel     = $customerType;

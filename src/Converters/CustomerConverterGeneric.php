@@ -25,12 +25,12 @@ class CustomerConverterGeneric implements ConverterInterface
         ($customer instanceof Customer) ?: S\throwEx(new InvalidArgumentException('customer'));
 
         $customerRisk = $customer->risk;
-        $customerArr  = $customer->attributesToArray();
+        $result = array_merge($customer->attributesToArray(), [
+            Api::PARAM_TYPE_CODE     => $customer->type->code,
+            Api::PARAM_RISK_CODE     => $customerRisk ? $customerRisk->code : null,
+            Api::PARAM_LANGUAGE_CODE => $customer->language->iso_code,
+        ]);
 
-        $customerArr[Api::PARAM_TYPE_CODE]     = $customer->type->code;
-        $customerArr[Api::PARAM_RISK_CODE]     = $customerRisk ? $customerRisk->code : null;
-        $customerArr[Api::PARAM_LANGUAGE_CODE] = $customer->language->iso_code;
-
-        return $customerArr;
+        return $result;
     }
 }

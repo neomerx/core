@@ -136,6 +136,9 @@ class SupplyOrders implements SupplyOrdersInterface
     {
         list($orderData, $details) = $this->parseInputOnCreate($input);
 
+        /** @var array $orderData */
+        /** @var array $details */
+
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
         try {
@@ -178,8 +181,8 @@ class SupplyOrders implements SupplyOrdersInterface
     public function createDetails(SupplyOrder $supplyOrder, array $input)
     {
         $detailsData = $this->parseDetailInputOnCreate($input);
-        /** @var \Neomerx\Core\Models\SupplyOrderDetails $details */
         /** @noinspection PhpUndefinedMethodInspection */
+        /** @var \Neomerx\Core\Models\SupplyOrderDetails $details */
         $details = App::make(SupplyOrderDetails::BIND_NAME);
         $details->fill($detailsData);
 
@@ -188,8 +191,8 @@ class SupplyOrders implements SupplyOrdersInterface
         try {
 
             /** @noinspection PhpUndefinedMethodInspection */
-            $details = $supplyOrder->details()->save($details);
             /** @var \Neomerx\Core\Models\SupplyOrderDetails $details */
+            $details = $supplyOrder->details()->save($details);
             if (isset($details) and $details->exists) {
                 Permissions::check($details, Permission::create());
             } else {
