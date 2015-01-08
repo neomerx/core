@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Converters;
 
+use \Neomerx\Core\Models\Role;
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\Role as Model;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 class RoleConverterGeneric implements ConverterInterface
@@ -9,19 +9,21 @@ class RoleConverterGeneric implements ConverterInterface
     const BIND_NAME = __CLASS__;
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param Role $role
+     *
+     * @return array
      */
-    public function convert($resource = null)
+    public function convert($role = null)
     {
-        if ($resource === null) {
+        if ($role === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($role instanceof Role) ?: S\throwEx(new InvalidArgumentException('role'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
+        $result = $role->attributesToArray();
 
         return $result;
     }

@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\ImageFormat as Model;
+use \Neomerx\Core\Models\ImageFormat;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 class ImageFormatConverterGeneric implements ConverterInterface
@@ -11,21 +11,19 @@ class ImageFormatConverterGeneric implements ConverterInterface
     /**
      * Format model to array representation.
      *
-     * @param Model $resource
+     * @param ImageFormat $imageFormat
      *
      * @return array
      */
-    public function convert($resource = null)
+    public function convert($imageFormat = null)
     {
-        if ($resource === null) {
+        if ($imageFormat === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($imageFormat instanceof ImageFormat) ?: S\throwEx(new InvalidArgumentException('imageFormat'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
+        $result = $imageFormat->attributesToArray();
 
         return $result;
     }

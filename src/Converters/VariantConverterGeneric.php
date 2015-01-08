@@ -21,8 +21,6 @@ class VariantConverterGeneric extends ProductConverterGeneric
 
         ($variant instanceof Variant) ?: S\throwEx(new InvalidArgumentException('variant'));
 
-        /** @var Variant $variant */
-
         return array_merge(parent::convert($variant->product), $variant->attributesToArray());
     }
 }

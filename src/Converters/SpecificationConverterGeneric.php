@@ -1,13 +1,10 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
+use \Neomerx\Core\Models\Specification;
 use \Neomerx\Core\Models\Characteristic;
 use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Models\CharacteristicValue;
-use \Neomerx\Core\Models\MeasurementProperties;
-use \Neomerx\Core\Models\Specification as Model;
-use \Neomerx\Core\Models\CharacteristicProperties;
-use \Neomerx\Core\Models\CharacteristicValueProperties;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Products\SpecificationInterface as Api;
 
@@ -59,7 +56,7 @@ class SpecificationConverterGeneric implements ConverterInterface
             return null;
         }
 
-        ($collection instanceof Collection) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($collection instanceof Collection) ?: S\throwEx(new InvalidArgumentException('collection'));
 
         // convert 'tree' to (possibly) sparse matrix
         list($numberOfSpecRows, $sparseMatrix) = $this->getSparseLanguageSpecRowMatrix($collection);
@@ -88,9 +85,9 @@ class SpecificationConverterGeneric implements ConverterInterface
         $index = 0;
         foreach ($specs as $spec) {
 
-            ($spec instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+            ($spec instanceof Specification) ?: S\throwEx(new InvalidArgumentException('specs'));
 
-            /** @var Model $spec */
+            /** @var \Neomerx\Core\Models\Specification $spec */
 
             $value          = $spec->value;
             $characteristic = $value->characteristic;
@@ -98,7 +95,7 @@ class SpecificationConverterGeneric implements ConverterInterface
 
             $characteristicCode = $characteristic->code;
             foreach ($characteristic->properties as $characteristicProp) {
-                /** @var CharacteristicProperties $characteristicProp */
+                /** @var \Neomerx\Core\Models\CharacteristicProperties $characteristicProp */
                 $languageCode = $characteristicProp->language->iso_code;
                 $nameInLang   = $characteristicProp->name;
                 $result[$languageCode][$index][CharacteristicValue::FIELD_CHARACTERISTIC] = [
@@ -109,10 +106,10 @@ class SpecificationConverterGeneric implements ConverterInterface
 
             $valueCode = $value->code;
             foreach ($value->properties as $valueProp) {
-                /** @var CharacteristicValueProperties $valueProp */
+                /** @var \Neomerx\Core\Models\CharacteristicValueProperties $valueProp */
                 $languageCode = $valueProp->language->iso_code;
                 $valueInLang  = $valueProp->value;
-                $result[$languageCode][$index][Model::FIELD_VALUE] = [
+                $result[$languageCode][$index][Specification::FIELD_VALUE] = [
                     Api::PARAM_PAIR_CODE  => $valueCode,
                     Api::PARAM_PAIR_VALUE => $valueInLang
                 ];
@@ -121,7 +118,7 @@ class SpecificationConverterGeneric implements ConverterInterface
             if ($measurement !== null) {
                 $measurementCode = $measurement->code;
                 foreach ($measurement->properties as $measurementProp) {
-                    /** @var MeasurementProperties $measurementProp */
+                    /** @var \Neomerx\Core\Models\MeasurementProperties $measurementProp */
                     $languageCode = $measurementProp->language->iso_code;
                     $nameInLang   = $measurementProp->name;
                     $result[$languageCode][$index][Characteristic::FIELD_MEASUREMENT] = [
@@ -158,7 +155,8 @@ class SpecificationConverterGeneric implements ConverterInterface
                                 $specRows[$i][CharacteristicValue::FIELD_CHARACTERISTIC] : null,
 
                         Api::PARAM_VALUE =>
-                            isset($specRows[$i][Model::FIELD_VALUE]) ? $specRows[$i][Model::FIELD_VALUE] : null,
+                            isset($specRows[$i][Specification::FIELD_VALUE]) ?
+                                $specRows[$i][Specification::FIELD_VALUE] : null,
 
                         Api::PARAM_MEASUREMENT =>
                             isset($specRows[$i][Characteristic::FIELD_MEASUREMENT]) ?

@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
+use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Models\ImagePath;
 use \Neomerx\Core\Models\ImageFormat;
-use \Neomerx\Core\Models\Image as Model;
+use \Neomerx\Core\Models\ImageProperties;
 use \Neomerx\Core\Api\Images\ImageInterface as Api;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
-use \Neomerx\Core\Models\ImageProperties as PropertiesModel;
 
 class ImageConverterGeneric implements ConverterInterface
 {
@@ -67,25 +67,23 @@ class ImageConverterGeneric implements ConverterInterface
     /**
      * Format model to array representation.
      *
-     * @param Model $resource
+     * @param Image $image
      *
      * @return array
      */
-    public function convert($resource = null)
+    public function convert($image = null)
     {
-        if ($resource === null) {
+        if ($image === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($image instanceof Image) ?: S\throwEx(new InvalidArgumentException('image'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
+        $result = $image->attributesToArray();
 
         $paths = [];
-        foreach ($resource->paths as $path) {
-            /** @var ImagePath $path */
+        foreach ($image->paths as $path) {
+            /** @var \Neomerx\Core\Models\ImagePath $path */
             $format = $path->format;
             if (!isset($this->formatFiler) or strcasecmp($this->formatFiler, $format->name) === 0) {
                 $formatInfo = $format->attributesToArray();
@@ -97,8 +95,8 @@ class ImageConverterGeneric implements ConverterInterface
 
         $result[Api::PARAM_PATHS]      = $paths;
         $result[Api::PARAM_PROPERTIES] = $this->regroupLanguageProperties(
-            $resource->properties,
-            PropertiesModel::FIELD_LANGUAGE,
+            $image->properties,
+            ImageProperties::FIELD_LANGUAGE,
             $this->getLanguageFilter()
         );
 

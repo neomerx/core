@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\Region as Model;
+use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Territories\RegionsInterface as Api;
 
@@ -12,22 +12,20 @@ class RegionConverterGeneric implements ConverterInterface
     /**
      * Format model to array representation.
      *
-     * @param Model $resource
+     * @param Region $region
      *
      * @return array
      */
-    public function convert($resource = null)
+    public function convert($region = null)
     {
-        if ($resource === null) {
+        if ($region === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($region instanceof Region) ?: S\throwEx(new InvalidArgumentException('region'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
-        $result[Api::PARAM_COUNTRY_CODE] = $resource->country->code;
+        $result = $region->attributesToArray();
+        $result[Api::PARAM_COUNTRY_CODE] = $region->country->code;
 
         return $result;
     }

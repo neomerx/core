@@ -1,10 +1,10 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\Category as Model;
+use \Neomerx\Core\Models\Category;
+use \Neomerx\Core\Models\CategoryProperties;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Categories\CategoriesInterface as Api;
-use \Neomerx\Core\Models\CategoryProperties as PropertiesModel;
 
 class CategoryConverterGeneric implements ConverterInterface
 {
@@ -44,25 +44,23 @@ class CategoryConverterGeneric implements ConverterInterface
     /**
      * Format model to array representation.
      *
-     * @param Model $resource
+     * @param Category $category
      *
      * @return array
      */
-    public function convert($resource = null)
+    public function convert($category = null)
     {
-        if ($resource === null) {
+        if ($category === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($category instanceof Category) ?: S\throwEx(new InvalidArgumentException('category'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
+        $result = $category->attributesToArray();
 
         $result[Api::PARAM_PROPERTIES] = $this->regroupLanguageProperties(
-            $resource->properties,
-            PropertiesModel::FIELD_LANGUAGE,
+            $category->properties,
+            CategoryProperties::FIELD_LANGUAGE,
             $this->getLanguageFilter()
         );
 

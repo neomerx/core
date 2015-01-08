@@ -1,11 +1,8 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
+use \Neomerx\Core\Models\TaxRule;
 use \Neomerx\Core\Models\TaxRulePostcode;
-use \Neomerx\Core\Models\TaxRule as Model;
-use \Neomerx\Core\Models\TaxRuleTerritory;
-use \Neomerx\Core\Models\TaxRuleProductType;
-use \Neomerx\Core\Models\TaxRuleCustomerType;
 use \Neomerx\Core\Api\Taxes\TaxRulesInterface as Api;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
@@ -16,37 +13,39 @@ class TaxRuleConverterGeneric implements ConverterInterface
     const MSG_CODE_RULES_ALL   = 'nm::application.rules_all';
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param TaxRule $taxRule
+     *
+     * @return array
      */
-    public function convert($resource = null)
+    public function convert($taxRule = null)
     {
-        if ($resource === null) {
+        if ($taxRule === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($taxRule instanceof TaxRule) ?: S\throwEx(new InvalidArgumentException('taxRule'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
-        $result[Model::FIELD_TERRITORIES]    = $this->convertTerritories($resource);
-        $result[Model::FIELD_POSTCODES]      = $this->convertPostcodes($resource);
-        $result[Model::FIELD_PRODUCT_TYPES]  = $this->convertProductTypes($resource);
-        $result[Model::FIELD_CUSTOMER_TYPES] = $this->convertCustomerTypes($resource);
+        $result = $taxRule->attributesToArray();
+        $result[TaxRule::FIELD_TERRITORIES]    = $this->convertTerritories($taxRule);
+        $result[TaxRule::FIELD_POSTCODES]      = $this->convertPostcodes($taxRule);
+        $result[TaxRule::FIELD_PRODUCT_TYPES]  = $this->convertProductTypes($taxRule);
+        $result[TaxRule::FIELD_CUSTOMER_TYPES] = $this->convertCustomerTypes($taxRule);
 
         return $result;
     }
 
     /**
-     * @param Model $resource
+     * @param TaxRule $taxRule
      *
      * @return array
      */
-    private function convertTerritories(Model $resource)
+    private function convertTerritories(TaxRule $taxRule)
     {
         $tmp = [];
-        foreach ($resource->territories as $rule) {
-            /** @var TaxRuleTerritory $rule */
+        foreach ($taxRule->territories as $rule) {
+            /** @var \Neomerx\Core\Models\TaxRuleTerritory $rule */
             $code = ($rule->territory_id === null ? Api::PARAM_FILTER_ALL : $rule->territory->code);
             $type = substr($rule->territory_type, strrpos($rule->territory_type, '\\') + 1);
             $tmp[] = [
@@ -58,15 +57,15 @@ class TaxRuleConverterGeneric implements ConverterInterface
     }
 
     /**
-     * @param Model $resource
+     * @param TaxRule $taxRule
      *
      * @return array
      */
-    private function convertPostcodes(Model $resource)
+    private function convertPostcodes(TaxRule $taxRule)
     {
         $tmp = [];
-        foreach ($resource->postcodes as $rule) {
-            /** @var TaxRulePostcode $rule */
+        foreach ($taxRule->postcodes as $rule) {
+            /** @var \Neomerx\Core\Models\TaxRulePostcode $rule */
             $tmp[] = [
                 TaxRulePostcode::FIELD_POSTCODE_FROM => $rule->postcode_from,
                 TaxRulePostcode::FIELD_POSTCODE_TO   => $rule->postcode_to,
@@ -77,15 +76,15 @@ class TaxRuleConverterGeneric implements ConverterInterface
     }
 
     /**
-     * @param Model $resource
+     * @param TaxRule $taxRule
      *
      * @return array
      */
-    private function convertProductTypes(Model $resource)
+    private function convertProductTypes(TaxRule $taxRule)
     {
         $tmp = [];
-        foreach ($resource->product_types as $rule) {
-            /** @var TaxRuleProductType $rule */
+        foreach ($taxRule->product_types as $rule) {
+            /** @var \Neomerx\Core\Models\TaxRuleProductType $rule */
             $type = $rule->type;
             $tmp[] = [
                 Api::PARAM_TYPE_CODE => ($type === null ? Api::PARAM_FILTER_ALL : $type->code),
@@ -96,15 +95,15 @@ class TaxRuleConverterGeneric implements ConverterInterface
     }
 
     /**
-     * @param Model $resource
+     * @param TaxRule $taxRule
      *
      * @return array
      */
-    private function convertCustomerTypes(Model $resource)
+    private function convertCustomerTypes(TaxRule $taxRule)
     {
         $tmp = [];
-        foreach ($resource->customer_types as $rule) {
-            /** @var TaxRuleCustomerType $rule */
+        foreach ($taxRule->customer_types as $rule) {
+            /** @var \Neomerx\Core\Models\TaxRuleCustomerType $rule */
             $type = $rule->type;
             $tmp[] = [
                 Api::PARAM_TYPE_CODE => ($type === null ? Api::PARAM_FILTER_ALL : $type->code),

@@ -1,10 +1,10 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\Currency as Model;
+use \Neomerx\Core\Models\Currency;
+use \Neomerx\Core\Models\CurrencyProperties;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Currencies\CurrenciesInterface as Api;
-use \Neomerx\Core\Models\CurrencyProperties as PropertiesModel;
 
 class CurrencyConverterGeneric implements ConverterInterface
 {
@@ -44,25 +44,23 @@ class CurrencyConverterGeneric implements ConverterInterface
     /**
      * Format model to array representation.
      *
-     * @param Model $resource
+     * @param Currency $currency
      *
      * @return array
      */
-    public function convert($resource = null)
+    public function convert($currency = null)
     {
-        if ($resource === null) {
+        if ($currency === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($currency instanceof Currency) ?: S\throwEx(new InvalidArgumentException('currency'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
+        $result = $currency->attributesToArray();
 
         $result[Api::PARAM_PROPERTIES] = $this->regroupLanguageProperties(
-            $resource->properties,
-            PropertiesModel::FIELD_LANGUAGE,
+            $currency->properties,
+            CurrencyProperties::FIELD_LANGUAGE,
             $this->getLanguageFilter()
         );
 

@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\ProductImage as Model;
+use \Neomerx\Core\Models\ProductImage;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 class ProductImageConverterGeneric extends ImageConverterGeneric
@@ -11,21 +11,19 @@ class ProductImageConverterGeneric extends ImageConverterGeneric
     /**
      * Format model to array representation.
      *
-     * @param Model $resource
+     * @param ProductImage $productImage
      *
      * @return array
      */
-    public function convert($resource = null)
+    public function convert($productImage = null)
     {
-        if ($resource === null) {
+        if ($productImage === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($productImage instanceof ProductImage) ?: S\throwEx(new InvalidArgumentException('productImage'));
 
-        /** @var Model $resource */
-
-        $result = array_merge($resource->attributesToArray(), parent::convert($resource->image));
+        $result = array_merge($productImage->attributesToArray(), parent::convert($productImage->image));
 
         return $result;
     }

@@ -1,10 +1,10 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\Characteristic as Model;
+use \Neomerx\Core\Models\Characteristic;
+use \Neomerx\Core\Models\CharacteristicProperties;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Features\CharacteristicsInterface as Api;
-use \Neomerx\Core\Models\CharacteristicProperties as PropertiesModel;
 
 class CharacteristicConverterGeneric implements ConverterInterface
 {
@@ -44,26 +44,24 @@ class CharacteristicConverterGeneric implements ConverterInterface
     /**
      * Format model to array representation.
      *
-     * @param Model $resource
+     * @param Characteristic $characteristic
      *
      * @return array
      */
-    public function convert($resource = null)
+    public function convert($characteristic = null)
     {
-        if ($resource === null) {
+        if ($characteristic === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($characteristic instanceof Characteristic) ?: S\throwEx(new InvalidArgumentException('characteristic'));
 
-        /** @var Model $resource */
+        $result = $characteristic->attributesToArray();
 
-        $result = $resource->attributesToArray();
-
-        $result[Api::PARAM_MEASUREMENT_CODE] = $resource->measurement->code;
+        $result[Api::PARAM_MEASUREMENT_CODE] = $characteristic->measurement->code;
         $result[Api::PARAM_PROPERTIES]       = $this->regroupLanguageProperties(
-            $resource->properties,
-            PropertiesModel::FIELD_LANGUAGE,
+            $characteristic->properties,
+            CharacteristicProperties::FIELD_LANGUAGE,
             $this->getLanguageFilter()
         );
 

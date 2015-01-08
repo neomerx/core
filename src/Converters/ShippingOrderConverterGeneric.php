@@ -10,7 +10,11 @@ class ShippingOrderConverterGeneric implements ConverterInterface
     const BIND_NAME = __CLASS__;
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param ShippingOrder $shippingOrder
+     *
+     * @return array
      */
     public function convert($shippingOrder = null)
     {
@@ -19,8 +23,6 @@ class ShippingOrderConverterGeneric implements ConverterInterface
         }
 
         ($shippingOrder instanceof ShippingOrder) ?: S\throwEx(new InvalidArgumentException('shippingOrder'));
-
-        /** @var ShippingOrder $shippingOrder */
 
         $result = $shippingOrder->attributesToArray();
 

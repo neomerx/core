@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\Language as Model;
+use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 class LanguageConverterGeneric implements ConverterInterface
@@ -11,21 +11,19 @@ class LanguageConverterGeneric implements ConverterInterface
     /**
      * Format model to array representation.
      *
-     * @param Model $resource
+     * @param Language $language
      *
      * @return array
      */
-    public function convert($resource = null)
+    public function convert($language = null)
     {
-        if ($resource === null) {
+        if ($language === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($language instanceof Language) ?: S\throwEx(new InvalidArgumentException('language'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
+        $result = $language->attributesToArray();
 
         return $result;
     }

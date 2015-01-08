@@ -1,8 +1,7 @@
 <?php namespace Neomerx\Core\Converters;
 
+use \Neomerx\Core\Models\Tax;
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\TaxRule;
-use \Neomerx\Core\Models\Tax as Model;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 class TaxConverterGeneric implements ConverterInterface
@@ -10,25 +9,27 @@ class TaxConverterGeneric implements ConverterInterface
     const BIND_NAME = __CLASS__;
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param Tax $tax
+     *
+     * @return array
      */
-    public function convert($resource = null)
+    public function convert($tax = null)
     {
-        if ($resource === null) {
+        if ($tax === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($tax instanceof Tax) ?: S\throwEx(new InvalidArgumentException('tax'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
+        $result = $tax->attributesToArray();
         $rules = [];
-        foreach ($resource->rules as $rule) {
-            /** @var TaxRule $rule */
+        foreach ($tax->rules as $rule) {
+            /** @var \Neomerx\Core\Models\TaxRule $rule */
             $rules[] = $rule->attributesToArray();
         }
-        $result[Model::FIELD_RULES] = $rules;
+        $result[Tax::FIELD_RULES] = $rules;
 
         return $result;
     }

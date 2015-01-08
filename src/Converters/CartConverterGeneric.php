@@ -2,7 +2,6 @@
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Api\Cart\Cart;
-use \Neomerx\Core\Api\Cart\CartItem;
 use \Neomerx\Core\Api\Cart\CartInterface as Api;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
@@ -11,7 +10,11 @@ class CartConverterGeneric implements ConverterInterface
     const BIND_NAME = __CLASS__;
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param Cart $cart
+     *
+     * @return array
      */
     public function convert($cart = null)
     {
@@ -21,8 +24,6 @@ class CartConverterGeneric implements ConverterInterface
 
         ($cart instanceof Cart) ?: S\throwEx(new InvalidArgumentException('cart'));
 
-        /** @var Cart $cart */
-
         $result = [];
 
         $result[Api::PARAM_WEIGHT]        = $cart->getWeight();
@@ -31,7 +32,7 @@ class CartConverterGeneric implements ConverterInterface
         $result[Api::PARAM_MAX_DIMENSION] = $cart->getMaxDimension();
 
         $cartItems = [];
-        /** @var CartItem $cartItem */
+        /** @var \Neomerx\Core\Api\Cart\CartItem $cartItem */
         foreach ($cart as $cartItem) {
             $cartItems[] = [
                 Api::PARAM_ITEM_SKU          => $cartItem->getVariant()->sku,

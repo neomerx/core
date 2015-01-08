@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\ProductTaxType as Model;
+use \Neomerx\Core\Models\ProductTaxType;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 class ProductTaxTypeConverterGeneric implements ConverterInterface
@@ -9,18 +9,20 @@ class ProductTaxTypeConverterGeneric implements ConverterInterface
     const BIND_NAME = __CLASS__;
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param ProductTaxType $productTaxType
+     *
+     * @return array
      */
-    public function convert($resource = null)
+    public function convert($productTaxType = null)
     {
-        if ($resource === null) {
+        if ($productTaxType === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($productTaxType instanceof ProductTaxType) ?: S\throwEx(new InvalidArgumentException('productTaxType'));
 
-        /** @var Model $resource */
-
-        return $resource->attributesToArray();
+        return $productTaxType->attributesToArray();
     }
 }

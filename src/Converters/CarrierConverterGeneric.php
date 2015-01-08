@@ -1,10 +1,10 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\Carrier as Model;
+use \Neomerx\Core\Models\Carrier;
+use \Neomerx\Core\Models\CarrierProperties;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Carriers\CarriersInterface as Api;
-use \Neomerx\Core\Models\CarrierProperties as PropertiesModel;
 
 class CarrierConverterGeneric implements ConverterInterface
 {
@@ -42,23 +42,25 @@ class CarrierConverterGeneric implements ConverterInterface
     }
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param Carrier $carrier
+     *
+     * @return array
      */
-    public function convert($resource = null)
+    public function convert($carrier = null)
     {
-        if ($resource === null) {
+        if ($carrier === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($carrier instanceof Carrier) ?: S\throwEx(new InvalidArgumentException('carrier'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
+        $result = $carrier->attributesToArray();
 
         $result[Api::PARAM_PROPERTIES] = $this->regroupLanguageProperties(
-            $resource->properties,
-            PropertiesModel::FIELD_LANGUAGE,
+            $carrier->properties,
+            CarrierProperties::FIELD_LANGUAGE,
             $this->getLanguageFilter()
         );
 

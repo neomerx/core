@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\CustomerType as Model;
+use \Neomerx\Core\Models\CustomerType;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 class CustomerTypeConverterGeneric implements ConverterInterface
@@ -9,18 +9,20 @@ class CustomerTypeConverterGeneric implements ConverterInterface
     const BIND_NAME = __CLASS__;
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param CustomerType $customerType
+     *
+     * @return array
      */
-    public function convert($resource = null)
+    public function convert($customerType = null)
     {
-        if ($resource === null) {
+        if ($customerType === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($customerType instanceof CustomerType) ?: S\throwEx(new InvalidArgumentException('customerType'));
 
-        /** @var Model $resource */
-
-        return $resource->attributesToArray();
+        return $customerType->attributesToArray();
     }
 }

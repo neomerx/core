@@ -1,8 +1,7 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\SupplyOrderDetails;
-use \Neomerx\Core\Models\SupplyOrder as Model;
+use \Neomerx\Core\Models\SupplyOrder;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\SupplyOrders\SupplyOrders as Api;
 
@@ -13,30 +12,28 @@ class SupplyOrderConverterGeneric implements ConverterInterface
     /**
      * Format model to array representation.
      *
-     * @param Model $resource
+     * @param SupplyOrder $supplyOrder
      *
      * @return array
      */
-    public function convert($resource = null)
+    public function convert($supplyOrder = null)
     {
-        if ($resource === null) {
+        if ($supplyOrder === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($supplyOrder instanceof SupplyOrder) ?: S\throwEx(new InvalidArgumentException('supplyOrder'));
 
-        /** @var Model $resource */
+        $result = $supplyOrder->attributesToArray();
 
-        $result = $resource->attributesToArray();
-
-        $result[Api::PARAM_CURRENCY_CODE]  = $resource->currency->code;
-        $result[Api::PARAM_LANGUAGE_CODE]  = $resource->language->iso_code;
-        $result[Api::PARAM_SUPPLIER_CODE]  = $resource->supplier->code;
-        $result[Api::PARAM_WAREHOUSE_CODE] = $resource->warehouse->code;
+        $result[Api::PARAM_CURRENCY_CODE]  = $supplyOrder->currency->code;
+        $result[Api::PARAM_LANGUAGE_CODE]  = $supplyOrder->language->iso_code;
+        $result[Api::PARAM_SUPPLIER_CODE]  = $supplyOrder->supplier->code;
+        $result[Api::PARAM_WAREHOUSE_CODE] = $supplyOrder->warehouse->code;
 
         $details = [];
-        foreach ($resource->details as $detailsRow) {
-            /** @var SupplyOrderDetails $detailsRow */
+        foreach ($supplyOrder->details as $detailsRow) {
+            /** @var \Neomerx\Core\Models\SupplyOrderDetails $detailsRow */
             $details[] = $detailsRow->attributesToArray();
             $details[Api::PARAM_DETAILS_SKU] = $detailsRow->variant->sku;
         }

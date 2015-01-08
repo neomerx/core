@@ -10,7 +10,11 @@ class CustomerConverterGeneric implements ConverterInterface
     const BIND_NAME = __CLASS__;
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param Customer $customer
+     *
+     * @return array
      */
     public function convert($customer = null)
     {
@@ -19,8 +23,6 @@ class CustomerConverterGeneric implements ConverterInterface
         }
 
         ($customer instanceof Customer) ?: S\throwEx(new InvalidArgumentException('customer'));
-
-        /** @var Customer $customer */
 
         $customerRisk = $customer->risk;
         $customerArr  = $customer->attributesToArray();

@@ -2,10 +2,10 @@
 
 use \Neomerx\Core\Support as S;
 use \Illuminate\Support\Facades\App;
-use \Neomerx\Core\Models\Manufacturer as Model;
+use \Neomerx\Core\Models\Manufacturer;
+use \Neomerx\Core\Models\ManufacturerProperties;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Manufacturers\ManufacturersInterface as Api;
-use \Neomerx\Core\Models\ManufacturerProperties as PropertiesModel;
 
 class ManufacturerConverterGeneric implements ConverterInterface
 {
@@ -53,25 +53,23 @@ class ManufacturerConverterGeneric implements ConverterInterface
     /**
      * Format model to array representation.
      *
-     * @param Model $resource
+     * @param Manufacturer $manufacturer
      *
      * @return array
      */
-    public function convert($resource = null)
+    public function convert($manufacturer = null)
     {
-        if ($resource === null) {
+        if ($manufacturer === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($manufacturer instanceof Manufacturer) ?: S\throwEx(new InvalidArgumentException('manufacturer'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
-        $result[Api::PARAM_ADDRESS]    = $this->addressConverter->convert($resource->address);
+        $result = $manufacturer->attributesToArray();
+        $result[Api::PARAM_ADDRESS]    = $this->addressConverter->convert($manufacturer->address);
         $result[Api::PARAM_PROPERTIES] = $this->regroupLanguageProperties(
-            $resource->properties,
-            PropertiesModel::FIELD_LANGUAGE,
+            $manufacturer->properties,
+            ManufacturerProperties::FIELD_LANGUAGE,
             $this->getLanguageFilter()
         );
 

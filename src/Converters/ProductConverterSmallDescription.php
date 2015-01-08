@@ -2,7 +2,6 @@
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\Product;
-use \Neomerx\Core\Models\ProductImage;
 use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Models\ProductProperties;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
@@ -77,10 +76,10 @@ class ProductConverterSmallDescription implements ConverterInterface
         $result = $product->attributesToArray();
 
         // find cover image (either first or which is specified as cover)
-        /** @var ProductImage $coverImage */
+        /** @var \Neomerx\Core\Models\ProductImage $coverImage */
         $coverImage = null;
         foreach ($product->product_images as $image) {
-            /** @var ProductImage $image */
+            /** @var \Neomerx\Core\Models\ProductImage $image */
             if ($coverImage === null) {
                 $coverImage = $image;
             }

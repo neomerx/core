@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\Inventory as Model;
+use \Neomerx\Core\Models\Inventory;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Inventory\InventoriesInterface as Api;
 
@@ -12,22 +12,20 @@ class InventoryConverterGeneric implements ConverterInterface
     /**
      * Format model to array representation.
      *
-     * @param Model $resource
+     * @param Inventory $inventory
      *
      * @return array
      */
-    public function convert($resource = null)
+    public function convert($inventory = null)
     {
-        if ($resource === null) {
+        if ($inventory === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($inventory instanceof Inventory) ?: S\throwEx(new InvalidArgumentException('inventory'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
-        $result[Api::PARAM_WAREHOUSE_CODE] = $resource->warehouse->code;
+        $result = $inventory->attributesToArray();
+        $result[Api::PARAM_WAREHOUSE_CODE] = $inventory->warehouse->code;
 
         return $result;
     }

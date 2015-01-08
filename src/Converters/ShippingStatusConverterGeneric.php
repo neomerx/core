@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\ShippingOrderStatus as Model;
+use \Neomerx\Core\Models\ShippingOrderStatus;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 class ShippingStatusConverterGeneric implements ConverterInterface
@@ -9,19 +9,21 @@ class ShippingStatusConverterGeneric implements ConverterInterface
     const BIND_NAME = __CLASS__;
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param ShippingOrderStatus $shippingStatus
+     *
+     * @return array
      */
-    public function convert($resource = null)
+    public function convert($shippingStatus = null)
     {
-        if ($resource === null) {
+        if ($shippingStatus === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($shippingStatus instanceof ShippingOrderStatus) ?: S\throwEx(new InvalidArgumentException('shippingStatus'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
+        $result = $shippingStatus->attributesToArray();
 
         return $result;
     }

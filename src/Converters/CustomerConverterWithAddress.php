@@ -24,7 +24,11 @@ class CustomerConverterWithAddress extends CustomerConverterGeneric
     }
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param Customer $customer
+     *
+     * @return array
      */
     public function convert($customer = null)
     {
@@ -33,8 +37,6 @@ class CustomerConverterWithAddress extends CustomerConverterGeneric
         }
 
         $result = parent::convert($customer);
-
-        /** @var Customer $customer */
 
         /** @var Collection $billingAddress */
         $billingAddress  = $customer->{Customer::FIELD_DEFAULT_BILLING_ADDRESS};

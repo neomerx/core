@@ -1,8 +1,7 @@
 <?php namespace Neomerx\Core\Converters;
 
-use \Neomerx\Core\Models\Role;
+use \Neomerx\Core\Models\User;
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\User as Model;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 class UserConverterGeneric implements ConverterInterface
@@ -10,26 +9,28 @@ class UserConverterGeneric implements ConverterInterface
     const BIND_NAME = __CLASS__;
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param User $user
+     *
+     * @return array
      */
-    public function convert($resource = null)
+    public function convert($user = null)
     {
-        if ($resource === null) {
+        if ($user === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($user instanceof User) ?: S\throwEx(new InvalidArgumentException('user'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
+        $result = $user->attributesToArray();
 
         $roles = [];
-        foreach ($resource->roles as $role) {
-            /** @var Role $role */
+        foreach ($user->roles as $role) {
+            /** @var \Neomerx\Core\Models\Role $role */
             $roles[] = $role->code;
         }
-        $result[Model::FIELD_ROLES] = $roles;
+        $result[User::FIELD_ROLES] = $roles;
 
         return $result;
     }

@@ -1,10 +1,10 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\Measurement as Model;
+use \Neomerx\Core\Models\Measurement;
+use \Neomerx\Core\Models\MeasurementProperties;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Features\MeasurementsInterface as Api;
-use \Neomerx\Core\Models\MeasurementProperties as PropertiesModel;
 
 class MeasurementConverterGeneric implements ConverterInterface
 {
@@ -44,25 +44,23 @@ class MeasurementConverterGeneric implements ConverterInterface
     /**
      * Format model to array representation.
      *
-     * @param Model $resource
+     * @param Measurement $measurement
      *
      * @return array
      */
-    public function convert($resource = null)
+    public function convert($measurement = null)
     {
-        if ($resource === null) {
+        if ($measurement === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($measurement instanceof Measurement) ?: S\throwEx(new InvalidArgumentException('measurement'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
+        $result = $measurement->attributesToArray();
 
         $result[Api::PARAM_PROPERTIES] = $this->regroupLanguageProperties(
-            $resource->properties,
-            PropertiesModel::FIELD_LANGUAGE,
+            $measurement->properties,
+            MeasurementProperties::FIELD_LANGUAGE,
             $this->getLanguageFilter()
         );
 

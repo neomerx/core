@@ -9,7 +9,11 @@ class AddressConverterCustomer extends AddressConverterGeneric
     const BIND_NAME = __CLASS__;
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param Address $address
+     *
+     * @return array
      */
     public function convert($address = null)
     {
@@ -18,8 +22,6 @@ class AddressConverterCustomer extends AddressConverterGeneric
         }
 
         $result = parent::convert($address);
-
-        /** @var Address $address */
 
         /** @noinspection PhpUndefinedFieldInspection */
         $result[Api::PARAM_ADDRESS_TYPE]       = $address->pivot->{CustomerAddress::FIELD_TYPE};

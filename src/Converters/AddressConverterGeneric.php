@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
-use \Neomerx\Core\Models\Address as Model;
+use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Api\Addresses\AddressesInterface;
 use \Neomerx\Core\Api\Territories\RegionsInterface;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
@@ -11,20 +11,22 @@ class AddressConverterGeneric implements ConverterInterface
     const BIND_NAME = __CLASS__;
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param Address $address
+     *
+     * @return array
      */
-    public function convert($resource = null)
+    public function convert($address = null)
     {
-        if ($resource === null) {
+        if ($address === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($address instanceof Address) ?: S\throwEx(new InvalidArgumentException('address'));
 
-        /** @var Model $resource */
-
-        $region = $resource->region;
-        $result = $resource->attributesToArray();
+        $region = $address->region;
+        $result = $address->attributesToArray();
         $result[AddressesInterface::PARAM_REGION_CODE] = $region->code;
         $result[RegionsInterface::PARAM_COUNTRY_CODE]  = $region->country->code;
 

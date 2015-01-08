@@ -1,9 +1,8 @@
 <?php namespace Neomerx\Core\Converters;
 
 use \Neomerx\Core\Support as S;
+use \Neomerx\Core\Models\Order;
 use \Neomerx\Core\Models\Variant;
-use \Neomerx\Core\Models\OrderDetails;
-use \Neomerx\Core\Models\Order as Model;
 use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Api\Orders\OrdersInterface as Api;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
@@ -33,27 +32,29 @@ class OrderConverterGeneric implements ConverterInterface
     }
 
     /**
-     * @inheritdoc
+     * Format model to array representation.
+     *
+     * @param Order $order
+     *
+     * @return array
      */
-    public function convert($resource = null)
+    public function convert($order = null)
     {
-        if ($resource === null) {
+        if ($order === null) {
             return null;
         }
 
-        ($resource instanceof Model) ?: S\throwEx(new InvalidArgumentException('resource'));
+        ($order instanceof Order) ?: S\throwEx(new InvalidArgumentException('order'));
 
-        /** @var Model $resource */
-
-        $result = $resource->attributesToArray();
-        $result[Api::PARAM_ORDER_STATUS_CODE]  = $resource->status->code;
-        $result[Api::PARAM_ADDRESSES_BILLING]  = $this->addressConverter->convert($resource->billing_address);
-        $result[Api::PARAM_ADDRESSES_SHIPPING] = $this->addressConverter->convert($resource->shipping_address);
-        $result[Api::PARAM_STORE_CODE]         = $resource->store ? $resource->store->code : null;
+        $result = $order->attributesToArray();
+        $result[Api::PARAM_ORDER_STATUS_CODE]  = $order->status->code;
+        $result[Api::PARAM_ADDRESSES_BILLING]  = $this->addressConverter->convert($order->billing_address);
+        $result[Api::PARAM_ADDRESSES_SHIPPING] = $this->addressConverter->convert($order->shipping_address);
+        $result[Api::PARAM_STORE_CODE]         = $order->store ? $order->store->code : null;
 
         $details = [];
-        foreach ($resource->details as $detailsRow) {
-            /** @var OrderDetails $detailsRow */
+        foreach ($order->details as $detailsRow) {
+            /** @var \Neomerx\Core\Models\OrderDetails $detailsRow */
             $details[] = $detailsRow->attributesToArray();
             $details[Variant::FIELD_SKU] = $detailsRow->variant->sku;
         }
