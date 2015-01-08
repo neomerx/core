@@ -71,7 +71,7 @@ class SearchParser
      *
      * @param array $searchParameters
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
      *
      * @throws \Neomerx\Core\Exceptions\InvalidArgumentException
      *
@@ -195,7 +195,7 @@ class SearchParser
      *
      * @throws \Neomerx\Core\Exceptions\InvalidArgumentException
      *
-     * @return array
+     * @return string[]
      */
     private function parseParameterAndOperation($name)
     {

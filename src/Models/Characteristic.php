@@ -142,7 +142,7 @@ class Characteristic extends BaseModel implements SelectByCodeInterface
     /**
      * Relation to language properties (translations).
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function properties()
     {

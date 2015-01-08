@@ -117,7 +117,7 @@ abstract class BaseController extends Controller
      * @param string $modelBindName
      * @param string $code
      *
-     * @return mixed
+     * @return BaseModel
      */
     protected function getModelByCode($modelBindName, $code)
     {

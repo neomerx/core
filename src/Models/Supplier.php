@@ -145,7 +145,7 @@ class Supplier extends BaseModel implements SelectByCodeInterface
     /**
      * Relation to supplier language properties (name translations).
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function properties()
     {

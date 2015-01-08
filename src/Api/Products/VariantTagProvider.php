@@ -19,7 +19,7 @@ class VariantTagProvider implements TagProviderInterface
     /**
      * @param Variant $variant
      *
-     * @return array
+     * @return string[]
      */
     public function getTags($variant)
     {
