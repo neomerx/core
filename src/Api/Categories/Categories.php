@@ -85,7 +85,7 @@ class Categories implements CategoriesInterface
         DB::beginTransaction();
         try {
 
-            /** @var Category $category */
+            /** @var \Neomerx\Core\Models\Category $category */
             $category = $this->categoryModel->createOrFailResource($input);
             Permissions::check($category, Permission::create());
 
@@ -114,7 +114,7 @@ class Categories implements CategoriesInterface
      */
     public function read($code)
     {
-        /** @var Category $category */
+        /** @var \Neomerx\Core\Models\Category $category */
         $category = $this->categoryModel->selectByCode($code)->withProperties()->firstOrFail();
         Permissions::check($category, Permission::view());
         return $category;
@@ -136,7 +136,7 @@ class Categories implements CategoriesInterface
     {
         list($input, $propertiesInput) = $this->extractPropertiesInput($this->languageModel, $input);
 
-        /** @var Category $category */
+        /** @var \Neomerx\Core\Models\Category $category */
         $category = $this->categoryModel->selectByCode($code)->firstOrFail();
         Permissions::check($category, Permission::edit());
 
@@ -171,7 +171,7 @@ class Categories implements CategoriesInterface
      */
     public function delete($code)
     {
-        /** @var Category $category */
+        /** @var \Neomerx\Core\Models\Category $category */
         $category = $this->categoryModel->selectByCode($code)->firstOrFail();
         Permissions::check($category, Permission::delete());
         $category->deleteOrFail();
