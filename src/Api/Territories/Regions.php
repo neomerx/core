@@ -86,8 +86,8 @@ class Regions implements RegionsInterface
      */
     public function read($code)
     {
-        /** @var \Neomerx\Core\Models\Region $region */
         /** @noinspection PhpParamsInspection */
+        /** @var \Neomerx\Core\Models\Region $region */
         $region = $this->regionModel->selectByCode($code)->with(static::$regionRelations)->firstOrFail();
         Permissions::check($region, Permission::view());
 
