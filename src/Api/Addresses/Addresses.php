@@ -7,9 +7,12 @@ use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Auth\Permission;
 use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Auth\Facades\Permissions;
+use \Neomerx\Core\Api\Traits\InputParserTrait;
 
 class Addresses implements AddressesInterface
 {
+    use InputParserTrait;
+
     const EVENT_PREFIX = 'Api.Address.';
     const BIND_NAME    = __CLASS__;
 
@@ -121,18 +124,14 @@ class Addresses implements AddressesInterface
             Log::warning('Security bypass attempt occurred. @' . __FILE__ . '#' . __LINE__);
         }
 
-        if (isset($input[self::PARAM_REGION_CODE])) {
+        $this->replaceInputCodeWithId(
+            $input,
+            self::PARAM_REGION_CODE,
+            $this->regionModel,
+            Region::FIELD_ID,
+            Address::FIELD_ID_REGION
+        );
 
-            /** @var Region $region */
-            $region = $this->regionModel
-                ->selectByCode($input[self::PARAM_REGION_CODE])
-                ->firstOrFail([Region::FIELD_ID]);
-            unset($input[self::PARAM_REGION_CODE]);
-
-            Permissions::check($region, Permission::view());
-
-            $input[Address::FIELD_ID_REGION] = $region->{Region::FIELD_ID};
-        }
         return $input;
     }
 }

@@ -8,9 +8,12 @@ use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Support\SearchParser;
 use \Neomerx\Core\Support\SearchGrammar;
 use \Neomerx\Core\Auth\Facades\Permissions;
+use \Neomerx\Core\Api\Traits\InputParserTrait;
 
 class Regions implements RegionsInterface
 {
+    use InputParserTrait;
+
     const EVENT_PREFIX = 'Api.Region.';
     const BIND_NAME    = __CLASS__;
 
@@ -167,11 +170,13 @@ class Regions implements RegionsInterface
      */
     private function replaceCountryCodeToId(array $input)
     {
-        if (isset($input[self::PARAM_COUNTRY_CODE])) {
-            $input[Region::FIELD_ID_COUNTRY] = $this->countryModel->selectByCode($input[self::PARAM_COUNTRY_CODE])
-                ->firstOrFail([Country::FIELD_ID])->{Country::FIELD_ID};
-            unset($input[self::PARAM_COUNTRY_CODE]);
-        }
+        $this->replaceInputCodeWithId(
+            $input,
+            self::PARAM_COUNTRY_CODE,
+            $this->countryModel,
+            Country::FIELD_ID,
+            Region::FIELD_ID_COUNTRY
+        );
         return $input;
     }
 }

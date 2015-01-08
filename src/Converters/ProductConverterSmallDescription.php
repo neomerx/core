@@ -13,16 +13,11 @@ use \Neomerx\Core\Api\Products\ProductsInterface as Api;
  * - language properties (name, descriptions, meta fields)
  * - cover image information (path, formats, dimensions)
  */
-class ProductConverterSmallDescription implements ConverterInterface
+class ProductConverterSmallDescription extends BasicConverterWithLanguageFilter
 {
     use LanguagePropertiesTrait;
 
     const BIND_NAME = __CLASS__;
-
-    /**
-     * @var string
-     */
-    private $languageFilter;
 
     /**
      * @var ConverterInterface
@@ -35,25 +30,9 @@ class ProductConverterSmallDescription implements ConverterInterface
      */
     public function __construct($languageFilter = null, ConverterInterface $imageConverter = null)
     {
-        $this->languageFilter = $languageFilter;
+        parent::__construct($languageFilter);
         /** @noinspection PhpUndefinedMethodInspection */
         $this->imageConverter = $imageConverter ? $imageConverter : App::make(ImageConverterGeneric::BIND_NAME);
-    }
-
-    /**
-     * @param string $languageFilter
-     */
-    public function setLanguageFilter($languageFilter)
-    {
-        $this->languageFilter = $languageFilter;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLanguageFilter()
-    {
-        return $this->languageFilter;
     }
 
     /**

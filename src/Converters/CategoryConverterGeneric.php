@@ -6,40 +6,11 @@ use \Neomerx\Core\Models\CategoryProperties;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Categories\CategoriesInterface as Api;
 
-class CategoryConverterGeneric implements ConverterInterface
+class CategoryConverterGeneric extends BasicConverterWithLanguageFilter
 {
     use LanguagePropertiesTrait;
 
     const BIND_NAME = __CLASS__;
-
-    /**
-     * @var string
-     */
-    private $languageFilter;
-
-    /**
-     * @param string $languageFilter
-     */
-    public function __construct($languageFilter = null)
-    {
-        $this->languageFilter = $languageFilter;
-    }
-
-    /**
-     * @param string $languageFilter
-     */
-    public function setLanguageFilter($languageFilter)
-    {
-        $this->languageFilter = $languageFilter;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLanguageFilter()
-    {
-        return $this->languageFilter;
-    }
 
     /**
      * Format model to array representation.

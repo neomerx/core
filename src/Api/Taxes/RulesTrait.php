@@ -169,8 +169,8 @@ trait RulesTrait
     {
         $result = [];
         foreach ($productTypes as $typeCode) {
-            /** @var \Neomerx\Core\Models\TaxRuleProductType $rule */
             /** @noinspection PhpUndefinedMethodInspection */
+            /** @var \Neomerx\Core\Models\TaxRuleProductType $rule */
             $rule = App::make(TaxRuleProductType::BIND_NAME);
             if ($typeCode !== self::$ruleFilterAll) {
                 $rule->{ProductTaxType::FIELD_ID} = $typeModel->selectByCode($typeCode)

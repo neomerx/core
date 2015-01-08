@@ -10,6 +10,7 @@ use \Neomerx\Core\Support\SearchParser;
 use \Neomerx\Core\Support\SearchGrammar;
 use \Neomerx\Core\Models\Characteristic;
 use \Neomerx\Core\Auth\Facades\Permissions;
+use \Neomerx\Core\Api\Traits\InputParserTrait;
 use \Neomerx\Core\Exceptions\ValidationException;
 use \Neomerx\Core\Models\CharacteristicProperties;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
@@ -20,6 +21,7 @@ use \Neomerx\Core\Exceptions\InvalidArgumentException;
  */
 class Characteristics implements CharacteristicsInterface
 {
+    use InputParserTrait;
     use LanguagePropertiesTrait;
 
     const EVENT_PREFIX = 'Api.Feature.';
@@ -220,11 +222,12 @@ class Characteristics implements CharacteristicsInterface
      */
     private function replaceMeasurementCodeWithId(array &$input)
     {
-        $code = $input[self::PARAM_MEASUREMENT_CODE];
-        $input[Measurement::FIELD_ID] = $this->measurementModel
-            ->selectByCode($code)
-            ->firstOrFail([Measurement::FIELD_ID])
-            ->{Measurement::FIELD_ID};
-        unset($input[self::PARAM_MEASUREMENT_CODE]);
+        $this->replaceInputCodeWithId(
+            $input,
+            self::PARAM_MEASUREMENT_CODE,
+            $this->measurementModel,
+            Measurement::FIELD_ID,
+            Characteristic::FIELD_ID_MEASUREMENT
+        );
     }
 }

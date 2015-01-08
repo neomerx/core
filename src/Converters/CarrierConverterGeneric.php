@@ -6,40 +6,11 @@ use \Neomerx\Core\Models\CarrierProperties;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Carriers\CarriersInterface as Api;
 
-class CarrierConverterGeneric implements ConverterInterface
+class CarrierConverterGeneric extends BasicConverterWithLanguageFilter
 {
     use LanguagePropertiesTrait;
 
     const BIND_NAME = __CLASS__;
-
-    /**
-     * @var string
-     */
-    private $languageFilter;
-
-    /**
-     * @param string $languageFilter
-     */
-    public function __construct($languageFilter = null)
-    {
-        $this->languageFilter = $languageFilter;
-    }
-
-    /**
-     * @param string $languageFilter
-     */
-    public function setLanguageFilter($languageFilter)
-    {
-        $this->languageFilter = $languageFilter;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLanguageFilter()
-    {
-        return $this->languageFilter;
-    }
 
     /**
      * Format model to array representation.

@@ -8,7 +8,7 @@ use \Neomerx\Core\Models\ImageProperties;
 use \Neomerx\Core\Api\Images\ImageInterface as Api;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
-class ImageConverterGeneric implements ConverterInterface
+class ImageConverterGeneric extends BasicConverterWithLanguageFilter
 {
     use LanguagePropertiesTrait;
 
@@ -17,35 +17,16 @@ class ImageConverterGeneric implements ConverterInterface
     /**
      * @var string
      */
-    private $languageFilter;
-
-    /**
-     * @var string
-     */
     private $formatFiler;
 
     /**
      * @param string $languageFilter
+     * @param string $formatFilter
      */
-    public function __construct($languageFilter = null)
+    public function __construct($languageFilter = null, $formatFilter = null)
     {
-        $this->languageFilter = $languageFilter;
-    }
-
-    /**
-     * @param string $languageFilter
-     */
-    public function setLanguageFilter($languageFilter)
-    {
-        $this->languageFilter = $languageFilter;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLanguageFilter()
-    {
-        return $this->languageFilter;
+        parent::__construct($languageFilter);
+        $this->formatFiler = $formatFilter;
     }
 
     /**

@@ -168,7 +168,7 @@ class Values implements ValuesInterface
                 $property = $this->properties->updateOrCreate([
                     CharacteristicValueProperties::FIELD_ID_CHARACTERISTIC_VALUE => $valueId,
                     CharacteristicValueProperties::FIELD_ID_LANGUAGE             => $languageId
-                    // TODO Swap [] and $propertyInput order. Otherwise relation IDs could be overwritten. Everywhere.
+                    // TODO Check [] and $propertyInput order. Otherwise relation IDs could be overwritten. Everywhere.
                 ], $propertyInput);
                 /** @noinspection PhpUndefinedMethodInspection */
                 $property->exists ?: S\throwEx(new ValidationException($property->getValidator()));

@@ -8,40 +8,11 @@ use \Neomerx\Core\Models\CharacteristicValue;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Products\SpecificationInterface as Api;
 
-class SpecificationConverterGeneric implements ConverterInterface
+class SpecificationConverterGeneric extends BasicConverterWithLanguageFilter
 {
     use LanguagePropertiesTrait;
 
     const BIND_NAME = __CLASS__;
-
-    /**
-     * @var string
-     */
-    private $languageFilter;
-
-    /**
-     * @param string $languageFilter
-     */
-    public function __construct($languageFilter = null)
-    {
-        $this->languageFilter   = $languageFilter;
-    }
-
-    /**
-     * @param string $languageFilter
-     */
-    public function setLanguageFilter($languageFilter)
-    {
-        $this->languageFilter = $languageFilter;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLanguageFilter()
-    {
-        return $this->languageFilter;
-    }
 
     /**
      * Format specification collection to array representation.
@@ -61,14 +32,16 @@ class SpecificationConverterGeneric implements ConverterInterface
         // convert 'tree' to (possibly) sparse matrix
         list($numberOfSpecRows, $sparseMatrix) = $this->getSparseLanguageSpecRowMatrix($collection);
 
+        $languageFilter = $this->getLanguageFilter();
+
         // convert sparse matrix to normal/(full size)/(fixed dimensions) matrix
         // dimensions are 3 columns (characteristic, value, measurement) x N rows (languages)
         // each language row contains specification rows in that language
-        $result = $this->convertSparseToFullSize($sparseMatrix, $numberOfSpecRows, $this->languageFilter);
+        $result = $this->convertSparseToFullSize($sparseMatrix, $numberOfSpecRows, $languageFilter);
 
         // if we are asked to filter cut language selector
-        return $this->languageFilter === null ? $result :
-            (isset($result[$this->languageFilter]) ? $result[$this->languageFilter] : null);
+        return $languageFilter === null ? $result :
+            (isset($result[$languageFilter]) ? $result[$languageFilter] : null);
     }
 
     /**

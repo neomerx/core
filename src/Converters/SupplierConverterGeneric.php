@@ -7,16 +7,11 @@ use \Neomerx\Core\Models\SupplierProperties;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Suppliers\SuppliersInterface as Api;
 
-class SupplierConverterGeneric implements ConverterInterface
+class SupplierConverterGeneric extends BasicConverterWithLanguageFilter
 {
     use LanguagePropertiesTrait;
 
     const BIND_NAME = __CLASS__;
-
-    /**
-     * @var string
-     */
-    private $languageFilter;
 
     /**
      * @var ConverterInterface
@@ -29,25 +24,9 @@ class SupplierConverterGeneric implements ConverterInterface
      */
     public function __construct($languageFilter = null, ConverterInterface $addressConverter = null)
     {
+        parent::__construct($languageFilter);
         /** @noinspection PhpUndefinedMethodInspection */
         $this->addressConverter = $addressConverter ? $addressConverter : App::make(AddressConverterGeneric::BIND_NAME);
-        $this->languageFilter   = $languageFilter;
-    }
-
-    /**
-     * @param string $languageFilter
-     */
-    public function setLanguageFilter($languageFilter)
-    {
-        $this->languageFilter = $languageFilter;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLanguageFilter()
-    {
-        return $this->languageFilter;
     }
 
     /**

@@ -130,8 +130,8 @@ class Manufacturers implements ManufacturersInterface
      */
     public function read($code)
     {
-        /** @var \Neomerx\Core\Models\Manufacturer $manufacturer */
         /** @noinspection PhpUndefinedMethodInspection */
+        /** @var \Neomerx\Core\Models\Manufacturer $manufacturer */
         $manufacturer = $this->manufacturer->selectByCode($code)->withAddress()->withProperties()->firstOrFail();
         Permissions::check($manufacturer, Permission::view());
         return $manufacturer;

@@ -14,6 +14,7 @@ use \Neomerx\Core\Support\SearchGrammar;
 use \Neomerx\Core\Models\ProductProperties;
 use \Neomerx\Core\Auth\Facades\Permissions;
 use \Illuminate\Database\Eloquent\Collection;
+use \Neomerx\Core\Api\Traits\InputParserTrait;
 use \Neomerx\Core\Exceptions\ValidationException;
 use \Neomerx\Core\Exceptions\NullArgumentException;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
@@ -24,6 +25,7 @@ use \Neomerx\Core\Exceptions\InvalidArgumentException;
  */
 class ProductCrud
 {
+    use InputParserTrait;
     use LanguagePropertiesTrait;
 
     /**
@@ -275,30 +277,30 @@ class ProductCrud
      */
     private function replaceCodesWithIds(array $input)
     {
-        $extraFields = [];
+        $this->replaceInputCodeWithId(
+            $input,
+            Products::PARAM_MANUFACTURER_CODE,
+            $this->manufacturerModel,
+            Manufacturer::FIELD_ID,
+            Product::FIELD_ID_MANUFACTURER
+        );
 
-        if (isset($input[Products::PARAM_MANUFACTURER_CODE])) {
-            $manufacturer = $this->manufacturerModel
-                ->selectByCode($input[Products::PARAM_MANUFACTURER_CODE])->firstOrFail();
-            unset($input[Products::PARAM_MANUFACTURER_CODE]);
-            $extraFields[Manufacturer::FIELD_ID] = $manufacturer->{Manufacturer::FIELD_ID};
-        }
+        $this->replaceInputCodeWithId(
+            $input,
+            Products::PARAM_TAX_TYPE_CODE,
+            $this->taxTypeModel,
+            ProductTaxType::FIELD_ID,
+            Product::FIELD_ID_PRODUCT_TAX_TYPE
+        );
 
-        if (isset($input[Products::PARAM_TAX_TYPE_CODE])) {
-            $taxType = $this->taxTypeModel
-                ->selectByCode($input[Products::PARAM_TAX_TYPE_CODE])->firstOrFail();
-            unset($input[Products::PARAM_TAX_TYPE_CODE]);
-            $extraFields[ProductTaxType::FIELD_ID] = $taxType->{ProductTaxType::FIELD_ID};
-        }
+        $this->replaceInputCodeWithId(
+            $input,
+            Products::PARAM_DEFAULT_CATEGORY_CODE,
+            $this->categoryModel,
+            Category::FIELD_ID,
+            Product::FIELD_ID_CATEGORY_DEFAULT
+        );
 
-        if (isset($input[Products::PARAM_DEFAULT_CATEGORY_CODE])) {
-            /** @var \Neomerx\Core\Models\Category $category */
-            $category = $this->categoryModel
-                ->selectByCode($input[Products::PARAM_DEFAULT_CATEGORY_CODE])->firstOrFail();
-            unset($input[Products::PARAM_DEFAULT_CATEGORY_CODE]);
-            $extraFields[Product::FIELD_ID_CATEGORY_DEFAULT] = $category->getKey();
-        }
-
-        return array_merge($input, $extraFields);
+        return $input;
     }
 }

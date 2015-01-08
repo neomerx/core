@@ -15,12 +15,15 @@ use \Neomerx\Core\Models\CustomerAddress;
 use \Neomerx\Core\Api\Addresses\Addresses;
 use \Illuminate\Database\Eloquent\Builder;
 use \Neomerx\Core\Auth\Facades\Permissions;
+use \Neomerx\Core\Api\Traits\InputParserTrait;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Customers extends CustomerAddresses implements CustomersInterface
 {
+    use InputParserTrait;
+
     const EVENT_PREFIX = 'Api.Customer.';
     const BIND_NAME    = __CLASS__;
 
@@ -207,32 +210,29 @@ class Customers extends CustomerAddresses implements CustomersInterface
      */
     private function replaceCodesWithIds(array $input)
     {
-        unset($input[Language::FIELD_ID]);
-        if (isset($input[self::PARAM_LANGUAGE_CODE])) {
-            $typeCode = $input[self::PARAM_LANGUAGE_CODE];
-            $typeId   = $this->languageModel->selectByCode($typeCode)
-                ->firstOrFail([Language::FIELD_ID])->{Language::FIELD_ID};
-            $input = array_merge($input, [Language::FIELD_ID => $typeId]);
-            unset($input[self::PARAM_LANGUAGE_CODE]);
-        }
+        $this->replaceInputCodeWithId(
+            $input,
+            self::PARAM_LANGUAGE_CODE,
+            $this->languageModel,
+            Language::FIELD_ID,
+            Customer::FIELD_ID_LANGUAGE
+        );
 
-        unset($input[CustomerRisk::FIELD_ID]);
-        if (isset($input[self::PARAM_RISK_CODE])) {
-            $riskCode = $input[self::PARAM_RISK_CODE];
-            $riskId   = $this->riskModel->selectByCode($riskCode)
-                ->firstOrFail([CustomerRisk::FIELD_ID])->{CustomerRisk::FIELD_ID};
-            $input = array_merge($input, [CustomerRisk::FIELD_ID => $riskId]);
-            unset($input[self::PARAM_RISK_CODE]);
-        }
+        $this->replaceInputCodeWithId(
+            $input,
+            self::PARAM_RISK_CODE,
+            $this->riskModel,
+            CustomerRisk::FIELD_ID,
+            Customer::FIELD_ID_CUSTOMER_RISK
+        );
 
-        unset($input[CustomerType::FIELD_ID]);
-        if (isset($input[self::PARAM_TYPE_CODE])) {
-            $typeCode = $input[self::PARAM_TYPE_CODE];
-            $typeId   = $this->typeModel->selectByCode($typeCode)
-                ->firstOrFail([CustomerType::FIELD_ID])->{CustomerType::FIELD_ID};
-            $input = array_merge($input, [CustomerType::FIELD_ID => $typeId]);
-            unset($input[self::PARAM_TYPE_CODE]);
-        }
+        $this->replaceInputCodeWithId(
+            $input,
+            self::PARAM_TYPE_CODE,
+            $this->typeModel,
+            CustomerType::FIELD_ID,
+            Customer::FIELD_ID_CUSTOMER_TYPE
+        );
 
         return $input;
     }

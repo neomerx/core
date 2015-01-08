@@ -17,6 +17,7 @@ use \Neomerx\Core\Support\SearchParser;
 use \Neomerx\Core\Support\SearchGrammar;
 use \Neomerx\Core\Auth\Facades\Permissions;
 use \Neomerx\Core\Models\SupplyOrderDetails;
+use \Neomerx\Core\Api\Traits\InputParserTrait;
 use \Neomerx\Core\Exceptions\ValidationException;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
@@ -28,6 +29,7 @@ use \Neomerx\Core\Exceptions\InvalidArgumentException;
  */
 class SupplyOrders implements SupplyOrdersInterface
 {
+    use InputParserTrait;
     use LanguagePropertiesTrait;
 
     const EVENT_PREFIX = 'Api.SupplyOrder.';
@@ -348,75 +350,35 @@ class SupplyOrders implements SupplyOrdersInterface
      *
      * @return array<array>
      *
+     * @throws \Neomerx\Core\Exceptions\InvalidArgumentException
+     *
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     private function parseInputOnCreate(array $input)
     {
-        $supplierCode  =  S\array_get_value($input, self::PARAM_SUPPLIER_CODE);
-        $supplierCode !== null ?: S\throwEx(new InvalidArgumentException(self::PARAM_SUPPLIER_CODE));
-        unset($input[self::PARAM_SUPPLIER_CODE]);
-
-        $warehouseCode  =  S\array_get_value($input, self::PARAM_WAREHOUSE_CODE);
-        $warehouseCode !== null ?: S\throwEx(new InvalidArgumentException(self::PARAM_WAREHOUSE_CODE));
-        unset($input[self::PARAM_WAREHOUSE_CODE]);
-
-        $currencyCode  =  S\array_get_value($input, self::PARAM_CURRENCY_CODE);
-        $currencyCode !== null ?: S\throwEx(new InvalidArgumentException(self::PARAM_CURRENCY_CODE));
-        unset($input[self::PARAM_CURRENCY_CODE]);
-
-        $languageCode  =  S\array_get_value($input, self::PARAM_LANGUAGE_CODE);
-        $languageCode !== null ?: S\throwEx(new InvalidArgumentException(self::PARAM_LANGUAGE_CODE));
-        unset($input[self::PARAM_LANGUAGE_CODE]);
-
-        $expectedAt   = S\array_get_value($input, self::PARAM_EXPECTED_AT);
-        $expectedAt  !== null ?: S\throwEx(new InvalidArgumentException(self::PARAM_EXPECTED_AT));
-        $expectedAt   = Carbon::parse($expectedAt);
-        $expectedAt  !== false ?: S\throwEx(new InvalidArgumentException(self::PARAM_EXPECTED_AT));
-        Carbon::now()->lt($expectedAt) ?: S\throwEx(new InvalidArgumentException(self::PARAM_EXPECTED_AT));
+        $this->parseAndReplaceSupplyOrderInput($input);
 
         $statusName    = S\array_get_value($input, self::PARAM_STATUS, SupplyOrder::STATUS_DRAFT);
         $isStatusValid = in_array($statusName, [SupplyOrder::STATUS_DRAFT, SupplyOrder::STATUS_VALIDATED]);
         $isStatusValid ? : S\throwEx(new InvalidArgumentException(self::PARAM_STATUS));
+        unset($input[self::PARAM_STATUS]);
+        $input[SupplyOrder::FIELD_STATUS] = $statusName;
 
         $details = S\array_get_value($input, self::PARAM_DETAILS);
-        ($details !== null and is_array($details)) ?: S\throwEx(new InvalidArgumentException(self::PARAM_DETAILS));
         unset($input[self::PARAM_DETAILS]);
 
-        // order should have details, if no details in validated order throw exception
-        $noDetailsInValidated = ($statusName === SupplyOrder::STATUS_VALIDATED and empty($details));
-        $noDetailsInValidated ? S\throwEx(new InvalidArgumentException(self::PARAM_DETAILS)) : null;
-
-        /** @var \Neomerx\Core\Models\Supplier $supplier */
-        $supplier = $this->supplierModel->selectByCode($supplierCode)->firstOrFail([Supplier::FIELD_ID]);
-        Permissions::check($supplier, Permission::view());
-
-        /** @var \Neomerx\Core\Models\Warehouse $warehouse */
-        $warehouse = $this->warehouseModel->selectByCode($warehouseCode)->firstOrFail([Warehouse::FIELD_ID]);
-        Permissions::check($warehouse, Permission::view());
-
-        /** @var \Neomerx\Core\Models\Currency $currency */
-        $currency = $this->currencyModel->selectByCode($currencyCode)->firstOrFail([Currency::FIELD_ID]);
-        Permissions::check($currency, Permission::view());
-
-        /** @var \Neomerx\Core\Models\Language $language */
-        $language = $this->languageModel->selectByCode($languageCode)->firstOrFail([Language::FIELD_ID]);
-        Permissions::check($language, Permission::view());
+        // if order details is not an array or the detail are empty for Validated order then throw exception
+        // it's ok to create Draft order with no details but Validated must have some details
+        if (!is_array($details) or ($statusName === SupplyOrder::STATUS_VALIDATED and empty($details))) {
+            throw new InvalidArgumentException(self::PARAM_DETAILS);
+        }
 
         $parsedDetails = [];
         foreach ($details as $detailsRow) {
             $parsedDetails[] = $this->parseDetailInputOnCreate($detailsRow);
         }
 
-        $orderData = array_merge($input, [
-            SupplyOrder::FIELD_ID_WAREHOUSE => $warehouse->{Warehouse::FIELD_ID},
-            SupplyOrder::FIELD_ID_SUPPLIER  => $supplier->{Supplier::FIELD_ID},
-            SupplyOrder::FIELD_ID_CURRENCY  => $currency->{Currency::FIELD_ID},
-            SupplyOrder::FIELD_ID_LANGUAGE  => $language->{Language::FIELD_ID},
-            SupplyOrder::FIELD_STATUS       => $statusName,
-        ]);
-
-        return [$orderData, $parsedDetails];
+        return [$input, $parsedDetails];
     }
 
     /**
@@ -432,31 +394,13 @@ class SupplyOrders implements SupplyOrdersInterface
      */
     private function parseInputOnUpdate($supplyOrderId, array $input)
     {
-        $supplierCode = S\array_get_value($input, self::PARAM_SUPPLIER_CODE);
-        unset($input[self::PARAM_SUPPLIER_CODE]);
+        $this->parseAndReplaceSupplyOrderInput($input);
 
-        $warehouseCode = S\array_get_value($input, self::PARAM_WAREHOUSE_CODE);
-        unset($input[self::PARAM_WAREHOUSE_CODE]);
-
-        $currencyCode = S\array_get_value($input, self::PARAM_CURRENCY_CODE);
-        unset($input[self::PARAM_CURRENCY_CODE]);
-
-        $languageCode  =  S\array_get_value($input, self::PARAM_LANGUAGE_CODE);
-        unset($input[self::PARAM_LANGUAGE_CODE]);
-
-        $expectedAt  = S\array_get_value($input, self::PARAM_EXPECTED_AT);
-        if ($expectedAt !== null) {
-            $expectedAt = Carbon::parse($expectedAt);
-            if (Carbon::now()->gt($expectedAt)) {
-                throw new InvalidArgumentException(self::PARAM_EXPECTED_AT);
-            }
-        }
-
-        $parsedOrderInput = [];
         /** @var \Neomerx\Core\Models\SupplyOrder $supplyOrder */
         $supplyOrder = $this->orderModel->findOrFail($supplyOrderId);
 
         $statusName = S\array_get_value($input, self::PARAM_STATUS);
+        unset($input[self::PARAM_STATUS]);
         if ($statusName !== null) {
             $currentStatus = $supplyOrder->status;
             if ($currentStatus === SupplyOrder::STATUS_DRAFT) {
@@ -467,38 +411,10 @@ class SupplyOrders implements SupplyOrdersInterface
                 $isStatusValid = false;
             }
             $isStatusValid ? : S\throwEx(new InvalidArgumentException(self::PARAM_STATUS));
-            $parsedOrderInput['status'] = $statusName;
+            $input[SupplyOrder::FIELD_STATUS] = $statusName;
         }
 
-        if ($supplierCode !== null) {
-            /** @var \Neomerx\Core\Models\Supplier $supplier */
-            $supplier = $this->supplierModel->selectByCode($supplierCode)->firstOrFail([Supplier::FIELD_ID]);
-            Permissions::check($supplier, Permission::view());
-            $parsedOrderInput[Supplier::FIELD_ID] = $supplier->{Supplier::FIELD_ID};
-        }
-
-        if ($warehouseCode !== null) {
-            /** @var \Neomerx\Core\Models\Warehouse $warehouse */
-            $warehouse = $this->warehouseModel->selectByCode($warehouseCode)->firstOrFail([Warehouse::FIELD_ID]);
-            Permissions::check($warehouse, Permission::view());
-            $parsedOrderInput[Warehouse::FIELD_ID] = $warehouse->{Warehouse::FIELD_ID};
-        }
-
-        if ($currencyCode !== null) {
-            /** @var \Neomerx\Core\Models\Currency $currency */
-            $currency = $this->currencyModel->selectByCode($currencyCode)->firstOrFail([Currency::FIELD_ID]);
-            Permissions::check($currency, Permission::view());
-            $parsedOrderInput[Currency::FIELD_ID] = $currency->{Currency::FIELD_ID};
-        }
-
-        if ($languageCode !== null) {
-            /** @var \Neomerx\Core\Models\Language $language */
-            $language = $this->languageModel->selectByCode($languageCode)->firstOrFail([Language::FIELD_ID]);
-            Permissions::check($language, Permission::view());
-            $parsedOrderInput[Language::FIELD_ID] = $language->{Language::FIELD_ID};
-        }
-
-        return [$supplyOrder, array_merge($input, $parsedOrderInput)];
+        return [$supplyOrder, $input];
     }
 
     /**
@@ -508,14 +424,57 @@ class SupplyOrders implements SupplyOrdersInterface
      */
     private function parseDetailInputOnCreate($detailsRow)
     {
-        $sku  =  S\array_get_value($detailsRow, self::PARAM_DETAILS_SKU);
-        $sku !== null ?: S\throwEx(new InvalidArgumentException(self::PARAM_DETAILS));
-        unset($detailsRow[self::PARAM_DETAILS_SKU]);
+        $this->replaceInputCodeWithId(
+            $detailsRow,
+            self::PARAM_DETAILS_SKU,
+            $this->variantModel,
+            Variant::FIELD_ID,
+            SupplyOrderDetails::FIELD_ID_VARIANT
+        );
+        return $detailsRow;
+    }
 
-        $itId = $this->variantModel->selectByCode($sku)->firstOrFail([Variant::FIELD_ID])->{Variant::FIELD_ID};
+    /**
+     * @param array &$input
+     */
+    private function parseAndReplaceSupplyOrderInput(array &$input)
+    {
+        $this->replaceInputCodeWithId(
+            $input,
+            self::PARAM_SUPPLIER_CODE,
+            $this->supplierModel,
+            Supplier::FIELD_ID,
+            SupplyOrder::FIELD_ID_SUPPLIER
+        );
 
-        return array_merge($detailsRow, [
-            SupplyOrderDetails::FIELD_ID_VARIANT => $itId,
-        ]);
+        $this->replaceInputCodeWithId(
+            $input,
+            self::PARAM_WAREHOUSE_CODE,
+            $this->warehouseModel,
+            Warehouse::FIELD_ID,
+            SupplyOrder::FIELD_ID_WAREHOUSE
+        );
+
+        $this->replaceInputCodeWithId(
+            $input,
+            self::PARAM_CURRENCY_CODE,
+            $this->currencyModel,
+            Currency::FIELD_ID,
+            SupplyOrder::FIELD_ID_CURRENCY
+        );
+
+        $this->replaceInputCodeWithId(
+            $input,
+            self::PARAM_LANGUAGE_CODE,
+            $this->languageModel,
+            Language::FIELD_ID,
+            SupplyOrder::FIELD_ID_LANGUAGE
+        );
+
+        $expectedAtInput = S\array_get_value($input, self::PARAM_EXPECTED_AT);
+        if (!empty($expectedAtInput)) {
+            $expectedAt = Carbon::parse($expectedAtInput);
+            Carbon::now()->lt($expectedAt) ? : S\throwEx(new InvalidArgumentException(self::PARAM_EXPECTED_AT));
+        }
     }
 }

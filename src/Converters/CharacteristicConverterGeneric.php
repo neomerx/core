@@ -6,40 +6,11 @@ use \Neomerx\Core\Models\CharacteristicProperties;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Neomerx\Core\Api\Features\CharacteristicsInterface as Api;
 
-class CharacteristicConverterGeneric implements ConverterInterface
+class CharacteristicConverterGeneric extends BasicConverterWithLanguageFilter
 {
     use LanguagePropertiesTrait;
 
     const BIND_NAME = __CLASS__;
-
-    /**
-     * @var string
-     */
-    private $languageFilter;
-
-    /**
-     * @param string $languageFilter
-     */
-    public function __construct($languageFilter = null)
-    {
-        $this->languageFilter = $languageFilter;
-    }
-
-    /**
-     * @param string $languageFilter
-     */
-    public function setLanguageFilter($languageFilter)
-    {
-        $this->languageFilter = $languageFilter;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLanguageFilter()
-    {
-        return $this->languageFilter;
-    }
 
     /**
      * Format model to array representation.
