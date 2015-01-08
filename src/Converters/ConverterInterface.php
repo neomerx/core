@@ -7,7 +7,7 @@ interface ConverterInterface
      *
      * @param mixed $object
      *
-     * @return array<*,string|boolean|double|integer|null|array>
+     * @return array<mixed>
      */
     public function convert($object = null);
 }
