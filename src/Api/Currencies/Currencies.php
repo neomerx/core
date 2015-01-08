@@ -44,7 +44,7 @@ class Currencies implements CurrenciesInterface
      */
     public function __construct(Currency $currency, CurrencyProperties $properties, Language $language)
     {
-        $this->currency      = $currency;
+        $this->currency   = $currency;
         $this->properties = $properties;
         $this->language   = $language;
     }
@@ -69,10 +69,10 @@ class Currencies implements CurrenciesInterface
 
             $currencyId = $currency->{Currency::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
-                $this->properties->createOrFail(array_merge(
-                    [Currency::FIELD_ID => $currencyId, Language::FIELD_ID => $languageId],
-                    $propertyInput
-                ));
+                $this->properties->createOrFail(array_merge($propertyInput, [
+                    CurrencyProperties::FIELD_ID_CURRENCY => $currencyId,
+                    CurrencyProperties::FIELD_ID_LANGUAGE => $languageId
+                ]));
             }
 
             $allExecutedOk = true;
@@ -121,10 +121,10 @@ class Currencies implements CurrenciesInterface
             $currencyId = $currency->{Currency::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
                 /** @var CurrencyProperties $property */
-                $property = $this->properties->updateOrCreate(
-                    [Currency::FIELD_ID => $currencyId, Language::FIELD_ID => $languageId],
-                    $propertyInput
-                );
+                $property = $this->properties->updateOrCreate([
+                    CurrencyProperties::FIELD_ID_CURRENCY => $currencyId,
+                    CurrencyProperties::FIELD_ID_LANGUAGE => $languageId
+                ], $propertyInput);
                 $property->exists ?: S\throwEx(new ValidationException($property->getValidator()));
             }
 

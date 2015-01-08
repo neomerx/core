@@ -47,9 +47,9 @@ class Measurements implements MeasurementsInterface
         MeasurementProperties $properties,
         Language $language
     ) {
-        $this->measurement      = $measurement;
-        $this->properties = $properties;
-        $this->language   = $language;
+        $this->measurement = $measurement;
+        $this->properties  = $properties;
+        $this->language    = $language;
     }
 
     /**
@@ -72,10 +72,10 @@ class Measurements implements MeasurementsInterface
 
             $measurementId = $measurement->{Measurement::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
-                $this->properties->createOrFail(array_merge(
-                    [Measurement::FIELD_ID => $measurementId, Language::FIELD_ID => $languageId],
-                    $propertyInput
-                ));
+                $this->properties->createOrFail(array_merge($propertyInput, [
+                    MeasurementProperties::FIELD_ID_MEASUREMENT => $measurementId,
+                    MeasurementProperties::FIELD_ID_LANGUAGE    => $languageId
+                ]));
             }
 
             $allExecutedOk = true;
@@ -121,10 +121,10 @@ class Measurements implements MeasurementsInterface
             // update language properties
             $measurementId = $measurement->{Measurement::FIELD_ID};
             foreach ($propertiesInput as $languageId => $propertyInput) {
-                $property = $this->properties->updateOrCreate(
-                    [Measurement::FIELD_ID => $measurementId, Language::FIELD_ID => $languageId],
-                    $propertyInput
-                );
+                $property = $this->properties->updateOrCreate([
+                    MeasurementProperties::FIELD_ID_MEASUREMENT => $measurementId,
+                    MeasurementProperties::FIELD_ID_LANGUAGE    => $languageId
+                ], $propertyInput);
                 /** @noinspection PhpUndefinedMethodInspection */
                 $property->exists ?: S\throwEx(new ValidationException($property->getValidator()));
             }
