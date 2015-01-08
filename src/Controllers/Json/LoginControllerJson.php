@@ -55,8 +55,8 @@ final class LoginControllerJson extends BaseController
     }
 
     /**
-     * @param string|array|null $data
-     * @param int               $status
+     * @param string|array $data
+     * @param int          $status
      *
      * @return \Illuminate\Http\JsonResponse
      */

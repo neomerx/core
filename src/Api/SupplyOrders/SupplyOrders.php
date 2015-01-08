@@ -146,11 +146,14 @@ class SupplyOrders implements SupplyOrdersInterface
 
             foreach ($details as $detailsRow) {
                 $details = new SupplyOrderDetails($detailsRow);
-                /** @var \Neomerx\Core\Models\SupplyOrderDetails $saved */
                 /** @noinspection PhpUndefinedMethodInspection */
                 $saved = $supplyOrder->details()->save($details);
-                ($saved !== false and $saved->exists) ?: S\throwEx(new ValidationException($saved->getValidator()));
-                Permissions::check($saved, Permission::create());
+                /** @var \Neomerx\Core\Models\SupplyOrderDetails $saved */
+                if (isset($saved) and $saved->exists) {
+                    Permissions::check($saved, Permission::create());
+                } else {
+                    throw new ValidationException($saved->getValidator());
+                }
             }
 
             Event::fire(new SupplyOrderArgs(self::EVENT_PREFIX . 'creating', $supplyOrder));
@@ -184,11 +187,14 @@ class SupplyOrders implements SupplyOrdersInterface
         DB::beginTransaction();
         try {
 
-            /** @var \Neomerx\Core\Models\SupplyOrderDetails $details */
             /** @noinspection PhpUndefinedMethodInspection */
             $details = $supplyOrder->details()->save($details);
-            ($details !== false and $details->exists) ?: S\throwEx(new ValidationException($details->getValidator()));
-            Permissions::check($details, Permission::create());
+            /** @var \Neomerx\Core\Models\SupplyOrderDetails $details */
+            if (isset($details) and $details->exists) {
+                Permissions::check($details, Permission::create());
+            } else {
+                throw new ValidationException($details->getValidator());
+            }
 
             Event::fire(new SupplyOrderDetailsArgs(self::EVENT_PREFIX . 'detailsCreating', $details));
 

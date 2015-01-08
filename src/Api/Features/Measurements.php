@@ -66,7 +66,7 @@ class Measurements implements MeasurementsInterface
         DB::beginTransaction();
         try {
 
-            /** @var Measurement $measurement */
+            /** @var \Neomerx\Core\Models\Measurement $measurement */
             $measurement = $this->measurement->createOrFailResource($input);
             Permissions::check($measurement, Permission::create());
 

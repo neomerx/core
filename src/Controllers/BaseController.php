@@ -88,8 +88,8 @@ abstract class BaseController extends Controller
     }
 
     /**
-     * @param string|array|null $data
-     * @param int               $status
+     * @param string|array $data
+     * @param int          $status
      *
      * @return mixed
      */
