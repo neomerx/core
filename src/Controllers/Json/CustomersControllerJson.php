@@ -128,15 +128,18 @@ final class CustomersControllerJson extends BaseControllerJson
      */
     protected function indexAddressesImpl($customerId)
     {
-        $addresses = $this->getApiFacade()->getAddresses($this->getModelById(Customer::BIND_NAME, $customerId));
+        /** @var \Neomerx\Core\Models\Customer $customer */
+        $customer  = $this->getModelById(Customer::BIND_NAME, $customerId);
+        $customerAddresses = $this->getApiFacade()->getCustomerAddresses($customer);
 
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var AddressConverterCustomer $addressConverter */
         $addressConverter = App::make(AddressConverterCustomer::BIND_NAME);
 
         $result = [];
-        foreach ($addresses as $address) {
-            $result[] = $addressConverter->convert($address);
+        foreach ($customerAddresses as $customerAddress) {
+            /** @var \Neomerx\Core\Models\CustomerAddress $customerAddress */
+            $result[] = $addressConverter->convert($customerAddress);
         }
 
         return [$result, null];

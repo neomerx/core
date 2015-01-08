@@ -26,6 +26,15 @@ interface CustomerAddressesInterface
     public function getAddresses(Customer $customer);
 
     /**
+     * Get intermediate objects between customer and addresses (CustomerAddress).
+     *
+     * @param Customer $customer
+     *
+     * @return Collection
+     */
+    public function getCustomerAddresses(Customer $customer);
+
+    /**
      * Get customer's address.
      *
      * @param Customer $customer

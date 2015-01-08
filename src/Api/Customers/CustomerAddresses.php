@@ -78,6 +78,22 @@ class CustomerAddresses implements CustomerAddressesInterface
     /**
      * {@inheritdoc}
      */
+    public function getCustomerAddresses(Customer $customer)
+    {
+        /** @noinspection PhpUndefinedMethodInspection */
+        $addresses = $customer->customerAddresses()->get();
+
+        /** @var \Neomerx\Core\Models\CustomerAddress $customerAddress */
+        foreach ($addresses as $customerAddress) {
+            Permissions::check($customerAddress, Permission::view());
+        }
+
+        return $addresses;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAddress(Customer $customer, $addressId)
     {
         /** @noinspection PhpUndefinedMethodInspection */

@@ -24,6 +24,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      Collection   shipping_addresses
  * @property      Collection   default_shipping_address An array of 0 or 1 items.
  * @property      Collection   default_billing_address  An array of 0 or 1 items.
+ * @property      Collection   customer_addresses
  * @property      Collection   orders
  * @method        Builder      withTypeRiskAndLanguage()
  * @method        Builder      withDefaultAddresses()
@@ -62,6 +63,7 @@ class Customer extends BaseModel
     const FIELD_SHIPPING_ADDRESSES       = 'shipping_addresses';
     const FIELD_DEFAULT_SHIPPING_ADDRESS = 'default_shipping_address';
     const FIELD_DEFAULT_BILLING_ADDRESS  = 'default_billing_address';
+    const FIELD_CUSTOMER_ADDRESSES       = 'customer_addresses';
     const FIELD_ORDERS                   = 'orders';
 
     /**
@@ -290,6 +292,16 @@ class Customer extends BaseModel
     {
         return $this->billingAddresses()
             ->wherePivot(CustomerAddress::FIELD_IS_DEFAULT, '=', CustomerAddress::IS_DEFAULT);
+    }
+
+    /**
+     * Relation to customer addresses.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function customerAddresses()
+    {
+        return $this->hasMany(CustomerAddress::BIND_NAME, CustomerAddress::FIELD_ID_CUSTOMER, self::FIELD_ID);
     }
 
     /**
