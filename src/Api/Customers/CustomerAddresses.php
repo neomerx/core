@@ -81,14 +81,14 @@ class CustomerAddresses implements CustomerAddressesInterface
     public function getCustomerAddresses(Customer $customer)
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $addresses = $customer->customerAddresses()->get();
+        $customerAddresses = $customer->customerAddresses()->get();
 
         /** @var \Neomerx\Core\Models\CustomerAddress $customerAddress */
-        foreach ($addresses as $customerAddress) {
+        foreach ($customerAddresses as $customerAddress) {
             Permissions::check($customerAddress, Permission::view());
         }
 
-        return $addresses;
+        return $customerAddresses;
     }
 
     /**

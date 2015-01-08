@@ -46,7 +46,7 @@ class CurrencyConverterGeneric implements ConverterInterface
      *
      * @param Currency $currency
      *
-     * @return array
+     * @return array<*,string|null|array>
      */
     public function convert($currency = null)
     {
