@@ -33,8 +33,6 @@ trait ParseInputTrait
      * @return array
      *
      * @throws InvalidArgumentException
-     *
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     private function parseInputShipping(array $input)
     {
@@ -42,39 +40,27 @@ trait ParseInputTrait
             return [null, null];
         }
 
-        switch ($input[Orders::PARAM_SHIPPING][Orders::PARAM_SHIPPING_TYPE]) {
-            case Orders::PARAM_SHIPPING_TYPE_DELIVERY:
-                $isDelivery = true;
-                break;
-            case Orders::PARAM_SHIPPING_TYPE_PICKUP:
-                $isDelivery = false;
-                break;
-            default:
-                throw new InvalidArgumentException(Orders::PARAM_SHIPPING_TYPE);
-        }
-
-        $arrayKey = $isDelivery ? Orders::PARAM_SHIPPING_CARRIER_CODE : Orders::PARAM_SHIPPING_PLACE_CODE;
-        isset($input[Orders::PARAM_SHIPPING][$arrayKey]) ?: S\throwEx(new InvalidArgumentException($arrayKey));
+        $isDelivery = $this->mapValue2D($input, Orders::PARAM_SHIPPING, Orders::PARAM_SHIPPING_TYPE, [
+            Orders::PARAM_SHIPPING_TYPE_DELIVERY => true,
+            Orders::PARAM_SHIPPING_TYPE_PICKUP   => false,
+        ]);
 
         if ($isDelivery) {
             // delivery by carrier
-            /** @var \Neomerx\Core\Models\Carrier $carrierModel */
             /** @noinspection PhpUndefinedMethodInspection */
+            /** @var \Neomerx\Core\Models\Carrier $carrierModel */
             $carrierModel = App::make(Carrier::BIND_NAME);
-            $carrier = $carrierModel->selectByCode(
-                $input[Orders::PARAM_SHIPPING][Orders::PARAM_SHIPPING_CARRIER_CODE]
-            )->firstOrFail();
-            $store = null;
+            $carrierCode = S\array_get_value_2D_ex($input, Orders::PARAM_SHIPPING, Orders::PARAM_SHIPPING_CARRIER_CODE);
+            $carrier     = $carrierModel->selectByCode($carrierCode)->firstOrFail();
+            $store       = null;
         } else {
             // pickup from store
             $carrier = null;
+            /** @noinspection PhpUndefinedMethodInspection */
             /** @var \Neomerx\Core\Models\Store $storeModel */
-            /** @noinspection PhpUndefinedMethodInspection */
             $storeModel = App::make(Store::BIND_NAME);
-            /** @noinspection PhpUndefinedMethodInspection */
-            $store = $storeModel->selectByCode(
-                $input[Orders::PARAM_SHIPPING][Orders::PARAM_SHIPPING_PLACE_CODE]
-            )->withAddress()->firstOrFail();
+            $storeCode  = S\array_get_value_2D_ex($input, Orders::PARAM_SHIPPING, Orders::PARAM_SHIPPING_PLACE_CODE);
+            $store = $storeModel->selectByCode($storeCode)->withAddress()->firstOrFail();
         }
 
         return [$carrier, $store];
@@ -94,27 +80,17 @@ trait ParseInputTrait
         }
 
         $customerData = $input[Orders::PARAM_CUSTOMER];
-        switch ($customerData[Orders::PARAM_CUSTOMER_TYPE]) {
-            case Orders::PARAM_CUSTOMER_TYPE_NEW:
-                $isNew = true;
-                break;
-            case Orders::PARAM_CUSTOMER_TYPE_EXISTING:
-                $isNew = false;
-                break;
-            default:
-                throw new InvalidArgumentException(Orders::PARAM_CUSTOMER_TYPE);
-        }
+        $isNew = $this->mapValue1D($customerData, Orders::PARAM_CUSTOMER_TYPE, [
+            Orders::PARAM_CUSTOMER_TYPE_NEW      => true,
+            Orders::PARAM_CUSTOMER_TYPE_EXISTING => false,
+        ]);
 
-        $customerId = null;
         if ($isNew) {
-
+            $customerId = null;
             unset($customerData[Orders::PARAM_CUSTOMER_TYPE]);
             unset($customerData[Orders::PARAM_ADDRESSES]);
-
         } else {
-
-            $customerId  = S\array_get_value($customerData, Orders::PARAM_CUSTOMER_ID);
-            $customerId !== null ?: S\throwEx(new InvalidArgumentException(Orders::PARAM_CUSTOMER_ID));
+            $customerId   = S\array_get_value_ex($customerData, Orders::PARAM_CUSTOMER_ID);
             $customerData = null;
         }
 
@@ -215,29 +191,32 @@ trait ParseInputTrait
             return [null, null, null];
         }
 
-        isset($addressData[Orders::PARAM_ADDRESS_TYPE]) ?:
-            S\throwEx(new InvalidArgumentException(Orders::PARAM_ADDRESS_TYPE));
-
-        switch ($addressData[Orders::PARAM_ADDRESS_TYPE]) {
-            case Orders::PARAM_ADDRESS_TYPE_NEW:
-                $isNew = true;
-                break;
-            case Orders::PARAM_ADDRESS_TYPE_EXISTING:
-                $isNew = false;
-                break;
-            default:
-                throw new InvalidArgumentException(Orders::PARAM_ADDRESS_TYPE);
-        }
+        /** @var bool $isNew */
+        $isNew = $this->mapValue1D($addressData, Orders::PARAM_ADDRESS_TYPE, [
+            Orders::PARAM_ADDRESS_TYPE_NEW      => true,
+            Orders::PARAM_ADDRESS_TYPE_EXISTING => false
+        ]);
 
         if ($isNew) {
             unset($addressData[Orders::PARAM_ADDRESS_TYPE]);
             $addressId = null;
         } else {
-            $addressId  =  S\array_get_value($addressData, Orders::PARAM_ADDRESS_ID);
-            $addressId !== null ?: S\throwEx(new InvalidArgumentException(Orders::PARAM_ADDRESS_ID));
+            $addressId   = S\array_get_value_ex($addressData, Orders::PARAM_ADDRESS_ID);
             $addressData = null;
         }
 
         return [$isNew, $addressData, $addressId];
+    }
+
+    private function mapValue1D(array $input, $key, array $values)
+    {
+        $inputValue = S\array_get_value_1D_ex($input, $key);
+        return S\array_get_value_1D_ex($values, $inputValue);
+    }
+
+    private function mapValue2D(array $input, $key1, $key2, array $values)
+    {
+        $inputValue = S\array_get_value_2D_ex($input, $key1, $key2);
+        return S\array_get_value_1D_ex($values, $inputValue);
     }
 }

@@ -33,7 +33,7 @@ trait SpecificationTrait
     /**
      * @param CharacteristicValue $chValueModel
      * @param array               $parameters
-     * @param mixed               $model        Product or Variant
+     * @param BaseModel           $model        Product or Variant
      */
     private function updateSpecification(CharacteristicValue $chValueModel, array $parameters, BaseModel $model)
     {

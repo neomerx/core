@@ -109,9 +109,6 @@ trait CreateTrait
      * @throws InvalidArgumentException
      *
      * @return array
-     *
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     private function createOrFindAddresses(
         CustomerAddressesInterface $customerAddressesApi,
@@ -124,33 +121,74 @@ trait CreateTrait
         $shippingAddressId
     ) {
         // create or find billing address
-        if ($isNewBilling === true and !empty($billingAddressData) and $billingAddressId === null) {
-            $billingAddress = $customerAddressesApi->createAddress(
-                $customer,
-                array_merge($billingAddressData, [CustomerAddress::FIELD_TYPE => CustomerAddress::TYPE_BILLING])
-            );
-        } elseif ($isNewBilling === false and empty($billingAddressData) and $billingAddressId !== null) {
-            $billingAddress = $customerAddressesApi->getAddress($customer, $billingAddressId);
-        } elseif ($isNewBilling === null and empty($billingAddressData) and $billingAddressId === null) {
-            $billingAddress = null;
-        } else {
-            throw new InvalidArgumentException(Orders::PARAM_ADDRESSES_BILLING);
-        }
+        $billingAddress = $this->createOrFindAddress(
+            $customerAddressesApi,
+            $customer,
+            $isNewBilling,
+            $billingAddressData,
+            $billingAddressId,
+            CustomerAddress::TYPE_BILLING,
+            Orders::PARAM_ADDRESSES_BILLING
+        );
 
         // create or find shipping address
-        if ($isNewShipping === true and !empty($shippingAddressData) and $shippingAddressId === null) {
-            $shippingAddress = $customerAddressesApi->createAddress(
-                $customer,
-                array_merge($shippingAddressData, [CustomerAddress::FIELD_TYPE => CustomerAddress::TYPE_SHIPPING])
-            );
-        } elseif (($isNewShipping === false and empty($shippingAddressData) and $shippingAddressId !== null)) {
-            $shippingAddress = $customerAddressesApi->getAddress($customer, $shippingAddressId);
-        } elseif ($isNewShipping === null and empty($shippingAddressData) and $shippingAddressId === null) {
-            $shippingAddress = null;
-        } else {
-            throw new InvalidArgumentException(Orders::PARAM_ADDRESSES_SHIPPING);
-        }
+        $shippingAddress = $this->createOrFindAddress(
+            $customerAddressesApi,
+            $customer,
+            $isNewShipping,
+            $shippingAddressData,
+            $shippingAddressId,
+            CustomerAddress::TYPE_SHIPPING,
+            Orders::PARAM_ADDRESSES_SHIPPING
+        );
 
         return [$billingAddress, $shippingAddress];
+    }
+
+    /**
+     * @param CustomerAddressesInterface $api
+     * @param Customer                   $customer
+     * @param bool                       $isNew
+     * @param array|null                 $addressData
+     * @param int                        $addressId
+     * @param string                     $addressType
+     * @param string                     $invalidArgExMsg
+     *
+     * @return Address|null
+     *
+     * @throws \Neomerx\Core\Exceptions\InvalidArgumentException
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    private function createOrFindAddress(
+        CustomerAddressesInterface $api,
+        Customer $customer,
+        $isNew,
+        $addressData,
+        $addressId,
+        $addressType,
+        $invalidArgExMsg
+    ) {
+        if ($isNew === true and !empty($addressData) and $addressId === null) {
+
+            $address = $api->createAddress($customer, array_merge($addressData, [
+                CustomerAddress::FIELD_TYPE => $addressType
+            ]));
+
+        } elseif ($isNew === false and empty($addressData) and $addressId !== null) {
+
+            $address = $api->getAddress($customer, $addressId);
+
+        } elseif ($isNew === null and empty($addressData) and $addressId === null) {
+
+            $address = null;
+
+        } else {
+
+            throw new InvalidArgumentException($invalidArgExMsg);
+
+        }
+
+        return $address;
     }
 }

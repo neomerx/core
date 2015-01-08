@@ -85,11 +85,7 @@ class Store implements StoreInterface
 
                 /** @noinspection PhpUndefinedMethodInspection */
                 if (!is_null($fObject = SysCache::get($fObjectKey))) {
-                    if (array_key_exists($objectId, $result)) {
-                        $result[$objectId][$formatCode] = $fObject;
-                    } else {
-                        $result[$objectId] = [$formatCode => $fObject];
-                    }
+                    $this->addObject($result, $fObject, $objectId, $formatCode);
                 } else {
 
                     // formatted object not found in cache
@@ -106,11 +102,7 @@ class Store implements StoreInterface
 
                     if (isset($object)) {
                         $fObject = $this->formatAndCache($object, $fObjectKey, $formatter);
-                        if (array_key_exists($objectId, $result)) {
-                            $result[$objectId][$formatCode] = $fObject;
-                        } else {
-                            $result[$objectId] = [$formatCode => $fObject];
-                        }
+                        $this->addObject($result, $fObject, $objectId, $formatCode);
                     } else {
                         array_key_exists($objectId, $notCachedIds) ?: $notCachedIds[$objectId] = $objectKey;
                     }
@@ -131,11 +123,7 @@ class Store implements StoreInterface
                 foreach ($formatters as $formatter) {
                     $formatCode = $formatter->getUId();
                     $fObject    = $this->formatAndCache($objectAndTags[0], $formatter->getKey($objectId), $formatter);
-                    if (array_key_exists($objectId, $result)) {
-                        $result[$objectId][$formatCode] = $fObject;
-                    } else {
-                        $result[$objectId] = [$formatCode => $fObject];
-                    }
+                    $this->addObject($result, $fObject, $objectId, $formatCode);
                 }
 
             }
@@ -230,5 +218,20 @@ class Store implements StoreInterface
         }
 
         return $object;
+    }
+
+    /**
+     * @param array  $array
+     * @param mixed  $object
+     * @param int    $objectId
+     * @param string $formatCode
+     */
+    private function addObject(array &$array, $object, $objectId, $formatCode)
+    {
+        if (array_key_exists($objectId, $array)) {
+            $array[$objectId][$formatCode] = $object;
+        } else {
+            $array[$objectId] = [$formatCode => $object];
+        }
     }
 }

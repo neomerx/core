@@ -67,36 +67,30 @@ class SpecificationConverterGeneric extends BasicConverterWithLanguageFilter
             $measurement    = $characteristic->measurement;
 
             $characteristicCode = $characteristic->code;
-            foreach ($characteristic->properties as $characteristicProp) {
-                /** @var \Neomerx\Core\Models\CharacteristicProperties $characteristicProp */
-                $languageCode = $characteristicProp->language->iso_code;
-                $nameInLang   = $characteristicProp->name;
-                $result[$languageCode][$index][CharacteristicValue::FIELD_CHARACTERISTIC] = [
+            foreach ($characteristic->properties as $chProp) {
+                /** @var \Neomerx\Core\Models\CharacteristicProperties $chProp */
+                $result[$chProp->language->iso_code][$index][CharacteristicValue::FIELD_CHARACTERISTIC] = [
                     Api::PARAM_PAIR_CODE  => $characteristicCode,
-                    Api::PARAM_PAIR_VALUE => $nameInLang
+                    Api::PARAM_PAIR_VALUE => $chProp->name,
                 ];
             }
 
             $valueCode = $value->code;
-            foreach ($value->properties as $valueProp) {
-                /** @var \Neomerx\Core\Models\CharacteristicValueProperties $valueProp */
-                $languageCode = $valueProp->language->iso_code;
-                $valueInLang  = $valueProp->value;
-                $result[$languageCode][$index][Specification::FIELD_VALUE] = [
+            foreach ($value->properties as $vProp) {
+                /** @var \Neomerx\Core\Models\CharacteristicValueProperties $vProp */
+                $result[$vProp->language->iso_code][$index][Specification::FIELD_VALUE] = [
                     Api::PARAM_PAIR_CODE  => $valueCode,
-                    Api::PARAM_PAIR_VALUE => $valueInLang
+                    Api::PARAM_PAIR_VALUE => $vProp->value,
                 ];
             }
 
             if ($measurement !== null) {
                 $measurementCode = $measurement->code;
-                foreach ($measurement->properties as $measurementProp) {
-                    /** @var \Neomerx\Core\Models\MeasurementProperties $measurementProp */
-                    $languageCode = $measurementProp->language->iso_code;
-                    $nameInLang   = $measurementProp->name;
-                    $result[$languageCode][$index][Characteristic::FIELD_MEASUREMENT] = [
+                foreach ($measurement->properties as $mProp) {
+                    /** @var \Neomerx\Core\Models\MeasurementProperties $mProp */
+                    $result[$mProp->language->iso_code][$index][Characteristic::FIELD_MEASUREMENT] = [
                         Api::PARAM_PAIR_CODE  => $measurementCode,
-                        Api::PARAM_PAIR_VALUE => $nameInLang
+                        Api::PARAM_PAIR_VALUE => $mProp->name,
                     ];
                 }
             }
