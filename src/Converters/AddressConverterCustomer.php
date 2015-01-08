@@ -24,10 +24,10 @@ class AddressConverterCustomer extends AddressConverterGeneric
 
         ($customerAddress instanceof CustomerAddress) ?: S\throwEx(new InvalidArgumentException('customerAddress'));
 
-        $result = parent::convert($customerAddress->address);
-
-        $result[Api::PARAM_ADDRESS_TYPE]       = $customerAddress->{CustomerAddress::FIELD_TYPE};
-        $result[Api::PARAM_ADDRESS_IS_DEFAULT] = isset($customerAddress->{CustomerAddress::FIELD_IS_DEFAULT});
+        $result = array_merge(parent::convert($customerAddress->address), [
+            Api::PARAM_ADDRESS_TYPE       => $customerAddress->{CustomerAddress::FIELD_TYPE},
+            Api::PARAM_ADDRESS_IS_DEFAULT => isset($customerAddress->{CustomerAddress::FIELD_IS_DEFAULT}),
+        ]);
 
         return $result;
     }

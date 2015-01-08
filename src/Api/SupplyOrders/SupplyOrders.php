@@ -343,7 +343,7 @@ class SupplyOrders implements SupplyOrdersInterface
     /**
      * @param array $input
      *
-     * @return array
+     * @return array<array>
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)

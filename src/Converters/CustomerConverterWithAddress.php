@@ -36,18 +36,17 @@ class CustomerConverterWithAddress extends CustomerConverterGeneric
             return null;
         }
 
-        $result = parent::convert($customer);
-
         /** @var Collection $billingAddress */
         $billingAddress  = $customer->{Customer::FIELD_DEFAULT_BILLING_ADDRESS};
         /** @var Collection $shippingAddress */
         $shippingAddress = $customer->{Customer::FIELD_DEFAULT_SHIPPING_ADDRESS};
 
-        $result[Api::PARAM_DEFAULT_BILLING_ADDRESS] =
-            $billingAddress->isEmpty() ? null : $this->addressConverter->convert($billingAddress[0]);
-
-        $result[Api::PARAM_DEFAULT_SHIPPING_ADDRESS] =
-            $shippingAddress->isEmpty() ? null : $this->addressConverter->convert($shippingAddress[0]);
+        $result = array_merge(parent::convert($customer), [
+            Api::PARAM_DEFAULT_BILLING_ADDRESS =>
+                $billingAddress->isEmpty() ? null : $this->addressConverter->convert($billingAddress[0]),
+            Api::PARAM_DEFAULT_SHIPPING_ADDRESS =>
+                $shippingAddress->isEmpty() ? null : $this->addressConverter->convert($shippingAddress[0]),
+        ]);
 
         return $result;
     }

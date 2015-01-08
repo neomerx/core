@@ -144,7 +144,7 @@ class Orders implements OrdersInterface
             $isNewShipping, $shippingAddressData, $shippingAddressId,
             $cart) = $this->parseInput($input);
 
-        /** @var Order $order */
+        /** @var \Neomerx\Core\Models\Order $order */
         $order = null;
 
         /** @noinspection PhpUndefinedMethodInspection */

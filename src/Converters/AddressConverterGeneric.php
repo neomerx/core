@@ -26,9 +26,10 @@ class AddressConverterGeneric implements ConverterInterface
         ($address instanceof Address) ?: S\throwEx(new InvalidArgumentException('address'));
 
         $region = $address->region;
-        $result = $address->attributesToArray();
-        $result[AddressesInterface::PARAM_REGION_CODE] = $region->code;
-        $result[RegionsInterface::PARAM_COUNTRY_CODE]  = $region->country->code;
+        $result = array_merge($address->attributesToArray(), [
+            AddressesInterface::PARAM_REGION_CODE => $region->code,
+            RegionsInterface::PARAM_COUNTRY_CODE  => $region->country->code,
+        ]);
 
         return $result;
     }
