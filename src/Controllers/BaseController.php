@@ -36,7 +36,7 @@ abstract class BaseController extends Controller
         try {
 
             list($data, $code) = call_user_func_array([$this, $methodName], $parameters);
-            $code = $code ? : SymfonyResponse::HTTP_OK;
+            $code = ($code ? $code : SymfonyResponse::HTTP_OK);
             return $this->formatReply($data, $code);
 
         } catch (ResourceNotFoundException $e) {

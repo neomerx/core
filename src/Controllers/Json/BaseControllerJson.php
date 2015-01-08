@@ -129,7 +129,7 @@ abstract class BaseControllerJson extends BaseController
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $this->apiFacade->create($input);
-        return [null, SymfonyResponse::HTTP_CREATED];
+        return [[], SymfonyResponse::HTTP_CREATED];
     }
 
     /**
@@ -178,7 +178,7 @@ abstract class BaseControllerJson extends BaseController
      */
     protected function formatReply($data, $status)
     {
-        $response = Response::json($data, $status);
+        $response = Response::json(empty($data) ?  null : $data, $status);
         return $response;
     }
 }

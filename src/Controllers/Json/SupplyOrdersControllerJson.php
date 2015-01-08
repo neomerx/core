@@ -73,7 +73,7 @@ final class SupplyOrdersControllerJson extends BaseControllerJson
     /**
      * @param array $input
      *
-     * @return array<mixed,mixed>
+     * @return array
      */
     protected function createResource(array $input)
     {
