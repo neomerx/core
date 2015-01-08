@@ -14,7 +14,7 @@ class CustomerConverterGeneric implements ConverterInterface
      *
      * @param Customer $customer
      *
-     * @return array
+     * @return array<*,string|null|array>
      */
     public function convert($customer = null)
     {
