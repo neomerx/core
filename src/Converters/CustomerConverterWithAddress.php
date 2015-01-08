@@ -28,7 +28,7 @@ class CustomerConverterWithAddress extends CustomerConverterGeneric
      *
      * @param Customer $customer
      *
-     * @return array<mixed,mixed>
+     * @return array<mixed,string|null|array>
      */
     public function convert($customer = null)
     {
