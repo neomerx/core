@@ -136,7 +136,8 @@ trait ImageTrait
         ++$latestIndex;
         /** @noinspection PhpUndefinedMethodInspection */
         while (File::exists("$uploadFolderPath$baseFileName-$latestIndex.$originalFileExt") or
-            Image::where(Image::FIELD_ORIGINAL_FILE, "$baseFileName-$latestIndex.$originalFileExt")->first() !== null
+            Image::where([Image::FIELD_ORIGINAL_FILE => "$baseFileName-$latestIndex.$originalFileExt"])
+                ->first() !== null
         ) {
             ++$latestIndex;
         }

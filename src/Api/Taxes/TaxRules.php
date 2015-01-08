@@ -197,6 +197,7 @@ class TaxRules implements TaxRulesInterface
         $resources = $this->ruleModel->with(static::$relations)->get();
 
         foreach ($resources as $resource) {
+            /** @var \Neomerx\Core\Models\TaxRule $resource */
             Permissions::check($resource, Permission::view());
         }
 

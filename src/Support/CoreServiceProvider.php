@@ -120,8 +120,6 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->registerConverters();
 
-        $this->registerCommands();
-
         $this->registerSecurity();
     }
 
@@ -135,7 +133,7 @@ class CoreServiceProvider extends ServiceProvider
         /** @noinspection PhpUnusedParameterInspection */
         Validator::extend(
             'alpha_dash_dot_space',
-            function ($attribute, $value, $parameters) {
+            function ($attribute, $value) {
                 return preg_match('/^[\pL\pN\s\._-]+$/u', $value);
             },
             trans('nm::errors.validation_alpha_dash_dot_space')
@@ -148,7 +146,7 @@ class CoreServiceProvider extends ServiceProvider
         /** @noinspection PhpUnusedParameterInspection */
         Validator::extend(
             'code',
-            function ($attribute, $value, $parameters) {
+            function ($attribute, $value) {
                 return preg_match('/^[\pL\pN\.\_\-]+$/u', $value);
             },
             trans('nm::errors.validation_code')
@@ -159,7 +157,7 @@ class CoreServiceProvider extends ServiceProvider
         /** @noinspection PhpUnusedParameterInspection */
         Validator::extend(
             'forbidden',
-            function ($attribute, $value, $parameters) {
+            function () {
                 return false;
             },
             trans('nm::errors.validation_forbidden')
@@ -202,13 +200,6 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->bind(ProductTaxTypesFacade::INTERFACE_BIND_NAME, ProductTaxTypes::BIND_NAME);
         $this->app->bind(ShippingStatusesFacade::INTERFACE_BIND_NAME, ShippingStatuses::BIND_NAME);
         $this->app->bind(CustomerAddressesFacade::INTERFACE_BIND_NAME, CustomerAddresses::BIND_NAME);
-    }
-
-    /**
-     * Register commands.
-     */
-    private function registerCommands()
-    {
     }
 
     /**

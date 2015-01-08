@@ -33,8 +33,8 @@ use \Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * multiply by 2 (e.g. hashing passwords, additional fields that should be checked but not saved).
  * If you don't need different checks on create and save (e.g. check unique) multiply by 1 otherwise by 2.
  *
- * @method static Builder with($condition)
- * @method        Builder where($field, $operation, $value)
+ * @method static Builder with($conditions)
+ * @method static Builder where($conditions)
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
