@@ -34,6 +34,9 @@ final class LoginControllerJson extends BaseController
         return [null, $this->convertReplyToHttpCode($reply)];
     }
 
+    /**
+     * @param integer $reply
+     */
     private function convertReplyToHttpCode($reply)
     {
         switch ($reply)

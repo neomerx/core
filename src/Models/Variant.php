@@ -193,7 +193,7 @@ class Variant extends BaseModel implements SelectByCodeInterface
     /**
      * Relation to product language properties (translations).
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function properties()
     {

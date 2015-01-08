@@ -110,7 +110,7 @@ class Country extends BaseModel implements SelectByCodeInterface
     /**
      * Relation to country language properties (name translations).
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function properties()
     {

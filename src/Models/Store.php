@@ -151,7 +151,7 @@ class Store extends BaseModel implements SelectByCodeInterface
     /**
      * Relation to warehouses.
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function warehouses()
     {
@@ -162,7 +162,7 @@ class Store extends BaseModel implements SelectByCodeInterface
     /**
      * Relation to orders.
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function orders()
     {

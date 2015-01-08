@@ -206,7 +206,7 @@ class SupplyOrder extends BaseModel
     /**
      * Relation to supply order details.
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function details()
     {
