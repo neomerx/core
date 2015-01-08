@@ -147,8 +147,8 @@ class SupplyOrders implements SupplyOrdersInterface
             foreach ($details as $detailsRow) {
                 $details = new SupplyOrderDetails($detailsRow);
                 /** @noinspection PhpUndefinedMethodInspection */
-                $saved = $supplyOrder->details()->save($details);
                 /** @var \Neomerx\Core\Models\SupplyOrderDetails $saved */
+                $saved = $supplyOrder->details()->save($details);
                 if (isset($saved) and $saved->exists) {
                     Permissions::check($saved, Permission::create());
                 } else {

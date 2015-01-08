@@ -205,7 +205,9 @@ class Orders implements OrdersInterface
 
         }
 
-        Event::fire(new OrderArgs(self::EVENT_PREFIX . 'created', $order));
+        if ($order !== null) {
+            Event::fire(new OrderArgs(self::EVENT_PREFIX . 'created', $order));
+        }
 
         return $order;
     }

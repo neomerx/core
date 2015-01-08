@@ -80,6 +80,8 @@ class Manufacturers implements ManufacturersInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function create(array $input)
     {
@@ -116,7 +118,9 @@ class Manufacturers implements ManufacturersInterface
             isset($allExecutedOk) ? DB::commit() : DB::rollBack();
         }
 
-        Event::fire(new ManufacturerArgs(self::EVENT_PREFIX . 'created', $manufacturer));
+        if ($manufacturer !== null) {
+            Event::fire(new ManufacturerArgs(self::EVENT_PREFIX . 'created', $manufacturer));
+        }
 
         return $manufacturer;
     }

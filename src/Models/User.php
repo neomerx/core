@@ -231,6 +231,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
      */
     public function addRole($code)
     {
+        /** @var \Neomerx\Core\Models\Role $role */
         $role = $this->roleModel->selectByCode($code)->firstOrFail([Role::FIELD_ID]);
         $this->roles()->save($role);
         return $role->exists;

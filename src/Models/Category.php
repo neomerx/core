@@ -15,6 +15,7 @@ use \Neomerx\Core\Exceptions\InvalidArgumentException;
  * @property      bool       enabled
  * @property      int        lft
  * @property      int        rgt
+ * @property-read string     ancestor_code
  * @property-read int        number_of_descendants
  * @property-read Carbon     created_at
  * @property-read Carbon     updated_at
@@ -285,15 +286,12 @@ class Category extends BaseModel implements SelectByCodeInterface
     protected function onCreating()
     {
         /** @var Category $parentCategory */
-        /** @noinspection PhpUndefinedFieldInspection */
         $parentCategory = $this->selectByCode($this->ancestor_code ?: self::ROOT_CODE)->firstOrFail();
         $parentRight    = $parentCategory->rgt;
 
         $this->lft = $parentRight;
         $this->rgt = $parentRight + 1;
         $this->id_ancestor = $parentCategory->{self::FIELD_ID};
-        /** @noinspection PhpUnusedLocalVariableInspection */
-        $allExecutedOk = false;
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
         try {
@@ -312,7 +310,7 @@ class Category extends BaseModel implements SelectByCodeInterface
         } finally {
 
             /** @noinspection PhpUndefinedMethodInspection */
-            $allExecutedOk ? DB::commit() : DB::rollBack();
+            isset($allExecutedOk) ? DB::commit() : DB::rollBack();
 
         }
         return $allExecutedOk;

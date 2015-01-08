@@ -80,6 +80,8 @@ class Suppliers implements SuppliersInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function create(array $input)
     {
@@ -116,7 +118,9 @@ class Suppliers implements SuppliersInterface
             isset($allExecutedOk) ? DB::commit() : DB::rollBack();
         }
 
-        Event::fire(new SupplierArgs(self::EVENT_PREFIX . 'created', $supplier));
+        if ($supplier !== null) {
+            Event::fire(new SupplierArgs(self::EVENT_PREFIX . 'created', $supplier));
+        }
 
         return $supplier;
     }

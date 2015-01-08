@@ -97,6 +97,8 @@ class Inventories implements InventoriesInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function increment(Variant $variant, Warehouse $warehouse, $quantity)
     {
@@ -136,7 +138,9 @@ class Inventories implements InventoriesInterface
             isset($allExecutedOk) ? DB::commit() : DB::rollBack();
         }
 
-        Event::fire(new InventoryArgs(self::EVENT_PREFIX . 'itemIncreased', $inventoryRow));
+        if ($inventoryRow !== null) {
+            Event::fire(new InventoryArgs(self::EVENT_PREFIX . 'itemIncreased', $inventoryRow));
+        }
     }
 
     /**
@@ -183,8 +187,12 @@ class Inventories implements InventoriesInterface
             isset($allExecutedOk) ? DB::commit() : DB::rollBack();
         }
 
-        Event::fire(new InventoryArgs(self::EVENT_PREFIX . 'itemDecreased', $inventoryRow));
-        !$includingReserve ?: Event::fire(new InventoryArgs(self::EVENT_PREFIX . 'reserveDecreased', $inventoryRow));
+        if ($inventoryRow !== null) {
+            Event::fire(new InventoryArgs(self::EVENT_PREFIX . 'itemDecreased', $inventoryRow));
+            if ($includingReserve) {
+                Event::fire(new InventoryArgs(self::EVENT_PREFIX . 'reserveDecreased', $inventoryRow));
+            }
+        }
     }
 
     /**

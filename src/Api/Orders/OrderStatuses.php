@@ -124,10 +124,10 @@ class OrderStatuses implements OrderStatusesInterface
 
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var \Neomerx\Core\Models\OrderStatusRule $rule */
-        $rule = $this->ruleModel
-            ->where(OrderStatusRule::FIELD_ID_ORDER_STATUS_FROM, '=', $statusFrom->{OrderStatus::FIELD_ID})
-            ->where(OrderStatusRule::FIELD_ID_ORDER_STATUS_TO, '=', $statusTo->{OrderStatus::FIELD_ID})
-            ->firstOrFail();
+        $rule = $this->ruleModel->where([
+            OrderStatusRule::FIELD_ID_ORDER_STATUS_FROM => $statusFrom->{OrderStatus::FIELD_ID},
+            OrderStatusRule::FIELD_ID_ORDER_STATUS_TO   => $statusTo->{OrderStatus::FIELD_ID}
+        ])->firstOrFail();
 
         $rule->deleteOrFail();
 

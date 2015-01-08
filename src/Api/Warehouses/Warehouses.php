@@ -22,6 +22,8 @@ class Warehouses implements WarehousesInterface
      */
     public function getDefault()
     {
-        return $this->warehouseModel->selectByCode(Warehouse::DEFAULT_CODE)->firstOrFail();
+        /** @var \Neomerx\Core\Models\Warehouse $warehouse */
+        $warehouse = $this->warehouseModel->selectByCode(Warehouse::DEFAULT_CODE)->firstOrFail();
+        return $warehouse;
     }
 }

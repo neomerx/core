@@ -247,10 +247,10 @@ class Categories implements CategoriesInterface
                 $product = $this->productModel->selectByCode($sku)->firstOrFail([Product::FIELD_ID]);
                 $productId = $product->{Product::FIELD_ID};
                 /** @noinspection PhpUndefinedMethodInspection */
-                $this->productCategoryModel
-                    ->where(ProductCategory::FIELD_ID_CATEGORY, '=', $categoryId)
-                    ->where(ProductCategory::FIELD_ID_PRODUCT, '=', $productId)
-                    ->update([ProductCategory::FIELD_POSITION => $position]);
+                $this->productCategoryModel->where([
+                    ProductCategory::FIELD_ID_CATEGORY => $categoryId,
+                    ProductCategory::FIELD_ID_PRODUCT  => $productId
+                ])->update([ProductCategory::FIELD_POSITION => $position]);
 
             }
 

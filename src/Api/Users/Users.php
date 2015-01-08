@@ -72,7 +72,9 @@ class Users implements UsersInterface
             isset($allExecutedOk) ? DB::commit() : DB::rollBack();
         }
 
-        Event::fire(new UserArgs(self::EVENT_PREFIX . 'created', $user));
+        if ($user !== null) {
+            Event::fire(new UserArgs(self::EVENT_PREFIX . 'created', $user));
+        }
 
         return $user;
     }

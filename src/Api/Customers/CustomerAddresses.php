@@ -221,13 +221,12 @@ class CustomerAddresses implements CustomerAddressesInterface
 
             /** @noinspection PhpUndefinedMethodInspection */
             $this->customerAddressModel
-                ->where(CustomerAddress::FIELD_ID_CUSTOMER, '=', $customerId)
-                ->where(CustomerAddress::FIELD_TYPE, '=', $type)
+                ->where([CustomerAddress::FIELD_ID_CUSTOMER => $customerId, CustomerAddress::FIELD_TYPE => $type])
                 ->update([CustomerAddress::FIELD_IS_DEFAULT => null]);
 
             /** @noinspection PhpUndefinedMethodInspection */
             $this->customerAddressModel
-                ->where(CustomerAddress::FIELD_ID, '=', $customerAddress->{CustomerAddress::FIELD_ID})
+                ->where([CustomerAddress::FIELD_ID => $customerAddress->{CustomerAddress::FIELD_ID}])
                 ->update([CustomerAddress::FIELD_IS_DEFAULT => true]);
 
             $allExecutedOk = true;
@@ -249,8 +248,8 @@ class CustomerAddresses implements CustomerAddressesInterface
      */
     private function getCustomerAndAddressLink($customerId, $addressId, $type)
     {
-        /** @var \Neomerx\Core\Models\CustomerAddress $customerAddress */
         /** @noinspection PhpUndefinedMethodInspection */
+        /** @var \Neomerx\Core\Models\CustomerAddress $customerAddress */
         $customerAddress = $this->customerAddressModel->where([
             CustomerAddress::FIELD_ID_CUSTOMER => $customerId,
             CustomerAddress::FIELD_ID_ADDRESS  => $addressId,
