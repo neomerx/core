@@ -95,7 +95,7 @@ final class CustomersControllerJson extends BaseControllerJson
     /**
      * @param array $input
      *
-     * @return array
+     * @return array<mixed,mixed>
      */
     protected function createResource(array $input)
     {

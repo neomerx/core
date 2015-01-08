@@ -123,7 +123,7 @@ abstract class BaseControllerJson extends BaseController
     /**
      * @param array $input
      *
-     * @return array<mixed,int>
+     * @return array<mixed,mixed>
      */
     protected function createResource(array $input)
     {
