@@ -2,8 +2,8 @@
 
 use \Neomerx\Core\Support as S;
 use \Illuminate\Support\Facades\Queue;
-use \Neomerx\Core\Queues\ImageGenerator;
 use \Illuminate\Database\Eloquent\Collection;
+use \Neomerx\Core\Commands\GenerateImageCommand;
 
 /**
  * @property int        id_image_format
@@ -141,7 +141,7 @@ class ImageFormat extends BaseModel
         $onUpdated = parent::onUpdated();
 
         /** @noinspection PhpUndefinedMethodInspection */
-        Queue::push(ImageGenerator::class.'@generateByFormat', [self::FIELD_NAME => $this->name]);
+        Queue::push(GenerateImageCommand::class.'@byFormat', [self::FIELD_NAME => $this->name]);
 
         return $onUpdated;
     }

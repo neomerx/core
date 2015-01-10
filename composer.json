@@ -1,6 +1,6 @@
 {
     "name": "neomerx/core",
-    "description": "Neomerx framework Core REST API",
+    "description": "Neomerx framework core components",
     "require": {
         "php": ">=5.5.0",
         "laravel/framework":           "4.2.*",

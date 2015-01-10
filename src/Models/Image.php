@@ -1,9 +1,9 @@
 <?php namespace Neomerx\Core\Models;
 
 use \Neomerx\Core\Config;
-use \Neomerx\Core\Exceptions\Exception;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Support\Facades\File;
+use \Neomerx\Core\Exceptions\Exception;
 use \Neomerx\Core\Exceptions\LogicException;
 use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Exceptions\ConfigurationException;
