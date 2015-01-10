@@ -18,7 +18,6 @@ use \Neomerx\Core\Support\SearchGrammar;
 use \Neomerx\Core\Auth\Facades\Permissions;
 use \Neomerx\Core\Models\SupplyOrderDetails;
 use \Neomerx\Core\Api\Traits\InputParserTrait;
-use \Neomerx\Core\Exceptions\ValidationException;
 use \Neomerx\Core\Api\Traits\LanguagePropertiesTrait;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 

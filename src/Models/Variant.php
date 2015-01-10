@@ -22,7 +22,7 @@ use \Illuminate\Database\Eloquent\Collection;
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
-class Variant extends BaseModel implements SelectByCodeInterface
+class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificationInterface
 {
     const BIND_NAME  = __CLASS__;
     const TABLE_NAME = 'variants';
@@ -222,6 +222,7 @@ class Variant extends BaseModel implements SelectByCodeInterface
             foreach ($this->specification as $specRow) {
                 $specRow->makeNonVariable();
             }
+            /** @noinspection PhpUndefinedMethodInspection */
             $this->properties()->delete();
 
             $allExecutedOk = true;

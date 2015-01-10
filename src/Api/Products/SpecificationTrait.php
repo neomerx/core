@@ -3,10 +3,10 @@
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Events\Event;
 use \Neomerx\Core\Models\Product;
-use \Neomerx\Core\Models\BaseModel;
 use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Models\Characteristic;
 use \Neomerx\Core\Models\CharacteristicValue;
+use \Neomerx\Core\Models\GetSpecificationInterface;
 use \Neomerx\Core\Exceptions\NullArgumentException;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
@@ -31,12 +31,15 @@ trait SpecificationTrait
     }
 
     /**
-     * @param CharacteristicValue $chValueModel
-     * @param array               $parameters
-     * @param BaseModel           $model        Product or Variant
+     * @param CharacteristicValue       $chValueModel
+     * @param array                     $parameters
+     * @param GetSpecificationInterface $model        Product or Variant
      */
-    private function updateSpecification(CharacteristicValue $chValueModel, array $parameters, BaseModel $model)
-    {
+    private function updateSpecification(
+        CharacteristicValue $chValueModel,
+        array $parameters,
+        GetSpecificationInterface $model
+    ) {
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
         try {

@@ -37,7 +37,7 @@ use \Neomerx\Core\Exceptions\ValidationException;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Product extends BaseModel implements SelectByCodeInterface
+class Product extends BaseModel implements SelectByCodeInterface, GetSpecificationInterface
 {
     const BIND_NAME  = __CLASS__;
     const TABLE_NAME = 'products';
