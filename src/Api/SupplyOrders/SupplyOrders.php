@@ -136,10 +136,10 @@ class SupplyOrders implements SupplyOrdersInterface
      */
     public function create(array $input)
     {
-        list($orderData, $details) = $this->parseInputOnCreate($input);
+        list($orderData, $detailsData) = $this->parseInputOnCreate($input);
 
         /** @var array $orderData */
-        /** @var array $details */
+        /** @var array $detailsData */
 
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
@@ -149,16 +149,18 @@ class SupplyOrders implements SupplyOrdersInterface
             $supplyOrder = $this->orderModel->createOrFailResource($orderData);
             Permissions::check($supplyOrder, Permission::create());
 
-            foreach ($details as $detailsRow) {
-                $details = new SupplyOrderDetails($detailsRow);
+            $supplyOrderId = $supplyOrder->{SupplyOrder::FIELD_ID};
+            foreach ($detailsData as $detailsRow) {
+
                 /** @noinspection PhpUndefinedMethodInspection */
-                /** @var \Neomerx\Core\Models\SupplyOrderDetails $saved */
-                $saved = $supplyOrder->details()->save($details);
-                if (isset($saved) and $saved->exists) {
-                    Permissions::check($saved, Permission::create());
-                } else {
-                    throw new ValidationException($saved->getValidator());
-                }
+                /** @var \Neomerx\Core\Models\SupplyOrderDetails $details */
+                $details = App::make(SupplyOrderDetails::BIND_NAME);
+                $details->fill($detailsRow);
+
+                $details->{SupplyOrderDetails::FIELD_ID_SUPPLY_ORDER} = $supplyOrderId;
+                $details->saveOrFail();
+                Permissions::check($details, Permission::create());
+
             }
 
             Event::fire(new SupplyOrderArgs(self::EVENT_PREFIX . 'creating', $supplyOrder));
@@ -183,23 +185,19 @@ class SupplyOrders implements SupplyOrdersInterface
     public function createDetails(SupplyOrder $supplyOrder, array $input)
     {
         $detailsData = $this->parseDetailInputOnCreate($input);
+
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var \Neomerx\Core\Models\SupplyOrderDetails $details */
         $details = App::make(SupplyOrderDetails::BIND_NAME);
         $details->fill($detailsData);
+        $details->{SupplyOrderDetails::FIELD_ID_SUPPLY_ORDER} = $supplyOrder->{SupplyOrder::FIELD_ID};
 
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
         try {
 
-            /** @noinspection PhpUndefinedMethodInspection */
-            /** @var \Neomerx\Core\Models\SupplyOrderDetails $details */
-            $details = $supplyOrder->details()->save($details);
-            if (isset($details) and $details->exists) {
-                Permissions::check($details, Permission::create());
-            } else {
-                throw new ValidationException($details->getValidator());
-            }
+            $details->saveOrFail();
+            Permissions::check($details, Permission::create());
 
             Event::fire(new SupplyOrderDetailsArgs(self::EVENT_PREFIX . 'detailsCreating', $details));
 

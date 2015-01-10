@@ -69,7 +69,8 @@ class SpecificationConverterGeneric extends BasicConverterWithLanguageFilter
             $characteristicCode = $characteristic->code;
             foreach ($characteristic->properties as $chProp) {
                 /** @var \Neomerx\Core\Models\CharacteristicProperties $chProp */
-                $result[$chProp->language->iso_code][$index][CharacteristicValue::FIELD_CHARACTERISTIC] = [
+                $propIso = $chProp->language->iso_code;
+                $result[$propIso][$index][CharacteristicValue::FIELD_CHARACTERISTIC] = [
                     Api::PARAM_PAIR_CODE  => $characteristicCode,
                     Api::PARAM_PAIR_VALUE => $chProp->name,
                 ];
@@ -78,7 +79,8 @@ class SpecificationConverterGeneric extends BasicConverterWithLanguageFilter
             $valueCode = $value->code;
             foreach ($value->properties as $vProp) {
                 /** @var \Neomerx\Core\Models\CharacteristicValueProperties $vProp */
-                $result[$vProp->language->iso_code][$index][Specification::FIELD_VALUE] = [
+                $propIso = $vProp->language->iso_code;
+                $result[$propIso][$index][Specification::FIELD_VALUE] = [
                     Api::PARAM_PAIR_CODE  => $valueCode,
                     Api::PARAM_PAIR_VALUE => $vProp->value,
                 ];
@@ -88,7 +90,8 @@ class SpecificationConverterGeneric extends BasicConverterWithLanguageFilter
                 $measurementCode = $measurement->code;
                 foreach ($measurement->properties as $mProp) {
                     /** @var \Neomerx\Core\Models\MeasurementProperties $mProp */
-                    $result[$mProp->language->iso_code][$index][Characteristic::FIELD_MEASUREMENT] = [
+                    $propIso = $mProp->language->iso_code;
+                    $result[$propIso][$index][Characteristic::FIELD_MEASUREMENT] = [
                         Api::PARAM_PAIR_CODE  => $measurementCode,
                         Api::PARAM_PAIR_VALUE => $mProp->name,
                     ];
