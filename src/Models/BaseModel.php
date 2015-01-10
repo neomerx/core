@@ -505,7 +505,7 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
     protected function convertStdClassesToModels(array $stdClasses)
     {
         $models = [];
-        $connection = $this->getConnection();
+        $connection = $this->getConnection()->getName();
         foreach ($stdClasses as $stdClass) {
             $models[] = $model = $this->newFromBuilder($stdClass);
             $model->setConnection($connection);

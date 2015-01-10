@@ -128,6 +128,7 @@ class Inventories implements InventoriesInterface
                     Inventory::FIELD_ID_WAREHOUSE => $warehouseId,
                     Inventory::FIELD_IN           => $quantity,
                 ];
+                /** @var \Neomerx\Core\Models\Inventory $inventoryRow */
                 $inventoryRow = $this->inventoryModel->createOrFailResource($inventoryData);
             }
 

@@ -112,8 +112,8 @@ class InventoryControllerJson extends BaseController
     protected function showImpl($warehouseCode, $sku)
     {
         $inventory = $this->apiFacade->read(
-            $this->getModelByCode(Variant::BIND_NAME, $sku),
-            $this->getModelByCode(Warehouse::BIND_NAME, $warehouseCode)
+            $this->getVariantByCode($sku),
+            $this->getWarehouseByCode($warehouseCode)
         );
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var ConverterInterface $converter */
@@ -131,8 +131,8 @@ class InventoryControllerJson extends BaseController
     protected function incrementImpl($warehouseCode, $sku, $quantity)
     {
         $this->apiFacade->increment(
-            $this->getModelByCode(Variant::BIND_NAME, $sku),
-            $this->getModelByCode(Warehouse::BIND_NAME, $warehouseCode),
+            $this->getVariantByCode($sku),
+            $this->getWarehouseByCode($warehouseCode),
             $quantity
         );
         return [null, null];
@@ -148,8 +148,8 @@ class InventoryControllerJson extends BaseController
     protected function decrementImpl($warehouseCode, $sku, $quantity)
     {
         $this->apiFacade->decrement(
-            $this->getModelByCode(Variant::BIND_NAME, $sku),
-            $this->getModelByCode(Warehouse::BIND_NAME, $warehouseCode),
+            $this->getVariantByCode($sku),
+            $this->getWarehouseByCode($warehouseCode),
             $quantity
         );
         return [null, null];
@@ -168,8 +168,8 @@ class InventoryControllerJson extends BaseController
         (settype($quantity, 'int') and $quantity > 0) ?: S\throwEx(new InvalidArgumentException('quantity'));
 
         $this->apiFacade->makeReserve(
-            $this->getModelByCode(Variant::BIND_NAME, $sku),
-            $this->getModelByCode(Warehouse::BIND_NAME, $warehouseCode),
+            $this->getVariantByCode($sku),
+            $this->getWarehouseByCode($warehouseCode),
             $quantity
         );
 
@@ -189,11 +189,35 @@ class InventoryControllerJson extends BaseController
         (settype($quantity, 'int') and $quantity > 0) ?: S\throwEx(new InvalidArgumentException('quantity'));
 
         $this->apiFacade->releaseReserve(
-            $this->getModelByCode(Variant::BIND_NAME, $sku),
-            $this->getModelByCode(Warehouse::BIND_NAME, $warehouseCode),
+            $this->getVariantByCode($sku),
+            $this->getWarehouseByCode($warehouseCode),
             $quantity
         );
 
         return [null, null];
+    }
+
+    /**
+     * @param string $sku
+     *
+     * @return Variant
+     */
+    private function getVariantByCode($sku)
+    {
+        /** @var \Neomerx\Core\Models\Variant $variant */
+        $variant = $this->getModelByCode(Variant::BIND_NAME, $sku);
+        return $variant;
+    }
+
+    /**
+     * @param string $warehouseCode
+     *
+     * @return Warehouse
+     */
+    private function getWarehouseByCode($warehouseCode)
+    {
+        /** @var \Neomerx\Core\Models\Warehouse $warehouse */
+        $warehouse = $this->getModelByCode(Warehouse::BIND_NAME, $warehouseCode);
+        return $warehouse;
     }
 }
