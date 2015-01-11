@@ -29,10 +29,13 @@ trait RelationsTrait
      */
     public function belongsTo($related, $foreignKey = null, $otherKey = null, $relation = null)
     {
+        // avoid 'unused' warning. This parameter is needed for compatibility with Model::belongsTo
+        $relation ?: null;
+
         /** @noinspection PhpUndefinedMethodInspection */
         return new BelongsTo(
             App::make($related)->newQuery(),
-            $this->baseModelRT->getModel(),
+            $this->rtModel(),
             $foreignKey,
             $otherKey,
             debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']
@@ -44,14 +47,17 @@ trait RelationsTrait
      */
     public function belongsToMany($related, $table = null, $foreignKey = null, $otherKey = null, $relation = null)
     {
+        // avoid 'unused' warning. This parameter is needed for compatibility with Model::belongsToMany
+        $relation ?: null;
+
         /** @noinspection PhpUndefinedMethodInspection */
         return new BelongsToMany(
             App::make($related)->newQuery(),
-            $this->baseModelRT->getModel(),
+            $this->rtModel(),
             $table,
             $foreignKey,
             $otherKey,
-            $this->getBelongsToManyCaller()
+            $this->getCaller()
         );
     }
 
@@ -63,12 +69,7 @@ trait RelationsTrait
         /** @var BaseModel $instance */
         /** @noinspection PhpUndefinedMethodInspection */
         $instance = App::make($related);
-        return new HasOne(
-            $instance->newQuery(),
-            $this->baseModelRT->getModel(),
-            $instance->getTable() . '.' . $foreignKey,
-            $localKey
-        );
+        return new HasOne($instance->newQuery(), $this->rtModel(), $this->rtTable($instance, $foreignKey), $localKey);
     }
 
     /**
@@ -79,12 +80,7 @@ trait RelationsTrait
         /** @var BaseModel $instance */
         /** @noinspection PhpUndefinedMethodInspection */
         $instance = App::make($related);
-        return new HasMany(
-            $instance->newQuery(),
-            $this->baseModelRT->getModel(),
-            $instance->getTable() . '.' . $foreignKey,
-            $localKey
-        );
+        return new HasMany($instance->newQuery(), $this->rtModel(), $this->rtTable($instance, $foreignKey), $localKey);
     }
 
     /**
@@ -95,7 +91,7 @@ trait RelationsTrait
         /** @noinspection PhpUndefinedMethodInspection */
         return new HasManyThrough(
             App::make($related)->newQuery(),
-            $this->baseModelRT->getModel(),
+            $this->rtModel(),
             App::make($through),
             $firstKey,
             $secondKey
@@ -111,8 +107,8 @@ trait RelationsTrait
 
         if (is_null($class = $this->$itemType)) {
             return new MorphTo(
-                $this->baseModelRT->getModel()->newQuery(),
-                $this->baseModelRT->getModel(),
+                $this->rtModel()->newQuery(),
+                $this->rtModel(),
                 $itemId,
                 null,
                 $itemType,
@@ -124,7 +120,7 @@ trait RelationsTrait
             $instance = App::make($class);
             return new MorphTo(
                 $instance->newQuery(),
-                $this->baseModelRT->getModel(),
+                $this->rtModel(),
                 $itemId,
                 $instance->getKeyName(),
                 $itemType,
@@ -220,5 +216,24 @@ trait RelationsTrait
         }
 
         return null;
+    }
+
+    /**
+     * @return Model
+     */
+    private function rtModel()
+    {
+        return $this->baseModelRT->getModel();
+    }
+
+    /**
+     * @param BaseModel $instance
+     * @param string    $foreignKey
+     *
+     * @return string
+     */
+    private function rtTable(BaseModel $instance, $foreignKey)
+    {
+        return $instance->getTable() . '.' . $foreignKey;
     }
 }
