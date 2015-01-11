@@ -1,23 +1,12 @@
 <?php namespace Neomerx\Core\Models;
 
-use \Validator;
 use \Neomerx\Core\Support as S;
-use \Illuminate\Support\Facades\App;
 use \Neomerx\Core\Exceptions\Exception;
 use \Illuminate\Database\Eloquent\Model;
 use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Auth\ObjectIdentityInterface;
 use \Neomerx\Core\Exceptions\ValidationException;
-use \Illuminate\Database\Eloquent\Relations\HasOne;
-use \Illuminate\Database\Eloquent\Relations\HasMany;
-use \Illuminate\Database\Eloquent\Relations\MorphTo;
-use \Illuminate\Database\Eloquent\Relations\MorphOne;
-use \Illuminate\Database\Eloquent\Relations\BelongsTo;
-use \Illuminate\Database\Eloquent\Relations\MorphMany;
-use \Illuminate\Database\Eloquent\Relations\MorphToMany;
-use \Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use \Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * Validation rules could differ for same model depending on the usage scenario.
@@ -42,102 +31,64 @@ use \Illuminate\Database\Eloquent\Relations\HasManyThrough;
  */
 abstract class BaseModel extends Model implements BaseModelInterface, ObjectIdentityInterface
 {
+    use RelationsTrait;
+    use ValidationTrait;
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->initRelationsTrait($this);
+        $this->initValidationTrait($this);
+    }
+
     /**
-     * @var \Illuminate\Validation\Validator Stores validation result.
+     * {@inheritdoc}
      */
-    private $validator;
+    public function getModel()
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getModelMorphs($name, $type, $modelId)
+    {
+        return $this->getMorphs($name, $type, $modelId);
+    }
 
     /**
      * {@inheritdoc}
      *
-     * We want having 'pre' and 'post' event handlers for each individual model.
+     * Add 'pre' and 'post' event handlers for each individual model.
      * They are used for handling validation and sync underlying model assets such as files.
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function fireModelEvent($event, $halt = true)
     {
+        $handler = S\array_get_value([
+            'creating'  => 'onCreating',
+            'created'   => 'onCreated',
+            'updating'  => 'onUpdating',
+            'updated'   => 'onUpdated',
+            'deleting'  => 'onDeleting',
+            'deleted'   => 'onDeleted',
+            'saving'    => 'onSaving',
+            'saved'     => 'onSaving',
+            'restoring' => 'onRestoring',
+            'restored'  => 'onRestored',
+        ], $event);
+
         $modelEventResult = true;
-        switch ($event)
-        {
-            case 'creating':
-                $modelEventResult = $this->onCreating();
-                break;
-            case 'created':
-                $modelEventResult = $this->onCreated();
-                break;
-            case 'updating':
-                $modelEventResult = $this->onUpdating();
-                break;
-            case 'updated':
-                $modelEventResult = $this->onUpdated();
-                break;
-            case 'deleting':
-                $modelEventResult = $this->onDeleting();
-                break;
-            case 'deleted':
-                $modelEventResult = $this->onDeleted();
-                break;
-            case 'saving':
-                $modelEventResult = $this->onSaving();
-                break;
-            case 'saved':
-                $modelEventResult = $this->onSaved();
-                break;
-            case 'restoring':
-                $modelEventResult = $this->onRestoring();
-                break;
-            case 'restored':
-                $modelEventResult = $this->onRestored();
-                break;
+        if ($handler !== null) {
+            $modelEventResult = $this->{$handler}();
         }
 
+        /** @noinspection PhpUndefinedClassInspection */
         $parentEventResult = parent::fireModelEvent($event, $halt);
         $result = ($modelEventResult === false or $parentEventResult === false) ? false : $parentEventResult;
 
         return $result;
-    }
-
-    /**
-     * Return validation result.
-     *
-     * @return \Illuminate\Validation\Validator Validation result.
-     */
-    public function getValidator()
-    {
-        return $this->validator;
-    }
-
-    /**
-     * Validate data against rules.
-     *
-     * @return bool Result.
-     */
-    public function isDataOnCreateValid()
-    {
-        return $this->validateAndStoreValidator($this->attributes, static::getDataOnCreateRules());
-    }
-
-    /**
-     * Validate input against rules.
-     *
-     * @param $input array Input.
-     *
-     * @return bool Result.
-     */
-    public static function isInputOnCreateValid(array $input)
-    {
-        return Validator::make($input, static::getInputOnCreateRules())->passes();
-    }
-
-    /**
-     * Validate data against rules.
-     *
-     * @return bool Result.
-     */
-    public function isDataOnUpdateValid()
-    {
-        return $this->validateAndStoreValidator($this->getDirty(), static::getDataOnUpdateRules());
     }
 
     /**
@@ -241,67 +192,14 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
     }
 
     /**
-     * Validate input against rules.
-     *
-     * @param array $input Input.
-     *
-     * @return bool Result.
-     */
-    public static function isInputOnUpdateValid(array $input)
-    {
-        return Validator::make($input, static::getInputOnUpdateRules())->passes();
-    }
-
-    /**
-     * Validates input on create.
-     *
-     * @param array $input
-     *
-     * @return \Illuminate\Validation\Validator
-     */
-    public static function validateInputOnCreate(array $input)
-    {
-        return Validator::make($input, static::getInputOnCreateRules());
-    }
-
-    /**
-     * Validates input on update.
-     *
-     * @param array $input
-     *
-     * @return \Illuminate\Validation\Validator
-     */
-    public static function validateInputOnUpdate(array $input)
-    {
-        return Validator::make($input, static::getInputOnUpdateRules());
-    }
-
-    /**
-     * Validates data against rules.
-     *
-     * @param array $data  Data.
-     * @param array $rules Rules.
-     *
-     * @return bool Result.
-     */
-    private function validateAndStoreValidator(array $data, array $rules)
-    {
-        $validator = Validator::make($data, $rules);
-        if ($validator->fails()) {
-            $this->validator = $validator;
-            return false;
-        }
-
-        return true;
-    }
-    /**
      * @param $input
      *
      * @return BaseModelInterface
      */
     public function createOrFailResource($input)
     {
-        $validator = self::validateInputOnCreate($input);
+        /** @var \Illuminate\Validation\Validator $validator */
+        $validator = $this->validateInputOnCreate($input);
         $validator->fails() ? S\throwEx(new ValidationException($validator)) : null;
 
         /** @var BaseModel $resource */
@@ -338,7 +236,8 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
      */
     public function updateOrFail($input)
     {
-        $validator = self::validateInputOnUpdate($input);
+        /** @var \Illuminate\Validation\Validator $validator */
+        $validator = $this->validateInputOnUpdate($input);
         $validator->fails() ? S\throwEx(new ValidationException($validator)) : null;
 
         $this->update($input) ?: S\throwEx(new ValidationException($this->getValidator()));
@@ -356,134 +255,6 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
         $deleted = $this->delete();
         $deleted ?:  S\throwEx(new Exception());
         return $deleted;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function belongsTo($related, $foreignKey = null, $otherKey = null, $relation = null)
-    {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return new BelongsTo(
-            App::make($related)->newQuery(),
-            $this,
-            $foreignKey,
-            $otherKey,
-            debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function']
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function belongsToMany($related, $table = null, $foreignKey = null, $otherKey = null, $relation = null)
-    {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return new BelongsToMany(
-            App::make($related)->newQuery(),
-            $this,
-            $table,
-            $foreignKey,
-            $otherKey,
-            $this->getBelongsToManyCaller()
-        );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function hasOne($related, $foreignKey = null, $localKey = null)
-    {
-        /** @var BaseModel $instance */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $instance = App::make($related);
-        return new HasOne($instance->newQuery(), $this, $instance->getTable() . '.' . $foreignKey, $localKey);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function hasMany($related, $foreignKey = null, $localKey = null)
-    {
-        /** @var BaseModel $instance */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $instance = App::make($related);
-        return new HasMany($instance->newQuery(), $this, $instance->getTable() . '.' . $foreignKey, $localKey);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function hasManyThrough($related, $through, $firstKey = null, $secondKey = null)
-    {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return new HasManyThrough(App::make($related)->newQuery(), $this, App::make($through), $firstKey, $secondKey);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function morphTo($name = null, $itemType = null, $itemId = null)
-    {
-        list($itemType, $itemId) = $this->getMorphs($name, $itemType, $itemId);
-
-        if (is_null($class = $this->$itemType)) {
-            return new MorphTo($this->newQuery(), $this, $itemId, null, $itemType, $name);
-        } else {
-            /** @var BaseModel $instance */
-            /** @noinspection PhpUndefinedMethodInspection */
-            $instance = App::make($class);
-            return new MorphTo($instance->newQuery(), $this, $itemId, $instance->getKeyName(), $itemType, $name);
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function morphOne($related, $name, $itemType = null, $itemId = null, $localKey = null)
-    {
-        /** @var BaseModel $instance */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $instance = App::make($related);
-
-        list($itemType, $itemId) = $this->getMorphs($name, $itemType, $itemId);
-        $table    = $instance->getTable();
-        $localKey = $localKey ?: $this->getKeyName();
-
-        return new MorphOne($instance->newQuery(), $this, $table.'.'.$itemType, $table.'.'.$itemId, $localKey);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function morphMany($related, $name, $itemType = null, $itemId = null, $localKey = null)
-    {
-        /** @var BaseModel $instance */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $instance = App::make($related);
-
-        list($itemType, $itemId) = $this->getMorphs($name, $itemType, $itemId);
-        $table    = $instance->getTable();
-        $localKey = $localKey ?: $this->getKeyName();
-
-        return new MorphMany($instance->newQuery(), $this, $table.'.'.$itemType, $table.'.'.$itemId, $localKey);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function morphToMany($related, $name, $table = null, $foreignKey = null, $otherKey = null, $inverse = false)
-    {
-        /** @var BaseModel $instance */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $instance   = App::make($related);
-        $caller     = $this->getBelongsToManyCaller();
-        $foreignKey = $foreignKey ?: $name.'_id';
-        $otherKey   = $otherKey ?: $instance->getForeignKey();
-        $query      = $instance->newQuery();
-        $table      = $table ?: str_plural($name);
-
-        return new MorphToMany($query, $this, $name, $table, $foreignKey, $otherKey, $caller, $inverse);
     }
 
     /**
