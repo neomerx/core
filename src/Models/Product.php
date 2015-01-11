@@ -122,27 +122,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_SKU                 => 'required|alpha_dash|min:1|max:' . self::SKU_MAX_LENGTH,
-            self::FIELD_ID_CATEGORY_DEFAULT => 'required|integer|min:1|max:4294967295',
-            self::FIELD_LINK                => 'required|alpha_dash|min:1|max:' . self::LINK_MAX_LENGTH,
-            self::FIELD_ID_MANUFACTURER     => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_PRODUCT_TAX_TYPE => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ENABLED             => 'required|boolean',
-            self::FIELD_PRICE_WO_TAX        => 'required|numeric|min:0',
-            self::FIELD_PKG_HEIGHT          => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_WIDTH           => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_LENGTH          => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_WEIGHT          => 'sometimes|required|numeric|min:0',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_SKU => 'required|alpha_dash|min:1|max:' . self::SKU_MAX_LENGTH . '|unique:' . self::TABLE_NAME,
@@ -170,27 +150,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_SKU                 => 'sometimes|required|forbidden',
-            self::FIELD_ID_CATEGORY_DEFAULT => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_LINK                => 'sometimes|required|alpha_dash|min:1|max:' . self::LINK_MAX_LENGTH,
-            self::FIELD_ID_MANUFACTURER     => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_PRODUCT_TAX_TYPE => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ENABLED             => 'sometimes|required|boolean',
-            self::FIELD_PRICE_WO_TAX        => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_HEIGHT          => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_WIDTH           => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_LENGTH          => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_WEIGHT          => 'sometimes|required|numeric|min:0',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_SKU  => 'sometimes|required|forbidden',

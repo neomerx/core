@@ -77,18 +77,7 @@ class Image extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ORIGINAL_FILE => 'required|alpha_dash_dot_space|min:1|max:' .
-                self::ORIGINAL_FILE_NAME_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ORIGINAL_FILE => 'required|alpha_dash_dot_space|min:1|max:' .
@@ -99,18 +88,7 @@ class Image extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ORIGINAL_FILE => 'required|alpha_dash_dot_space|min:1|max:' .
-                self::ORIGINAL_FILE_NAME_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ORIGINAL_FILE => 'required|alpha_dash_dot_space|min:1|max:' .

@@ -25,7 +25,12 @@ trait RelationsTrait
     }
 
     /**
-     * @inheritdoc
+     * @param string $related
+     * @param string $foreignKey
+     * @param string $otherKey
+     * @param string $relation
+     *
+     * @return BelongsTo
      */
     public function belongsTo($related, $foreignKey = null, $otherKey = null, $relation = null)
     {
@@ -43,7 +48,13 @@ trait RelationsTrait
     }
 
     /**
-     * @inheritdoc
+     * @param string $related
+     * @param string $table
+     * @param string $foreignKey
+     * @param string $otherKey
+     * @param string $relation
+     *
+     * @return BelongsToMany
      */
     public function belongsToMany($related, $table = null, $foreignKey = null, $otherKey = null, $relation = null)
     {
@@ -62,29 +73,42 @@ trait RelationsTrait
     }
 
     /**
-     * @inheritdoc
+     * @param string $related
+     * @param string $foreignKey
+     * @param string $localKey
+     *
+     * @return HasOne
      */
     public function hasOne($related, $foreignKey = null, $localKey = null)
     {
-        /** @var BaseModel $instance */
         /** @noinspection PhpUndefinedMethodInspection */
+        /** @var BaseModel $instance */
         $instance = App::make($related);
         return new HasOne($instance->newQuery(), $this->rtModel(), $this->rtTable($instance, $foreignKey), $localKey);
     }
 
     /**
-     * @inheritdoc
+     * @param string $related
+     * @param string $foreignKey
+     * @param string $localKey
+     *
+     * @return HasMany
      */
     public function hasMany($related, $foreignKey = null, $localKey = null)
     {
-        /** @var BaseModel $instance */
         /** @noinspection PhpUndefinedMethodInspection */
+        /** @var BaseModel $instance */
         $instance = App::make($related);
         return new HasMany($instance->newQuery(), $this->rtModel(), $this->rtTable($instance, $foreignKey), $localKey);
     }
 
     /**
-     * @inheritdoc
+     * @param string $related
+     * @param string $through
+     * @param string $firstKey
+     * @param string $secondKey
+     *
+     * @return HasManyThrough
      */
     public function hasManyThrough($related, $through, $firstKey = null, $secondKey = null)
     {
@@ -99,7 +123,11 @@ trait RelationsTrait
     }
 
     /**
-     * @inheritdoc
+     * @param string $name
+     * @param string $itemType
+     * @param string $itemId
+     *
+     * @return MorphTo
      */
     public function morphTo($name = null, $itemType = null, $itemId = null)
     {
@@ -115,8 +143,8 @@ trait RelationsTrait
                 $name
             );
         } else {
-            /** @var BaseModel $instance */
             /** @noinspection PhpUndefinedMethodInspection */
+            /** @var BaseModel $instance */
             $instance = App::make($class);
             return new MorphTo(
                 $instance->newQuery(),
@@ -130,12 +158,18 @@ trait RelationsTrait
     }
 
     /**
-     * @inheritdoc
+     * @param string $related
+     * @param string $name
+     * @param string $itemType
+     * @param string $itemId
+     * @param string $localKey
+     *
+     * @return MorphOne
      */
     public function morphOne($related, $name, $itemType = null, $itemId = null, $localKey = null)
     {
-        /** @var BaseModel $instance */
         /** @noinspection PhpUndefinedMethodInspection */
+        /** @var BaseModel $instance */
         $instance = App::make($related);
 
         list($itemType, $itemId) = $this->baseModelRT->getModelMorphs($name, $itemType, $itemId);
@@ -152,12 +186,18 @@ trait RelationsTrait
     }
 
     /**
-     * @inheritdoc
+     * @param string $related
+     * @param string $name
+     * @param string $itemType
+     * @param string $itemId
+     * @param string $localKey
+     *
+     * @return MorphMany
      */
     public function morphMany($related, $name, $itemType = null, $itemId = null, $localKey = null)
     {
-        /** @var BaseModel $instance */
         /** @noinspection PhpUndefinedMethodInspection */
+        /** @var BaseModel $instance */
         $instance = App::make($related);
 
         list($itemType, $itemId) = $this->baseModelRT->getModelMorphs($name, $itemType, $itemId);
@@ -173,13 +213,21 @@ trait RelationsTrait
         );
     }
 
+
     /**
-     * @inheritdoc
+     * @param string $related
+     * @param string $name
+     * @param string $table
+     * @param string $foreignKey
+     * @param string $otherKey
+     * @param bool   $inverse
+     *
+     * @return MorphToMany
      */
     public function morphToMany($related, $name, $table = null, $foreignKey = null, $otherKey = null, $inverse = false)
     {
-        /** @var BaseModel $instance */
         /** @noinspection PhpUndefinedMethodInspection */
+        /** @var BaseModel $instance */
         $instance   = App::make($related);
         $caller     = $this->getCaller();
         $foreignKey = $foreignKey ?: $name.'_id';

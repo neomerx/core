@@ -74,19 +74,7 @@ class ImagePath extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_IMAGE        => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_IMAGE_FORMAT => 'required|integer|min:1|max:4294967295',
-            self::FIELD_PATH            => 'sometimes|required|forbidden',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_IMAGE        => 'required|integer|min:1|max:4294967295|exists:' . Image::TABLE_NAME,
@@ -100,19 +88,7 @@ class ImagePath extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_IMAGE        => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_IMAGE_FORMAT => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_PATH            => 'sometimes|required|forbidden',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_IMAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Image::TABLE_NAME,

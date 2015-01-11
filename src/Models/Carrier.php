@@ -108,28 +108,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_CODE          => 'required|code|min:1|max:' . self::CODE_MAX_LENGTH,
-            self::FIELD_MIN_WEIGHT    => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_WEIGHT    => 'sometimes|required|numeric|min:0',
-            self::FIELD_MIN_COST      => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_COST      => 'sometimes|required|numeric|min:0',
-            self::FIELD_MIN_DIMENSION => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_DIMENSION => 'sometimes|required|numeric|min:0',
-            self::FIELD_IS_TAXABLE    => 'required|boolean',
-            self::FIELD_SETTINGS      => 'sometimes|required',
-            self::FIELD_DATA          => 'sometimes|required',
-            self::FIELD_CACHE         => 'sometimes|required|forbidden',
-            self::FIELD_FACTORY       => 'required',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_CODE => 'required|code|min:1|max:' . self::CODE_MAX_LENGTH .
@@ -152,28 +131,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_CODE          => 'sometimes|required|forbidden',
-            self::FIELD_MIN_WEIGHT    => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_WEIGHT    => 'sometimes|required|numeric|min:0',
-            self::FIELD_MIN_COST      => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_COST      => 'sometimes|required|numeric|min:0',
-            self::FIELD_MIN_DIMENSION => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_DIMENSION => 'sometimes|required|numeric|min:0',
-            self::FIELD_IS_TAXABLE    => 'sometimes|required|boolean',
-            self::FIELD_SETTINGS      => 'sometimes|required',
-            self::FIELD_DATA          => 'sometimes|required',
-            self::FIELD_CACHE         => 'sometimes|required|forbidden',
-            self::FIELD_FACTORY       => 'sometimes|required',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_CODE          => 'sometimes|required|forbidden',

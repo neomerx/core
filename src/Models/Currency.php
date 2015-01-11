@@ -57,19 +57,7 @@ class Currency extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID   => 'required|integer|min:1|max:999',
-            self::FIELD_CODE => 'required|alpha_dash|min:' . self::CODE_MIN_LENGTH .'|max:' . self::CODE_MAX_LENGTH,
-            self::FIELD_DECIMAL_DIGITS => 'required|integer|min:0|max:4',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID => 'required|integer|min:1|max:999' . '|unique:' . self::TABLE_NAME,
@@ -84,19 +72,7 @@ class Currency extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID             => 'sometimes|required|forbidden',
-            self::FIELD_CODE           => 'sometimes|required|forbidden',
-            self::FIELD_DECIMAL_DIGITS => 'sometimes|required|integer|min:0|max:4',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID             => 'sometimes|required|forbidden',

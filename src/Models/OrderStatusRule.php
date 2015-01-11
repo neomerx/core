@@ -56,18 +56,7 @@ class OrderStatusRule extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_ORDER_STATUS_FROM => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_ORDER_STATUS_TO   => 'required|integer|min:1|max:4294967295',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_ORDER_STATUS_FROM => 'required|integer|min:1|max:4294967295|exists:' .
@@ -81,18 +70,7 @@ class OrderStatusRule extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_ORDER_STATUS_FROM => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_ORDER_STATUS_TO   => 'sometimes|required|integer|min:1|max:4294967295',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_ORDER_STATUS_FROM => 'sometimes|required|integer|min:1|max:4294967295|exists:' .

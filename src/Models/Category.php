@@ -120,23 +120,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_ANCESTOR   => 'sometimes|required|forbidden',
-            self::FIELD_CODE          => 'required|alpha_dash|min:1|max:' . self::CODE_MAX_LENGTH,
-            self::FIELD_LINK          => 'required|min:1|max:'            . self::LINK_MAX_LENGTH,
-            self::FIELD_ANCESTOR_CODE => 'sometimes|required|exists:'     . self::TABLE_NAME . ',' . self::FIELD_CODE,
-            self::FIELD_ENABLED       => 'required|boolean',
-            self::FIELD_LFT           => 'sometimes|required|forbidden',
-            self::FIELD_RGT           => 'sometimes|required|forbidden',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_ANCESTOR   => 'required|integer|min:1|max:4294967295|exists:' .
@@ -163,22 +147,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_ANCESTOR   => 'sometimes|required|forbidden',
-            self::FIELD_CODE          => 'sometimes|required|forbidden',
-            self::FIELD_LINK          => 'sometimes|required|min:1|max:' . self::LINK_MAX_LENGTH,
-            self::FIELD_ENABLED       => 'sometimes|required|boolean',
-            self::FIELD_LFT           => 'sometimes|required|forbidden',
-            self::FIELD_RGT           => 'sometimes|required|forbidden',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_ANCESTOR   => 'sometimes|required|integer|min:1|max:4294967295|exists:' .

@@ -68,20 +68,7 @@ class Region extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_COUNTRY => 'required|integer|min:1|max:4294967295',
-            self::FIELD_CODE       => 'required|alpha_dash|min:1|max:' . self::CODE_MAX_LENGTH,
-            self::FIELD_NAME       => 'required|min:1|max:'            . self::NAME_MAX_LENGTH,
-            self::FIELD_POSITION   => 'required|integer|min:0|max:65535',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_COUNTRY => 'required|integer|min:1|max:4294967295|exists:' . Country::TABLE_NAME,
@@ -97,20 +84,7 @@ class Region extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_COUNTRY => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_CODE       => 'sometimes|required|forbidden',
-            self::FIELD_NAME       => 'sometimes|required|min:1|max:' . self::NAME_MAX_LENGTH,
-            self::FIELD_POSITION   => 'sometimes|required|integer|min:0|max:65535',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_COUNTRY => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Country::TABLE_NAME,

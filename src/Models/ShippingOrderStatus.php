@@ -59,18 +59,7 @@ class ShippingOrderStatus extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_CODE => 'required|alpha_dash|min:1|max:' . self::CODE_MAX_LENGTH,
-            self::FIELD_NAME => 'required|min:1|max:' . self::NAME_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_CODE => 'required|alpha_dash|min:1|max:' . self::CODE_MAX_LENGTH .
@@ -83,18 +72,7 @@ class ShippingOrderStatus extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_CODE => 'sometimes|required|forbidden',
-            self::FIELD_NAME => 'required|min:1|max:' . self::NAME_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_CODE => 'sometimes|required|forbidden',

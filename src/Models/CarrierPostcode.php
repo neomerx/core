@@ -69,20 +69,7 @@ class CarrierPostcode extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_CARRIER    => 'required|integer|min:1|max:4294967295',
-            self::FIELD_POSTCODE_FROM => 'sometimes|required|integer|min:0|max:4294967295',
-            self::FIELD_POSTCODE_TO   => 'sometimes|required|integer|min:0|max:4294967295',
-            self::FIELD_POSTCODE_MASK => 'sometimes|required|min:1|max:' . self::POSTCODE_MASK_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_CARRIER    => 'required|integer|min:1|max:4294967295|exists:' . Carrier::TABLE_NAME,
@@ -95,20 +82,7 @@ class CarrierPostcode extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_CARRIER    => 'sometimes|required|forbidden',
-            self::FIELD_POSTCODE_FROM => 'sometimes|required|integer|min:0|max:4294967295',
-            self::FIELD_POSTCODE_TO   => 'sometimes|required|integer|min:0|max:4294967295',
-            self::FIELD_POSTCODE_MASK => 'sometimes|required|min:1|max:' . self::POSTCODE_MASK_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_CARRIER    => 'sometimes|required|forbidden',

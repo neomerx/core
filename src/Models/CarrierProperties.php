@@ -67,20 +67,7 @@ class CarrierProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_CARRIER  => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE => 'required|integer|min:1|max:4294967295',
-            self::FIELD_NAME        => 'required|alpha_dash_dot_space|min:1|max:' . self::NAME_MAX_LENGTH,
-            self::FIELD_DESCRIPTION => 'required|alpha_dash_dot_space|min:1|max:' . self::DESCRIPTION_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_CARRIER  => 'required|integer|min:1|max:4294967295|exists:' . Carrier::TABLE_NAME,
@@ -93,22 +80,7 @@ class CarrierProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_CARRIER  => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_NAME        => 'sometimes|required|alpha_dash_dot_space|min:1|max:' . self::NAME_MAX_LENGTH,
-
-            self::FIELD_DESCRIPTION => 'sometimes|required|alpha_dash_dot_space|min:1|max:' .
-                self::DESCRIPTION_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_CARRIER  => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Carrier::TABLE_NAME,

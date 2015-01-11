@@ -25,20 +25,20 @@ interface BaseModelInterface
     /**
      * @return array Validation rules.
      */
-    public static function getDataOnCreateRules();
+    public function getDataOnCreateRules();
 
     /**
      * @return array Validation rules.
      */
-    public static function getDataOnUpdateRules();
+    public function getDataOnUpdateRules();
 
     /**
      * @return array Validation rules.
      */
-    public static function getInputOnCreateRules();
+    public function getInputOnCreateRules();
 
     /**
      * @return array Validation rules.
      */
-    public static function getInputOnUpdateRules();
+    public function getInputOnUpdateRules();
 }

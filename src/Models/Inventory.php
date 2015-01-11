@@ -78,21 +78,7 @@ class Inventory extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_SKU          => 'required|alpha_dash|min:1|max:' . Product::SKU_MAX_LENGTH,
-            self::FIELD_IN           => 'sometimes|required|integer|min:0|max:18446744073709551615',
-            self::FIELD_OUT          => 'sometimes|required|integer|min:0|max:18446744073709551615',
-            self::FIELD_RESERVED     => 'sometimes|required|integer|min:0|max:4294967295',
-            self::FIELD_ID_WAREHOUSE => 'required|integer|min:1|max:4294967295',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_SKU => 'required|alpha_dash|min:1|max:' . Product::SKU_MAX_LENGTH .
@@ -108,21 +94,7 @@ class Inventory extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_SKU          => 'forbidden',
-            self::FIELD_IN           => 'sometimes|required|integer|min:0|max:18446744073709551615',
-            self::FIELD_OUT          => 'sometimes|required|integer|min:0|max:18446744073709551615',
-            self::FIELD_RESERVED     => 'sometimes|required|integer|min:0|max:4294967295',
-            self::FIELD_ID_WAREHOUSE => 'forbidden',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_SKU          => 'forbidden',

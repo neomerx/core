@@ -103,6 +103,34 @@ trait ValidationTrait
         return Validator::make($input, $this->baseModelVT->getInputOnUpdateRules());
     }
 
+
+    /**
+     * @return array Validation rules.
+     */
+    abstract public function getDataOnCreateRules();
+
+    /**
+     * @return array Validation rules.
+     */
+    abstract public function getDataOnUpdateRules();
+
+
+    /**
+     * @return array Validation rules.
+     */
+    public function getInputOnCreateRules()
+    {
+        return $this->getDataOnCreateRules();
+    }
+
+    /**
+     * @return array Validation rules.
+     */
+    public function getInputOnUpdateRules()
+    {
+        return $this->getDataOnUpdateRules();
+    }
+
     /**
      * Validates data against rules.
      *

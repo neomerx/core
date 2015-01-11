@@ -71,18 +71,7 @@ class Manufacturer extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_CODE       => 'required|alpha_dash|min:1|max:' . self::CODE_MAX_LENGTH,
-            self::FIELD_ID_ADDRESS => 'required|integer|min:1|max:4294967295',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_CODE => 'required|alpha_dash|min:1|max:' . self::CODE_MAX_LENGTH .
@@ -95,18 +84,7 @@ class Manufacturer extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_CODE       => 'sometimes|required|forbidden',
-            self::FIELD_ID_ADDRESS => 'sometimes|required|integer|min:1|max:4294967295',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_CODE       => 'sometimes|required|forbidden',

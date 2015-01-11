@@ -95,24 +95,7 @@ class SupplyOrder extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_SUPPLIER  => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_WAREHOUSE => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_CURRENCY  => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE  => 'required|integer|min:1|max:4294967295',
-            self::FIELD_EXPECTED_AT  => 'required|date|after:now',
-
-            self::FIELD_STATUS => 'required|in:'
-                . self::STATUS_DRAFT . ',' . self::STATUS_VALIDATED . ',' . self::STATUS_CANCELLED,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_SUPPLIER  => 'required|integer|min:1|max:4294967295|exists:' . Supplier::TABLE_NAME,
@@ -129,24 +112,7 @@ class SupplyOrder extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_SUPPLIER  => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_WAREHOUSE => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_CURRENCY  => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE  => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_EXPECTED_AT  => 'sometimes|required|date|after:now',
-
-            self::FIELD_STATUS => 'sometimes|required|in:'
-                . self::STATUS_DRAFT . ',' . self::STATUS_VALIDATED . ',' . self::STATUS_CANCELLED,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_SUPPLIER => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Supplier::TABLE_NAME,

@@ -65,18 +65,7 @@ class CarrierCustomerType extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_CARRIER       => 'sometimes|required|forbidden',
-            self::FIELD_ID_CUSTOMER_TYPE => 'sometimes|required|forbidden',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_CARRIER       => 'required|integer|min:1|max:4294967295|exists:' . Carrier::TABLE_NAME,
@@ -89,18 +78,7 @@ class CarrierCustomerType extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_CARRIER       => 'sometimes|required|forbidden',
-            self::FIELD_ID_CUSTOMER_TYPE => 'sometimes|required|forbidden',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_CARRIER       => 'sometimes|required|forbidden',

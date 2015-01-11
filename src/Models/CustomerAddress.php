@@ -67,20 +67,7 @@ class CustomerAddress extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_CUSTOMER => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_ADDRESS  => 'required|integer|min:1|max:4294967295',
-            self::FIELD_TYPE        => 'required|in:' . self::TYPE_BILLING . ',' . self::TYPE_SHIPPING,
-            self::FIELD_IS_DEFAULT  => 'sometimes|required|boolean',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_CUSTOMER => 'required|integer|min:1|max:4294967295|exists:' . Customer::TABLE_NAME,
@@ -93,20 +80,7 @@ class CustomerAddress extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_CUSTOMER => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_ADDRESS  => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_TYPE        => 'sometimes|required|in:' . self::TYPE_BILLING . ',' . self::TYPE_SHIPPING,
-            self::FIELD_IS_DEFAULT  => 'sometimes|required|boolean',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_CUSTOMER => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Customer::TABLE_NAME,

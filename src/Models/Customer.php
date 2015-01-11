@@ -112,24 +112,7 @@ class Customer extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_CUSTOMER_RISK => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_CUSTOMER_TYPE => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE      => 'required|integer|min:1|max:4294967295',
-            self::FIELD_FIRST_NAME       => 'required|alpha_dash|min:1|max:'           . self::FIRST_NAME_MAX_LENGTH,
-            self::FIELD_LAST_NAME        => 'sometimes|required|alpha_dash|min:1|max:' . self::LAST_NAME_MAX_LENGTH,
-            self::FIELD_EMAIL            => 'required|email|min:1|max:'                . self::EMAIL_MAX_LENGTH,
-            self::FIELD_MOBILE           => 'required|min:12|max:'                     . self::MOBILE_MAX_LENGTH,
-            self::FIELD_GENDER           => 'required|in:' . self::GENDER_MALE . ',' . self::GENDER_FEMALE,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_CUSTOMER_RISK => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
@@ -151,24 +134,7 @@ class Customer extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_CUSTOMER_RISK => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_CUSTOMER_TYPE => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE      => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_FIRST_NAME       => 'sometimes|required|alpha_dash|min:1|max:' . self::FIRST_NAME_MAX_LENGTH,
-            self::FIELD_LAST_NAME        => 'sometimes|required|alpha_dash|min:1|max:' . self::LAST_NAME_MAX_LENGTH,
-            self::FIELD_EMAIL            => 'sometimes|required|email|min:1|max:'      . self::EMAIL_MAX_LENGTH,
-            self::FIELD_MOBILE           => 'sometimes|required|min:12|max:'           . self::MOBILE_MAX_LENGTH,
-            self::FIELD_GENDER           => 'sometimes|required|in:' . self::GENDER_MALE . ',' . self::GENDER_FEMALE,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_CUSTOMER_RISK => 'sometimes|required|integer|min:1|max:4294967295|exists:' .

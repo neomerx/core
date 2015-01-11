@@ -123,25 +123,7 @@ class Order extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_CUSTOMER           => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_BILLING_ADDRESS    => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_SHIPPING_ADDRESS   => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_STORE              => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_ORDER_STATUS       => 'required|integer|min:1|max:4294967295',
-            self::FIELD_SHIPPING_INCLUDED_TAX => 'required|numeric|min:0',
-            self::FIELD_SHIPPING_COST         => 'required|numeric|min:0',
-            self::FIELD_PRODUCTS_TAX          => 'required|numeric|min:0',
-            self::FIELD_PRODUCTS_TAX_DETAILS  => 'sometimes|required|forbidden',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_CUSTOMER => 'required|integer|min:1|max:4294967295|exists:' . Customer::TABLE_NAME,
@@ -166,25 +148,7 @@ class Order extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_CUSTOMER           => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_BILLING_ADDRESS    => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_SHIPPING_ADDRESS   => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_STORE              => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_ORDER_STATUS       => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_SHIPPING_INCLUDED_TAX => 'sometimes|required|numeric|min:0',
-            self::FIELD_SHIPPING_COST         => 'sometimes|required|numeric|min:0',
-            self::FIELD_PRODUCTS_TAX          => 'sometimes|required|numeric|min:0',
-            self::FIELD_PRODUCTS_TAX_DETAILS  => 'sometimes|required|forbidden',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_CUSTOMER => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Customer::TABLE_NAME,

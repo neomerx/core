@@ -64,19 +64,7 @@ class ImageFormat extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_NAME   => 'required|min:1|max:' . self::NAME_MAX_LENGTH,
-            self::FIELD_WIDTH  => 'required|integer|min:1|max:4096',
-            self::FIELD_HEIGHT => 'required|integer|min:1|max:4096',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_NAME   => 'required|min:1|max:' . self::NAME_MAX_LENGTH . '|unique:' . self::TABLE_NAME,
@@ -88,19 +76,7 @@ class ImageFormat extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_NAME   => 'sometimes|required|forbidden',
-            self::FIELD_WIDTH  => 'sometimes|required|integer|min:1|max:4096',
-            self::FIELD_HEIGHT => 'sometimes|required|integer|min:1|max:4096',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_NAME   => 'sometimes|required|forbidden',

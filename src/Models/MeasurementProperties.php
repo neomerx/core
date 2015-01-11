@@ -70,19 +70,7 @@ class MeasurementProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_MEASUREMENT => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE    => 'required|integer|min:1|max:4294967295',
-            self::FIELD_NAME           => 'required|min:1|max:' . self::NAME_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_MEASUREMENT => 'required|integer|min:1|max:4294967295|exists:' . Measurement::TABLE_NAME,
@@ -94,19 +82,7 @@ class MeasurementProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_MEASUREMENT => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE    => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_NAME           => 'sometimes|required|min:1|max:' . self::NAME_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_MEASUREMENT => 'sometimes|required|integer|min:1|max:4294967295|exists:' .

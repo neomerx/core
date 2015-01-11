@@ -70,19 +70,7 @@ class CharacteristicValueProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_CHARACTERISTIC_VALUE => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE             => 'required|integer|min:1|max:4294967295',
-            self::FIELD_VALUE                   => 'required|min:1|max:' . self::VALUE_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_CHARACTERISTIC_VALUE => 'required|integer|min:1|max:4294967295|exists:' .
@@ -96,19 +84,7 @@ class CharacteristicValueProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_CHARACTERISTIC_VALUE => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE             => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_VALUE                   => 'sometimes|required|min:1|max:' . self::VALUE_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_CHARACTERISTIC_VALUE => 'sometimes|required|integer|min:1|max:4294967295|exists:' .

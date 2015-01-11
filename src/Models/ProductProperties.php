@@ -83,24 +83,7 @@ class ProductProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_PRODUCT        => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE       => 'required|integer|min:1|max:4294967295',
-            self::FIELD_NAME              => 'required|min:1|max:' . self::NAME_MAX_LENGTH,
-            self::FIELD_DESCRIPTION_SHORT => 'required|min:1|max:' . self::DESCRIPTION_SHORT_MAX_LENGTH,
-            self::FIELD_DESCRIPTION       => 'required|min:1|max:' . self::DESCRIPTION_MAX_LENGTH,
-            self::FIELD_META_TITLE        => 'required|min:1|max:' . self::META_TITLE_MAX_LENGTH,
-            self::FIELD_META_KEYWORDS     => 'required|min:1|max:' . self::META_KEYWORDS_MAX_LENGTH,
-            self::FIELD_META_DESCRIPTION  => 'required|min:1|max:' . self::META_DESCRIPTION_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_PRODUCT        => 'required|integer|min:1|max:4294967295|exists:' . Product::TABLE_NAME,
@@ -117,24 +100,7 @@ class ProductProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_PRODUCT        => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE       => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_NAME              => 'sometimes|required|min:1|max:' . self::NAME_MAX_LENGTH,
-            self::FIELD_DESCRIPTION_SHORT => 'sometimes|required|min:1|max:' . self::DESCRIPTION_SHORT_MAX_LENGTH,
-            self::FIELD_DESCRIPTION       => 'sometimes|required|min:1|max:' . self::DESCRIPTION_MAX_LENGTH,
-            self::FIELD_META_TITLE        => 'sometimes|required|min:1|max:' . self::META_TITLE_MAX_LENGTH,
-            self::FIELD_META_KEYWORDS     => 'sometimes|required|min:1|max:' . self::META_KEYWORDS_MAX_LENGTH,
-            self::FIELD_META_DESCRIPTION  => 'sometimes|required|min:1|max:' . self::META_DESCRIPTION_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_PRODUCT  => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Product::TABLE_NAME,

@@ -72,20 +72,7 @@ class Specification extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_PRODUCT              => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_VARIANT              => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_POSITION                => 'required|numeric|min:0|max:255',
-            self::FIELD_ID_CHARACTERISTIC_VALUE => 'required|integer|min:1|max:4294967295',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_PRODUCT  => 'required|integer|min:1|max:4294967295|exists:' . Product::TABLE_NAME,
@@ -100,20 +87,7 @@ class Specification extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_PRODUCT              => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_VARIANT              => 'sometimes|integer|min:1|max:4294967295',
-            self::FIELD_POSITION                => 'sometimes|required|numeric|min:0|max:255',
-            self::FIELD_ID_CHARACTERISTIC_VALUE => 'sometimes|required|integer|min:1|max:4294967295',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_PRODUCT => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Product::TABLE_NAME,

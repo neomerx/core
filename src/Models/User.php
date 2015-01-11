@@ -118,7 +118,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
+    public function getInputOnCreateRules()
     {
         return [
             self::FIELD_FIRST_NAME => 'required|alpha|min:1|max:' . self::FIRST_NAME_MAX_LENGTH,
@@ -133,7 +133,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     /**
      * {@inheritdoc}
      */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_FIRST_NAME => 'required|alpha|min:1|max:' . self::FIRST_NAME_MAX_LENGTH,
@@ -148,7 +148,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
+    public function getInputOnUpdateRules()
     {
         return [
             self::FIELD_FIRST_NAME => 'sometimes|required|alpha|min:1|max:'    . self::FIRST_NAME_MAX_LENGTH,
@@ -164,7 +164,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     /**
      * {@inheritdoc}
      */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_FIRST_NAME => 'sometimes|required|alpha|min:1|max:' . self::FIRST_NAME_MAX_LENGTH,

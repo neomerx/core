@@ -87,7 +87,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_PRODUCT   => 'required|integer|min:1|max:4294967295',
@@ -99,31 +99,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
     /**
      * {@inheritdoc}
      */
-    public static function getDataOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_PRODUCT   => 'required|integer|min:1|max:4294967295',
-            self::FIELD_SKU          => 'required|alpha_dash|min:1|max:' . self::SKU_MAX_LENGTH,
-            self::FIELD_PRICE_WO_TAX => 'sometimes|required|numeric|min:0',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_PRODUCT   => 'sometimes|required|forbidden',
-            self::FIELD_SKU          => 'sometimes|required|forbidden',
-            self::FIELD_PRICE_WO_TAX => 'sometimes|numeric|min:0',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_PRODUCT   => 'sometimes|required|forbidden',

@@ -63,19 +63,7 @@ class ImageProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnCreateRules()
-    {
-        return [
-            self::FIELD_ID_IMAGE    => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ALT         => 'required|min:1|max:' . self::ALT_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnCreateRules()
+    public function getDataOnCreateRules()
     {
         return [
             self::FIELD_ID_IMAGE    => 'required|integer|min:1|max:4294967295|exists:' . Image::TABLE_NAME,
@@ -87,19 +75,7 @@ class ImageProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public static function getInputOnUpdateRules()
-    {
-        return [
-            self::FIELD_ID_IMAGE    => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ID_LANGUAGE => 'sometimes|required|integer|min:1|max:4294967295',
-            self::FIELD_ALT         => 'sometimes|required|min:1|max:' . self::ALT_MAX_LENGTH,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDataOnUpdateRules()
+    public function getDataOnUpdateRules()
     {
         return [
             self::FIELD_ID_IMAGE    => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Image::TABLE_NAME,
