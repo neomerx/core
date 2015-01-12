@@ -36,15 +36,7 @@ class TaxRuleProductType extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_ID_TAX_RULE,
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
     protected $hidden = [
-        self::FIELD_ID,
         self::FIELD_ID_PRODUCT_TAX_TYPE,
     ];
 
@@ -53,6 +45,7 @@ class TaxRuleProductType extends BaseModel
      */
     protected $guarded = [
         self::FIELD_ID,
+        self::FIELD_ID_TAX_RULE,
         self::FIELD_ID_PRODUCT_TAX_TYPE,
     ];
     

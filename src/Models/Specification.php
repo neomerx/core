@@ -52,17 +52,16 @@ class Specification extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
         self::FIELD_ID_PRODUCT,
         self::FIELD_ID_VARIANT,
-        self::FIELD_POSITION,
         self::FIELD_ID_CHARACTERISTIC_VALUE,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
         self::FIELD_ID,
         self::FIELD_ID_PRODUCT,
         self::FIELD_ID_VARIANT,
@@ -158,7 +157,8 @@ class Specification extends BaseModel
         // 2-3 should be done in transaction.
         $product  = $this->product;
         $variants = $product->variants;
-        $beforeSpecData = $this->attributesToArray();
+        $value    = $this->value;
+        $specData = $this->attributesToArray();
 
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
@@ -174,11 +174,7 @@ class Specification extends BaseModel
                     /** @noinspection PhpUndefinedMethodInspection */
                     /** @var Specification $copySpec */
                     $copySpec = App::make(self::BIND_NAME);
-                    $copySpec->createOrFailResource(array_merge($beforeSpecData, [
-                        self::FIELD_ID_PRODUCT              => $this->{self::FIELD_ID_PRODUCT},
-                        self::FIELD_ID_CHARACTERISTIC_VALUE => $this->{self::FIELD_ID_CHARACTERISTIC_VALUE},
-                        self::FIELD_ID_VARIANT              => $variant->{Variant::FIELD_ID},
-                    ]));
+                    $copySpec->fillModel($product, $variant, $value, $specData)->saveOrFail();
                 }
             }
 
@@ -244,5 +240,34 @@ class Specification extends BaseModel
             /** @noinspection PhpUndefinedMethodInspection */
             isset($allExecutedOk) ? DB::commit() : DB::rollBack();
         }
+    }
+
+    /**
+     * @param Product             $product
+     * @param Variant             $variant
+     * @param CharacteristicValue $value
+     * @param array               $attributes
+     *
+     * @return $this
+     */
+    public function fillModel(
+        Product $product = null,
+        Variant $variant = null,
+        CharacteristicValue $value = null,
+        array $attributes = null
+    ) {
+        $data = [
+            self::FIELD_ID_PRODUCT              => $product,
+            self::FIELD_ID_VARIANT              => $variant,
+            self::FIELD_ID_CHARACTERISTIC_VALUE => $value,
+        ];
+
+        empty($attributes) ?: $this->fill($attributes);
+        foreach ($data as $attribute => $model) {
+            /** @var BaseModel $model */
+            $model === null ?: $this->setAttribute($attribute, $model->getKey());
+        }
+
+        return $this;
     }
 }

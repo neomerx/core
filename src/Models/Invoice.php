@@ -43,6 +43,12 @@ class Invoice extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $hidden = [
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $guarded = [
         self::FIELD_CODE,
     ];
@@ -53,7 +59,7 @@ class Invoice extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE => 'required|alpha_dash|min:1|max:' . self::CODE_MAX_LENGTH .
+            self::FIELD_CODE => 'required|code|min:1|max:' . self::CODE_MAX_LENGTH .
                 '|unique:' . self::TABLE_NAME,
         ];
     }

@@ -57,17 +57,16 @@ class ShippingOrder extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_ID_ORDER,
+    protected $hidden = [
         self::FIELD_ID_CARRIER,
         self::FIELD_ID_SHIPPING_ORDER_STATUS,
-        self::FIELD_TRACKING_NUMBER,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
+        self::FIELD_ID,
         self::FIELD_ID_ORDER,
         self::FIELD_ID_CARRIER,
         self::FIELD_ID_SHIPPING_ORDER_STATUS,

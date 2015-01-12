@@ -58,9 +58,7 @@ class Image extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_ORIGINAL_FILE,
-    ];
+    public $timestamps = false;
 
     /**
      * {@inheritdoc}
@@ -72,7 +70,9 @@ class Image extends BaseModel
     /**
      * {@inheritdoc}
      */
-    public $timestamps = false;
+    protected $guarded = [
+        self::FIELD_ID,
+    ];
 
     /**
      * {@inheritdoc}
@@ -235,7 +235,7 @@ class Image extends BaseModel
             /** @var ImagePath $imagePath */
             /** @noinspection PhpUndefinedMethodInspection */
             $imagePath = App::make(ImagePath::BIND_NAME);
-            $imagePath->fill([ImagePath::FIELD_ID_IMAGE_FORMAT => $format->{ImageFormat::FIELD_ID}]);
+            $imagePath->{ImagePath::FIELD_ID_IMAGE_FORMAT} = $format->{ImageFormat::FIELD_ID};
             $imagePath->setBackground($background);
             /** @noinspection PhpUndefinedMethodInspection */
             if (!$this->paths()->save($imagePath)) {

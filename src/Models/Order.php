@@ -2,10 +2,8 @@
 
 use \Carbon\Carbon;
 use \Illuminate\Support\Facades\App;
-use \Neomerx\Core\Exceptions\Exception;
 use \Illuminate\Database\Eloquent\Collection;
 use \Illuminate\Database\Eloquent\SoftDeletingTrait;
-use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 /**
  * @property      int         id_order
@@ -30,7 +28,6 @@ use \Neomerx\Core\Exceptions\InvalidArgumentException;
  * @property      Collection  invoices
  * @property      Collection  shipping_orders
  *
- * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Order extends BaseModel
@@ -91,7 +88,16 @@ class Order extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
+        self::FIELD_ID_STORE,
+        self::FIELD_ID_ORDER_STATUS,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public $guarded = [
+        self::FIELD_ID,
         self::FIELD_ID_CUSTOMER,
         self::FIELD_ID_BILLING_ADDRESS,
         self::FIELD_ID_SHIPPING_ADDRESS,
@@ -100,23 +106,6 @@ class Order extends BaseModel
         self::FIELD_PRODUCTS_TAX,
         self::FIELD_SHIPPING_INCLUDED_TAX,
         self::FIELD_SHIPPING_COST,
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
-    protected $hidden = [
-        self::FIELD_ID_BILLING_ADDRESS,
-        self::FIELD_ID_SHIPPING_ADDRESS,
-        self::FIELD_ID_STORE,
-        self::FIELD_ID_CUSTOMER,
-        self::FIELD_ID_ORDER_STATUS,
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public $guarded = [
         self::FIELD_PRODUCTS_TAX_DETAILS,
     ];
 
@@ -267,43 +256,6 @@ class Order extends BaseModel
     }
 
     /**
-     * Add order details.
-     *
-     * @param array $details
-     *
-     * @return $this
-     *
-     * @throws \Neomerx\Core\Exceptions\Exception
-     */
-    public function addDetails(array $details)
-    {
-        $addedDetails = [];
-        try {
-            foreach ($details as $detail) {
-                /** @var OrderDetails $orderDetail */
-                /** @noinspection PhpUndefinedMethodInspection */
-                $orderDetail = App::make(OrderDetails::BIND_NAME);
-                $orderDetail->fill($detail);
-                if (!$this->details()->save($orderDetail)) {
-                    throw new InvalidArgumentException('orderDetails');
-                } else {
-                    $addedDetails[] = $orderDetail;
-                }
-            }
-        } catch (Exception $e) {
-            foreach ($addedDetails as $orderDetail) {
-                /** @noinspection PhpUndefinedMethodInspection */
-                $orderDetail->deleteOrFail();
-            }
-            throw $e;
-        } finally {
-            unset($addedDetails);
-        }
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      *
      * Stores order status history on changes.
@@ -316,11 +268,11 @@ class Order extends BaseModel
         // if id_order_status has changed we should log it to history
         if ($parentOnUpdating and $this->isDirty(self::FIELD_ID_ORDER_STATUS)) {
             $oldIdOrderStatus = $this->getOriginal(self::FIELD_ID_ORDER_STATUS);
-            /** @var OrderHistory $orderHistory */
             /** @noinspection PhpUndefinedMethodInspection */
+            /** @var \Neomerx\Core\Models\OrderHistory $orderHistory */
             $orderHistory = App::make(OrderHistory::BIND_NAME);
-            $orderHistory->fill([OrderHistory::FIELD_ID_ORDER_STATUS => $oldIdOrderStatus]);
-            $historySaved = false !== $this->history()->save($orderHistory);
+            $orderHistory->{OrderHistory::FIELD_ID_ORDER_STATUS} = $oldIdOrderStatus;
+            $historySaved = (false !== $this->history()->save($orderHistory));
         }
         return $parentOnUpdating and $historySaved;
     }

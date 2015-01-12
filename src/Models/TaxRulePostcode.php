@@ -45,18 +45,7 @@ class TaxRulePostcode extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_ID_TAX_RULE,
-        self::FIELD_POSTCODE_FROM,
-        self::FIELD_POSTCODE_TO,
-        self::FIELD_POSTCODE_MASK,
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
     protected $hidden = [
-        self::FIELD_ID,
     ];
 
     /**
@@ -64,6 +53,7 @@ class TaxRulePostcode extends BaseModel
      */
     protected $guarded = [
         self::FIELD_ID,
+        self::FIELD_ID_TAX_RULE,
     ];
 
     /**

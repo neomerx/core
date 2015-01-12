@@ -48,17 +48,15 @@ class ManufacturerProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
         self::FIELD_ID_MANUFACTURER,
         self::FIELD_ID_LANGUAGE,
-        self::FIELD_NAME,
-        self::FIELD_DESCRIPTION,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
         self::FIELD_ID,
         self::FIELD_ID_MANUFACTURER,
         self::FIELD_ID_LANGUAGE,
@@ -68,7 +66,7 @@ class ManufacturerProperties extends BaseModel
      * {@inheritdoc}
      */
     protected $touches = [
-        'manufacturer',
+        self::FIELD_MANUFACTURER,
     ];
 
     /**

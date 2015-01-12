@@ -46,15 +46,7 @@ class TaxRuleTerritory extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_ID_TAX_RULE,
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
     protected $hidden = [
-        self::FIELD_ID,
         self::FIELD_TERRITORY_ID,
         self::FIELD_TERRITORY_TYPE,
     ];
@@ -64,6 +56,7 @@ class TaxRuleTerritory extends BaseModel
      */
     protected $guarded = [
         self::FIELD_ID,
+        self::FIELD_ID_TAX_RULE,
         self::FIELD_TERRITORY_ID,
         self::FIELD_TERRITORY_TYPE,
     ];

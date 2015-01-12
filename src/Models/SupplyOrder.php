@@ -66,19 +66,18 @@ class SupplyOrder extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
         self::FIELD_ID_SUPPLIER,
         self::FIELD_ID_WAREHOUSE,
         self::FIELD_ID_CURRENCY,
         self::FIELD_ID_LANGUAGE,
-        self::FIELD_EXPECTED_AT,
-        self::FIELD_STATUS,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
+        self::FIELD_ID,
         self::FIELD_ID_SUPPLIER,
         self::FIELD_ID_WAREHOUSE,
         self::FIELD_ID_CURRENCY,

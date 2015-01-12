@@ -55,22 +55,21 @@ class Inventory extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
         self::FIELD_ID_WAREHOUSE,
-        self::FIELD_SKU,
-        self::FIELD_IN,
-        self::FIELD_OUT,
-        self::FIELD_RESERVED,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
         self::FIELD_ID,
         self::FIELD_ID_WAREHOUSE,
     ];
 
+    /**
+     * {@inheritdoc}
+     */
     protected $appends = [
         self::FIELD_QUANTITY,
     ];

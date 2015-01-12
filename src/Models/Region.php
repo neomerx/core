@@ -50,17 +50,15 @@ class Region extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
+        self::FIELD_ID,
         self::FIELD_ID_COUNTRY,
-        self::FIELD_CODE,
-        self::FIELD_NAME,
-        self::FIELD_POSITION,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
         self::FIELD_ID,
         self::FIELD_ID_COUNTRY,
     ];
@@ -73,7 +71,7 @@ class Region extends BaseModel implements SelectByCodeInterface
         return [
             self::FIELD_ID_COUNTRY => 'required|integer|min:1|max:4294967295|exists:' . Country::TABLE_NAME,
 
-            self::FIELD_CODE => 'required|alpha_dash|min:1|max:' . self::CODE_MAX_LENGTH .
+            self::FIELD_CODE => 'required|code|min:1|max:' . self::CODE_MAX_LENGTH .
                 '|unique:' . self::TABLE_NAME,
 
             self::FIELD_NAME     => 'required|min:1|max:'            . self::NAME_MAX_LENGTH,

@@ -95,24 +95,17 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_SKU,
+    protected $hidden = [
+        self::FIELD_ID,
         self::FIELD_ID_CATEGORY_DEFAULT,
-        self::FIELD_LINK,
         self::FIELD_ID_MANUFACTURER,
         self::FIELD_ID_PRODUCT_TAX_TYPE,
-        self::FIELD_ENABLED,
-        self::FIELD_PRICE_WO_TAX,
-        self::FIELD_PKG_HEIGHT,
-        self::FIELD_PKG_WIDTH,
-        self::FIELD_PKG_LENGTH,
-        self::FIELD_PKG_WEIGHT,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
         self::FIELD_ID,
         self::FIELD_ID_CATEGORY_DEFAULT,
         self::FIELD_ID_MANUFACTURER,
@@ -311,14 +304,14 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     {
         $productCreated = parent::onCreated();
 
-        /** @var Variant $variant */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $variant = App::make(Variant::BIND_NAME);
-        $productCreated ?
-            $variant->createOrFail([
-                Variant::FIELD_ID_PRODUCT => $this->{self::FIELD_ID},
-                Variant::FIELD_SKU        => $this->{self::FIELD_SKU},
-            ]) : null;
+        if ($productCreated) {
+            /** @noinspection PhpUndefinedMethodInspection */
+            /** @var Variant $variant */
+            $variant = App::make(Variant::BIND_NAME);
+            $variant->{Variant::FIELD_ID_PRODUCT} = $this->{self::FIELD_ID};
+            $variant->{Variant::FIELD_SKU}        = $this->{self::FIELD_SKU};
+            $variant->saveOrFail();
+        }
 
         return $productCreated;
     }
@@ -364,6 +357,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
         $defaultSpecs   = $defaultVariant->specification;
 
         $variant->fill($attributes);
+        $variant->{Variant::FIELD_ID_PRODUCT} = $this->{self::FIELD_ID};
 
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
@@ -375,14 +369,11 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
             foreach ($defaultSpecs as $defaultSpec) {
                 /** @var Specification $defaultSpec */
                 $specData = $defaultSpec->attributesToArray();
-                $specData[Specification::FIELD_ID_PRODUCT]              = $defaultSpec->{Product::FIELD_ID};
-                $specData[Specification::FIELD_ID_CHARACTERISTIC_VALUE] = $defaultSpec->{CharacteristicValue::FIELD_ID};
-                $specData[Specification::FIELD_ID_VARIANT]              = $variant->{Variant::FIELD_ID};
 
-                /** @var Specification $spec */
                 /** @noinspection PhpUndefinedMethodInspection */
+                /** @var Specification $spec */
                 $spec = App::make(Specification::BIND_NAME);
-                $spec->createOrFail($specData);
+                $spec->fillModel($this, $variant, $defaultSpec->value, $specData)->saveOrFail();
             }
 
             $allExecutedOk = true;

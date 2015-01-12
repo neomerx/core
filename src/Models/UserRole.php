@@ -41,7 +41,16 @@ class UserRole extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
+        self::FIELD_ID_USER,
+        self::FIELD_ID_ROLE,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $guarded = [
+        self::FIELD_ID,
         self::FIELD_ID_USER,
         self::FIELD_ID_ROLE,
     ];

@@ -45,9 +45,16 @@ class InvoicePayment extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
         self::FIELD_ID_INVOICE,
-        self::FIELD_AMOUNT,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $guarded = [
+        self::FIELD_ID,
+        self::FIELD_ID_INVOICE,
     ];
 
     /**

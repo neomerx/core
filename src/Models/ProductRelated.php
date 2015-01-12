@@ -41,7 +41,16 @@ class ProductRelated extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
+        self::FIELD_ID_PRODUCT,
+        self::FIELD_ID_RELATED_PRODUCT,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $guarded = [
+        self::FIELD_ID,
         self::FIELD_ID_PRODUCT,
         self::FIELD_ID_RELATED_PRODUCT,
     ];

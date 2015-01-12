@@ -43,10 +43,18 @@ class ProductCategory extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
         self::FIELD_ID_PRODUCT,
         self::FIELD_ID_CATEGORY,
-        self::FIELD_POSITION,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $guarded = [
+        self::FIELD_ID,
+        self::FIELD_ID_PRODUCT,
+        self::FIELD_ID_CATEGORY,
     ];
 
     /**

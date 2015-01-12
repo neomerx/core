@@ -65,8 +65,6 @@ class CoreServiceProvider extends ServiceProvider
             trans('nm::errors.validation_alpha_dash_dot_space')
         );
 
-        // TODO add 'code' validation rules to all model codes
-
         // Validate value for having only characters, numbers, dots, underscores and dashes.
         /** @noinspection PhpUndefinedMethodInspection */
         /** @noinspection PhpUnusedParameterInspection */

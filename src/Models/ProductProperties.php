@@ -55,21 +55,15 @@ class ProductProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
         self::FIELD_ID_PRODUCT,
         self::FIELD_ID_LANGUAGE,
-        self::FIELD_NAME,
-        self::FIELD_DESCRIPTION_SHORT,
-        self::FIELD_DESCRIPTION,
-        self::FIELD_META_TITLE,
-        self::FIELD_META_KEYWORDS,
-        self::FIELD_META_DESCRIPTION,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
         self::FIELD_ID,
         self::FIELD_ID_PRODUCT,
         self::FIELD_ID_LANGUAGE,

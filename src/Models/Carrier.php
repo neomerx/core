@@ -75,23 +75,6 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_CODE,
-        self::FIELD_MIN_WEIGHT,
-        self::FIELD_MAX_WEIGHT,
-        self::FIELD_MIN_COST,
-        self::FIELD_MAX_COST,
-        self::FIELD_MIN_DIMENSION,
-        self::FIELD_MAX_DIMENSION,
-        self::FIELD_IS_TAXABLE,
-        self::FIELD_SETTINGS,
-        self::FIELD_DATA,
-        self::FIELD_FACTORY,
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
     protected $hidden = [
         self::FIELD_ID,
         self::FIELD_CACHE,

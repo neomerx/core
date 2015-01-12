@@ -63,16 +63,15 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
+        self::FIELD_ID,
         self::FIELD_ID_PRODUCT,
-        self::FIELD_SKU,
-        self::FIELD_PRICE_WO_TAX,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
         self::FIELD_ID,
         self::FIELD_ID_PRODUCT,
     ];

@@ -45,16 +45,14 @@ class ImageProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_ID_IMAGE,
+    protected $hidden = [
         self::FIELD_ID_LANGUAGE,
-        self::FIELD_ALT,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
         self::FIELD_ID,
         self::FIELD_ID_IMAGE,
         self::FIELD_ID_LANGUAGE,
@@ -102,5 +100,30 @@ class ImageProperties extends BaseModel
     public function language()
     {
         return $this->belongsTo(Language::BIND_NAME, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
+    }
+
+    /**
+     * Fill model.
+     *
+     * @param Image    $image
+     * @param Language $language
+     * @param array    $attributes
+     *
+     * @return $this
+     */
+    public function fillModel(Image $image = null, Language $language = null, array $attributes = null)
+    {
+        $data = [
+            self::FIELD_ID_IMAGE    => $image,
+            self::FIELD_ID_LANGUAGE => $language,
+        ];
+
+        empty($attributes) ?: $this->fill($attributes);
+        foreach ($data as $attribute => $model) {
+            /** @var BaseModel $model */
+            $model === null ?: $this->setAttribute($attribute, $model->getKey());
+        }
+
+        return $this;
     }
 }

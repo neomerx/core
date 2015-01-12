@@ -53,20 +53,9 @@ class TaxRule extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_NAME,
-        self::FIELD_PRIORITY,
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
     protected $hidden = [
-        self::FIELD_ID,
         self::FIELD_ID_TAX,
     ];
-
-    // TODO I think all models should have hidden fields as guarded. Why links to 'coded' models could be fillable?
 
     /**
      * {@inheritdoc}

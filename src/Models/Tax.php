@@ -71,14 +71,6 @@ class Tax extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_CODE,
-        self::FIELD_EXPRESSION,
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
     protected $hidden = [
         self::FIELD_ID,
         self::FIELD_EXPRESSION_SERIALIZED,
@@ -105,7 +97,7 @@ class Tax extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE => 'required|alpha_dash|min:1|max:' . self::CODE_MAX_LENGTH .
+            self::FIELD_CODE => 'required|code|min:1|max:' . self::CODE_MAX_LENGTH .
                 '|unique:' . self::TABLE_NAME,
 
             self::FIELD_EXPRESSION            => 'required',

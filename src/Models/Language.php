@@ -40,15 +40,14 @@ class Language extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_NAME,
-        self::FIELD_ISO_CODE,
+    protected $hidden = [
+        self::FIELD_ID,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
         self::FIELD_ID,
     ];
 

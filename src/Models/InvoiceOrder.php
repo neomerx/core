@@ -41,9 +41,15 @@ class InvoiceOrder extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_ID_INVOICE,
+    protected $hidden = [
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $guarded = [
         self::FIELD_ID_ORDER,
+        self::FIELD_ID_INVOICE,
     ];
 
     /**

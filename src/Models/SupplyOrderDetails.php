@@ -51,19 +51,15 @@ class SupplyOrderDetails extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_ID_SUPPLY_ORDER,
-        self::FIELD_PRICE_WO_TAX,
-        self::FIELD_QUANTITY,
-        self::FIELD_DISCOUNT_RATE,
-        self::FIELD_TAX_RATE,
+    protected $hidden = [
         self::FIELD_ID_VARIANT,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
+        self::FIELD_ID,
         self::FIELD_ID_SUPPLY_ORDER,
         self::FIELD_ID_VARIANT,
     ];

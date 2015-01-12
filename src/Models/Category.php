@@ -76,28 +76,9 @@ class Category extends BaseModel implements SelectByCodeInterface
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
-     */
-    protected $fillable = [
-        self::FIELD_CODE,
-        self::FIELD_LINK,
-        self::FIELD_ANCESTOR_CODE,
-        self::FIELD_ENABLED,
-    ];
-
-    /**
      * @var string Stores ancestor code of the category.
      */
     private $ancestorCode;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected $guarded = [
-        self::FIELD_ID_ANCESTOR,
-        self::FIELD_LFT,
-        self::FIELD_RGT,
-    ];
 
     /**
      * {@inheritdoc}
@@ -107,7 +88,16 @@ class Category extends BaseModel implements SelectByCodeInterface
         self::FIELD_ID_ANCESTOR,
         self::FIELD_LFT,
         self::FIELD_RGT,
-        self::FIELD_ANCESTOR_CODE,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $guarded = [
+        self::FIELD_ID,
+        self::FIELD_ID_ANCESTOR,
+        self::FIELD_LFT,
+        self::FIELD_RGT,
     ];
 
     /**
@@ -126,7 +116,7 @@ class Category extends BaseModel implements SelectByCodeInterface
             self::FIELD_ID_ANCESTOR   => 'required|integer|min:1|max:4294967295|exists:' .
                 self::TABLE_NAME . ',' . self::FIELD_ID,
 
-            self::FIELD_CODE => 'required|alpha_dash|min:1|max:' .
+            self::FIELD_CODE => 'required|code|min:1|max:' .
                 self::CODE_MAX_LENGTH . '|unique:' . self::TABLE_NAME,
 
             self::FIELD_LINK => 'required|min:1|max:' . self::LINK_MAX_LENGTH . '|unique:' . self::TABLE_NAME,

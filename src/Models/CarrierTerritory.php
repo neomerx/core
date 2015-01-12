@@ -46,14 +46,7 @@ class CarrierTerritory extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
     protected $hidden = [
-        self::FIELD_ID,
         self::FIELD_ID_CARRIER,
         self::FIELD_TERRITORY_ID,
         self::FIELD_TERRITORY_TYPE,

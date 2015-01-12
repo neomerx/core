@@ -44,15 +44,14 @@ class CustomerRisk extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_CODE,
-        self::FIELD_NAME,
+    protected $hidden = [
+        self::FIELD_ID,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
         self::FIELD_ID,
     ];
 
@@ -62,7 +61,7 @@ class CustomerRisk extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE => 'required|alpha_dash|min:1|max:' . self::CODE_MAX_LENGTH .
+            self::FIELD_CODE => 'required|code|min:1|max:' . self::CODE_MAX_LENGTH .
                 '|unique:' . self::TABLE_NAME,
 
             self::FIELD_NAME => 'required|min:1|max:' . self::NAME_MAX_LENGTH . '|unique:' . self::TABLE_NAME,

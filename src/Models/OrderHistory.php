@@ -47,7 +47,15 @@ class OrderHistory extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
+        self::FIELD_ID_ORDER_STATUS,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $guarded = [
+        self::FIELD_ID,
         self::FIELD_ID_ORDER,
         self::FIELD_ID_ORDER_STATUS,
     ];

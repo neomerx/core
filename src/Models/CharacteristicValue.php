@@ -54,15 +54,15 @@ class CharacteristicValue extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
+        self::FIELD_ID,
         self::FIELD_ID_CHARACTERISTIC,
-        self::FIELD_CODE,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
         self::FIELD_ID,
         self::FIELD_ID_CHARACTERISTIC,
     ];
@@ -73,7 +73,7 @@ class CharacteristicValue extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE => 'required|alpha_dash|min:1|max:' . self::CODE_MAX_LENGTH .
+            self::FIELD_CODE => 'required|code|min:1|max:' . self::CODE_MAX_LENGTH .
                 '|unique:' . self::TABLE_NAME,
 
             self::FIELD_ID_CHARACTERISTIC => 'required|integer|min:1|max:4294967295|exists:' .

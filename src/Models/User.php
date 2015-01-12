@@ -70,13 +70,9 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @var Role
      */
-    protected $guarded = [
-        self::FIELD_ID,
-        self::FIELD_REMEMBER_TOKEN,
-    ];
-
+    private $roleModel;
     /**
      * {@inheritdoc}
      */
@@ -98,9 +94,12 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     ];
 
     /**
-     * @var Role
+     * {@inheritdoc}
      */
-    private $roleModel;
+    protected $guarded = [
+        self::FIELD_ID,
+        self::FIELD_REMEMBER_TOKEN,
+    ];
 
     /**
      * {@inheritdoc}

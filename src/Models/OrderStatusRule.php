@@ -41,7 +41,7 @@ class OrderStatusRule extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
+    protected $hidden = [
         self::FIELD_ID_ORDER_STATUS_FROM,
         self::FIELD_ID_ORDER_STATUS_TO,
     ];
@@ -49,8 +49,10 @@ class OrderStatusRule extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
         self::FIELD_ID,
+        self::FIELD_ID_ORDER_STATUS_FROM,
+        self::FIELD_ID_ORDER_STATUS_TO,
     ];
 
     /**

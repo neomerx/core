@@ -58,16 +58,15 @@ class Warehouse extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    protected $fillable = [
-        self::FIELD_ID_ADDRESS,
+    protected $hidden = [
+        self::FIELD_ID,
         self::FIELD_ID_STORE,
-        self::FIELD_NAME,
     ];
 
     /**
      * {@inheritdoc}
      */
-    protected $hidden = [
+    protected $guarded = [
         self::FIELD_ID,
         self::FIELD_ID_ADDRESS,
         self::FIELD_ID_STORE,
@@ -76,19 +75,12 @@ class Warehouse extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
-    protected $guarded = [
-        self::FIELD_CODE,
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE => 'required|alpha_dash|min:1|max:' . self::CODE_MAX_LENGTH. '|unique:' . self::TABLE_NAME,
+            self::FIELD_CODE => 'required|code|min:1|max:' . self::CODE_MAX_LENGTH. '|unique:' . self::TABLE_NAME,
 
-            self::FIELD_NAME       => 'required|min:1|max:'            . self::NAME_MAX_LENGTH,
+            self::FIELD_NAME       => 'required|min:1|max:' . self::NAME_MAX_LENGTH,
             self::FIELD_ID_ADDRESS => 'required|integer|min:1|max:4294967295|exists:' . Address::TABLE_NAME,
             self::FIELD_ID_STORE   => 'required|integer|min:1|max:4294967295|exists:' . Store::TABLE_NAME,
         ];
