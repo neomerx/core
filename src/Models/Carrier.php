@@ -222,13 +222,13 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param int   $countryId
-     * @param int   $regionId
-     * @param mixed $postcode
-     * @param int   $customerTypeId
-     * @param float $pkgWeight
-     * @param float $maxDimension
-     * @param float $pkgCost
+     * @param int        $countryId
+     * @param int        $regionId
+     * @param mixed      $postcode
+     * @param int        $customerTypeId
+     * @param float|null $pkgWeight
+     * @param float|null $maxDimension
+     * @param float|null $pkgCost
      *
      * @return Collection
      */

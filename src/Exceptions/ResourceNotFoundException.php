@@ -8,11 +8,11 @@ class ResourceNotFoundException extends InvalidArgumentException
     private $value;
 
     /**
-     * @param string     $name
-     * @param mixed      $value
-     * @param string     $message
-     * @param int        $code
-     * @param \Exception $previous
+     * @param string          $name
+     * @param mixed           $value
+     * @param string          $message
+     * @param int             $code
+     * @param \Exception|null $previous
      */
     public function __construct($name, $value, $message = '', $code = 0, \Exception $previous = null)
     {

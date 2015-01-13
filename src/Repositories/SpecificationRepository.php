@@ -85,7 +85,7 @@ class SpecificationRepository extends BaseRepository implements SpecificationRep
 
         } finally {
             /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) ? DB::commit() : DB::rollBack();
+            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
         }
     }
 
@@ -151,7 +151,7 @@ class SpecificationRepository extends BaseRepository implements SpecificationRep
 
         } finally {
             /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) ? DB::commit() : DB::rollBack();
+            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
         }
     }
 

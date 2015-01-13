@@ -194,17 +194,17 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
     /**
      * @param $input
      *
-     * @return BaseModelInterface
+     * @return BaseModel
      */
     public function createOrFailResource($input)
     {
         /** @var \Illuminate\Validation\Validator $validator */
         $validator = $this->validateInputOnCreate($input);
-        $validator->fails() ? S\throwEx(new ValidationException($validator)) : null;
+        $validator->passes() === true ?: S\throwEx(new ValidationException($validator));
 
         /** @var BaseModel $resource */
         $resource = $this->create($input);
-        $resource->exists ? : S\throwEx(new ValidationException($resource->getValidator()));
+        $resource->exists === true ?: S\throwEx(new ValidationException($resource->getValidator()));
 
         return $resource;
     }
@@ -224,7 +224,7 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
      */
     public function saveOrFail()
     {
-        $this->save() ?: S\throwEx(new ValidationException($this->getValidator()));
+        $this->save() === true ?: S\throwEx(new ValidationException($this->getValidator()));
     }
 
     /**
@@ -238,9 +238,8 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
     {
         /** @var \Illuminate\Validation\Validator $validator */
         $validator = $this->validateInputOnUpdate($input);
-        $validator->fails() ? S\throwEx(new ValidationException($validator)) : null;
-
-        $this->update($input) ?: S\throwEx(new ValidationException($this->getValidator()));
+        $validator->passes() === true ?: S\throwEx(new ValidationException($validator));
+        $this->update($input) === true ?: S\throwEx(new ValidationException($this->getValidator()));
     }
 
     /**
@@ -253,7 +252,7 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
     public function deleteOrFail()
     {
         $deleted = $this->delete();
-        $deleted ?:  S\throwEx(new Exception());
+        $deleted === true ?: S\throwEx(new Exception());
         return $deleted;
     }
 

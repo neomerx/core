@@ -71,7 +71,7 @@ class VariantRepository extends BaseRepository implements VariantRepositoryInter
 
         } finally {
             /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) ? DB::commit() : DB::rollBack();
+            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
         }
 
         return $variant;

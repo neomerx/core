@@ -112,8 +112,7 @@ class CustomerAddress extends BaseModel
      */
     public function setIsDefaultAttribute($value)
     {
-        // note we use type casting with '=='
-        if ($value == true) {
+        if ((bool)$value === true) {
             $this->attributes[self::FIELD_IS_DEFAULT] = self::IS_DEFAULT;
         } else {
             unset($this->attributes[self::FIELD_IS_DEFAULT]);

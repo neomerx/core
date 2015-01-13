@@ -149,13 +149,13 @@ class Image extends BaseModel
      */
     protected function onCreating()
     {
-        if (!parent::onCreating()) {
+        if (parent::onCreating() === false) {
             return false;
         }
 
         $imageFileIsValid = true;
         try {
-            $realPath = Image::getUploadFolderPath($this->original_file);
+            $realPath = self::getUploadFolderPath($this->original_file);
             /** @noinspection PhpUndefinedMethodInspection */
             ImageProcessor::make($realPath);
         } catch (NotSupportedException $e) {
@@ -202,16 +202,16 @@ class Image extends BaseModel
         $imageCouldBeDeleted = true;
 
         try {
-            $originalFileFullPath = Image::getUploadFolderPath($this->original_file);
+            $originalFileFullPath = self::getUploadFolderPath($this->original_file);
             /** @noinspection PhpUndefinedMethodInspection */
-            if (File::exists($originalFileFullPath) and !File::isWritable($originalFileFullPath)) {
+            if (File::exists($originalFileFullPath) === true and File::isWritable($originalFileFullPath) === false) {
                 throw new LogicException();
             }
 
             $this->deleteImagePaths();
 
             /** @noinspection PhpUndefinedMethodInspection */
-            if (!File::delete($originalFileFullPath)) {
+            if (File::delete($originalFileFullPath) === false) {
                 throw new LogicException();
             }
 
@@ -238,7 +238,7 @@ class Image extends BaseModel
             $imagePath->{ImagePath::FIELD_ID_IMAGE_FORMAT} = $format->{ImageFormat::FIELD_ID};
             $imagePath->setBackground($background);
             /** @noinspection PhpUndefinedMethodInspection */
-            if (!$this->paths()->save($imagePath)) {
+            if ($this->paths()->save($imagePath) === false) {
                 $this->deleteOrFail();
                 throw new Exception('Create image failed.');
             }
@@ -257,7 +257,7 @@ class Image extends BaseModel
     /**
      * Get full path to upload (writable) folder.
      *
-     * @param string $fileName
+     * @param string|null $fileName
      *
      * @return string
      * @throws \Neomerx\Core\Exceptions\ConfigurationException

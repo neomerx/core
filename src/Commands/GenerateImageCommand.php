@@ -23,9 +23,9 @@ class GenerateImageCommand
             $imageFormatModel = $imageFormatModel->selectByName($formatName)->firstOrFail();
 
             foreach ($imageFormatModel->paths as $path) {
-                $imageUpdated = $path->generateImage();
+                $imageGenerated = $path->generateImage();
                 /** @noinspection PhpUndefinedMethodInspection */
-                $imageUpdated ?: Log::error(trans('nm::errors.image_generation_failed'));
+                $imageGenerated === true ?: Log::error(trans('nm::errors.image_generation_failed'));
             }
         }
 

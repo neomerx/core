@@ -236,7 +236,7 @@ class Category extends BaseModel implements SelectByCodeInterface
      */
     public function ancestor()
     {
-        return $this->hasOne(Category::BIND_NAME, self::FIELD_ID, self::FIELD_ID_ANCESTOR);
+        return $this->hasOne(self::BIND_NAME, self::FIELD_ID, self::FIELD_ID_ANCESTOR);
     }
 
     /**
@@ -245,8 +245,10 @@ class Category extends BaseModel implements SelectByCodeInterface
     protected function onCreating()
     {
         /** @var Category $parentCategory */
-        $parentCategory = $this->selectByCode($this->ancestor_code ?: self::ROOT_CODE)->firstOrFail();
-        $parentRight    = $parentCategory->rgt;
+        $parentCategory = $this
+            ->selectByCode($this->ancestor_code !== null ? $this->ancestor_code : self::ROOT_CODE)
+            ->firstOrFail();
+        $parentRight = $parentCategory->rgt;
 
         $this->lft = $parentRight;
         $this->rgt = $parentRight + 1;
@@ -269,7 +271,7 @@ class Category extends BaseModel implements SelectByCodeInterface
         } finally {
 
             /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) ? DB::commit() : DB::rollBack();
+            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
 
         }
         return $allExecutedOk;
@@ -319,7 +321,7 @@ class Category extends BaseModel implements SelectByCodeInterface
 
         } finally {
             /** @noinspection PhpUndefinedMethodInspection */
-            $allExecutedOk ? DB::commit() : DB::rollBack();
+            $allExecutedOk === true ? DB::commit() : DB::rollBack();
         }
 
         return $allExecutedOk;
@@ -472,7 +474,7 @@ class Category extends BaseModel implements SelectByCodeInterface
             $this->timestamps = $usesTimestamps;
 
             /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) ? DB::commit() : DB::rollBack();
+            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
         }
     }
 
@@ -503,9 +505,8 @@ class Category extends BaseModel implements SelectByCodeInterface
      */
     public function findDescendants($code = null)
     {
-        $code   = $code ?: self::ROOT_CODE;
         /** @var Category $parent */
-        $parent = $this->selectByCode($code)->firstOrFail([self::FIELD_ID]);
+        $parent = $this->selectByCode($code !== null ? $code : self::ROOT_CODE)->firstOrFail([self::FIELD_ID]);
         $descendants = $parent->getDescendants();
 
         return $descendants;

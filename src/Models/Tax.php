@@ -210,8 +210,7 @@ class Tax extends BaseModel implements SelectByCodeInterface
      */
     public function calculate(array $values)
     {
-        $quantity =  S\array_get_value($values, self::PARAM_QUANTITY);
-        $quantity ?: S\throwEx(new InvalidArgumentException(self::PARAM_QUANTITY));
+        $quantity = S\array_get_value_ex($values, self::PARAM_QUANTITY);
         settype($quantity, 'float');
 
         if ($this->getIsFormulaAttribute()) {
@@ -222,8 +221,7 @@ class Tax extends BaseModel implements SelectByCodeInterface
             $result  = (float)$expLang->evaluate(unserialize($expressionSerialized), $values);
         } else {
             // product must be there
-            $price =  S\array_get_value($values, self::PARAM_PRICE);
-            $price ?: S\throwEx(new InvalidArgumentException(self::PARAM_PRICE));
+            $price = S\array_get_value_ex($values, self::PARAM_PRICE);
             settype($price, 'float');
 
             $percent = (float)$this->attributes[self::FIELD_EXPRESSION];

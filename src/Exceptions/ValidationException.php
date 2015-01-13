@@ -12,7 +12,7 @@ class ValidationException extends LogicException
     /**
      * Constructor.
      *
-     * @param Validator $validator
+     * @param Validator|null $validator
      * {@inheritDoc}
      */
     public function __construct(Validator $validator = null, $message = '', $code = 0, \Exception $previous = null)

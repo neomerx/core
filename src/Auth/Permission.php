@@ -98,7 +98,8 @@ class Permission
      */
     public static function view()
     {
-        return self::$privilegeView ?: (self::$privilegeView = new Permission(self::VIEW));
+        self::$privilegeView !== null ?: (self::$privilegeView = new Permission(self::VIEW));
+        return self::$privilegeView;
     }
 
     /**
@@ -108,7 +109,8 @@ class Permission
      */
     public static function edit()
     {
-        return self::$privilegeEdit ?: (self::$privilegeEdit = new Permission(self::EDIT));
+        self::$privilegeEdit !== null ?: (self::$privilegeEdit = new Permission(self::EDIT));
+        return self::$privilegeEdit;
     }
 
     /**
@@ -118,7 +120,8 @@ class Permission
      */
     public static function create()
     {
-        return self::$privilegeCreate ?: (self::$privilegeCreate = new Permission(self::CREATE));
+        self::$privilegeCreate !== null ?: (self::$privilegeCreate = new Permission(self::CREATE));
+        return self::$privilegeCreate;
     }
 
     /**
@@ -128,7 +131,8 @@ class Permission
      */
     public static function delete()
     {
-        return self::$privilegeDelete ?: (self::$privilegeDelete = new Permission(self::DELETE));
+        self::$privilegeDelete !== null ?: (self::$privilegeDelete = new Permission(self::DELETE));
+        return self::$privilegeDelete;
     }
 
     /**
@@ -138,7 +142,8 @@ class Permission
      */
     public static function restore()
     {
-        return self::$privilegeRestore ?: (self::$privilegeRestore = new Permission(self::RESTORE));
+        self::$privilegeRestore !== null ?: (self::$privilegeRestore = new Permission(self::RESTORE));
+        return self::$privilegeRestore;
     }
 
     /**
@@ -148,9 +153,10 @@ class Permission
      */
     public static function canView()
     {
-        return self::$privilegeCanView ?: (self::$privilegeCanView = new Permission(
+        self::$privilegeCanView !== null ?: (self::$privilegeCanView = new Permission(
             self::VIEW | self::EDIT | self::OPERATOR | self::MASTER | self::OWNER
         ));
+        return self::$privilegeCanView;
     }
 
     /**
@@ -160,9 +166,10 @@ class Permission
      */
     public static function canEdit()
     {
-        return self::$privilegeCanEdit ?: (self::$privilegeCanEdit = new Permission(
+        self::$privilegeCanEdit !== null ?: (self::$privilegeCanEdit = new Permission(
             self::EDIT | self::OPERATOR | self::MASTER | self::OWNER
         ));
+        return self::$privilegeCanEdit;
     }
 
     /**
@@ -172,9 +179,10 @@ class Permission
      */
     public static function canCreate()
     {
-        return self::$privilegeCanCreate ?: (self::$privilegeCanCreate = new Permission(
+        self::$privilegeCanCreate !== null ?: (self::$privilegeCanCreate = new Permission(
             self::CREATE | self::OPERATOR | self::MASTER | self::OWNER
         ));
+        return self::$privilegeCanCreate;
     }
 
     /**
@@ -184,9 +192,10 @@ class Permission
      */
     public static function canDelete()
     {
-        return self::$privilegeCanDelete ?: (self::$privilegeCanDelete = new Permission(
+        self::$privilegeCanDelete !== null ?: (self::$privilegeCanDelete = new Permission(
             self::DELETE | self::OPERATOR | self::MASTER | self::OWNER
         ));
+        return self::$privilegeCanDelete;
     }
 
     /**
@@ -196,8 +205,9 @@ class Permission
      */
     public static function canRestore()
     {
-        return self::$privilegeCanRestore ?: (self::$privilegeCanRestore = new Permission(
+        self::$privilegeCanRestore !== null ?: (self::$privilegeCanRestore = new Permission(
             self::RESTORE | self::OPERATOR | self::MASTER | self::OWNER
         ));
+        return self::$privilegeCanRestore;
     }
 }

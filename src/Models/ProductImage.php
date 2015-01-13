@@ -231,7 +231,7 @@ class ProductImage extends BaseModel
 
         } finally {
             /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) ? DB::commit() : DB::rollBack();
+            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
         }
 
         return $image;
@@ -253,7 +253,7 @@ class ProductImage extends BaseModel
 
         } finally {
             /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) ? DB::commit() : DB::rollBack();
+            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
         }
     }
 
