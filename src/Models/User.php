@@ -230,6 +230,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
      */
     public function addRole($code)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         /** @var \Neomerx\Core\Models\Role $role */
         $role = $this->roleModel->selectByCode($code)->firstOrFail([Role::FIELD_ID]);
         $this->roles()->save($role);
@@ -245,6 +246,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
      */
     public function removeRole($code)
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         $roleId = $this->roleModel->selectByCode($code)->firstOrFail([Role::FIELD_ID])->{Role::FIELD_ID};
         return $this->roles()->detach($roleId) > 0;
     }

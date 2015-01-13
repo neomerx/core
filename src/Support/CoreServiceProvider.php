@@ -2,12 +2,20 @@
 
 use \Illuminate\Support\ServiceProvider;
 use \Illuminate\Support\Facades\Validator;
+use \Neomerx\Core\Repositories\ProductRepository;
+use \Neomerx\Core\Repositories\VariantRepository;
+use \Neomerx\Core\Repositories\OrderDetailsRepository;
+use \Neomerx\Core\Repositories\SpecificationRepository;
+use \Neomerx\Core\Repositories\ImagePropertiesRepository;
+use \Neomerx\Core\Repositories\ProductRepositoryInterface;
+use \Neomerx\Core\Repositories\VariantRepositoryInterface;
+use \Neomerx\Core\Repositories\OrderDetailsRepositoryInterface;
+use \Neomerx\Core\Repositories\SpecificationRepositoryInterface;
+use \Neomerx\Core\Repositories\ImagePropertiesRepositoryInterface;
 
 /**
  * Provides necessary Neomerx registrations in a single location. It bootstraps
- * such components as model facades, validation rules and commands.
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * such components as facades, validation rules and etc.
  */
 class CoreServiceProvider extends ServiceProvider
 {
@@ -47,6 +55,11 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        $this->app->bind(VariantRepositoryInterface::class, VariantRepository::class);
+        $this->app->bind(SpecificationRepositoryInterface::class, SpecificationRepository::class);
+        $this->app->bind(ImagePropertiesRepositoryInterface::class, ImagePropertiesRepository::class);
+        $this->app->bind(OrderDetailsRepositoryInterface::class, OrderDetailsRepository::class);
     }
 
     /**

@@ -2,8 +2,6 @@
 
 use \Carbon\Carbon;
 use \Neomerx\Core\Support as S;
-use \Illuminate\Support\Facades\DB;
-use \Neomerx\Core\Exceptions\LogicException;
 use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 
@@ -176,49 +174,13 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
     }
 
     /**
-     * Reset variant to default (move all specifications back to product and clean variant properties).
-     */
-    public function resetToDefault()
-    {
-        /** @noinspection PhpUndefinedFieldInspection */
-        $product = $this->product;
-
-        // check if the variant is default and the only for product otherwise throw exception
-        self::isDefault($this, $product) ?: S\throwEx(new LogicException());
-        count($product->variants) === 1  ?: S\throwEx(new LogicException());
-
-        /** @noinspection PhpUndefinedMethodInspection */
-        DB::beginTransaction();
-        try {
-
-            // we are here if the variant is default and only for product
-            // so we have to return all specifications back to product and clear variant properties
-            /** @var Specification $specRow */
-            foreach ($this->specification as $specRow) {
-                $specRow->makeNonVariable();
-            }
-            /** @noinspection PhpUndefinedMethodInspection */
-            $this->properties()->delete();
-
-            $allExecutedOk = true;
-
-        } finally {
-            /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) ? DB::commit() : DB::rollBack();
-        }
-    }
-
-    /**
      * Check if variant is default for a product.
-     *
-     * @param Variant $variant
-     * @param Product $product
      *
      * @return bool
      */
-    public static function isDefault(Variant $variant, Product $product)
+    public function isDefault()
     {
-        return $variant->sku === $product->sku;
+        return $this->sku === $this->product->sku;
     }
 
     /**
@@ -266,8 +228,8 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
         $parentOnDeleting = parent::onDeleting();
 
         // only non-default variant could actually be deleted.
-        $onDeleting = !self::isDefault($this, $this->product);
+        $canBeDeleted = !$this->isDefault();
 
-        return $parentOnDeleting and $onDeleting;
+        return $parentOnDeleting and $canBeDeleted;
     }
 }

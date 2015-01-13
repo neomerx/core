@@ -127,33 +127,4 @@ class OrderDetails extends BaseModel
     {
         return $this->belongsTo(Variant::BIND_NAME, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
     }
-
-    /**
-     * @param Order         $order
-     * @param Variant       $variant
-     * @param ShippingOrder $shippingOrder
-     * @param array         $attributes
-     *
-     * @return $this
-     */
-    public function fillModel(
-        Order $order = null,
-        Variant $variant = null,
-        ShippingOrder $shippingOrder = null,
-        array $attributes = null
-    ) {
-        $data = [
-            self::FIELD_ID_ORDER          => $order,
-            self::FIELD_ID_VARIANT        => $variant,
-            self::FIELD_ID_SHIPPING_ORDER => $shippingOrder,
-        ];
-
-        empty($attributes) ?: $this->fill($attributes);
-        foreach ($data as $attribute => $model) {
-            /** @var BaseModel $model */
-            $model === null ?: $this->setAttribute($attribute, $model->getKey());
-        }
-
-        return $this;
-    }
 }

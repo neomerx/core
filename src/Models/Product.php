@@ -2,10 +2,9 @@
 
 use \Carbon\Carbon;
 use \Neomerx\Core\Support as S;
-use \Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Database\Eloquent\Collection;
-use \Neomerx\Core\Exceptions\ValidationException;
+use \Neomerx\Core\Repositories\VariantRepositoryInterface;
 
 /**
  * @property      int            id_product
@@ -306,11 +305,9 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
 
         if ($productCreated) {
             /** @noinspection PhpUndefinedMethodInspection */
-            /** @var Variant $variant */
-            $variant = App::make(Variant::BIND_NAME);
-            $variant->{Variant::FIELD_ID_PRODUCT} = $this->{self::FIELD_ID};
-            $variant->{Variant::FIELD_SKU}        = $this->{self::FIELD_SKU};
-            $variant->saveOrFail();
+            /** @var VariantRepositoryInterface $variantRepo */
+            $variantRepo = App::make(VariantRepositoryInterface::class);
+            $variantRepo->create($this);
         }
 
         return $productCreated;
@@ -339,50 +336,19 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     }
 
     /**
-     * Create a variant of product with specification identical to default product variant.
-     *
-     * @param array $attributes
+     * Get default product variant.
      *
      * @return Variant
      */
-    public function addVariant(array $attributes)
+    public function getDefaultVariant()
     {
-        /** @var Variant $variant */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $variant = App::make(Variant::BIND_NAME);
-
-        // select specifications from default product variant
-        /** @var Variant $defaultVariant */
-        $defaultVariant = $variant->selectDefault($this)->firstOrFail();
-        $defaultSpecs   = $defaultVariant->specification;
-
-        $variant->fill($attributes);
-        $variant->{Variant::FIELD_ID_PRODUCT} = $this->{self::FIELD_ID};
-
-        /** @noinspection PhpUndefinedMethodInspection */
-        DB::beginTransaction();
-        try {
-
-            // save variant and copy specification from default variant
-            $this->variants()->save($variant) ?:S\throwEx(new ValidationException($variant->getValidator()));
-
-            foreach ($defaultSpecs as $defaultSpec) {
-                /** @var Specification $defaultSpec */
-                $specData = $defaultSpec->attributesToArray();
-
-                /** @noinspection PhpUndefinedMethodInspection */
-                /** @var Specification $spec */
-                $spec = App::make(Specification::BIND_NAME);
-                $spec->fillModel($this, $variant, $defaultSpec->value, $specData)->saveOrFail();
+        foreach ($this->variants as $variant) {
+            /** @var Variant $variant */
+            if ($variant->isDefault()) {
+                return $variant;
             }
-
-            $allExecutedOk = true;
-
-        } finally {
-            /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) ? DB::commit() : DB::rollBack();
         }
 
-        return $variant;
+        return null;
     }
 }

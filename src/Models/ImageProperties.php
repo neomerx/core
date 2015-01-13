@@ -101,29 +101,4 @@ class ImageProperties extends BaseModel
     {
         return $this->belongsTo(Language::BIND_NAME, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
     }
-
-    /**
-     * Fill model.
-     *
-     * @param Image    $image
-     * @param Language $language
-     * @param array    $attributes
-     *
-     * @return $this
-     */
-    public function fillModel(Image $image = null, Language $language = null, array $attributes = null)
-    {
-        $data = [
-            self::FIELD_ID_IMAGE    => $image,
-            self::FIELD_ID_LANGUAGE => $language,
-        ];
-
-        empty($attributes) ?: $this->fill($attributes);
-        foreach ($data as $attribute => $model) {
-            /** @var BaseModel $model */
-            $model === null ?: $this->setAttribute($attribute, $model->getKey());
-        }
-
-        return $this;
-    }
 }
