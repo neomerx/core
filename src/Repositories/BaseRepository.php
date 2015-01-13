@@ -31,7 +31,7 @@ abstract class BaseRepository
      */
     protected function getUnderlyingModel()
     {
-        $this->model ?: $this->makeModel();
+        $this->model !== null ?: ($this->model = $this->makeModel());
         return $this->model;
     }
 

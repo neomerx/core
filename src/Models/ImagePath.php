@@ -95,7 +95,7 @@ class ImagePath extends BaseModel
             self::FIELD_ID_IMAGE_FORMAT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 ImageFormat::TABLE_NAME,
 
-            self::FIELD_PATH => 'sometimes|required|alpha_dash_dot_space|min:1|max:'.self::PATH_MAX_LENGTH .
+            self::FIELD_PATH => 'sometimes|required|alpha_dash_dot_space|min:1|max:'.self::PATH_MAX_LENGTH.
                 '|unique:'.self::TABLE_NAME,
         ];
     }
@@ -202,15 +202,15 @@ class ImagePath extends BaseModel
 
         // if we update an existing model...
         if ($this->exists and isset($this->path)) {
-            // ... and we don't have enough permissions to delete old one and create new file ...
+            //... and we don't have enough permissions to delete old one and create new file...
             /** @noinspection PhpUndefinedMethodInspection */
             if (!File::isWritable(Image::getUploadFolderPath($this->path)) or
                 !File::isWritable($resizedFilePath)
             ) {
-                // ... we cancel such change
+                //... we cancel such change
                 return false;
             } else {
-                // ... we generate image and delete the old file.
+                //... we generate image and delete the old file.
                 $fullPathToOldFile = Image::getUploadFolderPath($this->path);
                 if ($this->generateImageAndSetPathAttribute(
                     $destinationFolder,
@@ -222,7 +222,7 @@ class ImagePath extends BaseModel
                     /** @noinspection PhpUndefinedMethodInspection */
                     return File::delete($fullPathToOldFile);
                 } else {
-                    // ... if we can't generate new image we cancel the change
+                    //... if we can't generate new image we cancel the change
                     return false;
                 }
             }

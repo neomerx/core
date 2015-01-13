@@ -122,7 +122,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
             self::FIELD_ID_CATEGORY_DEFAULT => 'required|integer|min:1|max:4294967295|exists:'.
                 Category::TABLE_NAME.','.Category::FIELD_ID,
 
-            self::FIELD_LINK => 'required|alpha_dash|min:1|max:'.self::LINK_MAX_LENGTH .
+            self::FIELD_LINK => 'required|alpha_dash|min:1|max:'.self::LINK_MAX_LENGTH.
                 '|unique:'.self::TABLE_NAME,
 
             self::FIELD_ID_MANUFACTURER => 'required|integer|min:1|max:4294967295|exists:'.Manufacturer::TABLE_NAME,
@@ -150,7 +150,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
             self::FIELD_ID_CATEGORY_DEFAULT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 Category::TABLE_NAME.','.Category::FIELD_ID,
 
-            self::FIELD_LINK => 'sometimes|required|alpha_dash|min:1|max:'.self::LINK_MAX_LENGTH .
+            self::FIELD_LINK => 'sometimes|required|alpha_dash|min:1|max:'.self::LINK_MAX_LENGTH.
                 '|unique:'. self::TABLE_NAME,
 
             self::FIELD_ID_MANUFACTURER =>'sometimes|required|integer|min:1|max:4294967295|exists:'.

@@ -80,8 +80,8 @@ class Inventory extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_SKU => 'required|alpha_dash|min:1|max:'.Product::SKU_MAX_LENGTH .
-                '|exists:'.Variant::TABLE_NAME .','.Variant::FIELD_SKU,
+            self::FIELD_SKU => 'required|alpha_dash|min:1|max:'.Product::SKU_MAX_LENGTH.
+                '|exists:'.Variant::TABLE_NAME.','.Variant::FIELD_SKU,
 
             self::FIELD_IN           => 'sometimes|required|integer|min:0|max:18446744073709551615',
             self::FIELD_OUT          => 'sometimes|required|integer|min:0|max:18446744073709551615',

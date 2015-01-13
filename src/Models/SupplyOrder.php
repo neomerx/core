@@ -103,8 +103,8 @@ class SupplyOrder extends BaseModel
             self::FIELD_ID_LANGUAGE  => 'required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
             self::FIELD_EXPECTED_AT  => 'required|date|after:now',
 
-            self::FIELD_STATUS => 'required|in:'
-               .self::STATUS_DRAFT.','.self::STATUS_VALIDATED.','.self::STATUS_CANCELLED,
+            self::FIELD_STATUS => 'required|in:'.
+                self::STATUS_DRAFT.','.self::STATUS_VALIDATED.','.self::STATUS_CANCELLED,
         ];
     }
 
@@ -123,8 +123,8 @@ class SupplyOrder extends BaseModel
             self::FIELD_ID_LANGUAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
             self::FIELD_EXPECTED_AT => 'sometimes|required|date|after:now',
 
-            self::FIELD_STATUS => 'sometimes|required|in:'
-               .self::STATUS_DRAFT.','.self::STATUS_VALIDATED.','.self::STATUS_CANCELLED,
+            self::FIELD_STATUS => 'sometimes|required|in:'.
+                self::STATUS_DRAFT.','.self::STATUS_VALIDATED.','.self::STATUS_CANCELLED,
         ];
     }
 

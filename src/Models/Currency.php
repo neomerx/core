@@ -55,7 +55,7 @@ class Currency extends BaseModel implements SelectByCodeInterface
         return [
             self::FIELD_ID => 'required|integer|min:1|max:999'.'|unique:'.self::TABLE_NAME,
 
-            self::FIELD_CODE => 'required|code|min:'.self::CODE_MIN_LENGTH .
+            self::FIELD_CODE => 'required|code|min:'.self::CODE_MIN_LENGTH.
                 '|max:'.self::CODE_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
 
             self::FIELD_DECIMAL_DIGITS => 'required|integer|min:0|max:4',

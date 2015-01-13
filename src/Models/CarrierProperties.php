@@ -70,8 +70,8 @@ class CarrierProperties extends BaseModel
         return [
             self::FIELD_ID_CARRIER  => 'required|integer|min:1|max:4294967295|exists:'.Carrier::TABLE_NAME,
             self::FIELD_ID_LANGUAGE => 'required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
-            self::FIELD_NAME        => 'required|alpha_dash_dot_space|min:1|max:'     .self::NAME_MAX_LENGTH,
-            self::FIELD_DESCRIPTION => 'required|alpha_dash_dot_space|min:1|max:'     .self::DESCRIPTION_MAX_LENGTH,
+            self::FIELD_NAME        => 'required|alpha_dash_dot_space|min:1|max:'.self::NAME_MAX_LENGTH,
+            self::FIELD_DESCRIPTION => 'required|alpha_dash_dot_space|min:1|max:'.self::DESCRIPTION_MAX_LENGTH,
         ];
     }
 

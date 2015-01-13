@@ -86,7 +86,7 @@ class CategoryProperties extends BaseModel
         return [
             self::FIELD_ID_CATEGORY      => 'required|integer|min:1|max:4294967295|exists:'.Category::TABLE_NAME,
             self::FIELD_ID_LANGUAGE      => 'required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
-            self::FIELD_NAME             => 'required|alpha_dash_dot_space|min:1|max:'     .self::NAME_MAX_LENGTH,
+            self::FIELD_NAME             => 'required|alpha_dash_dot_space|min:1|max:'.self::NAME_MAX_LENGTH,
 
             self::FIELD_DESCRIPTION => 'sometimes|required|alpha_dash_dot_space|min:1|max:'.
                 self::DESCRIPTION_MAX_LENGTH,

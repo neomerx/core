@@ -121,7 +121,7 @@ class Category extends BaseModel implements SelectByCodeInterface
 
             self::FIELD_LINK => 'required|min:1|max:'.self::LINK_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
 
-            self::FIELD_ANCESTOR_CODE => 'sometimes|required|exists:'.self::TABLE_NAME.','.self::FIELD_CODE .
+            self::FIELD_ANCESTOR_CODE => 'sometimes|required|exists:'.self::TABLE_NAME.','.self::FIELD_CODE.
                 '|exists:'.self::TABLE_NAME.','.self::FIELD_CODE,
 
             self::FIELD_ENABLED => 'required|boolean',

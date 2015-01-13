@@ -118,11 +118,11 @@ class Customer extends BaseModel
                 CustomerType::TABLE_NAME,
 
             self::FIELD_ID_LANGUAGE => 'required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
-            self::FIELD_FIRST_NAME  => 'required|alpha_dash|min:1|max:'          .self::FIRST_NAME_MAX_LENGTH,
+            self::FIELD_FIRST_NAME  => 'required|alpha_dash|min:1|max:'.self::FIRST_NAME_MAX_LENGTH,
             self::FIELD_LAST_NAME   => 'sometimes|required|alpha_dash|min:1|max:'.self::LAST_NAME_MAX_LENGTH,
 
-            self::FIELD_EMAIL  => 'required|email|min:1|max:'.self::EMAIL_MAX_LENGTH .'|unique:'.self::TABLE_NAME,
-            self::FIELD_MOBILE => 'required|min:12|max:'     .self::MOBILE_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
+            self::FIELD_EMAIL  => 'required|email|min:1|max:'.self::EMAIL_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
+            self::FIELD_MOBILE => 'required|min:12|max:'.self::MOBILE_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
             self::FIELD_GENDER => 'required|in:'.self::GENDER_MALE.','.self::GENDER_FEMALE,
         ];
     }

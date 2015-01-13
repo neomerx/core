@@ -36,7 +36,7 @@ class CoreServiceProvider extends ServiceProvider
     public function boot()
     {
         // up to 'src' dir
-        $resourceDir = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR .
+        $resourceDir = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.
             '..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
 
         $this->package('neomerx/core', self::NEOMERX_PREFIX, $resourceDir);

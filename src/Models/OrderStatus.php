@@ -67,7 +67,7 @@ class OrderStatus extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH .
+            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.
                 '|unique:'.self::TABLE_NAME,
 
             self::FIELD_NAME => 'required|min:1|max:'.self::NAME_MAX_LENGTH.'|unique:'.self::TABLE_NAME,

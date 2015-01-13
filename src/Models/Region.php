@@ -71,10 +71,10 @@ class Region extends BaseModel implements SelectByCodeInterface
         return [
             self::FIELD_ID_COUNTRY => 'required|integer|min:1|max:4294967295|exists:'.Country::TABLE_NAME,
 
-            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH .
+            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.
                 '|unique:'.self::TABLE_NAME,
 
-            self::FIELD_NAME     => 'required|min:1|max:'           .self::NAME_MAX_LENGTH,
+            self::FIELD_NAME     => 'required|min:1|max:'.self::NAME_MAX_LENGTH,
             self::FIELD_POSITION => 'required|integer|min:0|max:65535',
         ];
     }

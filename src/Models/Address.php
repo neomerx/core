@@ -89,10 +89,10 @@ class Address extends BaseModel
     {
         return [
             self::FIELD_ID_REGION => 'required|integer|min:1|max:4294967295|exists:'.Region::TABLE_NAME,
-            self::FIELD_CITY      => 'required|min:1|max:'                          .self::CITY_MAX_LENGTH,
-            self::FIELD_POSTCODE  => 'sometimes|required|alpha_dash|min:1|max:'     .self::POSTCODE_MAX_LENGTH,
-            self::FIELD_ADDRESS1  => 'sometimes|required|required|min:1|max:'       .self::ADDRESS_1_MAX_LENGTH,
-            self::FIELD_ADDRESS2  => 'sometimes|required|min:1|max:'                .self::ADDRESS_2_MAX_LENGTH,
+            self::FIELD_CITY      => 'required|min:1|max:' .self::CITY_MAX_LENGTH,
+            self::FIELD_POSTCODE  => 'sometimes|required|alpha_dash|min:1|max:'.self::POSTCODE_MAX_LENGTH,
+            self::FIELD_ADDRESS1  => 'sometimes|required|required|min:1|max:'.self::ADDRESS_1_MAX_LENGTH,
+            self::FIELD_ADDRESS2  => 'sometimes|required|min:1|max:'.self::ADDRESS_2_MAX_LENGTH,
         ];
     }
 
@@ -103,10 +103,10 @@ class Address extends BaseModel
     {
         return [
             self::FIELD_ID_REGION => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Region::TABLE_NAME,
-            self::FIELD_CITY      => 'sometimes|required|min:1|max:'                          .self::CITY_MAX_LENGTH,
+            self::FIELD_CITY      => 'sometimes|required|min:1|max:' .self::CITY_MAX_LENGTH,
             self::FIELD_POSTCODE  => 'sometimes|required|alpha_dash|min:1|max:'.self::POSTCODE_MAX_LENGTH,
-            self::FIELD_ADDRESS1  => 'sometimes|required|min:1|max:'           .self::ADDRESS_1_MAX_LENGTH,
-            self::FIELD_ADDRESS2  => 'sometimes|required|min:1|max:'           .self::ADDRESS_2_MAX_LENGTH,
+            self::FIELD_ADDRESS1  => 'sometimes|required|min:1|max:'.self::ADDRESS_1_MAX_LENGTH,
+            self::FIELD_ADDRESS2  => 'sometimes|required|min:1|max:'.self::ADDRESS_2_MAX_LENGTH,
         ];
     }
 
