@@ -85,7 +85,7 @@ class SupplyOrderDetails extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_SUPPLY_ORDER => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_SUPPLY_ORDER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 SupplyOrder::TABLE_NAME,
 
             self::FIELD_ID_VARIANT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,

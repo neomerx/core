@@ -79,7 +79,7 @@ class ImagePath extends BaseModel
             self::FIELD_ID_IMAGE        => 'required|integer|min:1|max:4294967295|exists:'.Image::TABLE_NAME,
             self::FIELD_ID_IMAGE_FORMAT => 'required|integer|min:1|max:4294967295|exists:'.ImageFormat::TABLE_NAME,
 
-            self::FIELD_PATH => 'required|alpha_dash_dot_space|min:1|max:' .
+            self::FIELD_PATH => 'required|alpha_dash_dot_space|min:1|max:'.
                 self::PATH_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
         ];
     }
@@ -92,7 +92,7 @@ class ImagePath extends BaseModel
         return [
             self::FIELD_ID_IMAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Image::TABLE_NAME,
 
-            self::FIELD_ID_IMAGE_FORMAT => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_IMAGE_FORMAT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 ImageFormat::TABLE_NAME,
 
             self::FIELD_PATH => 'sometimes|required|alpha_dash_dot_space|min:1|max:'.self::PATH_MAX_LENGTH .

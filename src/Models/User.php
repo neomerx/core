@@ -125,7 +125,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
             self::FIELD_EMAIL      => 'required|email|max:'      .self::EMAIL_MAX_LENGTH,
             self::FIELD_PASSWORD   => 'required|min:'            .self::PASSWORD_MIN_LENGTH.'|confirmed',
 
-            self::PARAM_PASSWORD_CONFIRMATION => 'required|min:' .self::PASSWORD_MIN_LENGTH,
+            self::PARAM_PASSWORD_CONFIRMATION => 'required|min:'.self::PASSWORD_MIN_LENGTH,
         ];
     }
 

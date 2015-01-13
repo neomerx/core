@@ -96,7 +96,7 @@ class SearchParser
             }
 
             // we have passed all checks and can add search condition
-            $conditionFunction = 'add' . $type . $operation;
+            $conditionFunction = 'add'.$type.$operation;
 
             // check this combination of type and operation exists
             method_exists($this->grammar, $conditionFunction) ?: throwEx(new InvalidArgumentException($name));

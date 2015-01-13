@@ -80,7 +80,7 @@ class Image extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ORIGINAL_FILE => 'required|alpha_dash_dot_space|min:1|max:' .
+            self::FIELD_ORIGINAL_FILE => 'required|alpha_dash_dot_space|min:1|max:'.
                 self::ORIGINAL_FILE_NAME_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
         ];
     }
@@ -91,7 +91,7 @@ class Image extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ORIGINAL_FILE => 'required|alpha_dash_dot_space|min:1|max:' .
+            self::FIELD_ORIGINAL_FILE => 'required|alpha_dash_dot_space|min:1|max:'.
                 self::ORIGINAL_FILE_NAME_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
         ];
     }

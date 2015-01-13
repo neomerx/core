@@ -75,7 +75,7 @@ class ProductRelated extends BaseModel
         return [
             self::FIELD_ID_PRODUCT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
 
-            self::FIELD_ID_RELATED_PRODUCT => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_RELATED_PRODUCT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 Product::TABLE_NAME.','.Product::FIELD_ID,
         ];
     }

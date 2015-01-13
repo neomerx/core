@@ -82,7 +82,7 @@ class ShippingOrder extends BaseModel
             self::FIELD_ID_CARRIER      => 'required|integer|min:1|max:4294967295|exists:'.Carrier::TABLE_NAME,
             self::FIELD_TRACKING_NUMBER => 'max:'.self::TRACKING_NUMBER_MAX,
 
-            self::FIELD_ID_SHIPPING_ORDER_STATUS => 'required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_SHIPPING_ORDER_STATUS => 'required|integer|min:1|max:4294967295|exists:'.
                 ShippingOrderStatus::TABLE_NAME,
         ];
     }
@@ -98,7 +98,7 @@ class ShippingOrder extends BaseModel
 
             self::FIELD_TRACKING_NUMBER => 'max:'.self::TRACKING_NUMBER_MAX,
 
-            self::FIELD_ID_SHIPPING_ORDER_STATUS => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_SHIPPING_ORDER_STATUS => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 ShippingOrderStatus::TABLE_NAME,
         ];
     }

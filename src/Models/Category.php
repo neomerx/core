@@ -113,10 +113,10 @@ class Category extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_ANCESTOR   => 'required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_ANCESTOR   => 'required|integer|min:1|max:4294967295|exists:'.
                 self::TABLE_NAME.','.self::FIELD_ID,
 
-            self::FIELD_CODE => 'required|code|min:1|max:' .
+            self::FIELD_CODE => 'required|code|min:1|max:'.
                 self::CODE_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
 
             self::FIELD_LINK => 'required|min:1|max:'.self::LINK_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
@@ -126,10 +126,10 @@ class Category extends BaseModel implements SelectByCodeInterface
 
             self::FIELD_ENABLED => 'required|boolean',
 
-            self::FIELD_LFT  => 'required|integer|min:0|max:4294967295|different:'.self::FIELD_RGT.'|unique:' .
+            self::FIELD_LFT  => 'required|integer|min:0|max:4294967295|different:'.self::FIELD_RGT.'|unique:'.
                 self::TABLE_NAME.','.self::FIELD_LFT.'|unique:'.self::TABLE_NAME.','.self::FIELD_RGT,
 
-            self::FIELD_RGT  => 'required|integer|min:0|max:4294967295|different:'.self::FIELD_LFT.'|unique:' .
+            self::FIELD_RGT  => 'required|integer|min:0|max:4294967295|different:'.self::FIELD_LFT.'|unique:'.
                 self::TABLE_NAME.','.self::FIELD_LFT.'|unique:'.self::TABLE_NAME.','.self::FIELD_RGT,
         ];
     }
@@ -140,7 +140,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_ANCESTOR   => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_ANCESTOR   => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 self::TABLE_NAME.','.self::FIELD_ID,
 
             self::FIELD_CODE => 'sometimes|required|forbidden',
@@ -149,12 +149,12 @@ class Category extends BaseModel implements SelectByCodeInterface
 
             self::FIELD_ENABLED => 'sometimes|required|boolean',
 
-            self::FIELD_LFT => 'required_with:'.self::FIELD_RGT.'|integer|min:0|max:4294967295|different:' .
-                self::FIELD_RGT.'|unique:'.self::TABLE_NAME.','.self::FIELD_LFT.'|'.'unique:' .
+            self::FIELD_LFT => 'required_with:'.self::FIELD_RGT.'|integer|min:0|max:4294967295|different:'.
+                self::FIELD_RGT.'|unique:'.self::TABLE_NAME.','.self::FIELD_LFT.'|'.'unique:'.
                 self::TABLE_NAME.','.self::FIELD_RGT,
 
-            self::FIELD_RGT => 'required_with:'.self::FIELD_LFT.'|integer|min:0|max:4294967295|different:' .
-                self::FIELD_LFT.'|unique:'.self::TABLE_NAME.','.self::FIELD_LFT.'|'.'unique:' .
+            self::FIELD_RGT => 'required_with:'.self::FIELD_LFT.'|integer|min:0|max:4294967295|different:'.
+                self::FIELD_LFT.'|unique:'.self::TABLE_NAME.','.self::FIELD_LFT.'|'.'unique:'.
                 self::TABLE_NAME.','.self::FIELD_RGT,
         ];
     }

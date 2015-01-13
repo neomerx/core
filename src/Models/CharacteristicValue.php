@@ -76,7 +76,7 @@ class CharacteristicValue extends BaseModel implements SelectByCodeInterface
             self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH .
                 '|unique:'.self::TABLE_NAME,
 
-            self::FIELD_ID_CHARACTERISTIC => 'required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_CHARACTERISTIC => 'required|integer|min:1|max:4294967295|exists:'.
                 Characteristic::TABLE_NAME,
         ];
     }
@@ -88,7 +88,7 @@ class CharacteristicValue extends BaseModel implements SelectByCodeInterface
     {
         return [
             self::FIELD_CODE              => 'sometimes|required|forbidden',
-            self::FIELD_ID_CHARACTERISTIC => 'required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_CHARACTERISTIC => 'required|integer|min:1|max:4294967295|exists:'.
                 Characteristic::TABLE_NAME,
         ];
     }

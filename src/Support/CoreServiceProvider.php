@@ -36,14 +36,14 @@ class CoreServiceProvider extends ServiceProvider
     public function boot()
     {
         // up to 'src' dir
-        $resourceDir = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .
-            '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+        $resourceDir = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR .
+            '..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
 
         $this->package('neomerx/core', self::NEOMERX_PREFIX, $resourceDir);
         /** @noinspection PhpIncludeInspection */
-        include $resourceDir . 'filters.php';
+        include $resourceDir.'filters.php';
         /** @noinspection PhpIncludeInspection */
-        include $resourceDir . 'routes.php';
+        include $resourceDir.'routes.php';
 
         $this->extendValidator();
     }

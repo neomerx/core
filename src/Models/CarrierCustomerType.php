@@ -63,7 +63,7 @@ class CarrierCustomerType extends BaseModel
         return [
             self::FIELD_ID_CARRIER       => 'required|integer|min:1|max:4294967295|exists:'.Carrier::TABLE_NAME,
 
-            self::FIELD_ID_CUSTOMER_TYPE => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_CUSTOMER_TYPE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 CustomerType::TABLE_NAME,
         ];
     }
@@ -76,7 +76,7 @@ class CarrierCustomerType extends BaseModel
         return [
             self::FIELD_ID_CARRIER       => 'sometimes|required|forbidden',
 
-            self::FIELD_ID_CUSTOMER_TYPE => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_CUSTOMER_TYPE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 CustomerType::TABLE_NAME,
         ];
     }

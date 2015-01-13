@@ -62,7 +62,7 @@ class TaxRuleProductType extends BaseModel
         return [
             self::FIELD_ID_TAX_RULE         => 'required|integer|min:1|max:4294967295|exists:'.TaxRule::TABLE_NAME,
 
-            self::FIELD_ID_PRODUCT_TAX_TYPE => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_PRODUCT_TAX_TYPE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 ProductTaxType::TABLE_NAME,
         ];
     }
@@ -75,7 +75,7 @@ class TaxRuleProductType extends BaseModel
         return [
             self::FIELD_ID_TAX_RULE         => 'sometimes|required|forbidden',
 
-            self::FIELD_ID_PRODUCT_TAX_TYPE => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_PRODUCT_TAX_TYPE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 ProductTaxType::TABLE_NAME,
         ];
     }

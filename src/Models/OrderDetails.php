@@ -73,7 +73,7 @@ class OrderDetails extends BaseModel
             self::FIELD_ID_ORDER   => 'required|integer|min:1|max:4294967295|exists:'.Order::TABLE_NAME,
             self::FIELD_ID_VARIANT => 'required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
 
-            self::FIELD_ID_SHIPPING_ORDER => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_SHIPPING_ORDER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 ShippingOrder::TABLE_NAME,
 
             self::FIELD_PRICE_WO_TAX => 'required|numeric|min:0',
@@ -90,7 +90,7 @@ class OrderDetails extends BaseModel
             self::FIELD_ID_ORDER   => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Order::TABLE_NAME,
             self::FIELD_ID_VARIANT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
 
-            self::FIELD_ID_SHIPPING_ORDER => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_SHIPPING_ORDER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 ShippingOrder::TABLE_NAME,
 
             self::FIELD_PRICE_WO_TAX => 'sometimes|required|numeric|min:0',

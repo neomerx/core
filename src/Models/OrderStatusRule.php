@@ -61,10 +61,10 @@ class OrderStatusRule extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_ORDER_STATUS_FROM => 'required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_ORDER_STATUS_FROM => 'required|integer|min:1|max:4294967295|exists:'.
                 OrderStatus::TABLE_NAME.','.OrderStatus::FIELD_ID,
 
-            self::FIELD_ID_ORDER_STATUS_TO   => 'required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_ORDER_STATUS_TO   => 'required|integer|min:1|max:4294967295|exists:'.
                 OrderStatus::TABLE_NAME.','.OrderStatus::FIELD_ID,
         ];
     }
@@ -75,10 +75,10 @@ class OrderStatusRule extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_ORDER_STATUS_FROM => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_ORDER_STATUS_FROM => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 OrderStatus::TABLE_NAME.','.OrderStatus::FIELD_ID,
 
-            self::FIELD_ID_ORDER_STATUS_TO   => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
+            self::FIELD_ID_ORDER_STATUS_TO   => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 OrderStatus::TABLE_NAME.','.OrderStatus::FIELD_ID,
         ];
     }

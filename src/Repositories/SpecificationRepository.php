@@ -124,22 +124,22 @@ class SpecificationRepository extends BaseRepository implements SpecificationRep
                 // join characteristic value on its ID
                 ->join(
                     CharacteristicValue::TABLE_NAME,
-                    CharacteristicValue::TABLE_NAME . '.' . CharacteristicValue::FIELD_ID,
+                    CharacteristicValue::TABLE_NAME.'.'.CharacteristicValue::FIELD_ID,
                     '=',
-                    Specification::TABLE_NAME . '.' . Specification::FIELD_ID_CHARACTERISTIC_VALUE
+                    Specification::TABLE_NAME.'.'.Specification::FIELD_ID_CHARACTERISTIC_VALUE
                 )
                 // only for current product
                 ->where(
-                    Specification::TABLE_NAME . '.' . Specification::FIELD_ID_PRODUCT,
+                    Specification::TABLE_NAME.'.'.Specification::FIELD_ID_PRODUCT,
                     $product->{Product::FIELD_ID}
                 )
                 // only with the same characteristic
                 ->where(
-                    CharacteristicValue::TABLE_NAME . '.' .  CharacteristicValue::FIELD_ID_CHARACTERISTIC,
+                    CharacteristicValue::TABLE_NAME.'.'. CharacteristicValue::FIELD_ID_CHARACTERISTIC,
                     $characteristicId
                 )
                 // except specification rows which belong to product only
-                ->whereNotNull(Specification::TABLE_NAME . '.' . Specification::FIELD_ID_VARIANT)
+                ->whereNotNull(Specification::TABLE_NAME.'.'.Specification::FIELD_ID_VARIANT)
                 ->lists(Specification::FIELD_ID);
 
             if (!empty($specIdsToDelete)) {

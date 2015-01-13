@@ -20,7 +20,7 @@ class Exception extends \Exception
      */
     protected function loadIfEmpty($message, $key)
     {
-        $message = ($message === null or $message === '') ? trans('nm::exceptions.' . $key) : $message;
+        $message = ($message === null or $message === '') ? trans('nm::exceptions.'.$key) : $message;
         return $message;
     }
 }

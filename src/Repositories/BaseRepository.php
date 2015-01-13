@@ -21,7 +21,7 @@ abstract class BaseRepository
      */
     public function __construct($modelBindName)
     {
-        assert('isset($modelBindName) and is_subclass_of(\'' . $modelBindName . '\', \'' . BaseModel::class . '\')');
+        assert('isset($modelBindName) and is_subclass_of(\''.$modelBindName.'\', \''.BaseModel::class.'\')');
 
         $this->modelBindName = $modelBindName;
     }
