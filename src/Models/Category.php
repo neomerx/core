@@ -401,9 +401,9 @@ class Category extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param int   $newLft
-     * @param array $touchIds
-     * @param int   $updateAncestorIdTo
+     * @param int      $newLft
+     * @param array    $touchIds
+     * @param int|null $updateAncestorIdTo
      *
      * @return void
      */
@@ -411,7 +411,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     {
         $left     = (int)$this->lft;
         $right    = (int)$this->rgt;
-        $shift    = $right  - $left + 1;
+        $shift    = $right - $left + 1;
         $distance = $newLft - $left;
         $tmpPos   = $left;
 
@@ -429,7 +429,7 @@ class Category extends BaseModel implements SelectByCodeInterface
         DB::beginTransaction();
         try {
             // turn off auto timestamp update and update required timestamps
-            if ($usesTimestamps) {
+            if ($usesTimestamps === true) {
                 $this->timestamps = false;
 
                 // update 'updated_at' timestamp
@@ -462,7 +462,7 @@ class Category extends BaseModel implements SelectByCodeInterface
                 ->decrement(self::FIELD_RGT, $shift);
 
             // update ancestor if requested
-            if ($updateAncestorIdTo) {
+            if ($updateAncestorIdTo !== null) {
                 $this->newQuery()->where(self::FIELD_ID, '=', $this->{self::FIELD_ID})
                     ->update([self::FIELD_ID_ANCESTOR => $updateAncestorIdTo]);
             }
@@ -499,7 +499,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param string $code
+     * @param string|null $code
      *
      * @return Collection
      */

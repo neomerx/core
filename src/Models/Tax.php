@@ -153,9 +153,9 @@ class Tax extends BaseModel implements SelectByCodeInterface
     public function setExpressionAttribute($value)
     {
         $value = trim($value);
-        $value = empty($value) ? null : $value;
+        $value = (empty($value) === true ? null : $value);
 
-        if ($this->isFormula($value)) {
+        if ($this->isFormula($value) === true) {
             /** @var ExpressionLanguage $expLang */
             /** @noinspection PhpUndefinedMethodInspection */
             $expLang = App::make(self::EXPRESSION_LANGUAGE_CLASS);
@@ -213,7 +213,7 @@ class Tax extends BaseModel implements SelectByCodeInterface
         $quantity = S\arrayGetValueEx($values, self::PARAM_QUANTITY);
         settype($quantity, 'float');
 
-        if ($this->getIsFormulaAttribute()) {
+        if ($this->getIsFormulaAttribute() === true) {
             $expressionSerialized = $this->attributes[self::FIELD_EXPRESSION_SERIALIZED];
             /** @var ExpressionLanguage $expLang */
             /** @noinspection PhpUndefinedMethodInspection */

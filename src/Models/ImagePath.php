@@ -202,7 +202,7 @@ class ImagePath extends BaseModel
         $resizedFilePath = $destinationFolder.$resizedFileName;
 
         // if we update an existing model...
-        if ($this->exists and isset($this->path)) {
+        if ($this->exists === true and isset($this->path) === true) {
             //... and we don't have enough permissions to delete old one and create new file...
             /** @noinspection PhpUndefinedMethodInspection */
             if (File::isWritable(Image::getUploadFolderPath($this->path)) === false or
@@ -213,7 +213,7 @@ class ImagePath extends BaseModel
             } else {
                 //... we generate image and delete the old file.
                 $fullPathToOldFile = Image::getUploadFolderPath($this->path);
-                if ($this->generateImageAndSetPathAttribute(
+                if (true === $this->generateImageAndSetPathAttribute(
                     $destinationFolder,
                     $originalFileName,
                     $format,

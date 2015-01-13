@@ -73,7 +73,7 @@ class SpecificationRepository extends BaseRepository implements SpecificationRep
 
             foreach ($variants as $variant) {
                 /** @var Variant $variant */
-                if ($variant->isDefault()) {
+                if ($variant->isDefault() === true) {
                     $specification->{Specification::FIELD_ID_VARIANT} = $variant->{Variant::FIELD_ID};
                     $specification->saveOrFail();
                 } else {
@@ -105,7 +105,7 @@ class SpecificationRepository extends BaseRepository implements SpecificationRep
         $variant = $specification->variant;
 
         // check we are variable specification and belonging to default variant
-        if ($variant === null or !$variant->isDefault()) {
+        if ($variant === null or $variant->isDefault() === false) {
             throw new LogicException();
         }
 
@@ -120,27 +120,24 @@ class SpecificationRepository extends BaseRepository implements SpecificationRep
 
             // remove all other specification rows that belong to the same product and same characteristic
             /** @noinspection PhpUndefinedMethodInspection */
-            $specIdsToDelete = DB::table(Specification::TABLE_NAME)
+            $specIdsToDelete = DB::table(Specification::TABLE_NAME)->join(
                 // join characteristic value on its ID
-                ->join(
-                    CharacteristicValue::TABLE_NAME,
-                    CharacteristicValue::TABLE_NAME.'.'.CharacteristicValue::FIELD_ID,
-                    '=',
-                    Specification::TABLE_NAME.'.'.Specification::FIELD_ID_CHARACTERISTIC_VALUE
-                )
+                CharacteristicValue::TABLE_NAME,
+                CharacteristicValue::TABLE_NAME.'.'.CharacteristicValue::FIELD_ID,
+                '=',
+                Specification::TABLE_NAME.'.'.Specification::FIELD_ID_CHARACTERISTIC_VALUE
+            )->where(
                 // only for current product
-                ->where(
-                    Specification::TABLE_NAME.'.'.Specification::FIELD_ID_PRODUCT,
-                    $product->{Product::FIELD_ID}
-                )
+                Specification::TABLE_NAME.'.'.Specification::FIELD_ID_PRODUCT,
+                $product->{Product::FIELD_ID}
+            )->where(
                 // only with the same characteristic
-                ->where(
-                    CharacteristicValue::TABLE_NAME.'.'. CharacteristicValue::FIELD_ID_CHARACTERISTIC,
-                    $characteristicId
-                )
+                CharacteristicValue::TABLE_NAME.'.'. CharacteristicValue::FIELD_ID_CHARACTERISTIC,
+                $characteristicId
+            )->whereNotNull(
                 // except specification rows which belong to product only
-                ->whereNotNull(Specification::TABLE_NAME.'.'.Specification::FIELD_ID_VARIANT)
-                ->lists(Specification::FIELD_ID);
+                Specification::TABLE_NAME.'.'.Specification::FIELD_ID_VARIANT
+            )->lists(Specification::FIELD_ID);
 
             if (!empty($specIdsToDelete)) {
                 /** @noinspection PhpUndefinedMethodInspection */

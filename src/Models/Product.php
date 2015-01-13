@@ -222,7 +222,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     public function relatedProducts()
     {
         return $this->belongsToMany(
-            Product::BIND_NAME,
+            self::BIND_NAME,
             ProductRelated::TABLE_NAME,
             ProductRelated::FIELD_ID_PRODUCT,
             ProductRelated::FIELD_ID_RELATED_PRODUCT
@@ -303,7 +303,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     {
         $productCreated = parent::onCreated();
 
-        if ($productCreated) {
+        if ($productCreated === true) {
             /** @noinspection PhpUndefinedMethodInspection */
             /** @var VariantRepositoryInterface $variantRepo */
             $variantRepo = App::make(VariantRepositoryInterface::class);
@@ -338,13 +338,13 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     /**
      * Get default product variant.
      *
-     * @return Variant
+     * @return Variant|null
      */
     public function getDefaultVariant()
     {
         foreach ($this->variants as $variant) {
             /** @var Variant $variant */
-            if ($variant->isDefault()) {
+            if ($variant->isDefault() === true) {
                 return $variant;
             }
         }

@@ -33,7 +33,7 @@ namespace Neomerx\Core\Support {
      *
      * @return mixed|null
      */
-    function arrayGetValue1D(array $array, $key, $default = null)
+    function arrayGetValue1d(array $array, $key, $default = null)
     {
         return arrayGetValue($array, $key, $default);
     }
@@ -46,7 +46,7 @@ namespace Neomerx\Core\Support {
      *
      * @return mixed|null
      */
-    function arrayGetValue2D(array $array, $key1, $key2, $default = null)
+    function arrayGetValue2d(array $array, $key1, $key2, $default = null)
     {
         return isset($array[$key1][$key2]) === true ? $array[$key1][$key2] : $default;
     }
@@ -69,7 +69,7 @@ namespace Neomerx\Core\Support {
      *
      * @return mixed|null
      */
-    function arrayGetValue1DEx(array $array, $key)
+    function arrayGetValue1dEx(array $array, $key)
     {
         return arrayGetValueEx($array, $key);
     }
@@ -81,7 +81,7 @@ namespace Neomerx\Core\Support {
      *
      * @return mixed|null
      */
-    function arrayGetValue2DEx(array $array, $key1, $key2)
+    function arrayGetValue2dEx(array $array, $key1, $key2)
     {
         isset($array[$key1][$key2]) === true ?: throwEx(new InvalidArgumentException($key2));
         return $array[$key1][$key2];

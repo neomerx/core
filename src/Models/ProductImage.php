@@ -181,14 +181,14 @@ class ProductImage extends BaseModel
         $onUpdated = parent::onUpdated();
         /** @noinspection PhpUndefinedFieldInspection */
         $isCoversToFalse = $onUpdated and $this->is_cover and $this->isDirty(self::FIELD_IS_COVER);
-        $isCoversToFalse ? $this->setAllProductImagesCoverToFalse() : null;
+        $isCoversToFalse === false ?: $this->setAllProductImagesCoverToFalse();
         return $onUpdated;
     }
 
     /**
-     * @param Product $product
-     * @param string  $fileName
-     * @param Variant $variant
+     * @param Product      $product
+     * @param string       $fileName
+     * @param Variant|null $variant
      *
      * @return Image
      *
@@ -210,7 +210,7 @@ class ProductImage extends BaseModel
         }
 
         $this->{self::FIELD_ID_PRODUCT} = $product->{Product::FIELD_ID};
-        $this->{self::FIELD_ID_VARIANT} = $variant ? $variant->{Variant::FIELD_ID} : null;
+        $this->{self::FIELD_ID_VARIANT} = ($variant !== null ? $variant->{Variant::FIELD_ID} : null);
 
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
@@ -223,7 +223,7 @@ class ProductImage extends BaseModel
             $this->{self::FIELD_ID_IMAGE} = $image->{Image::FIELD_ID};
             $this->saveOrFail();
 
-            if ($this->{self::FIELD_IS_COVER}) {
+            if ($this->{self::FIELD_IS_COVER} === true) {
                 $this->setAsCover();
             }
 

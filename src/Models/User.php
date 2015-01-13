@@ -111,7 +111,7 @@ class User extends BaseModel implements UserInterface, RemindableInterface
         parent::__construct($attributes);
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->roleModel = $role ?: App::make(Role::BIND_NAME);
+        $this->roleModel = ($role !== null ?: App::make(Role::BIND_NAME));
     }
 
     /**

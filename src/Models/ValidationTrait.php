@@ -142,7 +142,7 @@ trait ValidationTrait
     private function validateAndStoreValidator(array $data, array $rules)
     {
         $validator = Validator::make($data, $rules);
-        if ($validator->fails()) {
+        if ($validator->fails() === true) {
             $this->validator = $validator;
             return false;
         }

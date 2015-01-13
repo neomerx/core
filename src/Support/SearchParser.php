@@ -91,7 +91,7 @@ class SearchParser
 
             // check operation is allowed
             if ($allowedOperations !== self::ALLOWED_OPERATIONS_ALL and
-                !in_array($operation, $allowedOperations)) {
+                in_array($operation, $allowedOperations) === false) {
                 throw new InvalidArgumentException($name);
             }
 
@@ -118,7 +118,7 @@ class SearchParser
             is_string($paramName) === true ?: throwEx(new InvalidArgumentException($paramName));
 
             // parse possible rule formats
-            if (is_array($rule)) {
+            if (is_array($rule) === true) {
 
                 // we are here if rule description is given in array format
 
@@ -144,7 +144,7 @@ class SearchParser
                         throwEx(new InvalidArgumentException($paramName));
                 }
 
-            } elseif (is_string($rule)) {
+            } elseif (is_string($rule) === true) {
 
                 $parsedRules[$paramName] = $this->newRule($rule, $paramName, self::ALLOWED_OPERATIONS_ALL);
 
@@ -163,7 +163,7 @@ class SearchParser
      * @param string       $columnName
      * @param string|array $allowedOperations
      *
-     * @return array
+     * @return array<string|array>
      */
     private function newRule($type, $columnName, $allowedOperations)
     {
@@ -174,14 +174,14 @@ class SearchParser
         // parse $allowedOperations which could be '*', something like 'equals' or an array
         if ($allowedOperations === self::ALLOWED_OPERATIONS_ALL) {
             $allowedOperations = self::ALLOWED_OPERATIONS_ALL;
-        } elseif (is_array($allowedOperations)) {
+        } elseif (is_array($allowedOperations) === true) {
             $allowedOperations = array_map(
                 function ($operation) {
                     return $this->mapOperation($operation);
                 },
                 $allowedOperations
             );
-        } elseif (is_string($allowedOperations)) {
+        } elseif (is_string($allowedOperations) === true) {
             $allowedOperations = [$this->mapOperation($allowedOperations)];
         } else {
             throwEx(new InvalidArgumentException('allowedOperations'));

@@ -51,7 +51,7 @@ class VariantRepository extends BaseRepository implements VariantRepositoryInter
     {
         $defaultVariant = $product->getDefaultVariant();
         // for just created products there is no default variant yet
-        $defaultSpecs = $defaultVariant ? $defaultVariant->specification : [];
+        $defaultSpecs = $defaultVariant !== null ? $defaultVariant->specification : [];
 
         $variant = $this->instance($product, $attributes);
 

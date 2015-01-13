@@ -124,7 +124,7 @@ class OrderStatus extends BaseModel implements SelectByCodeInterface
     public function availableStatuses()
     {
         return $this->belongsToMany(
-            OrderStatus::BIND_NAME,
+            self::BIND_NAME,
             OrderStatusRule::TABLE_NAME,
             OrderStatusRule::FIELD_ID_ORDER_STATUS_FROM,
             OrderStatusRule::FIELD_ID_ORDER_STATUS_TO

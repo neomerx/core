@@ -111,8 +111,8 @@ class Inventory extends BaseModel
      */
     public function getAvailableAttribute()
     {
-        return (int)$this->attributes[self::FIELD_IN] - $this->attributes[self::FIELD_OUT] -
-            $this->attributes[self::FIELD_RESERVED];
+        return (int)$this->attributes[self::FIELD_IN] - (int)$this->attributes[self::FIELD_OUT] -
+        (int)$this->attributes[self::FIELD_RESERVED];
     }
 
     /**
@@ -122,7 +122,7 @@ class Inventory extends BaseModel
      */
     public function getQuantityAttribute()
     {
-        return (int)$this->attributes[self::FIELD_IN] - $this->attributes[self::FIELD_OUT];
+        return (int)$this->attributes[self::FIELD_IN] - (int)$this->attributes[self::FIELD_OUT];
     }
 
     /**

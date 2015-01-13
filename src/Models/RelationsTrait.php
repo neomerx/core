@@ -133,7 +133,7 @@ trait RelationsTrait
     {
         list($itemType, $itemId) = $this->baseModelRT->getModelMorphs($name, $itemType, $itemId);
 
-        if (is_null($class = $this->$itemType) === true) {
+        if (($class = $this->$itemType) === null) {
             return new MorphTo(
                 $this->rtModel()->newQuery(),
                 $this->rtModel(),
