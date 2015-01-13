@@ -205,7 +205,7 @@ class ImagePath extends BaseModel
         if ($this->exists and isset($this->path)) {
             //... and we don't have enough permissions to delete old one and create new file...
             /** @noinspection PhpUndefinedMethodInspection */
-            if (File::isWritable(Image::getUploadFolderPath($this->path) === false) or
+            if (File::isWritable(Image::getUploadFolderPath($this->path)) === false or
                 File::isWritable($resizedFilePath) === false
             ) {
                 //... we cancel such change

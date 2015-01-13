@@ -25,17 +25,17 @@ trait RelationsTrait
     }
 
     /**
-     * @param string $related
-     * @param string $foreignKey
-     * @param string $otherKey
-     * @param string $relation
+     * @param string      $related
+     * @param string|null $foreignKey
+     * @param string|null $otherKey
+     * @param string|null $relation
      *
      * @return BelongsTo
      */
     public function belongsTo($related, $foreignKey = null, $otherKey = null, $relation = null)
     {
         // avoid 'unused' warning. This parameter is needed for compatibility with Model::belongsTo
-        $relation ?: null;
+        $relation ? null : null;
 
         /** @noinspection PhpUndefinedMethodInspection */
         return new BelongsTo(
@@ -48,18 +48,18 @@ trait RelationsTrait
     }
 
     /**
-     * @param string $related
-     * @param string $table
-     * @param string $foreignKey
-     * @param string $otherKey
-     * @param string $relation
+     * @param string      $related
+     * @param string|null $table
+     * @param string|null $foreignKey
+     * @param string|null $otherKey
+     * @param string|null $relation
      *
      * @return BelongsToMany
      */
     public function belongsToMany($related, $table = null, $foreignKey = null, $otherKey = null, $relation = null)
     {
         // avoid 'unused' warning. This parameter is needed for compatibility with Model::belongsToMany
-        $relation ?: null;
+        $relation ? null : null;
 
         /** @noinspection PhpUndefinedMethodInspection */
         return new BelongsToMany(
@@ -73,9 +73,9 @@ trait RelationsTrait
     }
 
     /**
-     * @param string $related
-     * @param string $foreignKey
-     * @param string $localKey
+     * @param string      $related
+     * @param string|null $foreignKey
+     * @param string|null $localKey
      *
      * @return HasOne
      */
@@ -88,9 +88,9 @@ trait RelationsTrait
     }
 
     /**
-     * @param string $related
-     * @param string $foreignKey
-     * @param string $localKey
+     * @param string      $related
+     * @param string|null $foreignKey
+     * @param string|null $localKey
      *
      * @return HasMany
      */
@@ -103,10 +103,10 @@ trait RelationsTrait
     }
 
     /**
-     * @param string $related
-     * @param string $through
-     * @param string $firstKey
-     * @param string $secondKey
+     * @param string      $related
+     * @param string|null $through
+     * @param string|null $firstKey
+     * @param string|null $secondKey
      *
      * @return HasManyThrough
      */
@@ -123,9 +123,9 @@ trait RelationsTrait
     }
 
     /**
-     * @param string $name
-     * @param string $itemType
-     * @param string $itemId
+     * @param string|null $name
+     * @param string|null $itemType
+     * @param string|null $itemId
      *
      * @return MorphTo
      */
@@ -158,11 +158,11 @@ trait RelationsTrait
     }
 
     /**
-     * @param string $related
-     * @param string $name
-     * @param string $itemType
-     * @param string $itemId
-     * @param string $localKey
+     * @param string      $related
+     * @param string      $name
+     * @param string|null $itemType
+     * @param string|null $itemId
+     * @param string|null $localKey
      *
      * @return MorphOne
      */
@@ -174,7 +174,7 @@ trait RelationsTrait
 
         list($itemType, $itemId) = $this->baseModelRT->getModelMorphs($name, $itemType, $itemId);
         $table    = $instance->getTable();
-        $localKey = $localKey ?: $this->baseModelRT->getModel()->getKeyName();
+        $localKey = $localKey !== null ? $localKey : $this->baseModelRT->getModel()->getKeyName();
 
         return new MorphOne(
             $instance->newQuery(),
@@ -186,11 +186,11 @@ trait RelationsTrait
     }
 
     /**
-     * @param string $related
-     * @param string $name
-     * @param string $itemType
-     * @param string $itemId
-     * @param string $localKey
+     * @param string      $related
+     * @param string      $name
+     * @param string|null $itemType
+     * @param string|null $itemId
+     * @param string|null $localKey
      *
      * @return MorphMany
      */
@@ -202,7 +202,7 @@ trait RelationsTrait
 
         list($itemType, $itemId) = $this->baseModelRT->getModelMorphs($name, $itemType, $itemId);
         $table    = $instance->getTable();
-        $localKey = $localKey ?: $this->baseModelRT->getModel()->getKeyName();
+        $localKey = $localKey !== null ? $localKey : $this->baseModelRT->getModel()->getKeyName();
 
         return new MorphMany(
             $instance->newQuery(),
@@ -213,14 +213,13 @@ trait RelationsTrait
         );
     }
 
-
     /**
-     * @param string $related
-     * @param string $name
-     * @param string $table
-     * @param string $foreignKey
-     * @param string $otherKey
-     * @param bool   $inverse
+     * @param string      $related
+     * @param string      $name
+     * @param string|null $table
+     * @param string|null $foreignKey
+     * @param string|null $otherKey
+     * @param bool|null   $inverse
      *
      * @return MorphToMany
      */
@@ -230,10 +229,10 @@ trait RelationsTrait
         /** @var BaseModel $instance */
         $instance   = App::make($related);
         $caller     = $this->getCaller();
-        $foreignKey = $foreignKey ?: $name.'_id';
-        $otherKey   = $otherKey ?: $instance->getForeignKey();
+        $foreignKey = $foreignKey !== null ? $foreignKey : $name.'_id';
+        $otherKey   = $otherKey   !== null ? $otherKey : $instance->getForeignKey();
         $query      = $instance->newQuery();
-        $table      = $table ?: str_plural($name);
+        $table      = $table !== null ? $table : str_plural($name);
 
         return new MorphToMany(
             $query,
