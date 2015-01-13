@@ -14,7 +14,7 @@ class GenerateImageCommand
      */
     public function byFormat(Job $job, array $data)
     {
-        $formatName = S\array_get_value($data, 'name');
+        $formatName = S\arrayGetValue($data, 'name');
 
         if ($formatName !== null) {
             /** @var ImageFormat $imageFormatModel */

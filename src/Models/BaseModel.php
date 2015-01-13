@@ -66,7 +66,7 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
      */
     protected function fireModelEvent($event, $halt = true)
     {
-        $handler = S\array_get_value([
+        $handler = S\arrayGetValue([
             'creating'  => 'onCreating',
             'created'   => 'onCreated',
             'updating'  => 'onUpdating',

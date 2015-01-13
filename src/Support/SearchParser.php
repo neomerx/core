@@ -82,11 +82,11 @@ class SearchParser
         foreach ($searchParameters as $name => $value) {
 
             list($parameter, $operation) = $this->parseParameterAndOperation($name);
-            array_key_exists($parameter, $this->rules) ?:  throwEx(new InvalidArgumentException($name));
+            array_key_exists($parameter, $this->rules) === true ?: throwEx(new InvalidArgumentException($name));
 
             list($type, $column, $allowedOperations) = $this->rules[$parameter];
 
-            array_key_exists($operation, $this->operationsMap) ?: throwEx(new InvalidArgumentException($name));
+            array_key_exists($operation, $this->operationsMap) === true ?: throwEx(new InvalidArgumentException($name));
             $operation = $this->operationsMap[$operation];
 
             // check operation is allowed
@@ -99,7 +99,7 @@ class SearchParser
             $conditionFunction = 'add'.$type.$operation;
 
             // check this combination of type and operation exists
-            method_exists($this->grammar, $conditionFunction) ?: throwEx(new InvalidArgumentException($name));
+            method_exists($this->grammar, $conditionFunction) === true ?: throwEx(new InvalidArgumentException($name));
             $this->grammar->{$conditionFunction}($column, $value);
         }
 
@@ -115,7 +115,7 @@ class SearchParser
         foreach ($rules as $paramName => $rule) {
 
             // check parameter name is specified (not int)
-            is_string($paramName) ?: throwEx(new InvalidArgumentException($paramName));
+            is_string($paramName) === true ?: throwEx(new InvalidArgumentException($paramName));
 
             // parse possible rule formats
             if (is_array($rule)) {
@@ -168,8 +168,8 @@ class SearchParser
     private function newRule($type, $columnName, $allowedOperations)
     {
         // sanity check for input params
-        $this->grammar->isTypeSupported($type) ?: throwEx(new InvalidArgumentException('type'));
-        is_string($columnName)                 ?: throwEx(new InvalidArgumentException('columnName'));
+        $this->grammar->isTypeSupported($type) === true ?: throwEx(new InvalidArgumentException('type'));
+        is_string($columnName) === true                 ?: throwEx(new InvalidArgumentException('columnName'));
 
         // parse $allowedOperations which could be '*', something like 'equals' or an array
         if ($allowedOperations === self::ALLOWED_OPERATIONS_ALL) {
@@ -200,13 +200,13 @@ class SearchParser
     private function parseParameterAndOperation($name)
     {
         // if only name provided then we should return it with default operation
-        if (array_key_exists($name, $this->rules)) {
+        if (array_key_exists($name, $this->rules) === true) {
             return [$name, self::DEFAULT_OPERATION];
         }
 
         // if $name not found in rules then we try to parse it
         $separatorPos = strrpos($name, '_', -1);
-        if (!$separatorPos) {
+        if ($separatorPos === false) {
             // if name not found in rules it must have format "$parameter_$operation"
             // most likely parameter was not described in search rules.
             throw new InvalidArgumentException($name);
@@ -229,7 +229,7 @@ class SearchParser
     {
         $lcOperation     = mb_strtolower($operation);
         $operationExists = array_key_exists($lcOperation, $this->operationsMap);
-        $operationExists ?: throwEx(new InvalidArgumentException($operation));
+        $operationExists === true ?: throwEx(new InvalidArgumentException($operation));
         return $this->operationsMap[$lcOperation];
     }
 }

@@ -4,44 +4,95 @@ namespace Neomerx\Core\Support {
 
     use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
+    /**
+     * @param \Exception $exception
+     *
+     * @throws \Exception
+     */
     function throwEx(\Exception $exception)
     {
         throw $exception;
     }
 
-    function array_get_value(array $array, $key, $default = null)
+    /**
+     * @param array      $array
+     * @param mixed      $key
+     * @param mixed|null $default
+     *
+     * @return mixed|null
+     */
+    function arrayGetValue(array $array, $key, $default = null)
     {
-        return isset($array[$key]) ? $array[$key] : $default;
+        return isset($array[$key]) === true ? $array[$key] : $default;
     }
 
-    function array_get_value_1D(array $array, $key, $default = null)
+    /**
+     * @param array      $array
+     * @param mixed      $key
+     * @param mixed|null $default
+     *
+     * @return mixed|null
+     */
+    function arrayGetValue1D(array $array, $key, $default = null)
     {
-        return array_get_value($array, $key, $default);
+        return arrayGetValue($array, $key, $default);
     }
 
-    function array_get_value_2D(array $array, $key1, $key2, $default = null)
+    /**
+     * @param array      $array
+     * @param mixed      $key1
+     * @param mixed      $key2
+     * @param mixed|null $default
+     *
+     * @return mixed|null
+     */
+    function arrayGetValue2D(array $array, $key1, $key2, $default = null)
     {
-        return isset($array[$key1][$key2]) ? $array[$key1][$key2] : $default;
+        return isset($array[$key1][$key2]) === true ? $array[$key1][$key2] : $default;
     }
 
-    function array_get_value_ex(array $array, $key)
+    /**
+     * @param array $array
+     * @param mixed $key
+     *
+     * @return mixed|null
+     */
+    function arrayGetValueEx(array $array, $key)
     {
-        isset($array[$key]) ?: throwEx(new InvalidArgumentException($key));
+        isset($array[$key]) === true ?: throwEx(new InvalidArgumentException($key));
         return $array[$key];
     }
 
-    function array_get_value_1D_ex(array $array, $key)
+    /**
+     * @param array $array
+     * @param mixed $key
+     *
+     * @return mixed|null
+     */
+    function arrayGetValue1DEx(array $array, $key)
     {
-        return array_get_value_ex($array, $key);
+        return arrayGetValueEx($array, $key);
     }
 
-    function array_get_value_2D_ex(array $array, $key1, $key2)
+    /**
+     * @param array $array
+     * @param mixed $key1
+     * @param mixed $key2
+     *
+     * @return mixed|null
+     */
+    function arrayGetValue2DEx(array $array, $key1, $key2)
     {
-        isset($array[$key1][$key2]) ?: throwEx(new InvalidArgumentException($key2));
+        isset($array[$key1][$key2]) === true ?: throwEx(new InvalidArgumentException($key2));
         return $array[$key1][$key2];
     }
 
-    function array_filter_nulls(array $array)
+    /**
+     * @param array $array
+     *
+     * @return array
+     */
+    function arrayFilterNulls(array $array)
     {
         $result = [];
         foreach ($array as $key => $item) {
@@ -57,7 +108,7 @@ namespace Neomerx\Core\Support {
      *
      * @return string
      */
-    function name_to_db_enum($className)
+    function nameToDbEnum($className)
     {
         return str_replace('\\', '\\\\', $className);
     }
