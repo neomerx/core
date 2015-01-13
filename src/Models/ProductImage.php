@@ -75,9 +75,9 @@ class ProductImage extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_PRODUCT => 'required|integer|min:1|max:4294967295|exists:'  . Product::TABLE_NAME,
-            self::FIELD_ID_VARIANT => 'sometimes|integer|min:1|max:4294967295|exists:' . Variant::TABLE_NAME,
-            self::FIELD_ID_IMAGE   => 'required|integer|min:1|max:4294967295|exists:'  . Image::TABLE_NAME,
+            self::FIELD_ID_PRODUCT => 'required|integer|min:1|max:4294967295|exists:' .Product::TABLE_NAME,
+            self::FIELD_ID_VARIANT => 'sometimes|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
+            self::FIELD_ID_IMAGE   => 'required|integer|min:1|max:4294967295|exists:' .Image::TABLE_NAME,
             self::FIELD_POSITION   => 'required|numeric|min:0|max:255',
             self::FIELD_IS_COVER   => 'required|boolean',
         ];
@@ -89,9 +89,9 @@ class ProductImage extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_PRODUCT => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Product::TABLE_NAME,
-            self::FIELD_ID_VARIANT => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Variant::TABLE_NAME,
-            self::FIELD_ID_IMAGE   => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Image::TABLE_NAME,
+            self::FIELD_ID_PRODUCT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
+            self::FIELD_ID_VARIANT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
+            self::FIELD_ID_IMAGE   => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Image::TABLE_NAME,
             self::FIELD_POSITION   => 'sometimes|required|numeric|min:0|max:255',
             self::FIELD_IS_COVER   => 'sometimes|required|boolean',
         ];

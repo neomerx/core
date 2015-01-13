@@ -66,8 +66,8 @@ class OrderHistory extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_ORDER        => 'required|integer|min:1|max:4294967295|exists:' . Order::TABLE_NAME,
-            self::FIELD_ID_ORDER_STATUS => 'required|integer|min:1|max:4294967295|exists:' . OrderStatus::TABLE_NAME,
+            self::FIELD_ID_ORDER        => 'required|integer|min:1|max:4294967295|exists:'.Order::TABLE_NAME,
+            self::FIELD_ID_ORDER_STATUS => 'required|integer|min:1|max:4294967295|exists:'.OrderStatus::TABLE_NAME,
         ];
     }
 
@@ -77,7 +77,7 @@ class OrderHistory extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_ORDER        =>'sometimes|required|integer|min:1|max:4294967295|exists:' . Order::TABLE_NAME,
+            self::FIELD_ID_ORDER        =>'sometimes|required|integer|min:1|max:4294967295|exists:'.Order::TABLE_NAME,
             self::FIELD_ID_ORDER_STATUS =>'sometimes|required|integer|min:1|max:4294967295|exists:' .
                 OrderStatus::TABLE_NAME,
         ];

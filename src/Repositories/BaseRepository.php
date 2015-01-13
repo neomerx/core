@@ -31,10 +31,7 @@ abstract class BaseRepository
      */
     protected function getUnderlyingModel()
     {
-        if (!isset($this->model)) {
-            $this->model = $this->makeModel();
-        }
-
+        $this->model ?: $this->makeModel();
         return $this->model;
     }
 

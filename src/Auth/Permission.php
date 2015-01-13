@@ -88,7 +88,7 @@ class Permission
     public function has($mask)
     {
         settype($mask, 'int');
-        return $this->mask & $mask ? true : false;
+        return ($this->mask & $mask) > 0;
     }
 
     /**

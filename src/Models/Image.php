@@ -81,7 +81,7 @@ class Image extends BaseModel
     {
         return [
             self::FIELD_ORIGINAL_FILE => 'required|alpha_dash_dot_space|min:1|max:' .
-                self::ORIGINAL_FILE_NAME_MAX_LENGTH . '|unique:' . self::TABLE_NAME,
+                self::ORIGINAL_FILE_NAME_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
         ];
     }
 
@@ -92,7 +92,7 @@ class Image extends BaseModel
     {
         return [
             self::FIELD_ORIGINAL_FILE => 'required|alpha_dash_dot_space|min:1|max:' .
-                self::ORIGINAL_FILE_NAME_MAX_LENGTH . '|unique:' . self::TABLE_NAME,
+                self::ORIGINAL_FILE_NAME_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
         ];
     }
 
@@ -272,7 +272,7 @@ class Image extends BaseModel
             throw new ConfigurationException(Config::KEY_IMAGE_FOLDER);
         }
 
-        return $fileName === null ? $path : $path . $fileName;
+        return $fileName === null ? $path : $path.$fileName;
     }
 
     /**

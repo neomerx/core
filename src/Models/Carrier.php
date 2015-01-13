@@ -94,8 +94,8 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE => 'required|code|min:1|max:' . self::CODE_MAX_LENGTH .
-                '|unique:' . self::TABLE_NAME,
+            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH .
+                '|unique:'.self::TABLE_NAME,
 
             self::FIELD_MIN_WEIGHT    => 'sometimes|required|numeric|min:0',
             self::FIELD_MAX_WEIGHT    => 'sometimes|required|numeric|min:0',

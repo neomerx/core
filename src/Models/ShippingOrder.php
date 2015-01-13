@@ -78,9 +78,9 @@ class ShippingOrder extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_ORDER        => 'required|integer|min:1|max:4294967295|exists:' . Order::TABLE_NAME,
-            self::FIELD_ID_CARRIER      => 'required|integer|min:1|max:4294967295|exists:' . Carrier::TABLE_NAME,
-            self::FIELD_TRACKING_NUMBER => 'max:' . self::TRACKING_NUMBER_MAX,
+            self::FIELD_ID_ORDER        => 'required|integer|min:1|max:4294967295|exists:'.Order::TABLE_NAME,
+            self::FIELD_ID_CARRIER      => 'required|integer|min:1|max:4294967295|exists:'.Carrier::TABLE_NAME,
+            self::FIELD_TRACKING_NUMBER => 'max:'.self::TRACKING_NUMBER_MAX,
 
             self::FIELD_ID_SHIPPING_ORDER_STATUS => 'required|integer|min:1|max:4294967295|exists:' .
                 ShippingOrderStatus::TABLE_NAME,
@@ -93,10 +93,10 @@ class ShippingOrder extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_ORDER   => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Order::TABLE_NAME,
-            self::FIELD_ID_CARRIER => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Carrier::TABLE_NAME,
+            self::FIELD_ID_ORDER   => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Order::TABLE_NAME,
+            self::FIELD_ID_CARRIER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Carrier::TABLE_NAME,
 
-            self::FIELD_TRACKING_NUMBER => 'max:' . self::TRACKING_NUMBER_MAX,
+            self::FIELD_TRACKING_NUMBER => 'max:'.self::TRACKING_NUMBER_MAX,
 
             self::FIELD_ID_SHIPPING_ORDER_STATUS => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
                 ShippingOrderStatus::TABLE_NAME,
@@ -112,7 +112,7 @@ class ShippingOrder extends BaseModel
     {
         return $query->with([
             self::FIELD_STATUS,
-            self::FIELD_CARRIER . '.' . Carrier::FIELD_PROPERTIES . '.' . CarrierProperties::FIELD_LANGUAGE
+            self::FIELD_CARRIER.'.'.Carrier::FIELD_PROPERTIES.'.'.CarrierProperties::FIELD_LANGUAGE
         ]);
     }
 

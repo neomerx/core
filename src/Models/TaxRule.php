@@ -71,9 +71,9 @@ class TaxRule extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_NAME     => 'required|min:1|max:' . self::NAME_MAX_LENGTH,
+            self::FIELD_NAME     => 'required|min:1|max:'.self::NAME_MAX_LENGTH,
             self::FIELD_PRIORITY => 'required|integer|min:1|max:4294967295',
-            self::FIELD_ID_TAX   => 'required|integer|min:1|max:4294967295|exists:' . Tax::TABLE_NAME,
+            self::FIELD_ID_TAX   => 'required|integer|min:1|max:4294967295|exists:'.Tax::TABLE_NAME,
         ];
     }
 
@@ -83,9 +83,9 @@ class TaxRule extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_NAME     => 'sometimes|required|min:1|max:' . self::NAME_MAX_LENGTH,
+            self::FIELD_NAME     => 'sometimes|required|min:1|max:'.self::NAME_MAX_LENGTH,
             self::FIELD_PRIORITY => 'sometimes|required|integer|min:1|max:4294967295|',
-            self::FIELD_ID_TAX   => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Tax::TABLE_NAME,
+            self::FIELD_ID_TAX   => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Tax::TABLE_NAME,
         ];
     }
 

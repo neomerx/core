@@ -97,8 +97,8 @@ class Tax extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE => 'required|code|min:1|max:' . self::CODE_MAX_LENGTH .
-                '|unique:' . self::TABLE_NAME,
+            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH .
+                '|unique:'.self::TABLE_NAME,
 
             self::FIELD_EXPRESSION            => 'required',
             self::FIELD_EXPRESSION_SERIALIZED => 'required',
@@ -113,7 +113,7 @@ class Tax extends BaseModel implements SelectByCodeInterface
         return [
             self::FIELD_CODE                  => 'sometimes|required|forbidden',
             self::FIELD_EXPRESSION            => '',
-            self::FIELD_EXPRESSION_SERIALIZED => 'required_with:' . self::FIELD_EXPRESSION,
+            self::FIELD_EXPRESSION_SERIALIZED => 'required_with:'.self::FIELD_EXPRESSION,
         ];
     }
 

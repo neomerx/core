@@ -67,10 +67,10 @@ class CustomerAddress extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_CUSTOMER => 'required|integer|min:1|max:4294967295|exists:' . Customer::TABLE_NAME,
-            self::FIELD_ID_ADDRESS  => 'required|integer|min:1|max:4294967295|exists:' . Address::TABLE_NAME,
-            self::FIELD_TYPE        => 'required|in:' . self::TYPE_BILLING . ',' . self::TYPE_SHIPPING,
-            self::FIELD_IS_DEFAULT  => 'sometimes|required|in:' . self::IS_DEFAULT,
+            self::FIELD_ID_CUSTOMER => 'required|integer|min:1|max:4294967295|exists:'.Customer::TABLE_NAME,
+            self::FIELD_ID_ADDRESS  => 'required|integer|min:1|max:4294967295|exists:'.Address::TABLE_NAME,
+            self::FIELD_TYPE        => 'required|in:'.self::TYPE_BILLING.','.self::TYPE_SHIPPING,
+            self::FIELD_IS_DEFAULT  => 'sometimes|required|in:'.self::IS_DEFAULT,
         ];
     }
 
@@ -80,10 +80,10 @@ class CustomerAddress extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_CUSTOMER => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Customer::TABLE_NAME,
-            self::FIELD_ID_ADDRESS  => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Address::TABLE_NAME,
-            self::FIELD_TYPE        => 'sometimes|required|in:' . self::TYPE_BILLING . ',' . self::TYPE_SHIPPING,
-            self::FIELD_IS_DEFAULT  => 'sometimes|required|in:' . self::IS_DEFAULT,
+            self::FIELD_ID_CUSTOMER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Customer::TABLE_NAME,
+            self::FIELD_ID_ADDRESS  => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Address::TABLE_NAME,
+            self::FIELD_TYPE        => 'sometimes|required|in:'.self::TYPE_BILLING.','.self::TYPE_SHIPPING,
+            self::FIELD_IS_DEFAULT  => 'sometimes|required|in:'.self::IS_DEFAULT,
         ];
     }
 

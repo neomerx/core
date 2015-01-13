@@ -61,9 +61,9 @@ class ProductRelated extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_PRODUCT         => 'required|integer|min:1|max:4294967295|exists:' . Product::TABLE_NAME,
-            self::FIELD_ID_RELATED_PRODUCT => 'required|integer|min:1|max:4294967295|exists:' . Product::TABLE_NAME .
-                ',' . Product::FIELD_ID,
+            self::FIELD_ID_PRODUCT         => 'required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
+            self::FIELD_ID_RELATED_PRODUCT => 'required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME .
+                ','.Product::FIELD_ID,
         ];
     }
 
@@ -73,10 +73,10 @@ class ProductRelated extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_PRODUCT => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Product::TABLE_NAME,
+            self::FIELD_ID_PRODUCT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
 
             self::FIELD_ID_RELATED_PRODUCT => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
-                Product::TABLE_NAME . ',' . Product::FIELD_ID,
+                Product::TABLE_NAME.','.Product::FIELD_ID,
         ];
     }
 

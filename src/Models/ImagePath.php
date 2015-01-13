@@ -76,11 +76,11 @@ class ImagePath extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_IMAGE        => 'required|integer|min:1|max:4294967295|exists:' . Image::TABLE_NAME,
-            self::FIELD_ID_IMAGE_FORMAT => 'required|integer|min:1|max:4294967295|exists:' . ImageFormat::TABLE_NAME,
+            self::FIELD_ID_IMAGE        => 'required|integer|min:1|max:4294967295|exists:'.Image::TABLE_NAME,
+            self::FIELD_ID_IMAGE_FORMAT => 'required|integer|min:1|max:4294967295|exists:'.ImageFormat::TABLE_NAME,
 
             self::FIELD_PATH => 'required|alpha_dash_dot_space|min:1|max:' .
-                self::PATH_MAX_LENGTH . '|unique:' . self::TABLE_NAME,
+                self::PATH_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
         ];
     }
 
@@ -90,13 +90,13 @@ class ImagePath extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_IMAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Image::TABLE_NAME,
+            self::FIELD_ID_IMAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Image::TABLE_NAME,
 
             self::FIELD_ID_IMAGE_FORMAT => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
                 ImageFormat::TABLE_NAME,
 
-            self::FIELD_PATH => 'sometimes|required|alpha_dash_dot_space|min:1|max:' . self::PATH_MAX_LENGTH .
-                '|unique:' . self::TABLE_NAME,
+            self::FIELD_PATH => 'sometimes|required|alpha_dash_dot_space|min:1|max:'.self::PATH_MAX_LENGTH .
+                '|unique:'.self::TABLE_NAME,
         ];
     }
 
@@ -197,8 +197,8 @@ class ImagePath extends BaseModel
         $destinationFileName = pathinfo($originalFileName, PATHINFO_FILENAME);
         $destinationFileExt  = pathinfo($originalFileName, PATHINFO_EXTENSION);
 
-        $resizedFileName = $destinationFileName . '-' . $format->name . '.' . $destinationFileExt;
-        $resizedFilePath = $destinationFolder . $resizedFileName;
+        $resizedFileName = $destinationFileName.'-'.$format->name.'.'.$destinationFileExt;
+        $resizedFilePath = $destinationFolder.$resizedFileName;
 
         // if we update an existing model...
         if ($this->exists and isset($this->path)) {
@@ -256,7 +256,7 @@ class ImagePath extends BaseModel
     ) {
         try {
             /** @noinspection PhpUndefinedMethodInspection */
-            ImageProcessor::make($destinationFolder . '/' . $originalFileName)
+            ImageProcessor::make($destinationFolder.'/'.$originalFileName)
                 ->resize($format->width, $format->height, true, true)
                 ->resizeCanvas($format->width, $format->height, 'center', false, $this->getBackground())
                 ->save($resizedFilePath);

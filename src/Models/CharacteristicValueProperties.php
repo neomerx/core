@@ -75,8 +75,8 @@ class CharacteristicValueProperties extends BaseModel
             self::FIELD_ID_CHARACTERISTIC_VALUE => 'required|integer|min:1|max:4294967295|exists:' .
                 CharacteristicValue::TABLE_NAME,
 
-            self::FIELD_ID_LANGUAGE => 'required|integer|min:1|max:4294967295|exists:' . Language::TABLE_NAME,
-            self::FIELD_VALUE       => 'required|min:1|max:' . self::VALUE_MAX_LENGTH,
+            self::FIELD_ID_LANGUAGE => 'required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
+            self::FIELD_VALUE       => 'required|min:1|max:'.self::VALUE_MAX_LENGTH,
         ];
     }
 
@@ -89,8 +89,8 @@ class CharacteristicValueProperties extends BaseModel
             self::FIELD_ID_CHARACTERISTIC_VALUE => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
                 CharacteristicValue::TABLE_NAME,
 
-            self::FIELD_ID_LANGUAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Language::TABLE_NAME,
-            self::FIELD_VALUE       => 'sometimes|required|min:1|max:' . self::VALUE_MAX_LENGTH,
+            self::FIELD_ID_LANGUAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
+            self::FIELD_VALUE       => 'sometimes|required|min:1|max:'.self::VALUE_MAX_LENGTH,
         ];
     }
 

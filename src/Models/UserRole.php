@@ -61,8 +61,8 @@ class UserRole extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_USER => 'required|integer|min:1|max:4294967295|exists:' . User::TABLE_NAME,
-            self::FIELD_ID_ROLE => 'required|integer|min:1|max:4294967295|exists:' . Role::TABLE_NAME,
+            self::FIELD_ID_USER => 'required|integer|min:1|max:4294967295|exists:'.User::TABLE_NAME,
+            self::FIELD_ID_ROLE => 'required|integer|min:1|max:4294967295|exists:'.Role::TABLE_NAME,
         ];
     }
 
@@ -72,8 +72,8 @@ class UserRole extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_USER => 'sometimes|required|integer|min:1|max:4294967295|exists:' . User::TABLE_NAME,
-            self::FIELD_ID_ROLE => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Role::TABLE_NAME,
+            self::FIELD_ID_USER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.User::TABLE_NAME,
+            self::FIELD_ID_ROLE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Role::TABLE_NAME,
         ];
     }
 

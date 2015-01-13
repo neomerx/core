@@ -65,7 +65,7 @@ class ImageFormat extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_NAME   => 'required|min:1|max:' . self::NAME_MAX_LENGTH . '|unique:' . self::TABLE_NAME,
+            self::FIELD_NAME   => 'required|min:1|max:'.self::NAME_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
             self::FIELD_WIDTH  => 'required|integer|min:1|max:4096',
             self::FIELD_HEIGHT => 'required|integer|min:1|max:4096',
         ];

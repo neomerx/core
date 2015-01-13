@@ -120,12 +120,12 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     public function getInputOnCreateRules()
     {
         return [
-            self::FIELD_FIRST_NAME => 'required|alpha|min:1|max:' . self::FIRST_NAME_MAX_LENGTH,
-            self::FIELD_LAST_NAME  => 'required|alpha|min:1|max:' . self::LAST_NAME_MAX_LENGTH,
-            self::FIELD_EMAIL      => 'required|email|max:'       . self::EMAIL_MAX_LENGTH,
-            self::FIELD_PASSWORD   => 'required|min:'             . self::PASSWORD_MIN_LENGTH . '|confirmed',
+            self::FIELD_FIRST_NAME => 'required|alpha|min:1|max:'.self::FIRST_NAME_MAX_LENGTH,
+            self::FIELD_LAST_NAME  => 'required|alpha|min:1|max:'.self::LAST_NAME_MAX_LENGTH,
+            self::FIELD_EMAIL      => 'required|email|max:'      .self::EMAIL_MAX_LENGTH,
+            self::FIELD_PASSWORD   => 'required|min:'            .self::PASSWORD_MIN_LENGTH.'|confirmed',
 
-            self::PARAM_PASSWORD_CONFIRMATION => 'required|min:'  . self::PASSWORD_MIN_LENGTH,
+            self::PARAM_PASSWORD_CONFIRMATION => 'required|min:' .self::PASSWORD_MIN_LENGTH,
         ];
     }
 
@@ -135,12 +135,12 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_FIRST_NAME => 'required|alpha|min:1|max:' . self::FIRST_NAME_MAX_LENGTH,
-            self::FIELD_LAST_NAME  => 'required|alpha|min:1|max:' . self::LAST_NAME_MAX_LENGTH,
+            self::FIELD_FIRST_NAME => 'required|alpha|min:1|max:'.self::FIRST_NAME_MAX_LENGTH,
+            self::FIELD_LAST_NAME  => 'required|alpha|min:1|max:'.self::LAST_NAME_MAX_LENGTH,
 
-            self::FIELD_EMAIL => 'required|email|max:' . self::EMAIL_MAX_LENGTH . '|unique:' . self::TABLE_NAME,
+            self::FIELD_EMAIL => 'required|email|max:'.self::EMAIL_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
 
-            self::FIELD_PASSWORD  => 'required|max:' . self::PASSWORD_LENGTH, // hash shouldn't be too long
+            self::FIELD_PASSWORD  => 'required|max:'.self::PASSWORD_LENGTH, // hash shouldn't be too long
         ];
     }
 
@@ -150,13 +150,13 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     public function getInputOnUpdateRules()
     {
         return [
-            self::FIELD_FIRST_NAME => 'sometimes|required|alpha|min:1|max:'    . self::FIRST_NAME_MAX_LENGTH,
-            self::FIELD_LAST_NAME  => 'sometimes|required|alpha|min:1|max:'    . self::LAST_NAME_MAX_LENGTH,
-            self::FIELD_EMAIL      => 'sometimes|required|email|max:'          . self::EMAIL_MAX_LENGTH,
+            self::FIELD_FIRST_NAME => 'sometimes|required|alpha|min:1|max:'   .self::FIRST_NAME_MAX_LENGTH,
+            self::FIELD_LAST_NAME  => 'sometimes|required|alpha|min:1|max:'   .self::LAST_NAME_MAX_LENGTH,
+            self::FIELD_EMAIL      => 'sometimes|required|email|max:'         .self::EMAIL_MAX_LENGTH,
 
-            self::FIELD_PASSWORD => 'sometimes|required|min:' . self::PASSWORD_MIN_LENGTH . '|confirmed',
+            self::FIELD_PASSWORD => 'sometimes|required|min:'.self::PASSWORD_MIN_LENGTH.'|confirmed',
 
-            self::PARAM_PASSWORD_CONFIRMATION => 'required_with:password|min:' . self::PASSWORD_MIN_LENGTH,
+            self::PARAM_PASSWORD_CONFIRMATION => 'required_with:password|min:'.self::PASSWORD_MIN_LENGTH,
         ];
     }
 
@@ -166,13 +166,13 @@ class User extends BaseModel implements UserInterface, RemindableInterface
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_FIRST_NAME => 'sometimes|required|alpha|min:1|max:' . self::FIRST_NAME_MAX_LENGTH,
-            self::FIELD_LAST_NAME  => 'sometimes|required|alpha|min:1|max:' . self::LAST_NAME_MAX_LENGTH,
+            self::FIELD_FIRST_NAME => 'sometimes|required|alpha|min:1|max:'.self::FIRST_NAME_MAX_LENGTH,
+            self::FIELD_LAST_NAME  => 'sometimes|required|alpha|min:1|max:'.self::LAST_NAME_MAX_LENGTH,
 
-            self::FIELD_EMAIL => 'sometimes|required|email|max:' . self::EMAIL_MAX_LENGTH .
-                '|unique:' . self::TABLE_NAME,
+            self::FIELD_EMAIL => 'sometimes|required|email|max:'.self::EMAIL_MAX_LENGTH .
+                '|unique:'.self::TABLE_NAME,
 
-            self::FIELD_PASSWORD => 'sometimes|required|max:' . self::PASSWORD_LENGTH, // hash shouldn't be too long
+            self::FIELD_PASSWORD => 'sometimes|required|max:'.self::PASSWORD_LENGTH, // hash shouldn't be too long
         ];
     }
 

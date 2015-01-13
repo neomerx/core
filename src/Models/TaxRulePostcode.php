@@ -62,10 +62,10 @@ class TaxRulePostcode extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_TAX_RULE   => 'required|integer|min:1|max:4294967295|exists:' . TaxRule::TABLE_NAME,
+            self::FIELD_ID_TAX_RULE   => 'required|integer|min:1|max:4294967295|exists:'.TaxRule::TABLE_NAME,
             self::FIELD_POSTCODE_FROM => 'sometimes|required|integer|min:0|max:4294967295',
             self::FIELD_POSTCODE_TO   => 'sometimes|required|integer|min:0|max:4294967295',
-            self::FIELD_POSTCODE_MASK => 'sometimes|required|min:1|max:' . self::POSTCODE_MASK_MAX_LENGTH,
+            self::FIELD_POSTCODE_MASK => 'sometimes|required|min:1|max:'.self::POSTCODE_MASK_MAX_LENGTH,
         ];
     }
 
@@ -78,7 +78,7 @@ class TaxRulePostcode extends BaseModel
             self::FIELD_ID_TAX_RULE   => 'sometimes|required|forbidden',
             self::FIELD_POSTCODE_FROM => 'sometimes|required|integer|min:0|max:4294967295',
             self::FIELD_POSTCODE_TO   => 'sometimes|required|integer|min:0|max:4294967295',
-            self::FIELD_POSTCODE_MASK => 'sometimes|required|min:1|max:' . self::POSTCODE_MASK_MAX_LENGTH,
+            self::FIELD_POSTCODE_MASK => 'sometimes|required|min:1|max:'.self::POSTCODE_MASK_MAX_LENGTH,
         ];
     }
 

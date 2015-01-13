@@ -70,8 +70,8 @@ class SupplyOrderDetails extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_SUPPLY_ORDER => 'required|integer|min:1|max:4294967295|exists:' . SupplyOrder::TABLE_NAME,
-            self::FIELD_ID_VARIANT      => 'required|integer|min:1|max:4294967295|exists:' . Variant::TABLE_NAME,
+            self::FIELD_ID_SUPPLY_ORDER => 'required|integer|min:1|max:4294967295|exists:'.SupplyOrder::TABLE_NAME,
+            self::FIELD_ID_VARIANT      => 'required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
             self::FIELD_PRICE_WO_TAX    => 'required|numeric|min:0',
             self::FIELD_QUANTITY        => 'required|integer|min:1|max:4294967295',
             self::FIELD_DISCOUNT_RATE   => 'sometimes|required|numeric|min:0|max:100',
@@ -88,7 +88,7 @@ class SupplyOrderDetails extends BaseModel
             self::FIELD_ID_SUPPLY_ORDER => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
                 SupplyOrder::TABLE_NAME,
 
-            self::FIELD_ID_VARIANT => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Variant::TABLE_NAME,
+            self::FIELD_ID_VARIANT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
 
             self::FIELD_PRICE_WO_TAX  => 'sometimes|required|numeric|min:0',
             self::FIELD_QUANTITY      => 'sometimes|required|integer|min:1|max:4294967295',

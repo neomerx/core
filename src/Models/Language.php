@@ -57,9 +57,9 @@ class Language extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_NAME     => 'required|min:1|max:'       . self::NAME_MAX_LENGTH,
-            self::FIELD_ISO_CODE => 'required|alpha|min:2|max:' . self::ISO_CODE_MAX_LENGTH .
-                '|unique:' . self::TABLE_NAME,
+            self::FIELD_NAME     => 'required|min:1|max:'      .self::NAME_MAX_LENGTH,
+            self::FIELD_ISO_CODE => 'required|alpha|min:2|max:'.self::ISO_CODE_MAX_LENGTH .
+                '|unique:'.self::TABLE_NAME,
         ];
     }
 
@@ -69,9 +69,9 @@ class Language extends BaseModel implements SelectByCodeInterface
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_NAME     => 'sometimes|required|min:1|max:'       . self::NAME_MAX_LENGTH,
-            self::FIELD_ISO_CODE => 'sometimes|required|alpha|min:2|max:' . self::ISO_CODE_MAX_LENGTH .
-                '|unique:' . self::TABLE_NAME,
+            self::FIELD_NAME     => 'sometimes|required|min:1|max:'      .self::NAME_MAX_LENGTH,
+            self::FIELD_ISO_CODE => 'sometimes|required|alpha|min:2|max:'.self::ISO_CODE_MAX_LENGTH .
+                '|unique:'.self::TABLE_NAME,
         ];
     }
 

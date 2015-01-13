@@ -63,7 +63,7 @@ class InvoicePayment extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_INVOICE => 'required|integer|min:1|max:4294967295|exists:' . Invoice::TABLE_NAME,
+            self::FIELD_ID_INVOICE => 'required|integer|min:1|max:4294967295|exists:'.Invoice::TABLE_NAME,
             self::FIELD_AMOUNT     => 'required|numeric|min:0',
         ];
     }
@@ -74,7 +74,7 @@ class InvoicePayment extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_INVOICE => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Invoice::TABLE_NAME,
+            self::FIELD_ID_INVOICE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Invoice::TABLE_NAME,
             self::FIELD_AMOUNT     => 'required|numeric|min:0',
         ];
     }

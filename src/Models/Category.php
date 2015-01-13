@@ -114,23 +114,23 @@ class Category extends BaseModel implements SelectByCodeInterface
     {
         return [
             self::FIELD_ID_ANCESTOR   => 'required|integer|min:1|max:4294967295|exists:' .
-                self::TABLE_NAME . ',' . self::FIELD_ID,
+                self::TABLE_NAME.','.self::FIELD_ID,
 
             self::FIELD_CODE => 'required|code|min:1|max:' .
-                self::CODE_MAX_LENGTH . '|unique:' . self::TABLE_NAME,
+                self::CODE_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
 
-            self::FIELD_LINK => 'required|min:1|max:' . self::LINK_MAX_LENGTH . '|unique:' . self::TABLE_NAME,
+            self::FIELD_LINK => 'required|min:1|max:'.self::LINK_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
 
-            self::FIELD_ANCESTOR_CODE => 'sometimes|required|exists:' . self::TABLE_NAME . ',' . self::FIELD_CODE .
-                '|exists:' . self::TABLE_NAME . ',' . self::FIELD_CODE,
+            self::FIELD_ANCESTOR_CODE => 'sometimes|required|exists:'.self::TABLE_NAME.','.self::FIELD_CODE .
+                '|exists:'.self::TABLE_NAME.','.self::FIELD_CODE,
 
             self::FIELD_ENABLED => 'required|boolean',
 
-            self::FIELD_LFT  => 'required|integer|min:0|max:4294967295|different:' . self::FIELD_RGT . '|unique:' .
-                self::TABLE_NAME . ',' . self::FIELD_LFT . '|unique:' . self::TABLE_NAME . ',' . self::FIELD_RGT,
+            self::FIELD_LFT  => 'required|integer|min:0|max:4294967295|different:'.self::FIELD_RGT.'|unique:' .
+                self::TABLE_NAME.','.self::FIELD_LFT.'|unique:'.self::TABLE_NAME.','.self::FIELD_RGT,
 
-            self::FIELD_RGT  => 'required|integer|min:0|max:4294967295|different:' . self::FIELD_LFT . '|unique:' .
-                self::TABLE_NAME . ',' . self::FIELD_LFT . '|unique:' . self::TABLE_NAME . ',' . self::FIELD_RGT,
+            self::FIELD_RGT  => 'required|integer|min:0|max:4294967295|different:'.self::FIELD_LFT.'|unique:' .
+                self::TABLE_NAME.','.self::FIELD_LFT.'|unique:'.self::TABLE_NAME.','.self::FIELD_RGT,
         ];
     }
 
@@ -141,21 +141,21 @@ class Category extends BaseModel implements SelectByCodeInterface
     {
         return [
             self::FIELD_ID_ANCESTOR   => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
-                self::TABLE_NAME . ',' . self::FIELD_ID,
+                self::TABLE_NAME.','.self::FIELD_ID,
 
             self::FIELD_CODE => 'sometimes|required|forbidden',
 
-            self::FIELD_LINK => 'sometimes|required|min:1|max:' . self::LINK_MAX_LENGTH . '|unique:' . self::TABLE_NAME,
+            self::FIELD_LINK => 'sometimes|required|min:1|max:'.self::LINK_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
 
             self::FIELD_ENABLED => 'sometimes|required|boolean',
 
-            self::FIELD_LFT => 'required_with:' . self::FIELD_RGT . '|integer|min:0|max:4294967295|different:' .
-                self::FIELD_RGT . '|unique:' . self::TABLE_NAME . ',' . self::FIELD_LFT . '|' . 'unique:' .
-                self::TABLE_NAME . ',' . self::FIELD_RGT,
+            self::FIELD_LFT => 'required_with:'.self::FIELD_RGT.'|integer|min:0|max:4294967295|different:' .
+                self::FIELD_RGT.'|unique:'.self::TABLE_NAME.','.self::FIELD_LFT.'|'.'unique:' .
+                self::TABLE_NAME.','.self::FIELD_RGT,
 
-            self::FIELD_RGT => 'required_with:' . self::FIELD_LFT . '|integer|min:0|max:4294967295|different:' .
-                self::FIELD_LFT . '|unique:' . self::TABLE_NAME . ',' . self::FIELD_LFT . '|' . 'unique:' .
-                self::TABLE_NAME . ',' . self::FIELD_RGT,
+            self::FIELD_RGT => 'required_with:'.self::FIELD_LFT.'|integer|min:0|max:4294967295|different:' .
+                self::FIELD_LFT.'|unique:'.self::TABLE_NAME.','.self::FIELD_LFT.'|'.'unique:' .
+                self::TABLE_NAME.','.self::FIELD_RGT,
         ];
     }
 
@@ -521,7 +521,7 @@ class Category extends BaseModel implements SelectByCodeInterface
             ->where(self::FIELD_ID_ANCESTOR, '=', $this->{self::FIELD_ID})
             ->where(self::FIELD_CODE, '<>', self::ROOT_CODE)
             ->orderBy(self::FIELD_LFT, 'asc')
-            ->with(self::FIELD_PROPERTIES . '.' . CategoryProperties::FIELD_LANGUAGE)
+            ->with(self::FIELD_PROPERTIES.'.'.CategoryProperties::FIELD_LANGUAGE)
             ->get();
         return $descendants;
     }

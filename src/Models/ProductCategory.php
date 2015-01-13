@@ -63,8 +63,8 @@ class ProductCategory extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_PRODUCT  => 'required|integer|min:1|max:4294967295|exists:' . Product::TABLE_NAME,
-            self::FIELD_ID_CATEGORY => 'required|integer|min:1|max:4294967295|exists:' . Category::TABLE_NAME,
+            self::FIELD_ID_PRODUCT  => 'required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
+            self::FIELD_ID_CATEGORY => 'required|integer|min:1|max:4294967295|exists:'.Category::TABLE_NAME,
             self::FIELD_POSITION    => 'required|integer|min:0|max:65535',
         ];
     }
@@ -75,8 +75,8 @@ class ProductCategory extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_PRODUCT  => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Product::TABLE_NAME,
-            self::FIELD_ID_CATEGORY => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Category::TABLE_NAME,
+            self::FIELD_ID_PRODUCT  => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
+            self::FIELD_ID_CATEGORY => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Category::TABLE_NAME,
             self::FIELD_POSITION    => 'sometimes|required|integer|min:0|max:65535',
         ];
     }

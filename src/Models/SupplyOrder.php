@@ -97,14 +97,14 @@ class SupplyOrder extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_SUPPLIER  => 'required|integer|min:1|max:4294967295|exists:' . Supplier::TABLE_NAME,
-            self::FIELD_ID_WAREHOUSE => 'required|integer|min:1|max:4294967295|exists:' . Warehouse::TABLE_NAME,
-            self::FIELD_ID_CURRENCY  => 'required|integer|min:1|max:4294967295|exists:' . Currency::TABLE_NAME,
-            self::FIELD_ID_LANGUAGE  => 'required|integer|min:1|max:4294967295|exists:' . Language::TABLE_NAME,
+            self::FIELD_ID_SUPPLIER  => 'required|integer|min:1|max:4294967295|exists:'.Supplier::TABLE_NAME,
+            self::FIELD_ID_WAREHOUSE => 'required|integer|min:1|max:4294967295|exists:'.Warehouse::TABLE_NAME,
+            self::FIELD_ID_CURRENCY  => 'required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
+            self::FIELD_ID_LANGUAGE  => 'required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
             self::FIELD_EXPECTED_AT  => 'required|date|after:now',
 
             self::FIELD_STATUS => 'required|in:'
-                . self::STATUS_DRAFT . ',' . self::STATUS_VALIDATED . ',' . self::STATUS_CANCELLED,
+               .self::STATUS_DRAFT.','.self::STATUS_VALIDATED.','.self::STATUS_CANCELLED,
         ];
     }
 
@@ -114,17 +114,17 @@ class SupplyOrder extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_SUPPLIER => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Supplier::TABLE_NAME,
+            self::FIELD_ID_SUPPLIER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Supplier::TABLE_NAME,
 
             self::FIELD_ID_WAREHOUSE => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
                 Warehouse::TABLE_NAME,
 
-            self::FIELD_ID_CURRENCY => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Currency::TABLE_NAME,
-            self::FIELD_ID_LANGUAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Language::TABLE_NAME,
+            self::FIELD_ID_CURRENCY => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
+            self::FIELD_ID_LANGUAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
             self::FIELD_EXPECTED_AT => 'sometimes|required|date|after:now',
 
             self::FIELD_STATUS => 'sometimes|required|in:'
-                . self::STATUS_DRAFT . ',' . self::STATUS_VALIDATED . ',' . self::STATUS_CANCELLED,
+               .self::STATUS_DRAFT.','.self::STATUS_VALIDATED.','.self::STATUS_CANCELLED,
         ];
     }
 

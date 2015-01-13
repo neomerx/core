@@ -115,17 +115,17 @@ class Order extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_CUSTOMER => 'required|integer|min:1|max:4294967295|exists:' . Customer::TABLE_NAME,
+            self::FIELD_ID_CUSTOMER => 'required|integer|min:1|max:4294967295|exists:'.Customer::TABLE_NAME,
 
             self::FIELD_ID_BILLING_ADDRESS => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
-                Address::TABLE_NAME . ',' . Address::FIELD_ID,
+                Address::TABLE_NAME.','.Address::FIELD_ID,
 
             self::FIELD_ID_SHIPPING_ADDRESS => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
-                Address::TABLE_NAME . ',' . Address::FIELD_ID,
+                Address::TABLE_NAME.','.Address::FIELD_ID,
 
-            self::FIELD_ID_STORE => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Store::TABLE_NAME,
+            self::FIELD_ID_STORE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Store::TABLE_NAME,
 
-            self::FIELD_ID_ORDER_STATUS => 'required|integer|min:1|max:4294967295|exists:' . OrderStatus::TABLE_NAME,
+            self::FIELD_ID_ORDER_STATUS => 'required|integer|min:1|max:4294967295|exists:'.OrderStatus::TABLE_NAME,
 
             self::FIELD_SHIPPING_INCLUDED_TAX => 'required|numeric|min:0',
             self::FIELD_SHIPPING_COST         => 'required|numeric|min:0',
@@ -140,15 +140,15 @@ class Order extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_CUSTOMER => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Customer::TABLE_NAME,
+            self::FIELD_ID_CUSTOMER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Customer::TABLE_NAME,
 
             self::FIELD_ID_BILLING_ADDRESS => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
-                Address::TABLE_NAME . ',' . Address::FIELD_ID,
+                Address::TABLE_NAME.','.Address::FIELD_ID,
 
             self::FIELD_ID_SHIPPING_ADDRESS => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
-                Address::TABLE_NAME . ',' . Address::FIELD_ID,
+                Address::TABLE_NAME.','.Address::FIELD_ID,
 
-            self::FIELD_ID_STORE => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Store::TABLE_NAME,
+            self::FIELD_ID_STORE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Store::TABLE_NAME,
 
             self::FIELD_ID_ORDER_STATUS => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
                 OrderStatus::TABLE_NAME,
@@ -156,7 +156,7 @@ class Order extends BaseModel
             self::FIELD_SHIPPING_INCLUDED_TAX => 'sometimes|required|numeric|min:0',
             self::FIELD_SHIPPING_COST         => 'sometimes|required|numeric|min:0',
             self::FIELD_PRODUCTS_TAX          => 'sometimes|required|numeric|min:0',
-            self::FIELD_PRODUCTS_TAX_DETAILS  => 'sometimes|required_with:'. self::FIELD_PRODUCTS_TAX . '|min:1',
+            self::FIELD_PRODUCTS_TAX_DETAILS  => 'sometimes|required_with:'. self::FIELD_PRODUCTS_TAX.'|min:1',
         ];
     }
 

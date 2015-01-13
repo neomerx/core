@@ -69,12 +69,12 @@ class Region extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_COUNTRY => 'required|integer|min:1|max:4294967295|exists:' . Country::TABLE_NAME,
+            self::FIELD_ID_COUNTRY => 'required|integer|min:1|max:4294967295|exists:'.Country::TABLE_NAME,
 
-            self::FIELD_CODE => 'required|code|min:1|max:' . self::CODE_MAX_LENGTH .
-                '|unique:' . self::TABLE_NAME,
+            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH .
+                '|unique:'.self::TABLE_NAME,
 
-            self::FIELD_NAME     => 'required|min:1|max:'            . self::NAME_MAX_LENGTH,
+            self::FIELD_NAME     => 'required|min:1|max:'           .self::NAME_MAX_LENGTH,
             self::FIELD_POSITION => 'required|integer|min:0|max:65535',
         ];
     }
@@ -85,9 +85,9 @@ class Region extends BaseModel implements SelectByCodeInterface
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_COUNTRY => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Country::TABLE_NAME,
+            self::FIELD_ID_COUNTRY => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Country::TABLE_NAME,
             self::FIELD_CODE       => 'sometimes|required|forbidden',
-            self::FIELD_NAME       => 'sometimes|required|min:1|max:' . self::NAME_MAX_LENGTH,
+            self::FIELD_NAME       => 'sometimes|required|min:1|max:'.self::NAME_MAX_LENGTH,
             self::FIELD_POSITION   => 'sometimes|required|integer|min:0|max:65535',
         ];
     }

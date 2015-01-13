@@ -64,9 +64,9 @@ class ImageProperties extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_IMAGE    => 'required|integer|min:1|max:4294967295|exists:' . Image::TABLE_NAME,
-            self::FIELD_ID_LANGUAGE => 'required|integer|min:1|max:4294967295|exists:' . Language::TABLE_NAME,
-            self::FIELD_ALT         => 'required|min:1|max:' . self::ALT_MAX_LENGTH,
+            self::FIELD_ID_IMAGE    => 'required|integer|min:1|max:4294967295|exists:'.Image::TABLE_NAME,
+            self::FIELD_ID_LANGUAGE => 'required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
+            self::FIELD_ALT         => 'required|min:1|max:'.self::ALT_MAX_LENGTH,
         ];
     }
 
@@ -76,9 +76,9 @@ class ImageProperties extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_IMAGE    => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Image::TABLE_NAME,
-            self::FIELD_ID_LANGUAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Language::TABLE_NAME,
-            self::FIELD_ALT         => 'sometimes|required|min:1|max:' . self::ALT_MAX_LENGTH,
+            self::FIELD_ID_IMAGE    => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Image::TABLE_NAME,
+            self::FIELD_ID_LANGUAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
+            self::FIELD_ALT         => 'sometimes|required|min:1|max:'.self::ALT_MAX_LENGTH,
         ];
     }
 

@@ -67,11 +67,11 @@ class TaxRuleTerritory extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_TAX_RULE  => 'required|integer|min:1|max:4294967295|exists:' . TaxRule::TABLE_NAME,
+            self::FIELD_ID_TAX_RULE  => 'required|integer|min:1|max:4294967295|exists:'.TaxRule::TABLE_NAME,
             self::FIELD_TERRITORY_ID => 'sometimes|required|integer|min:1|max:4294967295',
 
             self::FIELD_TERRITORY_TYPE => 'required|in:' .
-                self::TERRITORY_TYPE_COUNTRY . ',' . self::TERRITORY_TYPE_REGION,
+                self::TERRITORY_TYPE_COUNTRY.','.self::TERRITORY_TYPE_REGION,
         ];
     }
 
@@ -85,7 +85,7 @@ class TaxRuleTerritory extends BaseModel
             self::FIELD_TERRITORY_ID => 'sometimes|required|integer|min:1|max:4294967295',
 
             self::FIELD_TERRITORY_TYPE => 'sometimes|required|in:' .
-                self::TERRITORY_TYPE_COUNTRY . ',' . self::TERRITORY_TYPE_REGION,
+                self::TERRITORY_TYPE_COUNTRY.','.self::TERRITORY_TYPE_REGION,
         ];
     }
 

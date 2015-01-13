@@ -282,6 +282,6 @@ trait RelationsTrait
      */
     private function rtTable(BaseModel $instance, $foreignKey)
     {
-        return $instance->getTable() . '.' . $foreignKey;
+        return $instance->getTable().'.'.$foreignKey;
     }
 }

@@ -70,8 +70,8 @@ class OrderDetails extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_ORDER   => 'required|integer|min:1|max:4294967295|exists:' . Order::TABLE_NAME,
-            self::FIELD_ID_VARIANT => 'required|integer|min:1|max:4294967295|exists:' . Variant::TABLE_NAME,
+            self::FIELD_ID_ORDER   => 'required|integer|min:1|max:4294967295|exists:'.Order::TABLE_NAME,
+            self::FIELD_ID_VARIANT => 'required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
 
             self::FIELD_ID_SHIPPING_ORDER => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
                 ShippingOrder::TABLE_NAME,
@@ -87,8 +87,8 @@ class OrderDetails extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_ORDER   => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Order::TABLE_NAME,
-            self::FIELD_ID_VARIANT => 'sometimes|required|integer|min:1|max:4294967295|exists:' . Variant::TABLE_NAME,
+            self::FIELD_ID_ORDER   => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Order::TABLE_NAME,
+            self::FIELD_ID_VARIANT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
 
             self::FIELD_ID_SHIPPING_ORDER => 'sometimes|required|integer|min:1|max:4294967295|exists:' .
                 ShippingOrder::TABLE_NAME,

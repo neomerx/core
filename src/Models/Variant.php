@@ -88,7 +88,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
     {
         return [
             self::FIELD_ID_PRODUCT   => 'required|integer|min:1|max:4294967295',
-            self::FIELD_SKU          => 'required|alpha_dash|min:1|max:' . self::SKU_MAX_LENGTH,
+            self::FIELD_SKU          => 'required|alpha_dash|min:1|max:'.self::SKU_MAX_LENGTH,
             self::FIELD_PRICE_WO_TAX => 'sometimes|required|numeric|min:0',
         ];
     }
