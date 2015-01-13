@@ -37,7 +37,8 @@ class VariantRepository extends BaseRepository implements VariantRepositoryInter
      */
     public function fill(Variant $variant, Product $product = null, array $attributes = null)
     {
-        $variant->setAttribute(Variant::FIELD_SKU, $product->getAttribute(Product::FIELD_SKU));
+        /** @var Product $product */
+        $product === null ?: $variant->setAttribute(Variant::FIELD_SKU, $product->getAttribute(Product::FIELD_SKU));
         $this->fillModel($variant, [
             Variant::FIELD_ID_PRODUCT => $product,
         ], $attributes);
