@@ -7,9 +7,9 @@ use \Neomerx\Core\Models\ImageProperties;
 interface ImagePropertiesRepositoryInterface
 {
     /**
-     * @param Image    $image
-     * @param Language $language
-     * @param array    $attributes
+     * @param Image      $image
+     * @param Language   $language
+     * @param array|null $attributes
      *
      * @return ImageProperties
      */
@@ -17,9 +17,9 @@ interface ImagePropertiesRepositoryInterface
 
     /**
      * @param ImageProperties $properties
-     * @param Image           $image
-     * @param Language        $language
-     * @param array           $attributes
+     * @param Image|null      $image
+     * @param Language|null   $language
+     * @param array|null      $attributes
      *
      * @return void
      */

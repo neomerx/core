@@ -11,7 +11,7 @@ interface ProductRepositoryInterface
      * @param Category       $category
      * @param Manufacturer   $manufacturer
      * @param ProductTaxType $taxType
-     * @param array          $attributes
+     * @param array|null     $attributes
      *
      * @return Product
      */
@@ -23,11 +23,11 @@ interface ProductRepositoryInterface
     );
 
     /**
-     * @param Product        $product
-     * @param Category       $category
-     * @param Manufacturer   $manufacturer
-     * @param ProductTaxType $taxType
-     * @param array          $attributes
+     * @param Product             $product
+     * @param Category|null       $category
+     * @param Manufacturer|null   $manufacturer
+     * @param ProductTaxType|null $taxType
+     * @param array|null          $attributes
      *
      * @return void
      */

@@ -8,10 +8,10 @@ use \Neomerx\Core\Models\ShippingOrder;
 interface OrderDetailsRepositoryInterface
 {
     /**
-     * @param Order         $order
-     * @param Variant       $variant
-     * @param ShippingOrder $shippingOrder
-     * @param array         $attributes
+     * @param Order              $order
+     * @param Variant            $variant
+     * @param ShippingOrder|null $shippingOrder
+     * @param array|null         $attributes
      *
      * @return OrderDetails
      */
@@ -23,11 +23,11 @@ interface OrderDetailsRepositoryInterface
     );
 
     /**
-     * @param OrderDetails  $details
-     * @param Order         $order
-     * @param Variant       $variant
-     * @param ShippingOrder $shippingOrder
-     * @param array         $attributes
+     * @param OrderDetails       $details
+     * @param Order|null         $order
+     * @param Variant|null       $variant
+     * @param ShippingOrder|null $shippingOrder
+     * @param array|null         $attributes
      *
      * @return void
      */

@@ -251,9 +251,8 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
      */
     public function deleteOrFail()
     {
-        $deleted = $this->delete();
-        $deleted === true ?: S\throwEx(new Exception());
-        return $deleted;
+        ($this->delete() === true) ?: S\throwEx(new Exception());
+        return true;
     }
 
     /**
@@ -283,7 +282,7 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
 
         // If 'Eager Loading' is used while selecting objects it will load them as well.
         // This snippet is based on Laravel source code from \Illuminate\Database\Eloquent\Builder::get
-        if (!empty($models)) {
+        if (empty($models) === false) {
             $builder = $this->newEloquentBuilder($this->newBaseQueryBuilder());
             $models = $builder->eagerLoadRelations($models);
         }

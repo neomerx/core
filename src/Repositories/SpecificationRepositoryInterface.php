@@ -9,25 +9,25 @@ interface SpecificationRepositoryInterface
 {
     /**
      * @param Product             $product
-     * @param Variant             $variant
      * @param CharacteristicValue $value
-     * @param array               $attributes
+     * @param Variant|null        $variant
+     * @param array|null          $attributes
      *
      * @return Specification
      */
     public function instance(
-        Product $product = null,
+        Product $product,
+        CharacteristicValue $value,
         Variant $variant = null,
-        CharacteristicValue $value = null,
         array $attributes = null
     );
 
     /**
-     * @param Specification       $specification
-     * @param Product             $product
-     * @param Variant             $variant
-     * @param CharacteristicValue $value
-     * @param array               $attributes
+     * @param Specification            $specification
+     * @param Product|null             $product
+     * @param Variant|null             $variant
+     * @param CharacteristicValue|null $value
+     * @param array|null               $attributes
      *
      * @return void
      */

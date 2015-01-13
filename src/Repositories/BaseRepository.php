@@ -45,15 +45,15 @@ abstract class BaseRepository
     }
 
     /**
-     * @param BaseModel $model
-     * @param array     $objects
-     * @param array     $attributes
+     * @param BaseModel  $model
+     * @param array      $objects
+     * @param array|null $attributes
      *
      * @return $this
      */
     protected function fillModel(BaseModel $model, array $objects, array $attributes = null)
     {
-        empty($attributes) ?: $model->fill($attributes);
+        empty($attributes) === true ?: $model->fill($attributes);
         foreach ($objects as $attribute => $srcModel) {
             /** @var BaseModel $srcModel */
             $srcModel === null ?: $model->setAttribute($attribute, $srcModel->getKey());

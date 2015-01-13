@@ -23,9 +23,9 @@ class SpecificationRepository extends BaseRepository implements SpecificationRep
      * @inheritdoc
      */
     public function instance(
-        Product $product = null,
+        Product $product,
+        CharacteristicValue $value,
         Variant $variant = null,
-        CharacteristicValue $value = null,
         array $attributes = null
     ) {
         /** @var \Neomerx\Core\Models\Specification $specification */
@@ -77,7 +77,7 @@ class SpecificationRepository extends BaseRepository implements SpecificationRep
                     $specification->{Specification::FIELD_ID_VARIANT} = $variant->{Variant::FIELD_ID};
                     $specification->saveOrFail();
                 } else {
-                    $this->instance($product, $variant, $value, $specAttributes)->saveOrFail();
+                    $this->instance($product, $value, $variant, $specAttributes)->saveOrFail();
                 }
             }
 

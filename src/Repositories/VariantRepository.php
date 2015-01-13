@@ -63,7 +63,7 @@ class VariantRepository extends BaseRepository implements VariantRepositoryInter
             foreach ($defaultSpecs as $specRow) {
                 /** @var Specification $specRow */
                 $this->specificationRepo
-                    ->instance($product, $variant, $specRow->value, $specRow->attributesToArray())
+                    ->instance($product, $specRow->value, $variant, $specRow->attributesToArray())
                     ->saveOrFail();
             }
 

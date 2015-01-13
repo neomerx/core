@@ -35,7 +35,7 @@ trait RelationsTrait
     public function belongsTo($related, $foreignKey = null, $otherKey = null, $relation = null)
     {
         // avoid 'unused' warning. This parameter is needed for compatibility with Model::belongsTo
-        $relation ? null : null;
+        $relation === null ? null : null;
 
         /** @noinspection PhpUndefinedMethodInspection */
         return new BelongsTo(
@@ -59,7 +59,7 @@ trait RelationsTrait
     public function belongsToMany($related, $table = null, $foreignKey = null, $otherKey = null, $relation = null)
     {
         // avoid 'unused' warning. This parameter is needed for compatibility with Model::belongsToMany
-        $relation ? null : null;
+        $relation === null ? null : null;
 
         /** @noinspection PhpUndefinedMethodInspection */
         return new BelongsToMany(
@@ -133,7 +133,7 @@ trait RelationsTrait
     {
         list($itemType, $itemId) = $this->baseModelRT->getModelMorphs($name, $itemType, $itemId);
 
-        if (is_null($class = $this->$itemType)) {
+        if (is_null($class = $this->$itemType) === true) {
             return new MorphTo(
                 $this->rtModel()->newQuery(),
                 $this->rtModel(),
@@ -219,7 +219,7 @@ trait RelationsTrait
      * @param string|null $table
      * @param string|null $foreignKey
      * @param string|null $otherKey
-     * @param bool|null   $inverse
+     * @param bool        $inverse
      *
      * @return MorphToMany
      */
@@ -230,7 +230,7 @@ trait RelationsTrait
         $instance   = App::make($related);
         $caller     = $this->getCaller();
         $foreignKey = $foreignKey !== null ? $foreignKey : $name.'_id';
-        $otherKey   = $otherKey   !== null ? $otherKey : $instance->getForeignKey();
+        $otherKey   = $otherKey !== null ? $otherKey : $instance->getForeignKey();
         $query      = $instance->newQuery();
         $table      = $table !== null ? $table : str_plural($name);
 
@@ -257,7 +257,7 @@ trait RelationsTrait
 
         foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $stackFrame) {
             $caller = $stackFrame['function'];
-            if ($caller !== $self and !in_array($caller, Model::$manyMethods)) {
+            if ($caller !== $self and in_array($caller, Model::$manyMethods) === false) {
                 return $caller;
             }
         }
