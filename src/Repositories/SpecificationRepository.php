@@ -139,7 +139,7 @@ class SpecificationRepository extends BaseRepository implements SpecificationRep
                 Specification::TABLE_NAME.'.'.Specification::FIELD_ID_VARIANT
             )->lists(Specification::FIELD_ID);
 
-            if (!empty($specIdsToDelete)) {
+            if (empty($specIdsToDelete) === false) {
                 /** @noinspection PhpUndefinedMethodInspection */
                 DB::table(Specification::TABLE_NAME)->whereIn(Specification::FIELD_ID, $specIdsToDelete)->delete();
             }
