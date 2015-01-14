@@ -79,7 +79,7 @@ class Country extends BaseModel implements SelectByCodeInterface
     /**
      * Relation to country.
      *
-     * @return array
+     * @return string
      */
     public static function withProperties()
     {

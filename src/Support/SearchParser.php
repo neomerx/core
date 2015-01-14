@@ -7,7 +7,7 @@ class SearchParser
     /**
      * This operation will be used by default.
      */
-    const DEFAULT_OPERATION  = 'eq';
+    const DEFAULT_OPERATION = 'eq';
 
     /**
      * This signs all search operation are allowed.

@@ -39,9 +39,7 @@ class VariantRepository extends CodeBasedResourceRepository implements VariantRe
     {
         /** @var Product $product */
         $product === null ?: $variant->setAttribute(Variant::FIELD_SKU, $product->getAttribute(Product::FIELD_SKU));
-        $this->fillModel($variant, [
-            Variant::FIELD_ID_PRODUCT => $product,
-        ], $attributes);
+        $this->fillModel($variant, [Variant::FIELD_ID_PRODUCT => $product], $attributes);
     }
 
     /**
