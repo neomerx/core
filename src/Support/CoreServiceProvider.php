@@ -6,6 +6,8 @@ use \Neomerx\Core\Repositories\CountryRepository;
 use Neomerx\Core\Repositories\LanguageRepository;
 use Neomerx\Core\Repositories\LanguageRepositoryInterface;
 use \Neomerx\Core\Repositories\ProductRepository;
+use Neomerx\Core\Repositories\RegionRepository;
+use Neomerx\Core\Repositories\RegionRepositoryInterface;
 use \Neomerx\Core\Repositories\VariantRepository;
 use \Neomerx\Core\Repositories\OrderDetailsRepository;
 use \Neomerx\Core\Repositories\SpecificationRepository;
@@ -69,6 +71,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->bind(CountryPropertiesRepositoryInterface::class, CountryPropertiesRepository::class);
         $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class);
         $this->app->bind(LanguageRepositoryInterface::class, LanguageRepository::class);
+        $this->app->bind(RegionRepositoryInterface::class, RegionRepository::class);
     }
 
     /**
