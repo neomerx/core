@@ -22,6 +22,8 @@ class Country extends BaseModel implements SelectByCodeInterface
     const FIELD_PROPERTIES = 'properties';
     const FIELD_REGIONS    = 'regions';
 
+    const SCOPE_PROPERTIES = 'withProperties';
+
     /**
      * {@inheritdoc}
      */
