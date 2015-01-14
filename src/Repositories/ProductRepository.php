@@ -6,7 +6,7 @@ use \Neomerx\Core\Models\Category;
 use \Neomerx\Core\Models\Manufacturer;
 use \Neomerx\Core\Models\ProductTaxType;
 
-class ProductRepository extends BaseRepository implements ProductRepositoryInterface
+class ProductRepository extends CodeBasedResourceRepository implements ProductRepositoryInterface
 {
     /**
      * @inheritdoc

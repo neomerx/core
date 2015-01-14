@@ -9,7 +9,7 @@ use \Neomerx\Core\Models\Characteristic;
 use \Neomerx\Core\Exceptions\LogicException;
 use \Neomerx\Core\Models\CharacteristicValue;
 
-class SpecificationRepository extends BaseRepository implements SpecificationRepositoryInterface
+class SpecificationRepository extends IndexBasedResourceRepository implements SpecificationRepositoryInterface
 {
     /**
      * @inheritdoc

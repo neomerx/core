@@ -5,7 +5,7 @@ use \Neomerx\Core\Models\Variant;
 use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Models\Specification;
 
-class VariantRepository extends BaseRepository implements VariantRepositoryInterface
+class VariantRepository extends CodeBasedResourceRepository implements VariantRepositoryInterface
 {
     /**
      * @var SpecificationRepositoryInterface $specificationRepository

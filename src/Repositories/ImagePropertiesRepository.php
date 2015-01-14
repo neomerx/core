@@ -4,7 +4,7 @@ use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\ImageProperties;
 
-class ImagePropertiesRepository extends BaseRepository implements ImagePropertiesRepositoryInterface
+class ImagePropertiesRepository extends IndexBasedResourceRepository implements ImagePropertiesRepositoryInterface
 {
     /**
      * @inheritdoc

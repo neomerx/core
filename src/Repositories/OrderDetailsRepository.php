@@ -5,7 +5,7 @@ use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Models\OrderDetails;
 use \Neomerx\Core\Models\ShippingOrder;
 
-class OrderDetailsRepository extends BaseRepository implements OrderDetailsRepositoryInterface
+class OrderDetailsRepository extends IndexBasedResourceRepository implements OrderDetailsRepositoryInterface
 {
     /**
      * @inheritdoc

@@ -2,7 +2,7 @@
 
 use \Neomerx\Core\Models\Language;
 
-class LanguageRepository extends BaseRepository implements LanguageRepositoryInterface
+class LanguageRepository extends CodeBasedResourceRepository implements LanguageRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -29,13 +29,5 @@ class LanguageRepository extends BaseRepository implements LanguageRepositoryInt
     public function fill(Language $resource, array $attributes = null)
     {
         $this->fillModel($resource, [], $attributes);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function read($code, array $scopes = [], array $columns = ['*'])
-    {
-        return $this->findModelByCode($code, $scopes, $columns);
     }
 }
