@@ -2,6 +2,8 @@
 
 use \Illuminate\Support\ServiceProvider;
 use \Illuminate\Support\Facades\Validator;
+use Neomerx\Core\Repositories\AddressRepository;
+use Neomerx\Core\Repositories\AddressRepositoryInterface;
 use \Neomerx\Core\Repositories\CountryRepository;
 use Neomerx\Core\Repositories\LanguageRepository;
 use Neomerx\Core\Repositories\LanguageRepositoryInterface;
@@ -72,6 +74,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class);
         $this->app->bind(LanguageRepositoryInterface::class, LanguageRepository::class);
         $this->app->bind(RegionRepositoryInterface::class, RegionRepository::class);
+        $this->app->bind(AddressRepositoryInterface::class, AddressRepository::class);
     }
 
     /**

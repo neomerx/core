@@ -111,6 +111,16 @@ class Address extends BaseModel
     }
 
     /**
+     * Relation to region.
+     *
+     * @return string
+     */
+    public static function withRegion()
+    {
+        return self::FIELD_REGION.'.'.Region::FIELD_COUNTRY;
+    }
+
+    /**
      * @param Builder $query
      *
      * @return Builder
