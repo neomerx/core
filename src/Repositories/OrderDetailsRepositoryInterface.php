@@ -5,7 +5,7 @@ use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Models\OrderDetails;
 use \Neomerx\Core\Models\ShippingOrder;
 
-interface OrderDetailsRepositoryInterface
+interface OrderDetailsRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param Order              $order
@@ -38,4 +38,13 @@ interface OrderDetailsRepositoryInterface
         ShippingOrder $shippingOrder = null,
         array $attributes = null
     );
+
+    /**
+     * @param int   $index
+     * @param array $relations
+     * @param array $columns
+     *
+     * @return OrderDetails
+     */
+    public function read($index, array $relations = [], array $columns = ['*']);
 }

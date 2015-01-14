@@ -27,6 +27,7 @@ abstract class BaseRepository
     public function __construct($modelBindName)
     {
         assert('isset($modelBindName) and is_subclass_of(\''.$modelBindName.'\', \''.BaseModel::class.'\')');
+        assert('is_subclass_of(\''.get_class($this).'\', \''.RepositoryInterface::class.'\')');
 
         $this->modelBindName = $modelBindName;
     }
@@ -51,45 +52,33 @@ abstract class BaseRepository
 
     /**
      * @param string $code
-     * @param array  $scopes
+     * @param array  $relations
      *
      * @return Builder
      */
-    protected function makeBuilderByCode($code, array $scopes = [])
+    protected function makeBuilderByCode($code, array $relations = [])
     {
         assert('is_subclass_of(\''.$this->modelBindName.'\', \''.SelectByCodeInterface::class.'\')');
 
         /** @var SelectByCodeInterface $model */
         $model = $this->getUnderlyingModel();
-        return $this->callMethodsOnBuilder($model->selectByCode($code), $scopes);
+        $builder = $model->selectByCode($code);
+        empty($relations) === true ?: $builder->with($relations);
+        return $builder;
     }
 
     /**
      * @param int   $modelId
-     * @param array $scopes
+     * @param array $relations
      *
      * @return Builder
      */
-    protected function makeBuilderById($modelId, array $scopes = [])
+    protected function makeBuilderById($modelId, array $relations = [])
     {
         $model = $this->getUnderlyingModel();
         $keyColumn = $model->getKeyName();
-        return $this->callMethodsOnBuilder($model->newQuery()->where($keyColumn, $modelId), $scopes);
-    }
-
-    /**
-     * @param Builder $builder
-     * @param array   $scopes
-     *
-     * @return Builder
-     */
-    protected function callMethodsOnBuilder(Builder $builder, array $scopes)
-    {
-        foreach ($scopes as $scope) {
-            $builder->$scope();
-        }
-
-        /** @var Builder $builder */
+        $builder = $model->newQuery()->where($keyColumn, $modelId);
+        empty($relations) === true ?: $builder->with($relations);
         return $builder;
     }
 
@@ -142,16 +131,17 @@ abstract class BaseRepository
      * Search resources.
      * If both $parameters and $rules are not specified then all resources will be returned.
      *
-     * @param array      $scopes
+     * @param array      $relations
      * @param array|null $parameters
      * @param array|null $rules
      * @param array      $columns
      *
      * @return Collection
      */
-    public function search(array $scopes = [], array $parameters = null, array $rules = null, array $columns = ['*'])
+    public function search(array $relations = [], array $parameters = null, array $rules = null, array $columns = ['*'])
     {
-        $builder = $this->callMethodsOnBuilder($this->getUnderlyingModel()->newQuery(), $scopes);
+        $builder = $this->getUnderlyingModel()->newQuery();
+        empty($relations) === true ?: $builder->with($relations);
 
         if (empty($parameters) === false and empty($rules) === false) {
             $parser  = new SearchParser(new SearchGrammar($builder), $rules);

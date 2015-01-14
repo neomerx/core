@@ -3,7 +3,7 @@
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Variant;
 
-interface VariantRepositoryInterface extends SearchableInterface
+interface VariantRepositoryInterface extends RepositoryInterface, SearchableInterface
 {
     /**
      * @param Product    $product
@@ -29,4 +29,13 @@ interface VariantRepositoryInterface extends SearchableInterface
      * @return Variant
      */
     public function create(Product $product, array $attributes = null);
+
+    /**
+     * @param string $sku
+     * @param array  $relations
+     * @param array  $columns
+     *
+     * @return Variant
+     */
+    public function read($sku, array $relations = [], array $columns = ['*']);
 }

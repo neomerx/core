@@ -8,7 +8,6 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property string     code
  * @property Collection properties
  * @property Collection regions
- * @method   Builder    withProperties()
  */
 class Country extends BaseModel implements SelectByCodeInterface
 {
@@ -21,8 +20,6 @@ class Country extends BaseModel implements SelectByCodeInterface
     const FIELD_CODE       = 'code';
     const FIELD_PROPERTIES = 'properties';
     const FIELD_REGIONS    = 'regions';
-
-    const SCOPE_PROPERTIES = 'withProperties';
 
     /**
      * {@inheritdoc}
@@ -80,13 +77,13 @@ class Country extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param Builder $query
+     * Relation to country.
      *
-     * @return Builder
+     * @return array
      */
-    public function scopeWithProperties(Builder $query)
+    public static function withProperties()
     {
-        return $query->with([self::FIELD_PROPERTIES.'.'.CountryProperties::FIELD_LANGUAGE]);
+        return self::FIELD_PROPERTIES.'.'.CountryProperties::FIELD_LANGUAGE;
     }
 
     /**

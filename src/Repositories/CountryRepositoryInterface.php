@@ -2,7 +2,7 @@
 
 use \Neomerx\Core\Models\Country;
 
-interface CountryRepositoryInterface extends SearchableInterface
+interface CountryRepositoryInterface extends RepositoryInterface, SearchableInterface
 {
     /**
      * @param array|null $attributes
@@ -21,10 +21,10 @@ interface CountryRepositoryInterface extends SearchableInterface
 
     /**
      * @param string $code
-     * @param array  $scopes
+     * @param array  $relations
      * @param array  $columns
      *
      * @return Country
      */
-    public function read($code, array $scopes = [], array $columns = ['*']);
+    public function read($code, array $relations = [], array $columns = ['*']);
 }

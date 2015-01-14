@@ -5,7 +5,7 @@ use \Neomerx\Core\Models\Category;
 use \Neomerx\Core\Models\Manufacturer;
 use \Neomerx\Core\Models\ProductTaxType;
 
-interface ProductRepositoryInterface extends SearchableInterface
+interface ProductRepositoryInterface extends RepositoryInterface, SearchableInterface
 {
     /**
      * @param Category       $category
@@ -38,4 +38,13 @@ interface ProductRepositoryInterface extends SearchableInterface
         ProductTaxType $taxType = null,
         array $attributes = null
     );
+
+    /**
+     * @param string $sku
+     * @param array  $relations
+     * @param array  $columns
+     *
+     * @return Product
+     */
+    public function read($sku, array $relations = [], array $columns = ['*']);
 }

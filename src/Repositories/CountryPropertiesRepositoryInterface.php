@@ -4,7 +4,7 @@ use \Neomerx\Core\Models\Country;
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CountryProperties;
 
-interface CountryPropertiesRepositoryInterface
+interface CountryPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param Country    $resource

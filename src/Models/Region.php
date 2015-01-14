@@ -95,6 +95,16 @@ class Region extends BaseModel implements SelectByCodeInterface
     /**
      * Relation to country.
      *
+     * @return string
+     */
+    public static function withCountry()
+    {
+        return self::FIELD_COUNTRY;
+    }
+
+    /**
+     * Relation to country.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function country()

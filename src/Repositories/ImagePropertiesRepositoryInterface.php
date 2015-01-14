@@ -4,7 +4,7 @@ use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\ImageProperties;
 
-interface ImagePropertiesRepositoryInterface
+interface ImagePropertiesRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param Image      $image
@@ -29,4 +29,13 @@ interface ImagePropertiesRepositoryInterface
         Language $language = null,
         array $attributes = null
     );
+
+    /**
+     * @param int   $index
+     * @param array $relations
+     * @param array $columns
+     *
+     * @return ImageProperties
+     */
+    public function read($index, array $relations = [], array $columns = ['*']);
 }

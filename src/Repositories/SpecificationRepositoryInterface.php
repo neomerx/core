@@ -5,7 +5,7 @@ use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Models\Specification;
 use \Neomerx\Core\Models\CharacteristicValue;
 
-interface SpecificationRepositoryInterface extends SearchableInterface
+interface SpecificationRepositoryInterface extends RepositoryInterface, SearchableInterface
 {
     /**
      * @param Product             $product
@@ -38,6 +38,15 @@ interface SpecificationRepositoryInterface extends SearchableInterface
         CharacteristicValue $value = null,
         array $attributes = null
     );
+
+    /**
+     * @param int   $index
+     * @param array $relations
+     * @param array $columns
+     *
+     * @return Specification
+     */
+    public function read($index, array $relations = [], array $columns = ['*']);
 
     /**
      * @param Specification $specification

@@ -2,7 +2,7 @@
 
 use \Neomerx\Core\Models\Language;
 
-interface LanguageRepositoryInterface extends SearchableInterface
+interface LanguageRepositoryInterface extends RepositoryInterface, SearchableInterface
 {
     /**
      * @param array|null $attributes
@@ -21,10 +21,10 @@ interface LanguageRepositoryInterface extends SearchableInterface
 
     /**
      * @param string $code
-     * @param array  $scopes
+     * @param array  $relations
      * @param array  $columns
      *
      * @return Language
      */
-    public function read($code, array $scopes = [], array $columns = ['*']);
+    public function read($code, array $relations = [], array $columns = ['*']);
 }
