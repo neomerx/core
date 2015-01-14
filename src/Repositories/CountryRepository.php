@@ -26,10 +26,16 @@ class CountryRepository extends BaseRepository implements CountryRepositoryInter
     /**
      * @inheritdoc
      */
-    public function fill(Country $resource, array $attributes = null)
+    public function fill(Country $country, array $attributes = null)
     {
-        $this->fillModel($resource, [
-            Country::FIELD_ID_ => $,
-        ], $attributes);
+        $this->fillModel($country, [], $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function read($code, array $scopes = [], array $columns = ['*'])
+    {
+        return $this->findModelByCode($code, $scopes, $columns);
     }
 }

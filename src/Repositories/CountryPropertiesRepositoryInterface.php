@@ -7,7 +7,7 @@ use \Neomerx\Core\Models\CountryProperties;
 interface CountryPropertiesRepositoryInterface
 {
     /**
-     * @param Country $resource
+     * @param Country    $resource
      * @param Language   $language
      * @param array|null $attributes
      *
@@ -17,9 +17,9 @@ interface CountryPropertiesRepositoryInterface
 
     /**
      * @param CountryProperties $properties
-     * @param Country|null $resource
-     * @param Language|null $language
-     * @param array|null    $attributes
+     * @param Country|null      $resource
+     * @param Language|null     $language
+     * @param array|null        $attributes
      *
      * @return void
      */

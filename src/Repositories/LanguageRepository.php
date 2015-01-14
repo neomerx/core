@@ -2,20 +2,40 @@
 
 use \Neomerx\Core\Models\Language;
 
-interface LanguageRepository
+class LanguageRepository extends BaseRepository implements LanguageRepositoryInterface
 {
     /**
-     * @param array|null $attributes
-     *
-     * @return Language
+     * @inheritdoc
      */
-    public function instance(array $attributes = null);
+    public function __construct()
+    {
+        parent::__construct(Language::BIND_NAME);
+    }
 
     /**
-     * @param Language $resource
-     * @param array|null $attributes
-     *
-     * @return void
+     * @inheritdoc
      */
-    public function fill(Language $resource, array $attributes = null);
+    public function instance(array $attributes = null)
+    {
+        /** @var Language $resource */
+        $resource = $this->makeModel();
+        $this->fill($resource, $attributes);
+        return $resource;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fill(Language $resource, array $attributes = null)
+    {
+        $this->fillModel($resource, [], $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function read($code, array $scopes = [], array $columns = ['*'])
+    {
+        return $this->findModelByCode($code, $scopes, $columns);
+    }
 }

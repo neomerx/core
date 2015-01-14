@@ -2,16 +2,22 @@
 
 use \Illuminate\Support\ServiceProvider;
 use \Illuminate\Support\Facades\Validator;
+use \Neomerx\Core\Repositories\CountryRepository;
+use Neomerx\Core\Repositories\LanguageRepository;
+use Neomerx\Core\Repositories\LanguageRepositoryInterface;
 use \Neomerx\Core\Repositories\ProductRepository;
 use \Neomerx\Core\Repositories\VariantRepository;
 use \Neomerx\Core\Repositories\OrderDetailsRepository;
 use \Neomerx\Core\Repositories\SpecificationRepository;
 use \Neomerx\Core\Repositories\ImagePropertiesRepository;
+use \Neomerx\Core\Repositories\CountryRepositoryInterface;
 use \Neomerx\Core\Repositories\ProductRepositoryInterface;
 use \Neomerx\Core\Repositories\VariantRepositoryInterface;
+use \Neomerx\Core\Repositories\CountryPropertiesRepository;
 use \Neomerx\Core\Repositories\OrderDetailsRepositoryInterface;
 use \Neomerx\Core\Repositories\SpecificationRepositoryInterface;
 use \Neomerx\Core\Repositories\ImagePropertiesRepositoryInterface;
+use \Neomerx\Core\Repositories\CountryPropertiesRepositoryInterface;
 
 /**
  * Provides necessary Neomerx registrations in a single location. It bootstraps
@@ -60,6 +66,9 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->bind(SpecificationRepositoryInterface::class, SpecificationRepository::class);
         $this->app->bind(ImagePropertiesRepositoryInterface::class, ImagePropertiesRepository::class);
         $this->app->bind(OrderDetailsRepositoryInterface::class, OrderDetailsRepository::class);
+        $this->app->bind(CountryPropertiesRepositoryInterface::class, CountryPropertiesRepository::class);
+        $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class);
+        $this->app->bind(LanguageRepositoryInterface::class, LanguageRepository::class);
     }
 
     /**

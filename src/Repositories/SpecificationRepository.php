@@ -158,9 +158,10 @@ class SpecificationRepository extends BaseRepository implements SpecificationRep
     public function getMaxPosition(Product $product)
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        return $this->getUnderlyingModel()
+        $position = $this->getUnderlyingModel()
             ->newQuery()
             ->where(Specification::FIELD_ID_PRODUCT, '=', $product->{Product::FIELD_ID})
             ->max(Specification::FIELD_POSITION);
+        return $position === null ? 0 : (int)$position;
     }
 }

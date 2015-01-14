@@ -5,7 +5,7 @@ use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Models\Specification;
 use \Neomerx\Core\Models\CharacteristicValue;
 
-interface SpecificationRepositoryInterface
+interface SpecificationRepositoryInterface extends SearchableInterface
 {
     /**
      * @param Product             $product
