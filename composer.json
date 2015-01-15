@@ -3,7 +3,7 @@
     "description": "Neomerx framework core components",
     "require": {
         "php":                         ">=5.5.0",
-        "laravel/framework":           "~5.0.*",
+        "laravel/framework":           "dev-develop",
         "intervention/image":          "~2.0.*",
         "symfony/expression-language": "~2.5.*"
     }
