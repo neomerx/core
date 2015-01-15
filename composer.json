@@ -6,5 +6,6 @@
         "laravel/framework":           "5.0.*@dev",
         "intervention/image":          "2.0.*",
         "symfony/expression-language": "2.5.*"
-    }
+    },
+    "minimum-stability": "dev"
 }
