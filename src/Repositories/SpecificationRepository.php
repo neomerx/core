@@ -12,7 +12,7 @@ use \Neomerx\Core\Models\CharacteristicValue;
 class SpecificationRepository extends IndexBasedResourceRepository implements SpecificationRepositoryInterface
 {
     /**
-     * @inheritdoc
+     * @return $this
      */
     public function __construct()
     {
