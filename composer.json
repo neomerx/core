@@ -7,5 +7,10 @@
         "intervention/image":          "2.0.*",
         "symfony/expression-language": "2.5.*"
     },
+    "autoload": {
+        "psr-4": {
+            "Neomerx\\Core\\": "src/"
+        }
+    },
     "minimum-stability": "dev"
 }
