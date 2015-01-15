@@ -45,36 +45,12 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // up to 'src' dir
         $resourceDir = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.
-            '..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR;
+            'res'.DIRECTORY_SEPARATOR;
 
         $this->package('neomerx/core', self::NEOMERX_PREFIX, $resourceDir);
-        /** @noinspection PhpIncludeInspection */
-        include $resourceDir.'filters.php';
-        /** @noinspection PhpIncludeInspection */
-        include $resourceDir.'routes.php';
 
         $this->extendValidator();
-    }
-
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
-        $this->app->bind(VariantRepositoryInterface::class, VariantRepository::class);
-        $this->app->bind(SpecificationRepositoryInterface::class, SpecificationRepository::class);
-        $this->app->bind(ImagePropertiesRepositoryInterface::class, ImagePropertiesRepository::class);
-        $this->app->bind(OrderDetailsRepositoryInterface::class, OrderDetailsRepository::class);
-        $this->app->bind(CountryPropertiesRepositoryInterface::class, CountryPropertiesRepository::class);
-        $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class);
-        $this->app->bind(LanguageRepositoryInterface::class, LanguageRepository::class);
-        $this->app->bind(RegionRepositoryInterface::class, RegionRepository::class);
-        $this->app->bind(AddressRepositoryInterface::class, AddressRepository::class);
     }
 
     /**
@@ -114,5 +90,24 @@ class CoreServiceProvider extends ServiceProvider
             },
             trans('nm::errors.validation_forbidden')
         );
+    }
+
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        $this->app->bind(VariantRepositoryInterface::class, VariantRepository::class);
+        $this->app->bind(SpecificationRepositoryInterface::class, SpecificationRepository::class);
+        $this->app->bind(ImagePropertiesRepositoryInterface::class, ImagePropertiesRepository::class);
+        $this->app->bind(OrderDetailsRepositoryInterface::class, OrderDetailsRepository::class);
+        $this->app->bind(CountryPropertiesRepositoryInterface::class, CountryPropertiesRepository::class);
+        $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class);
+        $this->app->bind(LanguageRepositoryInterface::class, LanguageRepository::class);
+        $this->app->bind(RegionRepositoryInterface::class, RegionRepository::class);
+        $this->app->bind(AddressRepositoryInterface::class, AddressRepository::class);
     }
 }
