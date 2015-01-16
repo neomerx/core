@@ -9,8 +9,9 @@
     },
     "autoload": {
         "psr-4": {
-            "Neomerx\\Core\\": "src/"
-        }
+            "Neomerx\\Core\\": "./src/"
+        },
+        "files": ["./src/Support/Helpers.php"]
     },
     "minimum-stability": "dev"
 }
