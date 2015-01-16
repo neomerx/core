@@ -3,9 +3,9 @@
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
- * @property int    id_role
- * @property string code
- * @property Collection  users
+ * @property int        id_role
+ * @property string     code
+ * @property Collection employees
  */
 class Role extends BaseModel implements SelectByCodeInterface
 {
@@ -14,9 +14,9 @@ class Role extends BaseModel implements SelectByCodeInterface
 
     const CODE_MAX_LENGTH = 50;
 
-    const FIELD_ID    = 'id_role';
-    const FIELD_CODE  = 'code';
-    const FIELD_USERS = 'users';
+    const FIELD_ID        = 'id_role';
+    const FIELD_CODE      = 'code';
+    const FIELD_EMPLOYEES = 'employees';
 
     /**
      * {@inheritdoc}
@@ -82,17 +82,17 @@ class Role extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * Relation to users.
+     * Relation to employees.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users()
+    public function employees()
     {
         return $this->belongsToMany(
-            User::BIND_NAME,
-            UserRole::TABLE_NAME,
-            UserRole::FIELD_ID_ROLE,
-            UserRole::FIELD_ID_USER
+            Employee::BIND_NAME,
+            EmployeeRole::TABLE_NAME,
+            EmployeeRole::FIELD_ID_ROLE,
+            EmployeeRole::FIELD_ID_EMPLOYEE
         );
     }
 }

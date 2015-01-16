@@ -10,7 +10,7 @@ use \Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use \Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 /**
- * @property int        id_user
+ * @property int        id_employee
  * @property string     first_name
  * @property string     last_name
  * @property string     email
@@ -20,12 +20,12 @@ use \Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
  * @property Collection roles
  * @method   Builder    withRoles()
  */
-class User extends BaseModel implements AuthenticatableContract, CanResetPasswordContract
+class Employee extends BaseModel implements AuthenticatableContract, CanResetPasswordContract
 {
     use Authenticatable, CanResetPassword;
 
     const BIND_NAME  = __CLASS__;
-    const TABLE_NAME = 'users';
+    const TABLE_NAME = 'employees';
 
     const FIRST_NAME_MAX_LENGTH = 50;
     const LAST_NAME_MAX_LENGTH  = 50;
@@ -41,7 +41,7 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
 
     const PARAM_PASSWORD_CONFIRMATION = 'password_confirmation';
 
-    const FIELD_ID             = 'id_user';
+    const FIELD_ID             = 'id_employee';
     const FIELD_FIRST_NAME     = 'first_name';
     const FIELD_LAST_NAME      = 'last_name';
     const FIELD_EMAIL          = 'email';
@@ -215,14 +215,14 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
     {
         return $this->belongsToMany(
             Role::BIND_NAME,
-            UserRole::TABLE_NAME,
-            UserRole::FIELD_ID_USER,
-            UserRole::FIELD_ID_ROLE
+            EmployeeRole::TABLE_NAME,
+            EmployeeRole::FIELD_ID_EMPLOYEE,
+            EmployeeRole::FIELD_ID_ROLE
         );
     }
 
     /**
-     * Add role to user.
+     * Add role to employee.
      *
      * @param string $code
      *
@@ -238,7 +238,7 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
     }
 
     /**
-     * Remove role to user.
+     * Remove role from employee.
      *
      * @param $code
      *
@@ -252,12 +252,12 @@ class User extends BaseModel implements AuthenticatableContract, CanResetPasswor
     }
 
     /**
-     * @param int $userId
+     * @param int $employeeId
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function selectById($userId)
+    public function selectById($employeeId)
     {
-        return $this->newQuery()->where(self::FIELD_ID, '=', $userId);
+        return $this->newQuery()->where(self::FIELD_ID, '=', $employeeId);
     }
 }

@@ -10,7 +10,7 @@ use \Neomerx\Core\Exceptions\ValidationException;
 
 /**
  * Validation rules could differ for same model depending on the usage scenario.
- * For example, let's take User model. Input data should have 'password confirmation' field
+ * For example, let's take Employee model. Input data should have 'password confirmation' field
  * however this field should be omitted and not checked on actual saving to database as
  * model does not have such field. Moreover input data could have rule limiting minimum password
  * length but when it hashed before saving to database such rule does not have any sense.

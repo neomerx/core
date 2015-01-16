@@ -1,22 +1,22 @@
 <?php namespace Neomerx\Core\Models;
 
 /**
- * @property int  id_user_role
- * @property int  id_user
- * @property int  id_role
- * @property User user
- * @property Role role
+ * @property int      id_employee_role
+ * @property int      id_employee
+ * @property int      id_role
+ * @property Employee employee
+ * @property Role     role
  */
-class UserRole extends BaseModel
+class EmployeeRole extends BaseModel
 {
     const BIND_NAME  = __CLASS__;
-    const TABLE_NAME = 'users_roles';
+    const TABLE_NAME = 'employees_roles';
 
-    const FIELD_ID      = 'id_user_role';
-    const FIELD_ID_USER = User::FIELD_ID;
-    const FIELD_ID_ROLE = Role::FIELD_ID;
-    const FIELD_USER    = 'user';
-    const FIELD_ROLE    = 'role';
+    const FIELD_ID          = 'id_employee_role';
+    const FIELD_ID_EMPLOYEE = Employee::FIELD_ID;
+    const FIELD_ID_ROLE     = Role::FIELD_ID;
+    const FIELD_EMPLOYEE    = 'employee';
+    const FIELD_ROLE        = 'role';
 
     /**
      * {@inheritdoc}
@@ -42,7 +42,7 @@ class UserRole extends BaseModel
      * {@inheritdoc}
      */
     protected $hidden = [
-        self::FIELD_ID_USER,
+        self::FIELD_ID_EMPLOYEE,
         self::FIELD_ID_ROLE,
     ];
 
@@ -51,7 +51,7 @@ class UserRole extends BaseModel
      */
     protected $guarded = [
         self::FIELD_ID,
-        self::FIELD_ID_USER,
+        self::FIELD_ID_EMPLOYEE,
         self::FIELD_ID_ROLE,
     ];
 
@@ -61,8 +61,8 @@ class UserRole extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_USER => 'required|integer|min:1|max:4294967295|exists:'.User::TABLE_NAME,
-            self::FIELD_ID_ROLE => 'required|integer|min:1|max:4294967295|exists:'.Role::TABLE_NAME,
+            self::FIELD_ID_EMPLOYEE => 'required|integer|min:1|max:4294967295|exists:'.Employee::TABLE_NAME,
+            self::FIELD_ID_ROLE     => 'required|integer|min:1|max:4294967295|exists:'.Role::TABLE_NAME,
         ];
     }
 
@@ -72,19 +72,19 @@ class UserRole extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_USER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.User::TABLE_NAME,
-            self::FIELD_ID_ROLE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Role::TABLE_NAME,
+            self::FIELD_ID_EMPLOYEE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Employee::TABLE_NAME,
+            self::FIELD_ID_ROLE     => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Role::TABLE_NAME,
         ];
     }
 
     /**
-     * Relation to user.
+     * Relation to employee.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function employee()
     {
-        return $this->belongsTo(User::BIND_NAME, self::FIELD_ID_USER, User::FIELD_ID);
+        return $this->belongsTo(Employee::BIND_NAME, self::FIELD_ID_EMPLOYEE, Employee::FIELD_ID);
     }
 
     /**
