@@ -3,9 +3,9 @@
     "description": "Neomerx framework core components",
     "require": {
         "php":                         ">=5.5.0",
-        "laravel/framework":           "5.0.*@dev",
-        "intervention/image":          "2.0.*",
-        "symfony/expression-language": "2.5.*"
+        "laravel/framework":           "~5.0",
+        "intervention/image":          "~2.0",
+        "symfony/expression-language": "~2.5"
     },
     "autoload": {
         "psr-4": {

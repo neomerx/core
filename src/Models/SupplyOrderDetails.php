@@ -10,7 +10,7 @@ use \Neomerx\Core\Support as S;
  * @property int         quantity
  * @property float       discount_rate
  * @property float       tax_rate
- * @property SupplyOrder supply_order
+ * @property SupplyOrder supplyOrder
  * @property Variant     variant
  */
 class SupplyOrderDetails extends BaseModel
@@ -25,7 +25,7 @@ class SupplyOrderDetails extends BaseModel
     const FIELD_QUANTITY        = 'quantity';
     const FIELD_DISCOUNT_RATE   = 'discount_rate';
     const FIELD_TAX_RATE        = 'tax_rate';
-    const FIELD_SUPPLY_ORDER    = 'supply_order';
+    const FIELD_SUPPLY_ORDER    = 'supplyOrder';
     const FIELD_ITEM            = 'item';
 
     /**

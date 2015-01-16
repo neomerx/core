@@ -26,6 +26,6 @@ class Config
     public static function get($file, $key)
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        return ConfigFacade::get(CoreServiceProvider::NEOMERX_PREFIX.'::'.$file.'.'.$key);
+        return ConfigFacade::get(CoreServiceProvider::CONFIG_ROOT_KEY)[$key];
     }
 }

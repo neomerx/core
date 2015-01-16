@@ -1,22 +1,26 @@
 <?php namespace Neomerx\Core\Support;
 
+use \Neomerx\Core\Config;
+use \Illuminate\Support\Facades\Lang;
 use \Illuminate\Support\ServiceProvider;
+use \Neomerx\Core\Models\ProductTaxType;
 use \Illuminate\Support\Facades\Validator;
-use Neomerx\Core\Repositories\AddressRepository;
-use Neomerx\Core\Repositories\AddressRepositoryInterface;
+use \Neomerx\Core\Repositories\RegionRepository;
+use \Neomerx\Core\Repositories\AddressRepository;
 use \Neomerx\Core\Repositories\CountryRepository;
-use Neomerx\Core\Repositories\LanguageRepository;
-use Neomerx\Core\Repositories\LanguageRepositoryInterface;
 use \Neomerx\Core\Repositories\ProductRepository;
-use Neomerx\Core\Repositories\RegionRepository;
-use Neomerx\Core\Repositories\RegionRepositoryInterface;
 use \Neomerx\Core\Repositories\VariantRepository;
+use \Neomerx\Core\Repositories\LanguageRepository;
+use \Illuminate\Support\Facades\Config as SysConfig;
 use \Neomerx\Core\Repositories\OrderDetailsRepository;
 use \Neomerx\Core\Repositories\SpecificationRepository;
+use \Neomerx\Core\Repositories\RegionRepositoryInterface;
 use \Neomerx\Core\Repositories\ImagePropertiesRepository;
+use \Neomerx\Core\Repositories\AddressRepositoryInterface;
 use \Neomerx\Core\Repositories\CountryRepositoryInterface;
 use \Neomerx\Core\Repositories\ProductRepositoryInterface;
 use \Neomerx\Core\Repositories\VariantRepositoryInterface;
+use \Neomerx\Core\Repositories\LanguageRepositoryInterface;
 use \Neomerx\Core\Repositories\CountryPropertiesRepository;
 use \Neomerx\Core\Repositories\OrderDetailsRepositoryInterface;
 use \Neomerx\Core\Repositories\SpecificationRepositoryInterface;
@@ -26,10 +30,14 @@ use \Neomerx\Core\Repositories\CountryPropertiesRepositoryInterface;
 /**
  * Provides necessary Neomerx registrations in a single location. It bootstraps
  * such components as facades, validation rules and etc.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class CoreServiceProvider extends ServiceProvider
 {
-    const NEOMERX_PREFIX = 'nm';
+    const NEOMERX_PREFIX  = 'nm';
+    const PACKAGE_NAME    = 'neomerx/core';
+    const CONFIG_ROOT_KEY = self::PACKAGE_NAME;
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -45,10 +53,49 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $resourceDir = __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.
-            'res'.DIRECTORY_SEPARATOR;
+        $resourceDir = realpath(
+            __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR
+        );
 
-        $this->package('neomerx/core', self::NEOMERX_PREFIX, $resourceDir);
+        /** @noinspection PhpUndefinedMethodInspection */
+        Lang::addNamespace(self::NEOMERX_PREFIX, $resourceDir);
+        /** @noinspection PhpUndefinedMethodInspection */
+        SysConfig::set([self::CONFIG_ROOT_KEY => [
+            /*
+            |--------------------------------------------------------------------------
+            | Image Folder
+            |--------------------------------------------------------------------------
+            |
+            | The folder is used for uploading product images and storing them in
+            | various image formats.
+            |
+            | This folder should be writable for the web server and end with
+            | folder separator.
+            |
+            */
+            Config::KEY_IMAGE_FOLDER => storage_path() . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR,
+            /*
+            |--------------------------------------------------------------------------
+            | Product tax type for shipping
+            |--------------------------------------------------------------------------
+            |
+            | Product tax type (ID) to be used while shipping taxes calculation.
+            |
+            | The system will select and apply taxes accordingly.
+            |
+            */
+            Config::KEY_SHIPPING_TAX_TYPE_ID => ProductTaxType::SHIPPING_ID,
+            /*
+            |--------------------------------------------------------------------------
+            | Use 'from' address instead of 'to'
+            |--------------------------------------------------------------------------
+            |
+            | While tax calculation system typically uses delivery (to) address for tax
+            | calculation. If you want origin (from) address to used set value to true.
+            |
+            */
+            Config::KEY_TAX_ADDRESS_USE_FROM_INSTEADOF_TO => false,
+        ]]);
 
         $this->extendValidator();
     }

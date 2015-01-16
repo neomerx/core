@@ -4,7 +4,6 @@ use \Neomerx\Core\Support as S;
 use \Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Database\Eloquent\Collection;
-use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**

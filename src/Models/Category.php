@@ -22,8 +22,8 @@ use \Neomerx\Core\Exceptions\InvalidArgumentException;
  * @property      Category   ancestor
  * @property      Collection properties
  * @property      Collection products
- * @property      Collection assigned_products
- * @property      Collection product_categories
+ * @property      Collection assignedProducts
+ * @property      Collection productCategories
  * @method        Builder    withProperties()
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -50,8 +50,8 @@ class Category extends BaseModel implements SelectByCodeInterface
     const FIELD_ANCESTOR              = 'ancestor';
     const FIELD_PROPERTIES            = 'properties';
     const FIELD_PRODUCTS              = 'products';
-    const FIELD_ASSIGNED_PRODUCTS     = 'assigned_products';
-    const FIELD_PRODUCT_CATEGORIES    = 'product_categories';
+    const FIELD_ASSIGNED_PRODUCTS     = 'assignedProducts';
+    const FIELD_PRODUCT_CATEGORIES    = 'productCategories';
     const FIELD_CREATED_AT            = 'created_at';
     const FIELD_UPDATED_AT            = 'updated_at';
 

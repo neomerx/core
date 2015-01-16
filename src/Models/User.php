@@ -1,13 +1,13 @@
 <?php namespace Neomerx\Core\Models;
 
 use \Hash;
-use \Illuminate\Auth\UserTrait;
-use \Illuminate\Auth\UserInterface;
 use \Illuminate\Support\Facades\App;
+use \Illuminate\Auth\Authenticatable;
 use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
-use \Illuminate\Auth\Reminders\RemindableTrait;
-use \Illuminate\Auth\Reminders\RemindableInterface;
+use \Illuminate\Auth\Passwords\CanResetPassword;
+use \Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use \Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 /**
  * @property int        id_user
@@ -20,9 +20,9 @@ use \Illuminate\Auth\Reminders\RemindableInterface;
  * @property Collection roles
  * @method   Builder    withRoles()
  */
-class User extends BaseModel implements UserInterface, RemindableInterface
+class User extends BaseModel implements AuthenticatableContract, CanResetPasswordContract
 {
-    use UserTrait, RemindableTrait;
+    use Authenticatable, CanResetPassword;
 
     const BIND_NAME  = __CLASS__;
     const TABLE_NAME = 'users';

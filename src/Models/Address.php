@@ -3,7 +3,7 @@
 use \Carbon\Carbon;
 use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
-use \Illuminate\Database\Eloquent\SoftDeletingTrait;
+use \Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int        id_address
@@ -14,15 +14,15 @@ use \Illuminate\Database\Eloquent\SoftDeletingTrait;
  * @property string     address2
  * @property Carbon     deleted_at
  * @property Region     region
- * @property Collection billing_customers
- * @property Collection shipping_customers
- * @property Collection billing_orders
- * @property Collection shipping_orders
+ * @property Collection billingCustomers
+ * @property Collection shippingCustomers
+ * @property Collection billingOrders
+ * @property Collection shippingOrders
  * @method   Builder    withRegionAndCountry()
  */
 class Address extends BaseModel
 {
-    use SoftDeletingTrait;
+    use SoftDeletes;
 
     const BIND_NAME  = __CLASS__;
     const TABLE_NAME = 'addresses';
@@ -40,10 +40,10 @@ class Address extends BaseModel
     const FIELD_ADDRESS2           = 'address2';
     const FIELD_DELETED_AT         = 'deleted_at';
     const FIELD_REGION             = 'region';
-    const FIELD_BILLING_CUSTOMERS  = 'billing_customers';
-    const FIELD_SHIPPING_CUSTOMERS = 'shipping_customers';
-    const FIELD_BILLING_ORDERS     = 'billing_orders';
-    const FIELD_SHIPPING_ORDERS    = 'shipping_orders';
+    const FIELD_BILLING_CUSTOMERS  = 'billingCustomers';
+    const FIELD_SHIPPING_CUSTOMERS = 'shippingCustomers';
+    const FIELD_BILLING_ORDERS     = 'billingOrders';
+    const FIELD_SHIPPING_ORDERS    = 'shippingOrders';
 
     /**
      * {@inheritdoc}

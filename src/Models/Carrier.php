@@ -20,11 +20,11 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property string     factory
  * @property Collection orders
  * @property Collection properties
- * @property Collection customer_types
+ * @property Collection customerTypes
  * @property Collection regions
  * @property Collection postcodes
  * @property Collection territories
- * @property Collection shipping_orders
+ * @property Collection shippingOrders
  * @method   Builder    withProperties()
  */
 class Carrier extends BaseModel implements SelectByCodeInterface
@@ -50,7 +50,8 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     const FIELD_ORDERS          = 'orders';
     const FIELD_PROPERTIES      = 'properties';
     const FIELD_REGIONS         = 'regions';
-    const FIELD_SHIPPING_ORDERS = 'shipping_orders';
+    const FIELD_CUSTOMER_TYPES  = 'customerTypes';
+    const FIELD_SHIPPING_ORDERS = 'shippingOrders';
 
     /**
      * {@inheritdoc}

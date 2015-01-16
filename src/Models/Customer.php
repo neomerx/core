@@ -20,11 +20,11 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      CustomerType type
  * @property      Language     language
  * @property      Collection   addresses
- * @property      Collection   billing_addresses
- * @property      Collection   shipping_addresses
- * @property      Collection   default_shipping_address An array of 0 or 1 items.
- * @property      Collection   default_billing_address  An array of 0 or 1 items.
- * @property      Collection   customer_addresses
+ * @property      Collection   billingAddresses
+ * @property      Collection   shippingAddresses
+ * @property      Collection   defaultShippingAddress An array of 0 or 1 items.
+ * @property      Collection   defaultBillingAddress  An array of 0 or 1 items.
+ * @property      Collection   customerAddresses
  * @property      Collection   orders
  * @method        Builder      withTypeRiskAndLanguage()
  * @method        Builder      withDefaultAddresses()
@@ -59,11 +59,11 @@ class Customer extends BaseModel
     const FIELD_TYPE                     = 'type';
     const FIELD_LANGUAGE                 = 'language';
     const FIELD_ADDRESSES                = 'addresses';
-    const FIELD_BILLING_ADDRESSES        = 'billing_addresses';
-    const FIELD_SHIPPING_ADDRESSES       = 'shipping_addresses';
-    const FIELD_DEFAULT_SHIPPING_ADDRESS = 'default_shipping_address';
-    const FIELD_DEFAULT_BILLING_ADDRESS  = 'default_billing_address';
-    const FIELD_CUSTOMER_ADDRESSES       = 'customer_addresses';
+    const FIELD_BILLING_ADDRESSES        = 'billingAddresses';
+    const FIELD_SHIPPING_ADDRESSES       = 'shippingAddresses';
+    const FIELD_DEFAULT_SHIPPING_ADDRESS = 'defaultShippingAddress';
+    const FIELD_DEFAULT_BILLING_ADDRESS  = 'defaultBillingAddress';
+    const FIELD_CUSTOMER_ADDRESSES       = 'customerAddresses';
     const FIELD_ORDERS                   = 'orders';
 
     /**

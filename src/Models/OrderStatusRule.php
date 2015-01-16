@@ -4,8 +4,8 @@
  * @property int         id_order_status_rule
  * @property int         id_order_status_from
  * @property int         id_order_status_to
- * @property OrderStatus can_change_from
- * @property OrderStatus can_change_to
+ * @property OrderStatus canChangeFrom
+ * @property OrderStatus canChangeTo
  */
 class OrderStatusRule extends BaseModel
 {
@@ -15,8 +15,8 @@ class OrderStatusRule extends BaseModel
     const FIELD_ID                   = 'id_order_status_rule';
     const FIELD_ID_ORDER_STATUS_FROM = 'id_order_status_from';
     const FIELD_ID_ORDER_STATUS_TO   = 'id_order_status_to';
-    const FIELD_CAN_CHANGE_FROM      = 'can_change_from';
-    const FIELD_CAN_CHANGE_TO        = 'can_change_to';
+    const FIELD_CAN_CHANGE_FROM      = 'canChangeFrom';
+    const FIELD_CAN_CHANGE_TO        = 'canChangeTo';
 
     /**
      * {@inheritdoc}

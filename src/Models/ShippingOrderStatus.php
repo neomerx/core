@@ -6,7 +6,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property int        id_shipping_order_status
  * @property string     name
  * @property string     code
- * @property Collection shipping_orders
+ * @property Collection shippingOrders
  */
 class ShippingOrderStatus extends BaseModel implements SelectByCodeInterface
 {
@@ -19,7 +19,7 @@ class ShippingOrderStatus extends BaseModel implements SelectByCodeInterface
     const FIELD_ID              = 'id_shipping_order_status';
     const FIELD_CODE            = 'code';
     const FIELD_NAME            = 'name';
-    const FIELD_SHIPPING_ORDERS = 'shipping_orders';
+    const FIELD_SHIPPING_ORDERS = 'shippingOrders';
 
     /**
      * {@inheritdoc}

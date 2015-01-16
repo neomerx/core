@@ -21,16 +21,16 @@ use \Neomerx\Core\Repositories\VariantRepositoryInterface;
  * @property      bool           enabled
  * @property-read Carbon         created_at
  * @property-read Carbon         updated_at
- * @property      Category       default_category
+ * @property      Category       defaultCategory
  * @property      Manufacturer   manufacturer
- * @property      ProductTaxType tax_type
- * @property      Collection     assigned_categories
- * @property      Collection     product_categories
+ * @property      ProductTaxType taxType
+ * @property      Collection     assignedCategories
+ * @property      Collection     productCategories
  * @property      Collection     related
- * @property      Collection     related_products
+ * @property      Collection     relatedProducts
  * @property      Collection     properties
  * @property      Collection     specification
- * @property      Collection     product_images
+ * @property      Collection     productImages
  * @property      Collection     variants
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -54,12 +54,12 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     const FIELD_ENABLED             = 'enabled';
     const FIELD_CREATED_AT          = 'created_at';
     const FIELD_UPDATED_AT          = 'updated_at';
-    const FIELD_TAX_TYPE            = 'tax_type';
-    const FIELD_DEFAULT_CATEGORY    = 'default_category';
-    const FIELD_ASSIGNED_CATEGORIES = 'assigned_categories';
-    const FIELD_PRODUCT_CATEGORIES  = 'product_categories';
-    const FIELD_RELATED_PRODUCTS    = 'related_products';
-    const FIELD_PRODUCT_IMAGES      = 'product_images';
+    const FIELD_TAX_TYPE            = 'taxType';
+    const FIELD_DEFAULT_CATEGORY    = 'defaultCategory';
+    const FIELD_ASSIGNED_CATEGORIES = 'assignedCategories';
+    const FIELD_PRODUCT_CATEGORIES  = 'productCategories';
+    const FIELD_RELATED_PRODUCTS    = 'relatedProducts';
+    const FIELD_PRODUCT_IMAGES      = 'productImages';
     const FIELD_RELATED             = 'related';
     const FIELD_MANUFACTURER        = 'manufacturer';
     const FIELD_PROPERTIES          = 'properties';

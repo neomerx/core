@@ -3,7 +3,7 @@
 use \Carbon\Carbon;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Database\Eloquent\Collection;
-use \Illuminate\Database\Eloquent\SoftDeletingTrait;
+use \Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property      int         id_order
@@ -19,20 +19,20 @@ use \Illuminate\Database\Eloquent\SoftDeletingTrait;
  * @property-read Carbon      updated_at
  * @property-read Carbon      deleted_at
  * @property      Customer    customer
- * @property      Address     shipping_address
- * @property      Address     billing_address
+ * @property      Address     shippingAddress
+ * @property      Address     billingAddress
  * @property      Store       store
  * @property      OrderStatus status
  * @property      Collection  details
  * @property      Collection  history
  * @property      Collection  invoices
- * @property      Collection  shipping_orders
+ * @property      Collection  shippingOrders
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Order extends BaseModel
 {
-    use SoftDeletingTrait;
+    use SoftDeletes;
 
     const BIND_NAME  = __CLASS__;
     const TABLE_NAME = 'orders';
@@ -51,14 +51,14 @@ class Order extends BaseModel
     const FIELD_UPDATED_AT            = 'updated_at';
     const FIELD_DELETED_AT            = 'deleted_at';
     const FIELD_CUSTOMER              = 'customer';
-    const FIELD_SHIPPING_ADDRESS      = 'shipping_address';
-    const FIELD_BILLING_ADDRESS       = 'billing_address';
+    const FIELD_SHIPPING_ADDRESS      = 'shippingAddress';
+    const FIELD_BILLING_ADDRESS       = 'billingAddress';
     const FIELD_STORE                 = 'store';
     const FIELD_STATUS                = 'status';
     const FIELD_DETAILS               = 'details';
     const FIELD_HISTORY               = 'history';
     const FIELD_INVOICES              = 'invoices';
-    const FIELD_SHIPPING_ORDERS       = 'shipping_orders';
+    const FIELD_SHIPPING_ORDERS       = 'shippingOrders';
 
     /**
      * {@inheritdoc}

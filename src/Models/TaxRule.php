@@ -10,8 +10,8 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property Tax        tax
  * @property Collection territories
  * @property Collection postcodes
- * @property Collection customer_types
- * @property Collection product_types
+ * @property Collection customerTypes
+ * @property Collection productTypes
  */
 class TaxRule extends BaseModel
 {
@@ -27,8 +27,8 @@ class TaxRule extends BaseModel
     const FIELD_TAX            = 'tax';
     const FIELD_TERRITORIES    = 'territories';
     const FIELD_POSTCODES      = 'postcodes';
-    const FIELD_CUSTOMER_TYPES = 'customer_types';
-    const FIELD_PRODUCT_TYPES  = 'product_types';
+    const FIELD_CUSTOMER_TYPES = 'customerTypes';
+    const FIELD_PRODUCT_TYPES  = 'productTypes';
 
     /**
      * {@inheritdoc}

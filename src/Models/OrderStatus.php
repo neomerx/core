@@ -8,7 +8,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property string     name
  * @property string     code
  * @property Collection orders
- * @property Collection available_statuses
+ * @property Collection availableStatuses
  * @method   Builder    withAvailableStatuses()
  */
 class OrderStatus extends BaseModel implements SelectByCodeInterface
@@ -23,7 +23,7 @@ class OrderStatus extends BaseModel implements SelectByCodeInterface
     const FIELD_CODE               = 'code';
     const FIELD_NAME               = 'name';
     const FIELD_ORDERS             = 'orders';
-    const FIELD_AVAILABLE_STATUSES = 'available_statuses';
+    const FIELD_AVAILABLE_STATUSES = 'availableStatuses';
 
     const STATUS_NEW_ORDER = 'NEW_ORDER';
 

@@ -15,7 +15,7 @@ use \Intervention\Image\Exception\NotSupportedException;
  * @property string       original_file
  * @property Collection   paths
  * @property Collection   properties
- * @property ProductImage product_image
+ * @property ProductImage productImage
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -30,7 +30,7 @@ class Image extends BaseModel
     const FIELD_ID            = 'id_image';
     const FIELD_ORIGINAL_FILE = 'original_file';
     const FIELD_PROPERTIES    = 'properties';
-    const FIELD_PRODUCT_IMAGE = 'product_image';
+    const FIELD_PRODUCT_IMAGE = 'productImage';
     const FIELD_PATHS         = 'paths';
 
     /**

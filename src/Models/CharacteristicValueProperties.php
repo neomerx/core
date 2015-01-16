@@ -5,7 +5,7 @@
  * @property int                 id_characteristic_value
  * @property int                 id_language
  * @property string              value
- * @property CharacteristicValue characteristic_value
+ * @property CharacteristicValue characteristicValue
  * @property Language            language
  */
 class CharacteristicValueProperties extends BaseModel
@@ -19,7 +19,7 @@ class CharacteristicValueProperties extends BaseModel
     const FIELD_ID_CHARACTERISTIC_VALUE = CharacteristicValue::FIELD_ID;
     const FIELD_ID_LANGUAGE             = Language::FIELD_ID;
     const FIELD_VALUE                   = 'value';
-    const FIELD_CHARACTERISTIC_VALUE    = 'characteristic_value';
+    const FIELD_CHARACTERISTIC_VALUE    = 'characteristicValue';
     const FIELD_LANGUAGE                = 'language';
 
     /**
