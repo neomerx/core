@@ -266,7 +266,7 @@ class Image extends BaseModel
     {
         settype($fileName, 'string');
 
-        $path = trim(Config::get(Config::FILE_APP, Config::KEY_IMAGE_FOLDER));
+        $path = trim(Config::get(Config::KEY_IMAGE_FOLDER));
 
         if (substr($path, -1) !== DIRECTORY_SEPARATOR) {
             throw new ConfigurationException(Config::KEY_IMAGE_FOLDER);

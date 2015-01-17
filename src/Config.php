@@ -5,9 +5,6 @@ use \Illuminate\Support\Facades\Config as ConfigFacade;
 
 class Config
 {
-    const FILE_APP    = 'app';
-    const FILE_EVENTS = 'events';
-
     /** Folder name for storing image files */
     const KEY_IMAGE_FOLDER = 'imageFolder';
 
@@ -18,12 +15,11 @@ class Config
     const KEY_TAX_ADDRESS_USE_FROM_INSTEADOF_TO = 'calcTaxUseFromAddress';
 
     /**
-     * @param string $file
      * @param string $key
      *
      * @return mixed
      */
-    public static function get($file, $key)
+    public static function get($key)
     {
         /** @noinspection PhpUndefinedMethodInspection */
         return ConfigFacade::get(CoreServiceProvider::CONFIG_ROOT_KEY)[$key];
