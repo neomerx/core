@@ -68,6 +68,16 @@ class Address extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_CITY,
+        self::FIELD_POSTCODE,
+        self::FIELD_ADDRESS1,
+        self::FIELD_ADDRESS2,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_REGION,
         self::FIELD_DELETED_AT,

@@ -41,6 +41,12 @@ class CarrierCustomerType extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_CARRIER,
         self::FIELD_ID_CUSTOMER_TYPE,
