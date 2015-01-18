@@ -1,6 +1,7 @@
 <?php namespace Neomerx\Core\Repositories;
 
 use \Neomerx\Core\Models\Country;
+use \Illuminate\Database\Eloquent\Collection;
 
 interface CountryRepositoryInterface extends RepositoryInterface, SearchableInterface
 {
@@ -27,4 +28,11 @@ interface CountryRepositoryInterface extends RepositoryInterface, SearchableInte
      * @return Country
      */
     public function read($code, array $relations = [], array $columns = ['*']);
+
+    /**
+     * @param Country $resource
+     *
+     * @return Collection
+     */
+    public function regions(Country $resource);
 }
