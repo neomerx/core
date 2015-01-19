@@ -1,8 +1,9 @@
-<?php namespace Neomerx\Core\Repositories;
+<?php namespace Neomerx\Core\Repositories\Images;
 
 use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\ImageProperties;
+use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
 class ImagePropertiesRepository extends IndexBasedResourceRepository implements ImagePropertiesRepositoryInterface
 {

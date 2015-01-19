@@ -1,6 +1,7 @@
-<?php namespace Neomerx\Core\Repositories;
+<?php namespace Neomerx\Core\Repositories\Languages;
 
 use \Neomerx\Core\Models\Language;
+use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
 class LanguageRepository extends CodeBasedResourceRepository implements LanguageRepositoryInterface
 {

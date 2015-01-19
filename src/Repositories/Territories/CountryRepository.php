@@ -1,7 +1,8 @@
-<?php namespace Neomerx\Core\Repositories;
+<?php namespace Neomerx\Core\Repositories\Territories;
 
 use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Country;
+use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
 class CountryRepository extends CodeBasedResourceRepository implements CountryRepositoryInterface
 {

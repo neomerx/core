@@ -1,9 +1,10 @@
-<?php namespace Neomerx\Core\Repositories;
+<?php namespace Neomerx\Core\Repositories\Products;
 
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Variant;
 use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Models\Specification;
+use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
 class VariantRepository extends CodeBasedResourceRepository implements VariantRepositoryInterface
 {

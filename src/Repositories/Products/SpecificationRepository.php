@@ -1,4 +1,4 @@
-<?php namespace Neomerx\Core\Repositories;
+<?php namespace Neomerx\Core\Repositories\Products;
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\Variant;
@@ -8,6 +8,7 @@ use \Neomerx\Core\Models\Specification;
 use \Neomerx\Core\Models\Characteristic;
 use \Neomerx\Core\Exceptions\LogicException;
 use \Neomerx\Core\Models\CharacteristicValue;
+use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
 class SpecificationRepository extends IndexBasedResourceRepository implements SpecificationRepositoryInterface
 {

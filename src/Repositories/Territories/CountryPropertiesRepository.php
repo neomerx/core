@@ -1,9 +1,10 @@
-<?php namespace Neomerx\Core\Repositories;
+<?php namespace Neomerx\Core\Repositories\Territories;
 
 use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Country;
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CountryProperties;
+use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
 class CountryPropertiesRepository extends IndexBasedResourceRepository implements CountryPropertiesRepositoryInterface
 {

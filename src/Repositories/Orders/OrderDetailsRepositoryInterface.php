@@ -1,9 +1,10 @@
-<?php namespace Neomerx\Core\Repositories;
+<?php namespace Neomerx\Core\Repositories\Orders;
 
 use \Neomerx\Core\Models\Order;
 use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Models\OrderDetails;
 use \Neomerx\Core\Models\ShippingOrder;
+use \Neomerx\Core\Repositories\RepositoryInterface;
 
 interface OrderDetailsRepositoryInterface extends RepositoryInterface
 {

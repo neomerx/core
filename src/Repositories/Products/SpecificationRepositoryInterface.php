@@ -1,9 +1,11 @@
-<?php namespace Neomerx\Core\Repositories;
+<?php namespace Neomerx\Core\Repositories\Products;
 
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Models\Specification;
 use \Neomerx\Core\Models\CharacteristicValue;
+use \Neomerx\Core\Repositories\RepositoryInterface;
+use \Neomerx\Core\Repositories\SearchableInterface;
 
 interface SpecificationRepositoryInterface extends RepositoryInterface, SearchableInterface
 {

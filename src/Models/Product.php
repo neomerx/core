@@ -4,7 +4,7 @@ use \Carbon\Carbon;
 use \Neomerx\Core\Support as S;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Database\Eloquent\Collection;
-use \Neomerx\Core\Repositories\VariantRepositoryInterface;
+use \Neomerx\Core\Repositories\Products\VariantRepositoryInterface;
 
 /**
  * @property      int            id_product

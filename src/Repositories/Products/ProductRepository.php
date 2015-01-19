@@ -1,10 +1,11 @@
-<?php namespace Neomerx\Core\Repositories;
+<?php namespace Neomerx\Core\Repositories\Products;
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Category;
 use \Neomerx\Core\Models\Manufacturer;
 use \Neomerx\Core\Models\ProductTaxType;
+use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
 class ProductRepository extends CodeBasedResourceRepository implements ProductRepositoryInterface
 {

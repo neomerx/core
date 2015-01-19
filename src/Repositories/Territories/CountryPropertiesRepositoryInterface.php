@@ -1,9 +1,10 @@
-<?php namespace Neomerx\Core\Repositories;
+<?php namespace Neomerx\Core\Repositories\Territories;
 
 use \Neomerx\Core\Models\Country;
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CountryProperties;
 use \Illuminate\Database\Eloquent\Collection;
+use \Neomerx\Core\Repositories\RepositoryInterface;
 
 interface CountryPropertiesRepositoryInterface extends RepositoryInterface
 {

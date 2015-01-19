@@ -1,7 +1,8 @@
-<?php namespace Neomerx\Core\Repositories;
+<?php namespace Neomerx\Core\Repositories\Addresses;
 
 use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Address;
+use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
 class AddressRepository extends IndexBasedResourceRepository implements AddressRepositoryInterface
 {

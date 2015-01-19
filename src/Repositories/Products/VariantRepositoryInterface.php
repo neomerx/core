@@ -1,7 +1,9 @@
-<?php namespace Neomerx\Core\Repositories;
+<?php namespace Neomerx\Core\Repositories\Products;
 
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Variant;
+use \Neomerx\Core\Repositories\RepositoryInterface;
+use \Neomerx\Core\Repositories\SearchableInterface;
 
 interface VariantRepositoryInterface extends RepositoryInterface, SearchableInterface
 {

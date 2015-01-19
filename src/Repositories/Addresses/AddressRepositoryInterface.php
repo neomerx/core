@@ -1,7 +1,9 @@
-<?php namespace Neomerx\Core\Repositories;
+<?php namespace Neomerx\Core\Repositories\Addresses;
 
 use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Address;
+use \Neomerx\Core\Repositories\RepositoryInterface;
+use \Neomerx\Core\Repositories\SearchableInterface;
 
 interface AddressRepositoryInterface extends RepositoryInterface, SearchableInterface
 {
