@@ -23,7 +23,7 @@ class ProductRepository extends CodeBasedResourceRepository implements ProductRe
         Category $category,
         Manufacturer $manufacturer,
         ProductTaxType $taxType,
-        array $attributes = null
+        array $attributes
     ) {
         /** @var \Neomerx\Core\Models\Product $product */
         $product = $this->makeModel();

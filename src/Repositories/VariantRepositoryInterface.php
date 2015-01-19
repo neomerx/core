@@ -6,12 +6,12 @@ use \Neomerx\Core\Models\Variant;
 interface VariantRepositoryInterface extends RepositoryInterface, SearchableInterface
 {
     /**
-     * @param Product    $product
-     * @param array|null $attributes
+     * @param Product $product
+     * @param array   $attributes
      *
      * @return Variant
      */
-    public function instance(Product $product, array $attributes = null);
+    public function instance(Product $product, array $attributes);
 
     /**
      * @param Variant      $variant

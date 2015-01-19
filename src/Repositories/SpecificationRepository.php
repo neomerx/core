@@ -25,12 +25,12 @@ class SpecificationRepository extends IndexBasedResourceRepository implements Sp
     public function instance(
         Product $product,
         CharacteristicValue $value,
-        Variant $variant = null,
-        array $attributes = null
+        array $attributes,
+        Variant $variant = null
     ) {
         /** @var \Neomerx\Core\Models\Specification $specification */
         $specification = $this->makeModel();
-        $this->fill($specification, $product, $variant, $value, $attributes);
+        $this->fill($specification, $product, $value, $attributes, $variant);
         return $specification;
     }
 
@@ -40,9 +40,9 @@ class SpecificationRepository extends IndexBasedResourceRepository implements Sp
     public function fill(
         Specification $specification,
         Product $product = null,
-        Variant $variant = null,
         CharacteristicValue $value = null,
-        array $attributes = null
+        array $attributes = null,
+        Variant $variant = null
     ) {
         $this->fillModel($specification, [
             Specification::FIELD_ID_PRODUCT              => $product,
@@ -77,7 +77,7 @@ class SpecificationRepository extends IndexBasedResourceRepository implements Sp
                     $specification->{Specification::FIELD_ID_VARIANT} = $variant->{Variant::FIELD_ID};
                     $specification->saveOrFail();
                 } else {
-                    $this->instance($product, $value, $variant, $specAttributes)->saveOrFail();
+                    $this->instance($product, $value, $specAttributes, $variant)->saveOrFail();
                 }
             }
 

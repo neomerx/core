@@ -16,7 +16,7 @@ class CountryRepository extends CodeBasedResourceRepository implements CountryRe
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes = null)
+    public function instance(array $attributes)
     {
         /** @var Country $resource */
         $resource = $this->makeModel();

@@ -17,7 +17,7 @@ class ImagePropertiesRepository extends IndexBasedResourceRepository implements 
     /**
      * @inheritdoc
      */
-    public function instance(Image $image, Language $language, array $attributes = null)
+    public function instance(Image $image, Language $language, array $attributes)
     {
         /** @var ImageProperties $properties */
         $properties = $this->makeModel();

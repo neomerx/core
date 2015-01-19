@@ -11,7 +11,7 @@ interface ProductRepositoryInterface extends RepositoryInterface, SearchableInte
      * @param Category       $category
      * @param Manufacturer   $manufacturer
      * @param ProductTaxType $taxType
-     * @param array|null     $attributes
+     * @param array          $attributes
      *
      * @return Product
      */
@@ -19,7 +19,7 @@ interface ProductRepositoryInterface extends RepositoryInterface, SearchableInte
         Category $category,
         Manufacturer $manufacturer,
         ProductTaxType $taxType,
-        array $attributes = null
+        array $attributes
     );
 
     /**

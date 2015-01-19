@@ -21,12 +21,12 @@ class OrderDetailsRepository extends IndexBasedResourceRepository implements Ord
     public function instance(
         Order $order,
         Variant $variant,
-        ShippingOrder $shippingOrder = null,
-        array $attributes = null
+        array $attributes,
+        ShippingOrder $shippingOrder = null
     ) {
         /** @var OrderDetails $resource */
         $resource = $this->makeModel();
-        $this->fill($resource, $order, $variant, $shippingOrder, $attributes);
+        $this->fill($resource, $order, $variant, $attributes, $shippingOrder);
         return $resource;
     }
 
@@ -37,8 +37,8 @@ class OrderDetailsRepository extends IndexBasedResourceRepository implements Ord
         OrderDetails $details,
         Order $order = null,
         Variant $variant = null,
-        ShippingOrder $shippingOrder = null,
-        array $attributes = null
+        array $attributes = null,
+        ShippingOrder $shippingOrder = null
     ) {
         $this->fillModel($details, [
             OrderDetails::FIELD_ID_ORDER          => $order,

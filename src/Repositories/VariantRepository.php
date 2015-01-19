@@ -24,7 +24,7 @@ class VariantRepository extends CodeBasedResourceRepository implements VariantRe
     /**
      * @inheritdoc
      */
-    public function instance(Product $product, array $attributes = null)
+    public function instance(Product $product, array $attributes)
     {
         /** @var \Neomerx\Core\Models\Variant $variant */
         $variant = $this->makeModel();
@@ -61,7 +61,7 @@ class VariantRepository extends CodeBasedResourceRepository implements VariantRe
             foreach ($defaultSpecs as $specRow) {
                 /** @var Specification $specRow */
                 $this->specificationRepo
-                    ->instance($product, $specRow->value, $variant, $specRow->attributesToArray())
+                    ->instance($product, $specRow->value, $specRow->attributesToArray(), $variant)
                     ->saveOrFail();
             }
 

@@ -8,13 +8,13 @@ use \Illuminate\Database\Eloquent\Collection;
 interface CountryPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Country    $resource
-     * @param Language   $language
-     * @param array|null $attributes
+     * @param Country  $resource
+     * @param Language $language
+     * @param array    $attributes
      *
      * @return CountryProperties
      */
-    public function instance(Country $resource, Language $language, array $attributes = null);
+    public function instance(Country $resource, Language $language, array $attributes);
 
     /**
      * @param CountryProperties $properties

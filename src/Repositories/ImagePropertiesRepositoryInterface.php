@@ -7,13 +7,13 @@ use \Neomerx\Core\Models\ImageProperties;
 interface ImagePropertiesRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Image      $image
-     * @param Language   $language
-     * @param array|null $attributes
+     * @param Image    $image
+     * @param Language $language
+     * @param array    $attributes
      *
      * @return ImageProperties
      */
-    public function instance(Image $image, Language $language, array $attributes = null);
+    public function instance(Image $image, Language $language, array $attributes);
 
     /**
      * @param ImageProperties $properties

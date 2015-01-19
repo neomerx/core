@@ -18,7 +18,7 @@ class CountryPropertiesRepository extends IndexBasedResourceRepository implement
     /**
      * @inheritdoc
      */
-    public function instance(Country $resource, Language $language, array $attributes = null)
+    public function instance(Country $resource, Language $language, array $attributes)
     {
         /** @var CountryProperties $properties */
         $properties = $this->makeModel();

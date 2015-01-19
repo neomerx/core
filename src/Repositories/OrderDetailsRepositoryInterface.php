@@ -10,24 +10,24 @@ interface OrderDetailsRepositoryInterface extends RepositoryInterface
     /**
      * @param Order              $order
      * @param Variant            $variant
+     * @param array              $attributes
      * @param ShippingOrder|null $shippingOrder
-     * @param array|null         $attributes
      *
      * @return OrderDetails
      */
     public function instance(
         Order $order,
         Variant $variant,
-        ShippingOrder $shippingOrder = null,
-        array $attributes = null
+        array $attributes,
+        ShippingOrder $shippingOrder = null
     );
 
     /**
      * @param OrderDetails       $details
      * @param Order|null         $order
      * @param Variant|null       $variant
-     * @param ShippingOrder|null $shippingOrder
      * @param array|null         $attributes
+     * @param ShippingOrder|null $shippingOrder
      *
      * @return void
      */
@@ -35,8 +35,8 @@ interface OrderDetailsRepositoryInterface extends RepositoryInterface
         OrderDetails $details,
         Order $order = null,
         Variant $variant = null,
-        ShippingOrder $shippingOrder = null,
-        array $attributes = null
+        array $attributes = null,
+        ShippingOrder $shippingOrder = null
     );
 
     /**

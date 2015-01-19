@@ -5,11 +5,11 @@ use \Neomerx\Core\Models\Language;
 interface LanguageRepositoryInterface extends RepositoryInterface, SearchableInterface
 {
     /**
-     * @param array|null $attributes
+     * @param array $attributes
      *
      * @return Language
      */
-    public function instance(array $attributes = null);
+    public function instance(array $attributes);
 
     /**
      * @param Language $resource

@@ -15,7 +15,7 @@ class LanguageRepository extends CodeBasedResourceRepository implements Language
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes = null)
+    public function instance(array $attributes)
     {
         /** @var Language $resource */
         $resource = $this->makeModel();

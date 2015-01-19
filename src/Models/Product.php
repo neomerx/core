@@ -321,7 +321,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
             /** @noinspection PhpUndefinedMethodInspection */
             /** @var VariantRepositoryInterface $variantRepo */
             $variantRepo = App::make(VariantRepositoryInterface::class);
-            $variantRepo->create($this);
+            $variantRepo->create($this, [Variant::FIELD_SKU => $this->getAttribute(self::FIELD_SKU)]);
         }
 
         return $productCreated;

@@ -10,33 +10,33 @@ interface SpecificationRepositoryInterface extends RepositoryInterface, Searchab
     /**
      * @param Product             $product
      * @param CharacteristicValue $value
+     * @param array               $attributes
      * @param Variant|null        $variant
-     * @param array|null          $attributes
      *
      * @return Specification
      */
     public function instance(
         Product $product,
         CharacteristicValue $value,
-        Variant $variant = null,
-        array $attributes = null
+        array $attributes,
+        Variant $variant = null
     );
 
     /**
      * @param Specification            $specification
      * @param Product|null             $product
-     * @param Variant|null             $variant
      * @param CharacteristicValue|null $value
      * @param array|null               $attributes
+     * @param Variant|null             $variant
      *
      * @return void
      */
     public function fill(
         Specification $specification,
         Product $product = null,
-        Variant $variant = null,
         CharacteristicValue $value = null,
-        array $attributes = null
+        array $attributes = null,
+        Variant $variant = null
     );
 
     /**
