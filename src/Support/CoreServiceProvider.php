@@ -26,6 +26,10 @@ use \Neomerx\Core\Repositories\OrderDetailsRepositoryInterface;
 use \Neomerx\Core\Repositories\SpecificationRepositoryInterface;
 use \Neomerx\Core\Repositories\ImagePropertiesRepositoryInterface;
 use \Neomerx\Core\Repositories\CountryPropertiesRepositoryInterface;
+use \Neomerx\Core\Repositories\Manufacturers\ManufacturerRepository;
+use \Neomerx\Core\Repositories\Manufacturers\ManufacturerRepositoryInterface;
+use \Neomerx\Core\Repositories\Manufacturers\ManufacturerPropertiesRepository;
+use \Neomerx\Core\Repositories\Manufacturers\ManufacturerPropertiesRepositoryInterface;
 
 /**
  * Provides necessary Neomerx registrations in a single location. It bootstraps
@@ -156,5 +160,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->bind(LanguageRepositoryInterface::class, LanguageRepository::class);
         $this->app->bind(RegionRepositoryInterface::class, RegionRepository::class);
         $this->app->bind(AddressRepositoryInterface::class, AddressRepository::class);
+        $this->app->bind(ManufacturerRepositoryInterface::class, ManufacturerRepository::class);
+        $this->app->bind(ManufacturerPropertiesRepositoryInterface::class, ManufacturerPropertiesRepository::class);
     }
 }
