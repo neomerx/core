@@ -3,9 +3,8 @@
 use \Neomerx\Core\Models\Country;
 use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Repositories\RepositoryInterface;
-use \Neomerx\Core\Repositories\SearchableInterface;
 
-interface CountryRepositoryInterface extends RepositoryInterface, SearchableInterface
+interface CountryRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param array $attributes

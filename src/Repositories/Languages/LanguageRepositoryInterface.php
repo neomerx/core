@@ -2,9 +2,8 @@
 
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Repositories\RepositoryInterface;
-use \Neomerx\Core\Repositories\SearchableInterface;
 
-interface LanguageRepositoryInterface extends RepositoryInterface, SearchableInterface
+interface LanguageRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param array $attributes

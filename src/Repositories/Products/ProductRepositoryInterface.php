@@ -5,9 +5,8 @@ use \Neomerx\Core\Models\Category;
 use \Neomerx\Core\Models\Manufacturer;
 use \Neomerx\Core\Models\ProductTaxType;
 use \Neomerx\Core\Repositories\RepositoryInterface;
-use \Neomerx\Core\Repositories\SearchableInterface;
 
-interface ProductRepositoryInterface extends RepositoryInterface, SearchableInterface
+interface ProductRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param Category       $category

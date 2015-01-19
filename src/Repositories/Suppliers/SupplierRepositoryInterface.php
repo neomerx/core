@@ -3,9 +3,8 @@
 use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Supplier;
 use \Neomerx\Core\Repositories\RepositoryInterface;
-use \Neomerx\Core\Repositories\SearchableInterface;
 
-interface SupplierRepositoryInterface extends RepositoryInterface, SearchableInterface
+interface SupplierRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param array   $attributes

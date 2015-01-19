@@ -3,9 +3,8 @@
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Repositories\RepositoryInterface;
-use \Neomerx\Core\Repositories\SearchableInterface;
 
-interface VariantRepositoryInterface extends RepositoryInterface, SearchableInterface
+interface VariantRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param Product $product
