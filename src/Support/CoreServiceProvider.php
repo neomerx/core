@@ -22,13 +22,17 @@ use \Neomerx\Core\Repositories\ProductRepositoryInterface;
 use \Neomerx\Core\Repositories\VariantRepositoryInterface;
 use \Neomerx\Core\Repositories\LanguageRepositoryInterface;
 use \Neomerx\Core\Repositories\CountryPropertiesRepository;
+use \Neomerx\Core\Repositories\Suppliers\SupplierRepository;
 use \Neomerx\Core\Repositories\OrderDetailsRepositoryInterface;
 use \Neomerx\Core\Repositories\SpecificationRepositoryInterface;
 use \Neomerx\Core\Repositories\ImagePropertiesRepositoryInterface;
 use \Neomerx\Core\Repositories\CountryPropertiesRepositoryInterface;
 use \Neomerx\Core\Repositories\Manufacturers\ManufacturerRepository;
+use \Neomerx\Core\Repositories\Suppliers\SupplierRepositoryInterface;
+use \Neomerx\Core\Repositories\Suppliers\SupplierPropertiesRepository;
 use \Neomerx\Core\Repositories\Manufacturers\ManufacturerRepositoryInterface;
 use \Neomerx\Core\Repositories\Manufacturers\ManufacturerPropertiesRepository;
+use \Neomerx\Core\Repositories\Suppliers\SupplierPropertiesRepositoryInterface;
 use \Neomerx\Core\Repositories\Manufacturers\ManufacturerPropertiesRepositoryInterface;
 
 /**
@@ -162,5 +166,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->bind(AddressRepositoryInterface::class, AddressRepository::class);
         $this->app->bind(ManufacturerRepositoryInterface::class, ManufacturerRepository::class);
         $this->app->bind(ManufacturerPropertiesRepositoryInterface::class, ManufacturerPropertiesRepository::class);
+        $this->app->bind(SupplierRepositoryInterface::class, SupplierRepository::class);
+        $this->app->bind(SupplierPropertiesRepositoryInterface::class, SupplierPropertiesRepository::class);
     }
 }

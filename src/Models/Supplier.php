@@ -1,7 +1,6 @@
 <?php namespace Neomerx\Core\Models;
 
 use \Carbon\Carbon;
-use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -12,8 +11,6 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property-read Carbon     updated_at
  * @property      Address    address
  * @property      Collection properties
- * @method        Builder    withAddress()
- * @method        Builder    withProperties()
  */
 class Supplier extends BaseModel implements SelectByCodeInterface
 {
@@ -97,23 +94,19 @@ class Supplier extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param Builder $query
-     *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithAddress(Builder $query)
+    public static function withAddress()
     {
-        return $query->with([self::FIELD_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY]);
+        return self::FIELD_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY;
     }
 
     /**
-     * @param Builder $query
-     *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithProperties(Builder $query)
+    public function withProperties()
     {
-        return $query->with([self::FIELD_PROPERTIES.'.'.SupplierProperties::FIELD_LANGUAGE]);
+        return self::FIELD_PROPERTIES.'.'.ManufacturerProperties::FIELD_LANGUAGE;
     }
 
     /**
