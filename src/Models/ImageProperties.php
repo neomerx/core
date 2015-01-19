@@ -45,6 +45,13 @@ class ImageProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_ALT,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_LANGUAGE,
     ];

@@ -50,6 +50,14 @@ class OrderStatus extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_CODE,
+        self::FIELD_NAME,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID,
     ];

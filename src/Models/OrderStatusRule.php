@@ -41,6 +41,13 @@ class OrderStatusRule extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        '', // fillable must have at least 1 element otherwise it's ignored completely by Laravel
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_ORDER_STATUS_FROM,
         self::FIELD_ID_ORDER_STATUS_TO,

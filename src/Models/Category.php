@@ -83,6 +83,16 @@ class Category extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_CODE,
+        self::FIELD_LINK,
+        self::FIELD_ANCESTOR_CODE,
+        self::FIELD_ENABLED,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID,
         self::FIELD_ID_ANCESTOR,

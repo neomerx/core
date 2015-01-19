@@ -63,6 +63,13 @@ class Image extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_ORIGINAL_FILE,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID,
     ];

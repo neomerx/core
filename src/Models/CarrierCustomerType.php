@@ -42,6 +42,7 @@ class CarrierCustomerType extends BaseModel
      * {@inheritdoc}
      */
     protected $fillable = [
+        '', // fillable must have at least 1 element otherwise it's ignored completely by Laravel
     ];
 
     /**

@@ -54,6 +54,14 @@ class ProductImage extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_POSITION,
+        self::FIELD_IS_COVER,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_PRODUCT,
         self::FIELD_ID_VARIANT,

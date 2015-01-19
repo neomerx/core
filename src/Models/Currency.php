@@ -45,7 +45,17 @@ class Currency extends BaseModel implements SelectByCodeInterface
      */
     public $timestamps = false;
 
-    public $guarded = [];
+    /**
+     * {@inheritdoc}
+     */
+    protected $fillable = [
+        self::FIELD_ID,
+        self::FIELD_CODE,
+        self::FIELD_DECIMAL_DIGITS,
+    ];
+
+    public $guarded = [
+    ];
 
     /**
      * {@inheritdoc}

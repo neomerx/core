@@ -44,6 +44,14 @@ class EmployeePasswordReset extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_EMAIL,
+        self::FIELD_TOKEN,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     public $guarded = [
         self::FIELD_ID,
     ];

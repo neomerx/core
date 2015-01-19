@@ -45,6 +45,13 @@ class MeasurementProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_NAME,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_MEASUREMENT,
         self::FIELD_ID_LANGUAGE,

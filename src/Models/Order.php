@@ -88,6 +88,16 @@ class Order extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_SHIPPING_INCLUDED_TAX,
+        self::FIELD_SHIPPING_COST,
+        self::FIELD_PRODUCTS_TAX,
+        self::FIELD_PRODUCTS_TAX_DETAILS,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_STORE,
         self::FIELD_ID_ORDER_STATUS,

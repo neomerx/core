@@ -45,6 +45,15 @@ class CarrierPostcode extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_POSTCODE_TO,
+        self::FIELD_POSTCODE_FROM,
+        self::FIELD_POSTCODE_MASK,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_CARRIER,
     ];

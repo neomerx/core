@@ -48,6 +48,14 @@ class CurrencyProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_NAME,
+        self::FIELD_DESCRIPTION,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_CURRENCY,
         self::FIELD_ID_LANGUAGE,

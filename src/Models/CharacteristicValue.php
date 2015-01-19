@@ -54,6 +54,13 @@ class CharacteristicValue extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_CODE,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID,
         self::FIELD_ID_CHARACTERISTIC,

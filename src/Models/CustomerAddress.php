@@ -49,6 +49,14 @@ class CustomerAddress extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_TYPE,
+        self::FIELD_IS_DEFAULT,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
     ];
 

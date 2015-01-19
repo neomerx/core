@@ -50,6 +50,14 @@ class OrderDetails extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_PRICE_WO_TAX,
+        self::FIELD_QUANTITY,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_VARIANT,
     ];

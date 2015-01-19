@@ -73,6 +73,7 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
      * @var Role
      */
     private $roleModel;
+
     /**
      * {@inheritdoc}
      */

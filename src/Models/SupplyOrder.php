@@ -66,6 +66,14 @@ class SupplyOrder extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_EXPECTED_AT,
+        self::FIELD_STATUS,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_SUPPLIER,
         self::FIELD_ID_WAREHOUSE,

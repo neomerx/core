@@ -57,6 +57,17 @@ class CategoryProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_NAME,
+        self::FIELD_DESCRIPTION,
+        self::FIELD_META_TITLE,
+        self::FIELD_META_KEYWORDS,
+        self::FIELD_META_DESCRIPTION,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_CATEGORY,
         self::FIELD_ID_LANGUAGE,

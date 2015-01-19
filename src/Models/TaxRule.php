@@ -53,6 +53,14 @@ class TaxRule extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_NAME,
+        self::FIELD_PRIORITY,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_TAX,
     ];

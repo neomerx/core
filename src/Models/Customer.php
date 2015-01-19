@@ -89,6 +89,17 @@ class Customer extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_FIRST_NAME,
+        self::FIELD_LAST_NAME,
+        self::FIELD_EMAIL,
+        self::FIELD_MOBILE,
+        self::FIELD_GENDER,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_CUSTOMER_RISK,
         self::FIELD_ID_CUSTOMER_TYPE,

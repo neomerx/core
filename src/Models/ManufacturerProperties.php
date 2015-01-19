@@ -48,6 +48,14 @@ class ManufacturerProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_NAME,
+        self::FIELD_DESCRIPTION,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_MANUFACTURER,
         self::FIELD_ID_LANGUAGE,

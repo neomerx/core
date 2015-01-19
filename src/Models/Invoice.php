@@ -43,6 +43,13 @@ class Invoice extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_CODE,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
     ];
 

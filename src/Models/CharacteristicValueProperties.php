@@ -40,6 +40,13 @@ class CharacteristicValueProperties extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_VALUE,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_CHARACTERISTIC_VALUE,
         self::FIELD_ID_LANGUAGE,

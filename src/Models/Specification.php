@@ -49,6 +49,13 @@ class Specification extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_POSITION,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_PRODUCT,
         self::FIELD_ID_VARIANT,

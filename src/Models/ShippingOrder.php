@@ -57,6 +57,13 @@ class ShippingOrder extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_TRACKING_NUMBER,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_CARRIER,
         self::FIELD_ID_SHIPPING_ORDER_STATUS,

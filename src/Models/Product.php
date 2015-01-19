@@ -94,6 +94,20 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_SKU,
+        self::FIELD_LINK,
+        self::FIELD_ENABLED,
+        self::FIELD_PRICE_WO_TAX,
+        self::FIELD_PKG_WEIGHT,
+        self::FIELD_PKG_LENGTH,
+        self::FIELD_PKG_WIDTH,
+        self::FIELD_PKG_HEIGHT,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID,
         self::FIELD_ID_CATEGORY_DEFAULT,

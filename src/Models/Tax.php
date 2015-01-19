@@ -70,6 +70,14 @@ class Tax extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_CODE,
+        self::FIELD_EXPRESSION,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID,
         self::FIELD_EXPRESSION_SERIALIZED,

@@ -77,6 +77,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
      * {@inheritdoc}
      */
     protected $fillable = [
+        self::FIELD_CODE,
         self::FIELD_MIN_WEIGHT,
         self::FIELD_MAX_WEIGHT,
         self::FIELD_MIN_COST,

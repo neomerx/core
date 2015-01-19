@@ -48,6 +48,15 @@ class ImageFormat extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_NAME,
+        self::FIELD_WIDTH,
+        self::FIELD_HEIGHT,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID,
     ];

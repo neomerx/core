@@ -56,6 +56,13 @@ class ImagePath extends BaseModel
     /**
      * {@inheritdoc}
      */
+    protected $fillable = [
+        self::FIELD_PATH,
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $hidden = [
         self::FIELD_ID_IMAGE,
         self::FIELD_ID_IMAGE_FORMAT,
