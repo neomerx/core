@@ -24,12 +24,12 @@ interface VariantRepositoryInterface extends RepositoryInterface
     public function fill(Variant $variant, Product $product = null, array $attributes = null);
 
     /**
-     * @param Product    $product
-     * @param array|null $attributes
+     * @param Product $product
+     * @param array   $attributes
      *
      * @return Variant
      */
-    public function create(Product $product, array $attributes = null);
+    public function create(Product $product, array $attributes);
 
     /**
      * @param string $sku

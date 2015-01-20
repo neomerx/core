@@ -46,7 +46,7 @@ class VariantRepository extends CodeBasedResourceRepository implements VariantRe
     /**
      * @inheritdoc
      */
-    public function create(Product $product, array $attributes = null)
+    public function create(Product $product, array $attributes)
     {
         $defaultVariant = $product->getDefaultVariant();
         // for just created products there is no default variant yet
