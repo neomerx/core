@@ -14,13 +14,13 @@ class GenerateImageCommand
      */
     public function byFormat(Job $job, array $data)
     {
-        $formatName = S\arrayGetValue($data, 'name');
+        $formatCode = S\arrayGetValue($data, ImageFormat::FIELD_CODE);
 
-        if ($formatName !== null) {
+        if ($formatCode !== null) {
             /** @var ImageFormat $imageFormatModel */
             $imageFormatModel = new ImageFormat();
             /** @var ImagePath $path */
-            $imageFormatModel = $imageFormatModel->selectByName($formatName)->firstOrFail();
+            $imageFormatModel = $imageFormatModel->selectByCode($formatCode)->firstOrFail();
 
             foreach ($imageFormatModel->paths as $path) {
                 $imageGenerated = $path->generateImage();

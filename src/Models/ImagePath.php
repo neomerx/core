@@ -205,7 +205,7 @@ class ImagePath extends BaseModel
         $destinationFileName = pathinfo($originalFileName, PATHINFO_FILENAME);
         $destinationFileExt  = pathinfo($originalFileName, PATHINFO_EXTENSION);
 
-        $resizedFileName = $destinationFileName.'-'.$format->name.'.'.$destinationFileExt;
+        $resizedFileName = $destinationFileName.'-'.$format->{ImageFormat::FIELD_CODE}.'.'.$destinationFileExt;
         $resizedFilePath = $destinationFolder.$resizedFileName;
 
         // if we update an existing model...
