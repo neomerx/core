@@ -87,7 +87,7 @@ class CoreServiceProvider extends ServiceProvider
             | folder separator.
             |
             */
-            Config::KEY_IMAGE_FOLDER => storage_path() . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR,
+            Config::KEY_IMAGE_FOLDER => storage_path().DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR,
             /*
             |--------------------------------------------------------------------------
             | Product tax type for shipping

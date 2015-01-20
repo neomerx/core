@@ -17,10 +17,10 @@ interface ImagePathRepositoryInterface extends RepositoryInterface
     public function instance(Image $image, ImageFormat $format, array $attributes);
 
     /**
-     * @param ImagePath   $resource
-     * @param Image       $image
-     * @param ImageFormat $format
-     * @param array       $attributes
+     * @param ImagePath        $resource
+     * @param Image|null       $image
+     * @param ImageFormat|null $format
+     * @param array|null       $attributes
      *
      * @return void
      */
