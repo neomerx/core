@@ -1,6 +1,5 @@
 <?php namespace Neomerx\Core\Repositories\Territories;
 
-use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Country;
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CountryProperties;
@@ -38,14 +37,5 @@ class CountryPropertiesRepository extends IndexBasedResourceRepository implement
     ) {
         $data = [CountryProperties::FIELD_ID_COUNTRY => $resource, CountryProperties::FIELD_ID_LANGUAGE => $language];
         $this->fillModel($properties, $data, $attributes);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function regions(Country $resource)
-    {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return $resource->regions()->orderBy(Region::FIELD_POSITION, 'asc')->get();
     }
 }
