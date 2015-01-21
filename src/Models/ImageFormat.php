@@ -1,9 +1,11 @@
 <?php namespace Neomerx\Core\Models;
 
 use \Neomerx\Core\Support as S;
-use \Illuminate\Support\Facades\Queue;
 use \Illuminate\Database\Eloquent\Collection;
-use \Neomerx\Core\Commands\GenerateImageCommand;
+use \Illuminate\Foundation\Bus\DispatchesCommands;
+use \Neomerx\Core\Commands\DeleteImageFilesCommand;
+use \Neomerx\Core\Commands\CreateImagesByFormatCommand;
+use \Neomerx\Core\Commands\UpdateImagesByFormatCommand;
 
 /**
  * @property int        id_image_format
@@ -11,9 +13,12 @@ use \Neomerx\Core\Commands\GenerateImageCommand;
  * @property int        width
  * @property int        height
  * @property Collection paths
+ * @property Collection images
  */
 class ImageFormat extends BaseModel implements SelectByCodeInterface
 {
+    use DispatchesCommands;
+
     const BIND_NAME  = __CLASS__;
     const TABLE_NAME = 'image_formats';
 
@@ -24,6 +29,7 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
     const FIELD_WIDTH  = 'width';
     const FIELD_HEIGHT = 'height';
     const FIELD_PATHS  = 'paths';
+    const FIELD_IMAGES = 'images';
 
     /**
      * {@inheritdoc}
@@ -117,15 +123,60 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
     /**
      * {@inheritdoc}
      *
+     * Generates image paths for new format.
+     */
+    protected function onCreated()
+    {
+        $onUpdated = parent::onUpdated();
+
+        $command = app()->make(
+            CreateImagesByFormatCommand::class,
+            [CreateImagesByFormatCommand::PARAM_FORMAT_CODE => $this->{self::FIELD_CODE}]
+        );
+        $this->dispatch($command);
+
+        return $onUpdated;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
      * Regenerates all image paths with new format parameters.
      */
     protected function onUpdated()
     {
         $onUpdated = parent::onUpdated();
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        Queue::push(GenerateImageCommand::class.'@byFormat', [self::FIELD_CODE => $this->{self::FIELD_CODE}]);
+        $command = app()->make(
+            UpdateImagesByFormatCommand::class,
+            [UpdateImagesByFormatCommand::PARAM_FORMAT_CODE => $this->{self::FIELD_CODE}]
+        );
+        $this->dispatch($command);
 
         return $onUpdated;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Delete all image paths for the format.
+     */
+    protected function onDeleting()
+    {
+        $onDeleting = parent::onDeleting();
+
+        $fileNames = [];
+        foreach ($this->paths as $path) {
+            /** @var ImagePath $path */
+            $fileNames[] = $path->{ImagePath::FIELD_PATH};
+        }
+
+        $command = app()->make(
+            DeleteImageFilesCommand::class,
+            [DeleteImageFilesCommand::PARAM_FILE_NAMES => $fileNames]
+        );
+        $this->dispatch($command);
+
+        return $onDeleting;
     }
 }

@@ -1,10 +1,5 @@
 <?php namespace Neomerx\Core\Models;
 
-use \Neomerx\Core\Support as S;
-use \Illuminate\Support\Facades\DB;
-use \Illuminate\Support\Facades\App;
-use \Neomerx\Core\Exceptions\InvalidArgumentException;
-
 /**
  * @property int     id_product_image
  * @property int     id_product
@@ -56,7 +51,6 @@ class ProductImage extends BaseModel
      */
     protected $fillable = [
         self::FIELD_POSITION,
-        self::FIELD_IS_COVER,
     ];
 
     /**
@@ -75,6 +69,7 @@ class ProductImage extends BaseModel
         self::FIELD_ID_PRODUCT,
         self::FIELD_ID_VARIANT,
         self::FIELD_ID_IMAGE,
+        self::FIELD_IS_COVER,
     ];
 
     /**
@@ -87,7 +82,9 @@ class ProductImage extends BaseModel
             self::FIELD_ID_VARIANT => 'sometimes|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
             self::FIELD_ID_IMAGE   => 'required|integer|min:1|max:4294967295|exists:'.Image::TABLE_NAME,
             self::FIELD_POSITION   => 'required|numeric|min:0|max:255',
-            self::FIELD_IS_COVER   => 'required|boolean',
+
+            // direct change  of 'is cover' is forbidden use repository's method instead
+            self::FIELD_IS_COVER   => 'sometimes|required|forbidden',
         ];
     }
 
@@ -97,11 +94,13 @@ class ProductImage extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_PRODUCT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
+            self::FIELD_ID_PRODUCT => 'sometimes|required|forbidden',
             self::FIELD_ID_VARIANT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
-            self::FIELD_ID_IMAGE   => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Image::TABLE_NAME,
+            self::FIELD_ID_IMAGE   => 'sometimes|required|forbidden',
             self::FIELD_POSITION   => 'sometimes|required|numeric|min:0|max:255',
-            self::FIELD_IS_COVER   => 'sometimes|required|boolean',
+
+            // direct change  of 'is cover' is forbidden use repository's method instead
+            self::FIELD_IS_COVER   => 'sometimes|required|forbidden',
         ];
     }
 
@@ -177,98 +176,5 @@ class ProductImage extends BaseModel
     {
         $image = $this->image;
         $image->deleteOrFail();
-    }
-
-    /**
-     * Sets other product images of the same product as non-cover if current set as cover.
-     *
-     * @return bool
-     */
-    protected function onUpdated()
-    {
-        $onUpdated = parent::onUpdated();
-        /** @noinspection PhpUndefinedFieldInspection */
-        $isCoversToFalse = $onUpdated and $this->is_cover and $this->isDirty(self::FIELD_IS_COVER);
-        $isCoversToFalse === false ?: $this->setAllProductImagesCoverToFalse();
-        return $onUpdated;
-    }
-
-    /**
-     * @param Product      $product
-     * @param string       $fileName
-     * @param Variant|null $variant
-     *
-     * @return Image
-     *
-     * @throws InvalidArgumentException
-     */
-    public function addImage(
-        Product $product,
-        $fileName,
-        Variant $variant = null
-    ) {
-        /** @noinspection PhpUndefinedMethodInspection */
-        /** @var \Neomerx\Core\Models\Image $image */
-        $image = App::make(Image::BIND_NAME);
-        $image->{Image::FIELD_ORIGINAL_FILE} = $fileName;
-
-        // if we store a variant image it can't be a product cover image
-        if ($variant !== null and $this->{self::FIELD_IS_COVER}) {
-            throw new InvalidArgumentException(self::FIELD_IS_COVER);
-        }
-
-        $this->{self::FIELD_ID_PRODUCT} = $product->{Product::FIELD_ID};
-        $this->{self::FIELD_ID_VARIANT} = ($variant !== null ? $variant->{Variant::FIELD_ID} : null);
-
-        /** @noinspection PhpUndefinedMethodInspection */
-        DB::beginTransaction();
-        try {
-
-            // create image
-            $image->saveOrFail();
-
-            // create product image
-            $this->{self::FIELD_ID_IMAGE} = $image->{Image::FIELD_ID};
-            $this->saveOrFail();
-
-            if ($this->{self::FIELD_IS_COVER} === true) {
-                $this->setAsCover();
-            }
-
-            $allExecutedOk = true;
-
-        } finally {
-            /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
-        }
-
-        return $image;
-    }
-
-    /**
-     * Set product image as cover.
-     */
-    public function setAsCover()
-    {
-        /** @noinspection PhpUndefinedMethodInspection */
-        DB::beginTransaction();
-        try {
-
-            $this->setAllProductImagesCoverToFalse();
-            $this->updateOrFail([self::FIELD_IS_COVER => true]);
-
-            $allExecutedOk = true;
-
-        } finally {
-            /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
-        }
-    }
-
-    private function setAllProductImagesCoverToFalse()
-    {
-        /** @noinspection PhpUndefinedMethodInspection */
-        $this->product->productImages()->where(self::FIELD_ID, '<>', $this->{self::FIELD_ID})
-            ->update([self::FIELD_IS_COVER => false]);
     }
 }

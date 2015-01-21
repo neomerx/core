@@ -1,14 +1,9 @@
 <?php namespace Neomerx\Core\Models;
 
-use \Neomerx\Core\Config;
-use \Illuminate\Support\Facades\App;
-use \Illuminate\Support\Facades\File;
-use \Neomerx\Core\Exceptions\Exception;
-use \Neomerx\Core\Exceptions\LogicException;
 use \Illuminate\Database\Eloquent\Collection;
-use \Neomerx\Core\Exceptions\ConfigurationException;
-use \Intervention\Image\Facades\Image as ImageProcessor;
-use \Intervention\Image\Exception\NotSupportedException;
+use \Illuminate\Foundation\Bus\DispatchesCommands;
+use \Neomerx\Core\Commands\DeleteImageFilesCommand;
+use \Neomerx\Core\Commands\CreateImagesByImageCommand;
 
 /**
  * @property int          id_image
@@ -22,6 +17,8 @@ use \Intervention\Image\Exception\NotSupportedException;
  */
 class Image extends BaseModel
 {
+    use DispatchesCommands;
+
     const BIND_NAME  = __CLASS__;
     const TABLE_NAME = 'images';
 
@@ -32,13 +29,6 @@ class Image extends BaseModel
     const FIELD_PROPERTIES    = 'properties';
     const FIELD_PRODUCT_IMAGE = 'productImage';
     const FIELD_PATHS         = 'paths';
-
-    /**
-     * Background used when converting images to specified formats.
-     *
-     * @var string
-     */
-    private $background = 'rgba(255, 255, 255, 0)';
 
     /**
      * {@inheritdoc}
@@ -98,8 +88,7 @@ class Image extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ORIGINAL_FILE => 'required|alpha_dash_dot_space|min:1|max:'.
-                self::ORIGINAL_FILE_NAME_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
+            self::FIELD_ORIGINAL_FILE => 'sometimes|required|forbidden',
         ];
     }
 
@@ -134,45 +123,6 @@ class Image extends BaseModel
     }
 
     /**
-     * @param string $background
-     */
-    public function setBackground($background)
-    {
-        $this->background = $background;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBackground()
-    {
-        return $this->background;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Check if uploaded file is valid image.
-     */
-    protected function onCreating()
-    {
-        if (parent::onCreating() === false) {
-            return false;
-        }
-
-        $imageFileIsValid = true;
-        try {
-            $realPath = self::getUploadFolderPath($this->original_file);
-            /** @noinspection PhpUndefinedMethodInspection */
-            ImageProcessor::make($realPath);
-        } catch (NotSupportedException $e) {
-            $imageFileIsValid = false;
-        }
-
-        return $imageFileIsValid;
-    }
-
-    /**
      * {@inheritdoc}
      *
      * When model saved we should generate the image in required formats.
@@ -181,7 +131,11 @@ class Image extends BaseModel
     {
         $parentOnCreate = parent::onCreated();
 
-        $this->createImagePathsForAllFormats();
+        $command = app()->make(
+            CreateImagesByImageCommand::class,
+            [CreateImagesByImageCommand::PARAM_ID_IMAGE => $this->{self::FIELD_ID}]
+        );
+        $this->dispatch($command);
 
         return $parentOnCreate;
     }
@@ -189,109 +143,26 @@ class Image extends BaseModel
     /**
      * {@inheritdoc}
      */
-    protected function onUpdating()
-    {
-        $parentOnUpdating = parent::onUpdating();
-        $generateImagesIsOK = true;
-        try {
-            $this->generateImages();
-        } catch (Exception $e) { // \Neomerx\Exceptions\Exception
-            $generateImagesIsOK = false;
-        }
-        return $parentOnUpdating and $generateImagesIsOK;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function onDeleting()
     {
-        $imageCouldBeDeleted = true;
+        $parentOnDeleted = parent::onDeleting();
 
-        try {
-            $originalFileFullPath = self::getUploadFolderPath($this->original_file);
-            /** @noinspection PhpUndefinedMethodInspection */
-            if (File::exists($originalFileFullPath) === true and File::isWritable($originalFileFullPath) === false) {
-                throw new LogicException();
-            }
+        // collect all files to delete (original + in various formats) then send to delete them
 
-            $this->deleteImagePaths();
-
-            /** @noinspection PhpUndefinedMethodInspection */
-            if (File::delete($originalFileFullPath) === false) {
-                throw new LogicException();
-            }
-
-        } catch (LogicException $e) {
-            $imageCouldBeDeleted = false;
+        /** @var array<string> $pathFileNames */
+        $pathFileNames = [];
+        foreach ($this->{self::FIELD_PATHS} as $path) {
+            /** @var ImagePath $path */
+            $pathFileNames[] = $path->{ImagePath::FIELD_PATH};
         }
+        $pathFileNames[] = $this->{self::FIELD_ORIGINAL_FILE};
 
-        return parent::onDeleting() and $imageCouldBeDeleted;
-    }
+        $command = app()->make(
+            DeleteImageFilesCommand::class,
+            [DeleteImageFilesCommand::PARAM_FILE_NAMES => $pathFileNames]
+        );
+        $this->dispatch($command);
 
-    /**
-     * Create image paths for all image formats.
-     *
-     * @throws \Neomerx\Core\Exceptions\Exception
-     */
-    private function createImagePathsForAllFormats()
-    {
-        $formats = ImageFormat::all();
-        $background = $this->getBackground();
-        foreach ($formats as $format) {
-            /** @var ImagePath $imagePath */
-            /** @noinspection PhpUndefinedMethodInspection */
-            $imagePath = App::make(ImagePath::BIND_NAME);
-            $imagePath->{ImagePath::FIELD_ID_IMAGE_FORMAT} = $format->{ImageFormat::FIELD_ID};
-            $imagePath->setBackground($background);
-            /** @noinspection PhpUndefinedMethodInspection */
-            if ($this->paths()->save($imagePath) === false) {
-                $this->deleteOrFail();
-                throw new Exception('Create image failed.');
-            }
-        }
-    }
-
-    /**
-     * Delete all children images (image paths) and re-create them.
-     */
-    public function generateImages()
-    {
-        $this->deleteImagePaths();
-        $this->createImagePathsForAllFormats();
-    }
-
-    /**
-     * Get full path to upload (writable) folder.
-     *
-     * @param string|null $fileName
-     *
-     * @return string
-     * @throws \Neomerx\Core\Exceptions\ConfigurationException
-     */
-    public static function getUploadFolderPath($fileName = null)
-    {
-        settype($fileName, 'string');
-
-        $path = trim(Config::get(Config::KEY_IMAGE_FOLDER));
-
-        if (substr($path, -1) !== DIRECTORY_SEPARATOR) {
-            throw new ConfigurationException(Config::KEY_IMAGE_FOLDER);
-        }
-
-        return $fileName === null ? $path : $path.$fileName;
-    }
-
-    /**
-     * Delete all children images (image paths).
-     *
-     * @throws \Neomerx\Core\Exceptions\LogicException
-     */
-    private function deleteImagePaths()
-    {
-        foreach ($this->paths as $imagePath) {
-            /** @noinspection PhpUndefinedMethodInspection */
-            $imagePath->deleteOrFail();
-        }
+        return $parentOnDeleted;
     }
 }

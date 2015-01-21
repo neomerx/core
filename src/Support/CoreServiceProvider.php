@@ -1,10 +1,12 @@
 <?php namespace Neomerx\Core\Support;
 
 use \Neomerx\Core\Config;
+use \Neomerx\Core\Filesystem\Images;
 use \Illuminate\Support\Facades\Lang;
 use \Illuminate\Support\ServiceProvider;
 use \Neomerx\Core\Models\ProductTaxType;
 use \Illuminate\Support\Facades\Validator;
+use \Neomerx\Core\Filesystem\ImagesInterface;
 use \Illuminate\Support\Facades\Config as SysConfig;
 use \Neomerx\Core\Repositories\Images\ImageRepository;
 use \Neomerx\Core\Repositories\Images\ImagePathRepository;
@@ -18,6 +20,7 @@ use \Neomerx\Core\Repositories\Territories\RegionRepository;
 use \Neomerx\Core\Repositories\Territories\CountryRepository;
 use \Neomerx\Core\Repositories\Orders\OrderDetailsRepository;
 use \Neomerx\Core\Repositories\Images\ImageRepositoryInterface;
+use \Neomerx\Core\Repositories\Products\ProductImageRepository;
 use \Neomerx\Core\Repositories\Images\ImagePropertiesRepository;
 use \Neomerx\Core\Repositories\Products\SpecificationRepository;
 use \Neomerx\Core\Repositories\Images\ImagePathRepositoryInterface;
@@ -33,6 +36,7 @@ use \Neomerx\Core\Repositories\Orders\OrderDetailsRepositoryInterface;
 use \Neomerx\Core\Repositories\Suppliers\SupplierPropertiesRepository;
 use \Neomerx\Core\Repositories\Territories\CountryRepositoryInterface;
 use \Neomerx\Core\Repositories\Territories\CountryPropertiesRepository;
+use \Neomerx\Core\Repositories\Products\ProductImageRepositoryInterface;
 use \Neomerx\Core\Repositories\Products\SpecificationRepositoryInterface;
 use \Neomerx\Core\Repositories\Images\ImagePropertiesRepositoryInterface;
 use \Neomerx\Core\Repositories\Manufacturers\ManufacturerRepositoryInterface;
@@ -165,5 +169,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->bind(ImageRepositoryInterface::class, ImageRepository::class);
         $this->app->bind(ImageFormatRepositoryInterface::class, ImageFormatRepository::class);
         $this->app->bind(ImagePathRepositoryInterface::class, ImagePathRepository::class);
+        $this->app->bind(ImagesInterface::class, Images::class);
+        $this->app->bind(ProductImageRepositoryInterface::class, ProductImageRepository::class);
     }
 }
