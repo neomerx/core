@@ -9,10 +9,10 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface ProductImageRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Product $product
-     * @param Image   $image
-     * @param array   $attributes
-     * @param Variant $variant
+     * @param Product      $product
+     * @param Image        $image
+     * @param array        $attributes
+     * @param Variant|null $variant
      *
      * @return ProductImage
      */
