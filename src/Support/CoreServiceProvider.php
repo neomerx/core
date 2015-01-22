@@ -17,12 +17,14 @@ use \Neomerx\Core\Repositories\Images\ImageFormatRepository;
 use \Neomerx\Core\Repositories\Languages\LanguageRepository;
 use \Neomerx\Core\Repositories\Suppliers\SupplierRepository;
 use \Neomerx\Core\Repositories\Territories\RegionRepository;
+use \Neomerx\Core\Repositories\Categories\CategoryRepository;
 use \Neomerx\Core\Repositories\Territories\CountryRepository;
 use \Neomerx\Core\Repositories\Orders\OrderDetailsRepository;
 use \Neomerx\Core\Repositories\Images\ImageRepositoryInterface;
 use \Neomerx\Core\Repositories\Products\ProductImageRepository;
 use \Neomerx\Core\Repositories\Images\ImagePropertiesRepository;
 use \Neomerx\Core\Repositories\Products\SpecificationRepository;
+use \Neomerx\Core\Repositories\Products\ProductCategoryRepository;
 use \Neomerx\Core\Repositories\Images\ImagePathRepositoryInterface;
 use \Neomerx\Core\Repositories\Products\ProductRepositoryInterface;
 use \Neomerx\Core\Repositories\Products\VariantRepositoryInterface;
@@ -32,16 +34,20 @@ use \Neomerx\Core\Repositories\Images\ImageFormatRepositoryInterface;
 use \Neomerx\Core\Repositories\Languages\LanguageRepositoryInterface;
 use \Neomerx\Core\Repositories\Suppliers\SupplierRepositoryInterface;
 use \Neomerx\Core\Repositories\Territories\RegionRepositoryInterface;
+use \Neomerx\Core\Repositories\Categories\CategoryRepositoryInterface;
 use \Neomerx\Core\Repositories\Orders\OrderDetailsRepositoryInterface;
 use \Neomerx\Core\Repositories\Suppliers\SupplierPropertiesRepository;
 use \Neomerx\Core\Repositories\Territories\CountryRepositoryInterface;
+use \Neomerx\Core\Repositories\Categories\CategoryPropertiesRepository;
 use \Neomerx\Core\Repositories\Territories\CountryPropertiesRepository;
 use \Neomerx\Core\Repositories\Products\ProductImageRepositoryInterface;
 use \Neomerx\Core\Repositories\Products\SpecificationRepositoryInterface;
 use \Neomerx\Core\Repositories\Images\ImagePropertiesRepositoryInterface;
+use \Neomerx\Core\Repositories\Products\ProductCategoryRepositoryInterface;
 use \Neomerx\Core\Repositories\Manufacturers\ManufacturerRepositoryInterface;
 use \Neomerx\Core\Repositories\Manufacturers\ManufacturerPropertiesRepository;
 use \Neomerx\Core\Repositories\Suppliers\SupplierPropertiesRepositoryInterface;
+use \Neomerx\Core\Repositories\Categories\CategoryPropertiesRepositoryInterface;
 use \Neomerx\Core\Repositories\Territories\CountryPropertiesRepositoryInterface;
 use \Neomerx\Core\Repositories\Manufacturers\ManufacturerPropertiesRepositoryInterface;
 
@@ -152,24 +158,27 @@ class CoreServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
-        $this->app->bind(VariantRepositoryInterface::class, VariantRepository::class);
-        $this->app->bind(SpecificationRepositoryInterface::class, SpecificationRepository::class);
-        $this->app->bind(ImagePropertiesRepositoryInterface::class, ImagePropertiesRepository::class);
-        $this->app->bind(OrderDetailsRepositoryInterface::class, OrderDetailsRepository::class);
-        $this->app->bind(CountryPropertiesRepositoryInterface::class, CountryPropertiesRepository::class);
-        $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class);
-        $this->app->bind(LanguageRepositoryInterface::class, LanguageRepository::class);
+        $this->app->bind(ImagesInterface::class, Images::class);
+        $this->app->bind(ImageRepositoryInterface::class, ImageRepository::class);
         $this->app->bind(RegionRepositoryInterface::class, RegionRepository::class);
         $this->app->bind(AddressRepositoryInterface::class, AddressRepository::class);
-        $this->app->bind(ManufacturerRepositoryInterface::class, ManufacturerRepository::class);
-        $this->app->bind(ManufacturerPropertiesRepositoryInterface::class, ManufacturerPropertiesRepository::class);
+        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        $this->app->bind(VariantRepositoryInterface::class, VariantRepository::class);
+        $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class);
+        $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
+        $this->app->bind(LanguageRepositoryInterface::class, LanguageRepository::class);
         $this->app->bind(SupplierRepositoryInterface::class, SupplierRepository::class);
-        $this->app->bind(SupplierPropertiesRepositoryInterface::class, SupplierPropertiesRepository::class);
-        $this->app->bind(ImageRepositoryInterface::class, ImageRepository::class);
-        $this->app->bind(ImageFormatRepositoryInterface::class, ImageFormatRepository::class);
         $this->app->bind(ImagePathRepositoryInterface::class, ImagePathRepository::class);
-        $this->app->bind(ImagesInterface::class, Images::class);
+        $this->app->bind(ImageFormatRepositoryInterface::class, ImageFormatRepository::class);
+        $this->app->bind(ManufacturerRepositoryInterface::class, ManufacturerRepository::class);
+        $this->app->bind(OrderDetailsRepositoryInterface::class, OrderDetailsRepository::class);
         $this->app->bind(ProductImageRepositoryInterface::class, ProductImageRepository::class);
+        $this->app->bind(SpecificationRepositoryInterface::class, SpecificationRepository::class);
+        $this->app->bind(ImagePropertiesRepositoryInterface::class, ImagePropertiesRepository::class);
+        $this->app->bind(ProductCategoryRepositoryInterface::class, ProductCategoryRepository::class);
+        $this->app->bind(CountryPropertiesRepositoryInterface::class, CountryPropertiesRepository::class);
+        $this->app->bind(CategoryPropertiesRepositoryInterface::class, CategoryPropertiesRepository::class);
+        $this->app->bind(SupplierPropertiesRepositoryInterface::class, SupplierPropertiesRepository::class);
+        $this->app->bind(ManufacturerPropertiesRepositoryInterface::class, ManufacturerPropertiesRepository::class);
     }
 }
