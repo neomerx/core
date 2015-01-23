@@ -7,6 +7,11 @@ use \Illuminate\Support\ServiceProvider;
 use \Neomerx\Core\Models\ProductTaxType;
 use \Illuminate\Support\Facades\Validator;
 use \Neomerx\Core\Filesystem\ImagesInterface;
+use Neomerx\Core\Repositories\Auth\EmployeeRepository;
+use Neomerx\Core\Repositories\Auth\EmployeeRepositoryInterface;
+use Neomerx\Core\Repositories\Auth\EmployeeRoleRepository;
+use Neomerx\Core\Repositories\Auth\EmployeeRoleRepositoryInterface;
+use \Neomerx\Core\Repositories\Auth\RoleRepository;
 use \Illuminate\Support\Facades\Config as SysConfig;
 use \Neomerx\Core\Repositories\Images\ImageRepository;
 use \Neomerx\Core\Repositories\Features\ValueRepository;
@@ -14,6 +19,7 @@ use \Neomerx\Core\Repositories\Images\ImagePathRepository;
 use \Neomerx\Core\Repositories\Products\ProductRepository;
 use \Neomerx\Core\Repositories\Products\VariantRepository;
 use \Neomerx\Core\Repositories\Addresses\AddressRepository;
+use \Neomerx\Core\Repositories\Auth\RoleRepositoryInterface;
 use \Neomerx\Core\Repositories\Customers\CustomerRepository;
 use \Neomerx\Core\Repositories\Images\ImageFormatRepository;
 use \Neomerx\Core\Repositories\Languages\LanguageRepository;
@@ -187,6 +193,7 @@ class CoreServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(ImagesInterface::class, Images::class);
+        $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
         $this->app->bind(ImageRepositoryInterface::class, ImageRepository::class);
         $this->app->bind(ValueRepositoryInterface::class, ValueRepository::class);
         $this->app->bind(RegionRepositoryInterface::class, RegionRepository::class);
@@ -196,6 +203,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class);
         $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
         $this->app->bind(CustomerRepositoryInterface::class, CustomerRepository::class);
+        $this->app->bind(EmployeeRepositoryInterface::class, EmployeeRepository::class);
         $this->app->bind(LanguageRepositoryInterface::class, LanguageRepository::class);
         $this->app->bind(SupplierRepositoryInterface::class, SupplierRepository::class);
         $this->app->bind(ImagePathRepositoryInterface::class, ImagePathRepository::class);
@@ -203,6 +211,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->bind(MeasurementRepositoryInterface::class, MeasurementRepository::class);
         $this->app->bind(CustomerRiskRepositoryInterface::class, CustomerRiskRepository::class);
         $this->app->bind(CustomerTypeRepositoryInterface::class, CustomerTypeRepository::class);
+        $this->app->bind(EmployeeRoleRepositoryInterface::class, EmployeeRoleRepository::class);
         $this->app->bind(ManufacturerRepositoryInterface::class, ManufacturerRepository::class);
         $this->app->bind(OrderDetailsRepositoryInterface::class, OrderDetailsRepository::class);
         $this->app->bind(ProductImageRepositoryInterface::class, ProductImageRepository::class);
