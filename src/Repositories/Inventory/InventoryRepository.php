@@ -35,7 +35,7 @@ class InventoryRepository extends IndexBasedResourceRepository implements Invent
         Warehouse $warehouse = null,
         array $attributes = null
     ) {
-        $attributes = isset($attributes) ? $attributes : [];
+        $attributes = isset($attributes) === true ? $attributes : [];
         $attributes[Inventory::FIELD_SKU] = $variant->{Variant::FIELD_SKU};
         $this->fillModel($resource, [
             Inventory::FIELD_ID_WAREHOUSE => $warehouse,

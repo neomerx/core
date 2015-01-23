@@ -22,6 +22,7 @@ interface InventoryRepositoryInterface extends RepositoryInterface
      * @param Warehouse|null $warehouse
      * @param array|null     $attributes
      *
+     * @return void
      */
     public function fill(
         Inventory $resource,

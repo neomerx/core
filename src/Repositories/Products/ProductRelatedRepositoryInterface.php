@@ -16,8 +16,8 @@ interface ProductRelatedRepositoryInterface extends RepositoryInterface
 
     /**
      * @param ProductRelated $resource
-     * @param Product        $product
-     * @param Product        $related
+     * @param Product|null   $product
+     * @param Product|null   $related
      *
      * @return void
      */
