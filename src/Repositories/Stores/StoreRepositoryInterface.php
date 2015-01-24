@@ -19,6 +19,7 @@ interface StoreRepositoryInterface extends RepositoryInterface
      * @param Address|null $address
      * @param array|null   $attributes
      *
+     * @return void
      */
     public function fill(Store $resource, Address $address = null, array $attributes = null);
 
