@@ -21,9 +21,9 @@ interface EmployeeRepositoryInterface extends RepositoryInterface
     public function fill(Employee $resource, array $attributes);
 
     /**
-     * @param int    $resourceId
-     * @param array  $scopes
-     * @param array  $columns
+     * @param int   $resourceId
+     * @param array $scopes
+     * @param array $columns
      *
      * @return Employee
      */

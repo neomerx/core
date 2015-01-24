@@ -8,7 +8,7 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface VariantPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Variant $resource
+     * @param Variant  $resource
      * @param Language $language
      * @param array    $attributes
      *
@@ -18,9 +18,9 @@ interface VariantPropertiesRepositoryInterface extends RepositoryInterface
 
     /**
      * @param VariantProperties $properties
-     * @param Variant|null $resource
-     * @param Language|null $language
-     * @param array|null    $attributes
+     * @param Variant|null      $resource
+     * @param Language|null     $language
+     * @param array|null        $attributes
      *
      * @return void
      */
@@ -32,9 +32,9 @@ interface VariantPropertiesRepositoryInterface extends RepositoryInterface
     );
 
     /**
-     * @param int    $resourceId
-     * @param array  $scopes
-     * @param array  $columns
+     * @param int   $resourceId
+     * @param array $scopes
+     * @param array $columns
      *
      * @return Variant
      */

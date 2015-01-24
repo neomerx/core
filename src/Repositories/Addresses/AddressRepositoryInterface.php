@@ -24,9 +24,9 @@ interface AddressRepositoryInterface extends RepositoryInterface
     public function fill(Address $resource, Region $region = null, array $attributes = null);
 
     /**
-     * @param int    $resourceId
-     * @param array  $scopes
-     * @param array  $columns
+     * @param int   $resourceId
+     * @param array $scopes
+     * @param array $columns
      *
      * @return Address
      */

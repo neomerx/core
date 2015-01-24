@@ -18,9 +18,9 @@ interface ProductPropertiesRepositoryInterface extends RepositoryInterface
 
     /**
      * @param ProductProperties $properties
-     * @param Product|null $resource
-     * @param Language|null $language
-     * @param array|null    $attributes
+     * @param Product|null      $resource
+     * @param Language|null     $language
+     * @param array|null        $attributes
      *
      * @return void
      */
@@ -32,9 +32,9 @@ interface ProductPropertiesRepositoryInterface extends RepositoryInterface
     );
 
     /**
-     * @param int    $resourceId
-     * @param array  $scopes
-     * @param array  $columns
+     * @param int   $resourceId
+     * @param array $scopes
+     * @param array $columns
      *
      * @return Product
      */

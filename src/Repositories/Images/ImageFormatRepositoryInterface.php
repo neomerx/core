@@ -14,7 +14,7 @@ interface ImageFormatRepositoryInterface extends RepositoryInterface
 
     /**
      * @param ImageFormat $resource
-     * @param array|null $attributes
+     * @param array|null  $attributes
      *
      * @return void
      */

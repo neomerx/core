@@ -25,9 +25,9 @@ interface OrderInvoiceRepositoryInterface extends RepositoryInterface
     public function fill(InvoiceOrder $resource, Order $order = null, Invoice $invoice = null);
 
     /**
-     * @param int    $resourceId
-     * @param array  $scopes
-     * @param array  $columns
+     * @param int   $resourceId
+     * @param array $scopes
+     * @param array $columns
      *
      * @return InvoiceOrder
      */

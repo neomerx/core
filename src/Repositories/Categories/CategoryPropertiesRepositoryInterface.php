@@ -18,9 +18,9 @@ interface CategoryPropertiesRepositoryInterface extends RepositoryInterface
 
     /**
      * @param CategoryProperties $properties
-     * @param Category|null $resource
-     * @param Language|null $language
-     * @param array|null    $attributes
+     * @param Category|null      $resource
+     * @param Language|null      $language
+     * @param array|null         $attributes
      *
      * @return void
      */
@@ -32,9 +32,9 @@ interface CategoryPropertiesRepositoryInterface extends RepositoryInterface
     );
 
     /**
-     * @param int    $resourceId
-     * @param array  $scopes
-     * @param array  $columns
+     * @param int   $resourceId
+     * @param array $scopes
+     * @param array $columns
      *
      * @return Category
      */

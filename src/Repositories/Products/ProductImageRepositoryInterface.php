@@ -36,9 +36,9 @@ interface ProductImageRepositoryInterface extends RepositoryInterface
     );
 
     /**
-     * @param int    $resourceId
-     * @param array  $scopes
-     * @param array  $columns
+     * @param int   $resourceId
+     * @param array $scopes
+     * @param array $columns
      *
      * @return ProductImage
      */

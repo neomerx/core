@@ -13,7 +13,7 @@ interface LanguageRepositoryInterface extends RepositoryInterface
     public function instance(array $attributes);
 
     /**
-     * @param Language $resource
+     * @param Language   $resource
      * @param array|null $attributes
      *
      * @return void

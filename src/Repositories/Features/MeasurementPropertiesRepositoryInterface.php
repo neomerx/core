@@ -9,8 +9,8 @@ interface MeasurementPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param Measurement $resource
-     * @param Language $language
-     * @param array    $attributes
+     * @param Language    $language
+     * @param array       $attributes
      *
      * @return MeasurementProperties
      */
@@ -32,9 +32,9 @@ interface MeasurementPropertiesRepositoryInterface extends RepositoryInterface
     );
 
     /**
-     * @param int    $resourceId
-     * @param array  $scopes
-     * @param array  $columns
+     * @param int   $resourceId
+     * @param array $scopes
+     * @param array $columns
      *
      * @return Measurement
      */
