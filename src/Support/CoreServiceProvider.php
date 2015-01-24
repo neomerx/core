@@ -23,6 +23,8 @@ use \Neomerx\Core\Repositories\Customers\CustomerRepository;
 use \Neomerx\Core\Repositories\Images\ImageFormatRepository;
 use \Neomerx\Core\Repositories\Languages\LanguageRepository;
 use \Neomerx\Core\Repositories\Orders\OrderStatusRepository;
+use Neomerx\Core\Repositories\Stores\StoreRepository;
+use Neomerx\Core\Repositories\Stores\StoreRepositoryInterface;
 use \Neomerx\Core\Repositories\Suppliers\SupplierRepository;
 use \Neomerx\Core\Repositories\Territories\RegionRepository;
 use \Neomerx\Core\Repositories\Categories\CategoryRepository;
@@ -214,6 +216,7 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
         $this->app->bind(ImageRepositoryInterface::class, ImageRepository::class);
         $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
+        $this->app->bind(StoreRepositoryInterface::class, StoreRepository::class);
         $this->app->bind(ValueRepositoryInterface::class, ValueRepository::class);
         $this->app->bind(RegionRepositoryInterface::class, RegionRepository::class);
         $this->app->bind(AddressRepositoryInterface::class, AddressRepository::class);
