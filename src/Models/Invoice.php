@@ -8,7 +8,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property Collection payments
  * @property Collection orders
  */
-class Invoice extends BaseModel
+class Invoice extends BaseModel implements SelectByCodeInterface
 {
     const BIND_NAME  = __CLASS__;
     const TABLE_NAME = 'invoices';
@@ -66,8 +66,7 @@ class Invoice extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.
-                '|unique:'.self::TABLE_NAME,
+            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
         ];
     }
 
@@ -104,5 +103,13 @@ class Invoice extends BaseModel
             InvoiceOrder::FIELD_ID_INVOICE,
             InvoiceOrder::FIELD_ID_ORDER
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function selectByCode($code)
+    {
+        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 }
