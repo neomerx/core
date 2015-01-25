@@ -16,7 +16,7 @@ interface InvoicePaymentRepositoryInterface extends RepositoryInterface
 
     /**
      * @param InvoicePayment $resource
-     * @param Invoice        $invoice
+     * @param Invoice|null   $invoice
      * @param array|null     $attributes
      *
      * @return void
