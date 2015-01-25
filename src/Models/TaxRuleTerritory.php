@@ -89,7 +89,7 @@ class TaxRuleTerritory extends BaseModel
     {
         return [
             self::FIELD_ID_TAX_RULE  => 'sometimes|required|forbidden',
-            self::FIELD_TERRITORY_ID => 'sometimes|required|integer|min:1|max:4294967295',
+            self::FIELD_TERRITORY_ID => '',
 
             self::FIELD_TERRITORY_TYPE => 'sometimes|required|in:'.
                 self::TERRITORY_TYPE_COUNTRY.','.self::TERRITORY_TYPE_REGION,
