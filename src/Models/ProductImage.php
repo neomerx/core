@@ -1,5 +1,6 @@
 <?php namespace Neomerx\Core\Models;
-use Neomerx\Core\Exceptions\InvalidArgumentException;
+
+use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 /**
  * @property int     id_product_image
