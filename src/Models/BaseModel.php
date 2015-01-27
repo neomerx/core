@@ -74,7 +74,7 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
             'deleting'  => 'onDeleting',
             'deleted'   => 'onDeleted',
             'saving'    => 'onSaving',
-            'saved'     => 'onSaving',
+            'saved'     => 'onSaved',
             'restoring' => 'onRestoring',
             'restored'  => 'onRestored',
         ], $event);
