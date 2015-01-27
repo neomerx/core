@@ -8,7 +8,6 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property string     code
  * @property int        decimal_digits
  * @property Collection properties
- * @method   Builder    withProperties()
  *
  * @link https://en.wikipedia.org/wiki/ISO_4217
  */
@@ -85,13 +84,13 @@ class Currency extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param Builder $query
+     * Relation to properties.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithProperties(Builder $query)
+    public static function withProperties()
     {
-        return $query->with([self::FIELD_PROPERTIES.'.'.CurrencyProperties::FIELD_LANGUAGE]);
+        return self::FIELD_PROPERTIES.'.'.CurrencyProperties::FIELD_LANGUAGE;
     }
 
     /**

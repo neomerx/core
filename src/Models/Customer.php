@@ -1,7 +1,6 @@
 <?php namespace Neomerx\Core\Models;
 
 use \Carbon\Carbon;
-use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -26,8 +25,6 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      Collection   defaultBillingAddress  An array of 0 or 1 items.
  * @property      Collection   customerAddresses
  * @property      Collection   orders
- * @method        Builder      withTypeRiskAndLanguage()
- * @method        Builder      withDefaultAddresses()
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
@@ -162,26 +159,53 @@ class Customer extends BaseModel
     }
 
     /**
-     * @param Builder $query
+     * Get model relation.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithTypeRiskAndLanguage(Builder $query)
+    public function withType()
     {
-        return $query->with([self::FIELD_RISK, self::FIELD_TYPE, self::FIELD_LANGUAGE]);
+        return self::FIELD_TYPE;
     }
 
     /**
-     * @param Builder $query
+     * Get model relation.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithDefaultAddresses(Builder $query)
+    public function withRisk()
     {
-        return $query->with([
-            camel_case(self::FIELD_DEFAULT_BILLING_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY),
-            camel_case(self::FIELD_DEFAULT_SHIPPING_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY),
-        ]);
+        return self::FIELD_RISK;
+    }
+
+    /**
+     * Get model relation.
+     *
+     * @return string
+     */
+    public function withLanguage()
+    {
+        return self::FIELD_LANGUAGE;
+    }
+
+    /**
+     * Get model relation.
+     *
+     * @return string
+     */
+    public function withDefaultBillingAddress()
+    {
+        return self::FIELD_DEFAULT_BILLING_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY;
+    }
+
+    /**
+     * Get model relation.
+     *
+     * @return string
+     */
+    public function withDefaultShippingAddress()
+    {
+        return self::FIELD_DEFAULT_SHIPPING_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY;
     }
 
     /**

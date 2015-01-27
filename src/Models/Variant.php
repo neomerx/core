@@ -2,7 +2,6 @@
 
 use \Carbon\Carbon;
 use \Neomerx\Core\Support as S;
-use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -16,7 +15,6 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      Collection properties
  * @property      Collection specification
  * @property      Collection images
- * @method        Builder    withDefaultCategoryManufacturerAndTaxType()
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
@@ -113,20 +111,34 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
         ];
     }
 
-    // TODO check if model scopes combination could be avoided and multiple scopes be used instead
+    /**
+     * Get model relation.
+     *
+     * @return string
+     */
+    public function withTaxType()
+    {
+        return self::FIELD_PRODUCT.'.'.Product::FIELD_TAX_TYPE;
+    }
 
     /**
-     * @param Builder $query
+     * Get model relation.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithDefaultCategoryManufacturerAndTaxType(Builder $query)
+    public function withManufacturer()
     {
-        return $query->with([
-            camel_case(self::FIELD_PRODUCT.'.'.Product::FIELD_TAX_TYPE),
-            camel_case(self::FIELD_PRODUCT.'.'.Product::FIELD_MANUFACTURER),
-            camel_case(self::FIELD_PRODUCT.'.'.Product::FIELD_DEFAULT_CATEGORY),
-        ]);
+        return self::FIELD_PRODUCT.'.'.Product::FIELD_MANUFACTURER;
+    }
+
+    /**
+     * Get model relation.
+     *
+     * @return string
+     */
+    public function withDefaultCategory()
+    {
+        return self::FIELD_PRODUCT.'.'.Product::FIELD_DEFAULT_CATEGORY;
     }
 
     /**

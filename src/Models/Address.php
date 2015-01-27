@@ -18,7 +18,6 @@ use \Illuminate\Database\Eloquent\SoftDeletes;
  * @property Collection shippingCustomers
  * @property Collection billingOrders
  * @property Collection shippingOrders
- * @method   Builder    withRegionAndCountry()
  */
 class Address extends BaseModel
 {
@@ -128,16 +127,6 @@ class Address extends BaseModel
     public static function withRegion()
     {
         return self::FIELD_REGION.'.'.Region::FIELD_COUNTRY;
-    }
-
-    /**
-     * @param Builder $query
-     *
-     * @return Builder
-     */
-    public function scopeWithRegionAndCountry(Builder $query)
-    {
-        return $query->with([self::FIELD_REGION.'.'.Region::FIELD_COUNTRY]);
     }
 
     /**

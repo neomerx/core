@@ -255,14 +255,16 @@ trait RelationsTrait
     {
         $self = __FUNCTION__;
 
+        $foundCaller = null;
         foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $stackFrame) {
             $caller = $stackFrame['function'];
             if ($caller !== $self and in_array($caller, Model::$manyMethods) === false) {
-                return $caller;
+                $foundCaller = $caller;
+                break;
             }
         }
 
-        return null;
+        return $foundCaller;
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php namespace Neomerx\Core\Models;
+use Neomerx\Core\Exceptions\InvalidArgumentException;
 
 /**
  * @property int     id_product_image
@@ -105,16 +106,14 @@ class ProductImage extends BaseModel
     }
 
     /**
-     * Set is cover attribute.
-     *
-     * @param $value
+     * Set is cover attribute. Direct change of 'is cover' is forbidden. Use repository's method instead.
      *
      * @throws \Neomerx\Core\Exceptions\InvalidArgumentException
      */
-    public function setIsCoverAttribute($value)
+    public function setIsCoverAttribute()
     {
-        settype($value, 'boolean');
-        $this->attributes[self::FIELD_IS_COVER] = $value;
+        // direct change  of 'is cover' is forbidden use repository's method instead
+        throw new InvalidArgumentException('value');
     }
 
     /**

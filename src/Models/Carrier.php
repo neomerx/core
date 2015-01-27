@@ -25,7 +25,6 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property Collection postcodes
  * @property Collection territories
  * @property Collection shippingOrders
- * @method   Builder    withProperties()
  */
 class Carrier extends BaseModel implements SelectByCodeInterface
 {
@@ -151,13 +150,13 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param Builder $query
+     * Relation to properties.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithProperties(Builder $query)
+    public static function withProperties()
     {
-        return $query->with([self::FIELD_PROPERTIES.'.'.CarrierProperties::FIELD_LANGUAGE]);
+        return self::FIELD_PROPERTIES.'.'.CarrierProperties::FIELD_LANGUAGE;
     }
 
     /**

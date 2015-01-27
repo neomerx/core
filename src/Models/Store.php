@@ -1,6 +1,5 @@
 <?php namespace Neomerx\Core\Models;
 
-use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -11,8 +10,6 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property Address    address
  * @property Collection orders
  * @property Collection warehouses
- * @method   Builder    withAddress()
- * @method   Builder    withWarehouses()
  */
 class Store extends BaseModel implements SelectByCodeInterface
 {
@@ -103,23 +100,23 @@ class Store extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param Builder $query
+     * Get model relation.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithAddress(Builder $query)
+    public function withAddress()
     {
-        return $query->with([self::FIELD_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY]);
+        return self::FIELD_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY;
     }
 
     /**
-     * @param Builder $query
+     * Get model relation.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithWarehouses(Builder $query)
+    public function withWarehouses()
     {
-        return $query->with([self::FIELD_WAREHOUSES]);
+        return self::FIELD_WAREHOUSES;
     }
 
     /**

@@ -24,7 +24,6 @@ use \Neomerx\Core\Exceptions\InvalidArgumentException;
  * @property      Collection products
  * @property      Collection assignedProducts
  * @property      Collection productCategories
- * @method        Builder    withProperties()
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -170,13 +169,13 @@ class Category extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param Builder $query
+     * Relation to properties.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithProperties(Builder $query)
+    public static function withProperties()
     {
-        return $query->with([self::FIELD_PROPERTIES.'.'.CategoryProperties::FIELD_LANGUAGE]);
+        return self::FIELD_PROPERTIES.'.'.CategoryProperties::FIELD_LANGUAGE;
     }
 
     /**

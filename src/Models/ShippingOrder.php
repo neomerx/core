@@ -1,7 +1,6 @@
 <?php namespace Neomerx\Core\Models;
 
 use \Carbon\Carbon;
-use \Illuminate\Database\Eloquent\Builder;
 
 /**
  * @property      int                 id_shipping_order
@@ -14,7 +13,6 @@ use \Illuminate\Database\Eloquent\Builder;
  * @property      Order               order
  * @property      Carrier             carrier
  * @property      ShippingOrderStatus status
- * @method        Builder             withCarrierAndStatus()
  */
 class ShippingOrder extends BaseModel
 {
@@ -111,16 +109,23 @@ class ShippingOrder extends BaseModel
     }
 
     /**
-     * @param Builder $query
+     * Get model relation.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithCarrierAndStatus(Builder $query)
+    public function withCarrier()
     {
-        return $query->with([
-            self::FIELD_STATUS,
-            self::FIELD_CARRIER.'.'.Carrier::FIELD_PROPERTIES.'.'.CarrierProperties::FIELD_LANGUAGE
-        ]);
+        return  self::FIELD_CARRIER.'.'.Carrier::FIELD_PROPERTIES.'.'.CarrierProperties::FIELD_LANGUAGE;
+    }
+
+    /**
+     * Get model relation.
+     *
+     * @return string
+     */
+    public function withStatus()
+    {
+        return self::FIELD_STATUS;
     }
 
     /**

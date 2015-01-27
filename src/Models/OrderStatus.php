@@ -1,6 +1,5 @@
 <?php namespace Neomerx\Core\Models;
 
-use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -9,7 +8,6 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property string     code
  * @property Collection orders
  * @property Collection availableStatuses
- * @method   Builder    withAvailableStatuses()
  */
 class OrderStatus extends BaseModel implements SelectByCodeInterface
 {
@@ -94,15 +92,13 @@ class OrderStatus extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param Builder $query
+     * Get model relation.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithAvailableStatuses(Builder $query)
+    public function withAvailableStatuses()
     {
-        return $query->with([
-            camel_case(self::FIELD_AVAILABLE_STATUSES),
-        ]);
+        return self::FIELD_AVAILABLE_STATUSES;
     }
 
     /**

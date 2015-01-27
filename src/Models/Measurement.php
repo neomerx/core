@@ -1,7 +1,6 @@
 <?php namespace Neomerx\Core\Models;
 
 use \Carbon\Carbon;
-use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -11,7 +10,6 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property-read Carbon     updated_at
  * @property      Collection characteristics
  * @property      Collection properties
- * @method        Builder    withProperties()
  */
 class Measurement extends BaseModel implements SelectByCodeInterface
 {
@@ -90,13 +88,13 @@ class Measurement extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param Builder $query
+     * Get model relation.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithProperties(Builder $query)
+    public function withProperties()
     {
-        return $query->with([self::FIELD_PROPERTIES.'.'.MeasurementProperties::FIELD_LANGUAGE]);
+        return self::FIELD_PROPERTIES.'.'.MeasurementProperties::FIELD_LANGUAGE;
     }
 
     /**

@@ -14,8 +14,6 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      array       specification
  * @property      array       values
  * @property      Collection  properties
- * @method        Builder     withProperties()
- * @method        Builder     withMeasurement()
  */
 class Characteristic extends BaseModel implements SelectByCodeInterface
 {
@@ -103,25 +101,23 @@ class Characteristic extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param Builder $query
+     * Relation to properties.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithProperties(Builder $query)
+    public static function withProperties()
     {
-        return $query->with([self::FIELD_PROPERTIES.'.'.CharacteristicProperties::FIELD_LANGUAGE]);
+        return self::FIELD_PROPERTIES.'.'.CharacteristicProperties::FIELD_LANGUAGE;
     }
 
     /**
-     * @param Builder $query
+     * Relation to properties.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithMeasurement(Builder $query)
+    public static function withMeasurement()
     {
-        return $query->with([
-            self::FIELD_MEASUREMENT.'.'.Measurement::FIELD_PROPERTIES.'.'.MeasurementProperties::FIELD_LANGUAGE
-        ]);
+        return self::FIELD_MEASUREMENT.'.'.Measurement::FIELD_PROPERTIES.'.'.MeasurementProperties::FIELD_LANGUAGE;
     }
 
     /**

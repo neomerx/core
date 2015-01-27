@@ -13,7 +13,6 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      Characteristic characteristic
  * @property      Collection     properties
  * @property      Collection     specification
- * @method        Builder        withProperties()
  */
 class CharacteristicValue extends BaseModel implements SelectByCodeInterface
 {
@@ -101,13 +100,13 @@ class CharacteristicValue extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param Builder $query
+     * Relation to properties.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithProperties(Builder $query)
+    public static function withProperties()
     {
-        return $query->with([self::FIELD_PROPERTIES.'.'.CharacteristicValueProperties::FIELD_LANGUAGE]);
+        return self::FIELD_PROPERTIES.'.'.CharacteristicValueProperties::FIELD_LANGUAGE;
     }
 
     /**

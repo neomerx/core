@@ -1,7 +1,5 @@
 <?php namespace Neomerx\Core\Models;
 
-use \Illuminate\Database\Eloquent\Builder;
-
 /**
  * @property int       id_warehouse
  * @property int       id_address
@@ -11,9 +9,6 @@ use \Illuminate\Database\Eloquent\Builder;
  * @property Address   address
  * @property Store     store
  * @property Inventory inventory
- * @method   Builder   withAddress()
- * @method   Builder   withStore()
- * @method   Builder   withInventory()
  */
 class Warehouse extends BaseModel implements SelectByCodeInterface
 {
@@ -108,33 +103,33 @@ class Warehouse extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @param Builder $query
+     * Get model relation.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithAddress(Builder $query)
+    public function withAddress()
     {
-        return $query->with([self::FIELD_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY]);
+        return self::FIELD_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY;
     }
 
     /**
-     * @param Builder $query
+     * Get model relation.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithStore(Builder $query)
+    public function withStore()
     {
-        return $query->with([self::FIELD_STORE]);
+        return self::FIELD_STORE;
     }
 
     /**
-     * @param Builder $query
+     * Get model relation.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithInventory(Builder $query)
+    public function withInventory()
     {
-        return $query->with([self::FIELD_INVENTORY]);
+        return self::FIELD_INVENTORY;
     }
 
     /**

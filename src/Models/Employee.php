@@ -3,7 +3,6 @@
 use \Hash;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Auth\Authenticatable;
-use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 use \Illuminate\Auth\Passwords\CanResetPassword;
 use \Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -18,7 +17,6 @@ use \Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
  * @property bool       active
  * @property string     remember_token
  * @property Collection roles
- * @method   Builder    withRoles()
  */
 class Employee extends BaseModel implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -178,13 +176,13 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
     }
 
     /**
-     * @param Builder $query
+     * Get model relation.
      *
-     * @return Builder
+     * @return string
      */
-    public function scopeWithRoles(Builder $query)
+    public function withRoles()
     {
-        return $query->with([self::FIELD_ROLES]);
+        return self::FIELD_ROLES;
     }
 
     /**
