@@ -79,6 +79,9 @@ class EmployeePasswordReset extends BaseModel
      */
     public function getDataOnUpdateRules()
     {
-        return $this->getDataOnCreateRules();
+        return [
+            self::FIELD_EMAIL => 'sometimes|required|email|max:'.self::EMAIL_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
+            self::FIELD_TOKEN => 'sometimes|required|max:'.self::TOKEN_MAX_LENGTH,
+        ];
     }
 }
