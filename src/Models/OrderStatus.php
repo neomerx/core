@@ -96,7 +96,7 @@ class OrderStatus extends BaseModel implements SelectByCodeInterface
      *
      * @return string
      */
-    public function withAvailableStatuses()
+    public static function withAvailableStatuses()
     {
         return self::FIELD_AVAILABLE_STATUSES;
     }

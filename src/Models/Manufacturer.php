@@ -107,7 +107,7 @@ class Manufacturer extends BaseModel implements SelectByCodeInterface
     /**
      * @return string
      */
-    public function withProperties()
+    public static function withProperties()
     {
         return self::FIELD_PROPERTIES.'.'.ManufacturerProperties::FIELD_LANGUAGE;
     }

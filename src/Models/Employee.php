@@ -180,7 +180,7 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
      *
      * @return string
      */
-    public function withRoles()
+    public static function withRoles()
     {
         return self::FIELD_ROLES;
     }

@@ -104,7 +104,7 @@ class Store extends BaseModel implements SelectByCodeInterface
      *
      * @return string
      */
-    public function withAddress()
+    public static function withAddress()
     {
         return self::FIELD_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY;
     }
@@ -114,7 +114,7 @@ class Store extends BaseModel implements SelectByCodeInterface
      *
      * @return string
      */
-    public function withWarehouses()
+    public static function withWarehouses()
     {
         return self::FIELD_WAREHOUSES;
     }

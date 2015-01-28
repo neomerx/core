@@ -163,7 +163,7 @@ class Customer extends BaseModel
      *
      * @return string
      */
-    public function withType()
+    public static function withType()
     {
         return self::FIELD_TYPE;
     }
@@ -173,7 +173,7 @@ class Customer extends BaseModel
      *
      * @return string
      */
-    public function withRisk()
+    public static function withRisk()
     {
         return self::FIELD_RISK;
     }
@@ -183,7 +183,7 @@ class Customer extends BaseModel
      *
      * @return string
      */
-    public function withLanguage()
+    public static function withLanguage()
     {
         return self::FIELD_LANGUAGE;
     }
@@ -193,7 +193,7 @@ class Customer extends BaseModel
      *
      * @return string
      */
-    public function withDefaultBillingAddress()
+    public static function withDefaultBillingAddress()
     {
         return self::FIELD_DEFAULT_BILLING_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY;
     }
@@ -203,7 +203,7 @@ class Customer extends BaseModel
      *
      * @return string
      */
-    public function withDefaultShippingAddress()
+    public static function withDefaultShippingAddress()
     {
         return self::FIELD_DEFAULT_SHIPPING_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY;
     }

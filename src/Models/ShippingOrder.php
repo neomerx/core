@@ -113,7 +113,7 @@ class ShippingOrder extends BaseModel
      *
      * @return string
      */
-    public function withCarrier()
+    public static function withCarrier()
     {
         return  self::FIELD_CARRIER.'.'.Carrier::FIELD_PROPERTIES.'.'.CarrierProperties::FIELD_LANGUAGE;
     }
@@ -123,7 +123,7 @@ class ShippingOrder extends BaseModel
      *
      * @return string
      */
-    public function withStatus()
+    public static function withStatus()
     {
         return self::FIELD_STATUS;
     }

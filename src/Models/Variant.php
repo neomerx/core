@@ -116,7 +116,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
      *
      * @return string
      */
-    public function withTaxType()
+    public static function withTaxType()
     {
         return self::FIELD_PRODUCT.'.'.Product::FIELD_TAX_TYPE;
     }
@@ -126,7 +126,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
      *
      * @return string
      */
-    public function withManufacturer()
+    public static function withManufacturer()
     {
         return self::FIELD_PRODUCT.'.'.Product::FIELD_MANUFACTURER;
     }
@@ -136,7 +136,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
      *
      * @return string
      */
-    public function withDefaultCategory()
+    public static function withDefaultCategory()
     {
         return self::FIELD_PRODUCT.'.'.Product::FIELD_DEFAULT_CATEGORY;
     }
