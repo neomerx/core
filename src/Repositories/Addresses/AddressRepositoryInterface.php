@@ -7,21 +7,21 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface AddressRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Region $region
-     * @param array  $attributes
+     * @param array       $attributes
+     * @param Region|null $region
      *
      * @return Address
      */
-    public function instance(Region $region, array $attributes);
+    public function instance(array $attributes, Region $region = null);
 
     /**
      * @param Address     $resource
-     * @param Region|null $region
      * @param array|null  $attributes
+     * @param Region|null $region
      *
      * @return void
      */
-    public function fill(Address $resource, Region $region = null, array $attributes = null);
+    public function fill(Address $resource, array $attributes = null, Region $region = null);
 
     /**
      * @param int   $resourceId

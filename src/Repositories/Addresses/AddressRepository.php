@@ -17,18 +17,18 @@ class AddressRepository extends IndexBasedResourceRepository implements AddressR
     /**
      * @inheritdoc
      */
-    public function instance(Region $region, array $attributes)
+    public function instance(array $attributes, Region $region = null)
     {
         /** @var Address $resource */
         $resource = $this->makeModel();
-        $this->fill($resource, $region, $attributes);
+        $this->fill($resource, $attributes, $region);
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Address $resource, Region $region = null, array $attributes = null)
+    public function fill(Address $resource, array $attributes = null, Region $region = null)
     {
         $this->fillModel($resource, [
             Address::FIELD_ID_REGION => $region,
