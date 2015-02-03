@@ -93,6 +93,14 @@ class Image extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withProperties()
+    {
+        return self::FIELD_PROPERTIES.'.'.ImageProperties::FIELD_LANGUAGE;
+    }
+
+    /**
      * Relation to image paths with image formats.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
