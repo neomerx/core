@@ -96,6 +96,22 @@ class CustomerAddress extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withAddress()
+    {
+        return self::FIELD_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withCustomer()
+    {
+        return self::FIELD_CUSTOMER;
+    }
+
+    /**
      * Relation to customer.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
