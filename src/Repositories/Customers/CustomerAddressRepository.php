@@ -1,5 +1,6 @@
 <?php namespace Neomerx\Core\Repositories\Customers;
 
+use \DB;
 use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Customer;
 use \Neomerx\Core\Models\CustomerAddress;
@@ -39,5 +40,34 @@ class CustomerAddressRepository extends IndexBasedResourceRepository implements 
             CustomerAddress::FIELD_ID_ADDRESS  => $address,
             CustomerAddress::FIELD_ID_CUSTOMER => $customer,
         ], $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setAsDefault(CustomerAddress $customerAddress)
+    {
+        $customerAddressModel = $this->getUnderlyingModel();
+
+        $allAddressQry = $customerAddressModel->where([
+            CustomerAddress::FIELD_ID_CUSTOMER => $customerAddress->{CustomerAddress::FIELD_ID_CUSTOMER},
+            CustomerAddress::FIELD_TYPE        => $customerAddress->{CustomerAddress::FIELD_TYPE},
+        ]);
+
+        $customerAddressQry = $customerAddressModel->where([
+            CustomerAddress::FIELD_ID => $customerAddress->{CustomerAddress::FIELD_ID}
+        ]);
+
+        DB::beginTransaction();
+        try {
+
+            $allAddressQry->update([CustomerAddress::FIELD_IS_DEFAULT => false]);
+            $customerAddressQry->update([CustomerAddress::FIELD_IS_DEFAULT => true]);
+
+            $allExecutedOk = true;
+
+        } finally {
+            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
+        }
     }
 }

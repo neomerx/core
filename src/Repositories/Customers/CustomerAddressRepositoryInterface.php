@@ -39,4 +39,11 @@ interface CustomerAddressRepositoryInterface extends RepositoryInterface
      * @return CustomerAddress
      */
     public function read($resourceId, array $scopes = [], array $columns = ['*']);
+
+    /**
+     * @param CustomerAddress $customerAddress
+     *
+     * @return void
+     */
+    public function setAsDefault(CustomerAddress $customerAddress);
 }

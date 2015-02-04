@@ -1,4 +1,5 @@
 <?php namespace Neomerx\Core\Models;
+use Neomerx\Core\Exceptions\InvalidArgumentException;
 
 /**
  * @property int      id_customer_address
@@ -16,7 +17,6 @@ class CustomerAddress extends BaseModel
 
     const TYPE_BILLING  = 'billing';
     const TYPE_SHIPPING = 'shipping';
-    const IS_DEFAULT    = 'default';
 
     const FIELD_ID          = 'id_customer_address';
     const FIELD_ID_ADDRESS  = Address::FIELD_ID;
@@ -51,7 +51,6 @@ class CustomerAddress extends BaseModel
      */
     protected $fillable = [
         self::FIELD_TYPE,
-        self::FIELD_IS_DEFAULT,
     ];
 
     /**
@@ -67,6 +66,7 @@ class CustomerAddress extends BaseModel
         self::FIELD_ID,
         self::FIELD_ID_CUSTOMER,
         self::FIELD_ID_ADDRESS,
+        self::FIELD_IS_DEFAULT,
     ];
 
     /**
@@ -78,7 +78,9 @@ class CustomerAddress extends BaseModel
             self::FIELD_ID_CUSTOMER => 'required|integer|min:1|max:4294967295|exists:'.Customer::TABLE_NAME,
             self::FIELD_ID_ADDRESS  => 'required|integer|min:1|max:4294967295|exists:'.Address::TABLE_NAME,
             self::FIELD_TYPE        => 'required|in:'.self::TYPE_BILLING.','.self::TYPE_SHIPPING,
-            self::FIELD_IS_DEFAULT  => 'sometimes|required|in:'.self::IS_DEFAULT,
+
+            // direct change  of 'is default' is forbidden use repository's method instead
+            self::FIELD_IS_DEFAULT  => 'sometimes|required|forbidden',
         ];
     }
 
@@ -91,7 +93,9 @@ class CustomerAddress extends BaseModel
             self::FIELD_ID_CUSTOMER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Customer::TABLE_NAME,
             self::FIELD_ID_ADDRESS  => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Address::TABLE_NAME,
             self::FIELD_TYPE        => 'sometimes|required|in:'.self::TYPE_BILLING.','.self::TYPE_SHIPPING,
-            self::FIELD_IS_DEFAULT  => 'sometimes|required|in:'.self::IS_DEFAULT,
+
+            // direct change  of 'is default' is forbidden use repository's method instead
+            self::FIELD_IS_DEFAULT  => 'sometimes|required|forbidden',
         ];
     }
 
@@ -132,15 +136,14 @@ class CustomerAddress extends BaseModel
     }
 
     /**
-     * @param bool $value
+     * Set is default. Direct change  of 'is default' is forbidden use repository's method instead.
+     *
+     * @throws \Neomerx\Core\Exceptions\InvalidArgumentException
      */
-    public function setIsDefaultAttribute($value)
+    public function setIsDefaultAttribute()
     {
-        if ((bool)$value === true) {
-            $this->attributes[self::FIELD_IS_DEFAULT] = self::IS_DEFAULT;
-        } else {
-            unset($this->attributes[self::FIELD_IS_DEFAULT]);
-        }
+        // direct change  of 'is default' is forbidden use repository's method instead
+        throw new InvalidArgumentException('value');
     }
 
     /**
@@ -152,6 +155,6 @@ class CustomerAddress extends BaseModel
      */
     public function getIsDefaultAttribute($value)
     {
-        return isset($value);
+        return (bool)$value;
     }
 }

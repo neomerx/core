@@ -279,7 +279,7 @@ class Customer extends BaseModel
     public function defaultShippingAddress()
     {
         return $this->shippingAddresses()
-            ->wherePivot(CustomerAddress::FIELD_IS_DEFAULT, '=', CustomerAddress::IS_DEFAULT);
+            ->wherePivot(CustomerAddress::FIELD_IS_DEFAULT, '=', true);
     }
 
     /**
@@ -288,7 +288,7 @@ class Customer extends BaseModel
     public function defaultBillingAddress()
     {
         return $this->billingAddresses()
-            ->wherePivot(CustomerAddress::FIELD_IS_DEFAULT, '=', CustomerAddress::IS_DEFAULT);
+            ->wherePivot(CustomerAddress::FIELD_IS_DEFAULT, '=', true);
     }
 
     /**
