@@ -4,7 +4,7 @@
     "require": {
         "php":                         ">=5.5.0",
         "laravel/framework":           "~5.0",
-        "intervention/image":          "~2.0",
+        "intervention/image":          "~2.1",
         "symfony/expression-language": "~2.5"
     },
     "autoload": {
@@ -13,5 +13,5 @@
         },
         "files": ["./src/Support/Helpers.php"]
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
