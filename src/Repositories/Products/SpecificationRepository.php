@@ -106,7 +106,7 @@ class SpecificationRepository extends IndexBasedResourceRepository implements Sp
         $variant = $specification->variant;
 
         // check we are variable specification and belonging to default variant
-        if ($variant === null or $variant->isDefault() === false) {
+        if ($variant === null || $variant->isDefault() === false) {
             throw new LogicException();
         }
 

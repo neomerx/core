@@ -3,7 +3,6 @@
 use \Carbon\Carbon;
 use \Illuminate\Support\Facades\DB;
 use \Illuminate\Database\Eloquent\Model;
-use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
@@ -292,7 +291,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     protected function onUpdating()
     {
         // root category can't be changed
-        return parent::onUpdating() and $this->code !== self::ROOT_CODE;
+        return parent::onUpdating() && $this->code !== self::ROOT_CODE;
     }
 
     /**
@@ -396,8 +395,8 @@ class Category extends BaseModel implements SelectByCodeInterface
         $newParentRight = $newParent->rgt;
         $left = $this->lft;
         $right = $this->rgt;
-        if (($left <= $newParentLeft and $newParentLeft <= $right) or
-            ($left <= $newParentRight and $newParentRight <= $right)
+        if (($left <= $newParentLeft && $newParentLeft <= $right) or
+            ($left <= $newParentRight && $newParentRight <= $right)
         ) {
             throw new InvalidArgumentException(self::FIELD_CODE);
         }

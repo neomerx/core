@@ -426,7 +426,7 @@ class SearchGrammar
                 $this->limitFrom = $value;
                 break;
             case self::LIMIT_TAKE:
-                $value = (0 < $value and $value <= $this->limitTake) ? $value : self::DEFAULT_SELECT_LIMIT;
+                $value = (0 < $value && $value <= $this->limitTake) ? $value : self::DEFAULT_SELECT_LIMIT;
                 $this->limitTake = $value;
                 break;
         }

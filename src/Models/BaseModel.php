@@ -86,7 +86,7 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
 
         /** @noinspection PhpUndefinedClassInspection */
         $parentEventResult = parent::fireModelEvent($event, $halt);
-        $result = ($modelEventResult === false or $parentEventResult === false) ? false : $parentEventResult;
+        $result = ($modelEventResult === false || $parentEventResult === false) ? false : $parentEventResult;
 
         return $result;
     }

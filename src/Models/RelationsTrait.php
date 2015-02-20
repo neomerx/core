@@ -258,7 +258,7 @@ trait RelationsTrait
         $foundCaller = null;
         foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $stackFrame) {
             $caller = $stackFrame['function'];
-            if ($caller !== $self and in_array($caller, Model::$manyMethods) === false) {
+            if ($caller !== $self && in_array($caller, Model::$manyMethods) === false) {
                 $foundCaller = $caller;
                 break;
             }

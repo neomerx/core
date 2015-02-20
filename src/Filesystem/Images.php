@@ -35,7 +35,7 @@ class Images implements ImagesInterface
         $height = $format->{ImageFormat::FIELD_HEIGHT};
         $image = $image->resize($width, $height)->resizeCanvas($width, $height, $anchor, $relative, $background);
 
-        if ($overwrite === true and File::exists($pathTo) === true) {
+        if ($overwrite === true && File::exists($pathTo) === true) {
             $this->delete($pathTo);
         }
         $image->save($pathTo);

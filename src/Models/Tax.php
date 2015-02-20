@@ -182,7 +182,7 @@ class Tax extends BaseModel implements SelectByCodeInterface
      */
     private function isFormula($value)
     {
-        return (!empty($value) and trim($value)[0] === '=');
+        return (!empty($value) && trim($value)[0] === '=');
     }
 
     /**

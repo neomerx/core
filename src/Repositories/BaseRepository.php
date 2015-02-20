@@ -26,7 +26,7 @@ abstract class BaseRepository
      */
     public function __construct($modelBindName)
     {
-        assert('isset($modelBindName) and is_subclass_of(\''.$modelBindName.'\', \''.BaseModel::class.'\')');
+        assert('isset($modelBindName) && is_subclass_of(\''.$modelBindName.'\', \''.BaseModel::class.'\')');
         assert('is_subclass_of(\''.get_class($this).'\', \''.RepositoryInterface::class.'\')');
 
         $this->modelBindName = $modelBindName;
@@ -143,7 +143,7 @@ abstract class BaseRepository
         $builder = $this->getUnderlyingModel()->newQuery();
         empty($relations) === true ?: $builder->with($relations);
 
-        if (empty($parameters) === false and empty($rules) === false) {
+        if (empty($parameters) === false && empty($rules) === false) {
             $parser  = new SearchParser(new SearchGrammar($builder), $rules);
             $builder = $parser->buildQuery($parameters);
         }

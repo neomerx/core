@@ -202,7 +202,7 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
      */
     public function setActiveAttribute($value)
     {
-        $this->attributes[self::FIELD_ACTIVE] = ($value !== null and (strcasecmp($value, 'on') == 0 or (bool)$value));
+        $this->attributes[self::FIELD_ACTIVE] = ($value !== null && (strcasecmp($value, 'on') == 0 || (bool)$value));
     }
 
     /**

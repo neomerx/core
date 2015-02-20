@@ -276,7 +276,7 @@ class Order extends BaseModel
         $historySaved     = true;
         $parentOnUpdating = parent::onUpdating();
         // if id_order_status has changed we should log it to history
-        if ($parentOnUpdating === true and $this->isDirty(self::FIELD_ID_ORDER_STATUS) === true) {
+        if ($parentOnUpdating === true && $this->isDirty(self::FIELD_ID_ORDER_STATUS) === true) {
             $oldIdOrderStatus = $this->getOriginal(self::FIELD_ID_ORDER_STATUS);
             /** @noinspection PhpUndefinedMethodInspection */
             /** @var \Neomerx\Core\Models\OrderHistory $orderHistory */
@@ -284,6 +284,6 @@ class Order extends BaseModel
             $orderHistory->{OrderHistory::FIELD_ID_ORDER_STATUS} = $oldIdOrderStatus;
             $historySaved = (false !== $this->history()->save($orderHistory));
         }
-        return $parentOnUpdating and $historySaved;
+        return $parentOnUpdating && $historySaved;
     }
 }

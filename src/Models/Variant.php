@@ -250,6 +250,6 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
         // only non-default variant could actually be deleted.
         $canBeDeleted = !$this->isDefault();
 
-        return $parentOnDeleting and $canBeDeleted;
+        return $parentOnDeleting && $canBeDeleted;
     }
 }
