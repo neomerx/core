@@ -127,7 +127,7 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
      */
     protected function onCreated()
     {
-        $onUpdated = parent::onUpdated();
+        $onCreated = parent::onCreated();
 
         $command = app()->make(
             CreateImagesByFormatCommand::class,
@@ -135,7 +135,7 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
         );
         $this->dispatch($command);
 
-        return $onUpdated;
+        return $onCreated;
     }
 
     /**
