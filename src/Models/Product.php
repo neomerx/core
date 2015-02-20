@@ -183,6 +183,38 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     }
 
     /**
+     * @return string
+     */
+    public static function withProperties()
+    {
+        return self::FIELD_PROPERTIES.'.'.ProductProperties::FIELD_LANGUAGE;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withManufacturer()
+    {
+        return self::FIELD_MANUFACTURER;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withDefaultCategory()
+    {
+        return self::FIELD_DEFAULT_CATEGORY;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withTaxType()
+    {
+        return self::FIELD_TAX_TYPE;
+    }
+
+    /**
      * Relation to default category.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
