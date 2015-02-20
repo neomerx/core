@@ -88,6 +88,22 @@ class ProductRelated extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withProduct()
+    {
+        return self::FIELD_PRODUCT;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withRelated()
+    {
+        return self::FIELD_RELATED;
+    }
+
+    /**
      * Relation to product.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
