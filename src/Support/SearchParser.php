@@ -80,7 +80,6 @@ class SearchParser
     public function buildQuery(array $searchParameters)
     {
         foreach ($searchParameters as $name => $value) {
-
             list($parameter, $operation) = $this->parseParameterAndOperation($name);
             array_key_exists($parameter, $this->rules) === true ?: throwEx(new InvalidArgumentException($name));
 
@@ -90,7 +89,7 @@ class SearchParser
             $operation = $this->operationsMap[$operation];
 
             // check operation is allowed
-            if ($allowedOperations !== self::ALLOWED_OPERATIONS_ALL and
+            if ($allowedOperations !== self::ALLOWED_OPERATIONS_ALL &&
                 in_array($operation, $allowedOperations) === false) {
                 throw new InvalidArgumentException($name);
             }
@@ -113,15 +112,12 @@ class SearchParser
     {
         $parsedRules = [];
         foreach ($rules as $paramName => $rule) {
-
             // check parameter name is specified (not int)
             is_string($paramName) === true ?: throwEx(new InvalidArgumentException($paramName));
 
             // parse possible rule formats
             if (is_array($rule) === true) {
-
                 // we are here if rule description is given in array format
-
                 $numberOfRuleParams = count($rule);
 
                 switch ($numberOfRuleParams)
@@ -145,14 +141,10 @@ class SearchParser
                 }
 
             } elseif (is_string($rule) === true) {
-
                 $parsedRules[$paramName] = $this->newRule($rule, $paramName, self::ALLOWED_OPERATIONS_ALL);
-
             } else {
-
                 // if not string and array
                 throwEx(new InvalidArgumentException($paramName));
-
             }
         }
         $this->rules = $parsedRules;

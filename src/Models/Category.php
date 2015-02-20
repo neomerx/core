@@ -395,7 +395,7 @@ class Category extends BaseModel implements SelectByCodeInterface
         $newParentRight = $newParent->rgt;
         $left = $this->lft;
         $right = $this->rgt;
-        if (($left <= $newParentLeft && $newParentLeft <= $right) or
+        if (($left <= $newParentLeft && $newParentLeft <= $right) ||
             ($left <= $newParentRight && $newParentRight <= $right)
         ) {
             throw new InvalidArgumentException(self::FIELD_CODE);
