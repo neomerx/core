@@ -89,6 +89,22 @@ class ProductCategory extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withProduct()
+    {
+        return self::FIELD_PRODUCT;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withCategory()
+    {
+        return self::FIELD_CATEGORY;
+    }
+
+    /**
      * Relation to product.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
