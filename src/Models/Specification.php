@@ -103,6 +103,30 @@ class Specification extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withProduct()
+    {
+        return self::FIELD_PRODUCT;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withVariant()
+    {
+        return self::FIELD_VARIANT;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withValue()
+    {
+        return self::FIELD_VALUE;
+    }
+
+    /**
      * Relation to product.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
