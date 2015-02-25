@@ -107,6 +107,30 @@ class ProductImage extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withProduct()
+    {
+        return self::FIELD_PRODUCT;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withVariant()
+    {
+        return self::FIELD_VARIANT;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withImage()
+    {
+        return self::FIELD_IMAGE;
+    }
+
+    /**
      * Set is cover attribute. Direct change of 'is cover' is forbidden. Use repository's method instead.
      *
      * @throws \Neomerx\Core\Exceptions\InvalidArgumentException
