@@ -85,7 +85,7 @@ class Images implements ImagesInterface
      * @param Image       $image
      * @param ImageFormat $format
      *
-     * @return string
+     * @return array
      */
     protected function getFormattedFileName(Image $image, ImageFormat $format)
     {

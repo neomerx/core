@@ -18,6 +18,8 @@ class Storage extends Facade
 {
     /**
      * @inheritdoc
+     *
+     * @return FilesystemManager
      */
     protected static function getFacadeAccessor()
     {
