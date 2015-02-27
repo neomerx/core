@@ -1,10 +1,10 @@
 <?php namespace Neomerx\Core\Filesystem;
 
-use \File;
 use \Neomerx\Core\Config;
 use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\ImageFormat;
+use \Neomerx\Core\Filesystem\Facades\Storage;
 use \Intervention\Image\Image as InterventionImage;
 use \Neomerx\Core\Exceptions\AccessDeniedFileException;
 use \Intervention\Image\Facades\Image as InterventionImageFacade;
@@ -22,10 +22,10 @@ class Images implements ImagesInterface
         $anchor = 'center',
         $relative = false
     ) {
-        $imageFolder = $this->getImageFolder();
-        $pathFrom    = $imageFolder.$image->{Image::FIELD_ORIGINAL_FILE};
-        $fileTo      = $this->getFormattedFileName($image, $format);
-        $pathTo      = $imageFolder.$fileTo;
+        $disk     = $this->getImageDisk();
+        $pathFrom = $this->getPathToOriginalsFolder($image->{Image::FIELD_ORIGINAL_FILE});
+        list($fileTo, $extension) = $this->getFormattedFileName($image, $format);
+        $pathTo = $this->getPathToFormatsFolder($fileTo);
 
         /** @noinspection PhpUndefinedMethodInspection */
         /** @var InterventionImage $image */
@@ -35,10 +35,10 @@ class Images implements ImagesInterface
         $height = $format->{ImageFormat::FIELD_HEIGHT};
         $image = $image->resize($width, $height)->resizeCanvas($width, $height, $anchor, $relative, $background);
 
-        if ($overwrite === true && File::exists($pathTo) === true) {
-            $this->delete($pathTo);
+        if ($overwrite === true && $disk->exists($pathTo) === true) {
+            $this->checkDiskResult($disk->delete($pathTo), $pathTo);
         }
-        $image->save($pathTo);
+        $disk->put($pathTo, $image->encode($extension)->getEncoded());
 
         return $fileTo;
     }
@@ -46,24 +46,39 @@ class Images implements ImagesInterface
     /**
      * @inheritdoc
      */
-    public function delete($fileName)
+    public function delete($path)
     {
-        $imageFolder = $this->getImageFolder();
-        File::delete($imageFolder.$fileName) === true ?: S\throwEx(new AccessDeniedFileException($fileName));
+        $disk = $this->getImageDisk();
+        $path = $this->getPathToOriginalsFolder($path);
+        $this->checkDiskResult($disk->delete($path), $path);
     }
 
     /**
+     * @param string $fileName
+     *
      * @return string
      */
-    protected function getImageFolder()
+    protected function getPathToOriginalsFolder($fileName)
     {
-        $path = trim(Config::get(Config::KEY_IMAGE_FOLDER));
+        return Config::KEY_IMAGE_FOLDER_ORIGINALS.DIRECTORY_SEPARATOR.$fileName;
+    }
 
-        if (substr($path, -1) !== DIRECTORY_SEPARATOR) {
-            $path .= DIRECTORY_SEPARATOR;
-        }
+    /**
+     * @param string $fileName
+     *
+     * @return string
+     */
+    protected function getPathToFormatsFolder($fileName)
+    {
+        return Config::KEY_IMAGE_FOLDER_FORMATS.DIRECTORY_SEPARATOR.$fileName;
+    }
 
-        return $path;
+    /**
+     * @return FilesystemInterface
+     */
+    protected function getImageDisk()
+    {
+        return Storage::disk(Config::get(Config::KEY_IMAGE_DISK));
     }
 
     /**
@@ -78,6 +93,18 @@ class Images implements ImagesInterface
         $fileName         = pathinfo($originalFileName, PATHINFO_FILENAME);
         $fileExt          = pathinfo($originalFileName, PATHINFO_EXTENSION);
 
-        return $fileName.'-'.$format->{ImageFormat::FIELD_CODE}.'.'.$fileExt;
+        return [$fileName.'-'.$format->{ImageFormat::FIELD_CODE}.'.'. $fileExt, $fileExt];
+    }
+
+    /**
+     * @param bool   $result
+     * @param string $fileName
+     *
+     * @throws AccessDeniedFileException
+     */
+    protected function checkDiskResult($result, $fileName)
+    {
+        assert('is_bool($result)');
+        $result === true ?: S\throwEx(new AccessDeniedFileException($fileName));
     }
 }

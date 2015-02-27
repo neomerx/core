@@ -5,8 +5,14 @@ use \Illuminate\Support\Facades\Config as ConfigFacade;
 
 class Config
 {
-    /** Folder name for storing image files */
-    const KEY_IMAGE_FOLDER = 'imageFolder';
+    /** Disk for storing image files */
+    const KEY_IMAGE_DISK = 'images';
+
+    /** Folder name for storing original image files */
+    const KEY_IMAGE_FOLDER_ORIGINALS = 'originals';
+
+    /** Folder name for storing formatted image files */
+    const KEY_IMAGE_FOLDER_FORMATS = 'formats';
 
     /** Product tax type for shipping (ID) */
     const KEY_SHIPPING_TAX_TYPE_ID = 'shippingTaxTypeId';

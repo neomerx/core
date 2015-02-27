@@ -175,17 +175,16 @@ class CoreServiceProvider extends ServiceProvider
         SysConfig::set([self::CONFIG_ROOT_KEY => [
             /*
             |--------------------------------------------------------------------------
-            | Image Folder
+            | Image disk
             |--------------------------------------------------------------------------
             |
-            | The folder is used for uploading product images and storing them in
+            | The disk is used for uploading product images and storing them in
             | various image formats.
             |
-            | This folder should be writable for the web server and end with
-            | folder separator.
+            | This disk should be writable for the web server.
             |
             */
-            Config::KEY_IMAGE_FOLDER => storage_path().DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR,
+            Config::KEY_IMAGE_DISK => 'images',
             /*
             |--------------------------------------------------------------------------
             | Product tax type for shipping

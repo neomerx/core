@@ -27,9 +27,9 @@ interface ImagesInterface
     );
 
     /**
-     * @param string $fileName
+     * @param string $path
      *
      * @return void
      */
-    public function delete($fileName);
+    public function delete($path);
 }
