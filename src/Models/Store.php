@@ -83,7 +83,7 @@ class Store extends BaseModel implements SelectByCodeInterface
                 '|unique:'.self::TABLE_NAME,
 
             self::FIELD_NAME       => 'required|min:1|max:'.self::NAME_MAX_LENGTH,
-            self::FIELD_ID_ADDRESS => 'required|integer|min:1|max:4294967295'.'|exists:'.Address::TABLE_NAME ,
+            self::FIELD_ID_ADDRESS => 'required|integer|min:1|max:4294967295'.'|exists:'.Address::TABLE_NAME,
         ];
     }
 

@@ -93,7 +93,7 @@ class Images implements ImagesInterface
         $fileName         = pathinfo($originalFileName, PATHINFO_FILENAME);
         $fileExt          = pathinfo($originalFileName, PATHINFO_EXTENSION);
 
-        return [$fileName.'-'.$format->{ImageFormat::FIELD_CODE}.'.'. $fileExt, $fileExt];
+        return [$fileName.'-'.$format->{ImageFormat::FIELD_CODE}.'.'.$fileExt, $fileExt];
     }
 
     /**

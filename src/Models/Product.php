@@ -165,7 +165,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
                 Category::TABLE_NAME.','.Category::FIELD_ID,
 
             self::FIELD_LINK => 'sometimes|required|alpha_dash|min:1|max:'.self::LINK_MAX_LENGTH.
-                '|unique:'. self::TABLE_NAME,
+                '|unique:'.self::TABLE_NAME,
 
             self::FIELD_ID_MANUFACTURER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 Manufacturer::TABLE_NAME,
