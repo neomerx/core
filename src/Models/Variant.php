@@ -112,6 +112,14 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
     }
 
     /**
+     * @return string
+     */
+    public static function withProperties()
+    {
+        return self::FIELD_PROPERTIES.'.'.VariantProperties::FIELD_LANGUAGE;
+    }
+
+    /**
      * Get model relation.
      *
      * @return string
