@@ -171,6 +171,46 @@ class Order extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withCustomer()
+    {
+        return self::FIELD_CUSTOMER;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withBillingAddress()
+    {
+        return self::FIELD_BILLING_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withShippingAddress()
+    {
+        return self::FIELD_SHIPPING_ADDRESS.'.'.Address::FIELD_REGION.'.'.Region::FIELD_COUNTRY;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withStore()
+    {
+        return self::FIELD_STORE;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withStatus()
+    {
+        return self::FIELD_STATUS;
+    }
+
+    /**
      * Relation to customer.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
