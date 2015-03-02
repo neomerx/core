@@ -1,7 +1,6 @@
 <?php namespace Neomerx\Core\Models;
 
 use \Illuminate\Support\Facades\DB;
-use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -45,7 +44,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     const FIELD_SETTINGS        = 'settings';
     const FIELD_DATA            = 'data';
     const FIELD_CACHE           = 'cache';
-    const FIELD_FACTORY         = 'factory';
+    const FIELD_CALCULATOR_CODE = 'calculator_code';
     const FIELD_ORDERS          = 'orders';
     const FIELD_PROPERTIES      = 'properties';
     const FIELD_REGIONS         = 'regions';
@@ -86,7 +85,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
         self::FIELD_IS_TAXABLE,
         self::FIELD_SETTINGS,
         self::FIELD_DATA,
-        self::FIELD_FACTORY,
+        self::FIELD_CALCULATOR_CODE,
     ];
 
     /**
@@ -114,17 +113,17 @@ class Carrier extends BaseModel implements SelectByCodeInterface
             self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.
                 '|unique:'.self::TABLE_NAME,
 
-            self::FIELD_MIN_WEIGHT    => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_WEIGHT    => 'sometimes|required|numeric|min:0',
-            self::FIELD_MIN_COST      => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_COST      => 'sometimes|required|numeric|min:0',
-            self::FIELD_MIN_DIMENSION => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_DIMENSION => 'sometimes|required|numeric|min:0',
-            self::FIELD_IS_TAXABLE    => 'required|boolean',
-            self::FIELD_SETTINGS      => 'sometimes|required',
-            self::FIELD_DATA          => 'sometimes|required',
-            self::FIELD_CACHE         => 'sometimes|required|forbidden',
-            self::FIELD_FACTORY       => 'required',
+            self::FIELD_MIN_WEIGHT      => 'sometimes|required|numeric|min:0',
+            self::FIELD_MAX_WEIGHT      => 'sometimes|required|numeric|min:0',
+            self::FIELD_MIN_COST        => 'sometimes|required|numeric|min:0',
+            self::FIELD_MAX_COST        => 'sometimes|required|numeric|min:0',
+            self::FIELD_MIN_DIMENSION   => 'sometimes|required|numeric|min:0',
+            self::FIELD_MAX_DIMENSION   => 'sometimes|required|numeric|min:0',
+            self::FIELD_IS_TAXABLE      => 'required|boolean',
+            self::FIELD_SETTINGS        => 'sometimes|required',
+            self::FIELD_DATA            => 'sometimes|required',
+            self::FIELD_CACHE           => 'sometimes|required|forbidden',
+            self::FIELD_CALCULATOR_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH,
         ];
     }
 
@@ -134,18 +133,18 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_CODE          => 'sometimes|required|forbidden',
-            self::FIELD_MIN_WEIGHT    => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_WEIGHT    => 'sometimes|required|numeric|min:0',
-            self::FIELD_MIN_COST      => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_COST      => 'sometimes|required|numeric|min:0',
-            self::FIELD_MIN_DIMENSION => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_DIMENSION => 'sometimes|required|numeric|min:0',
-            self::FIELD_IS_TAXABLE    => 'sometimes|required|boolean',
-            self::FIELD_SETTINGS      => 'sometimes|required',
-            self::FIELD_DATA          => 'sometimes|required',
-            self::FIELD_CACHE         => 'sometimes|required|forbidden',
-            self::FIELD_FACTORY       => 'sometimes|required',
+            self::FIELD_CODE            => 'sometimes|required|forbidden',
+            self::FIELD_MIN_WEIGHT      => 'sometimes|required|numeric|min:0',
+            self::FIELD_MAX_WEIGHT      => 'sometimes|required|numeric|min:0',
+            self::FIELD_MIN_COST        => 'sometimes|required|numeric|min:0',
+            self::FIELD_MAX_COST        => 'sometimes|required|numeric|min:0',
+            self::FIELD_MIN_DIMENSION   => 'sometimes|required|numeric|min:0',
+            self::FIELD_MAX_DIMENSION   => 'sometimes|required|numeric|min:0',
+            self::FIELD_IS_TAXABLE      => 'sometimes|required|boolean',
+            self::FIELD_SETTINGS        => 'sometimes|required',
+            self::FIELD_DATA            => 'sometimes|required',
+            self::FIELD_CACHE           => 'sometimes|required|forbidden',
+            self::FIELD_CALCULATOR_CODE => 'sometimes|required|code|min:1|max:'.self::CODE_MAX_LENGTH,
         ];
     }
 
