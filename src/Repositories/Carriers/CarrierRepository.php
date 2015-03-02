@@ -31,4 +31,29 @@ class CarrierRepository extends CodeBasedResourceRepository implements CarrierRe
     {
         $this->fillModel($resource, [], $attributes);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function selectCarriers(
+        $countryId,
+        $regionId,
+        $postcode,
+        $customerTypeId,
+        $pkgWeight = null,
+        $maxDimension = null,
+        $pkgCost = null
+    ) {
+        /** @var Carrier $resource */
+        $resource = $this->makeModel();
+        return $resource->selectCarriers(
+            $countryId,
+            $regionId,
+            $postcode,
+            $customerTypeId,
+            $pkgWeight,
+            $maxDimension,
+            $pkgCost
+        );
+    }
 }
