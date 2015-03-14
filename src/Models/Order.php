@@ -28,6 +28,7 @@ use \Illuminate\Database\Eloquent\SoftDeletes;
  * @property      Collection  invoices
  * @property      Collection  shippingOrders
  *
+ * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Order extends BaseModel
@@ -44,8 +45,8 @@ class Order extends BaseModel
     const FIELD_ID_STORE              = Store::FIELD_ID;
     const FIELD_ID_ORDER_STATUS       = OrderStatus::FIELD_ID;
     const FIELD_PRODUCTS_TAX          = 'products_tax';
-    const FIELD_PRODUCTS_TAX_DETAILS  = 'products_tax_details';
-    const FIELD_SHIPPING_INCLUDED_TAX = 'shipping_included_tax';
+    const FIELD_SHIPPING_TAX          = 'shipping_tax';
+    const FIELD_TAX_DETAILS           = 'tax_details';
     const FIELD_SHIPPING_COST         = 'shipping_cost';
     const FIELD_CREATED_AT            = 'created_at';
     const FIELD_UPDATED_AT            = 'updated_at';
@@ -89,10 +90,10 @@ class Order extends BaseModel
      * {@inheritdoc}
      */
     protected $fillable = [
-        self::FIELD_SHIPPING_INCLUDED_TAX,
+        self::FIELD_SHIPPING_TAX,
         self::FIELD_SHIPPING_COST,
         self::FIELD_PRODUCTS_TAX,
-        self::FIELD_PRODUCTS_TAX_DETAILS,
+        self::FIELD_TAX_DETAILS,
     ];
 
     /**
@@ -114,9 +115,9 @@ class Order extends BaseModel
         self::FIELD_ID_STORE,
         self::FIELD_ID_ORDER_STATUS,
         self::FIELD_PRODUCTS_TAX,
-        self::FIELD_SHIPPING_INCLUDED_TAX,
+        self::FIELD_SHIPPING_TAX,
         self::FIELD_SHIPPING_COST,
-        self::FIELD_PRODUCTS_TAX_DETAILS,
+        self::FIELD_TAX_DETAILS,
     ];
 
     /**
@@ -137,10 +138,10 @@ class Order extends BaseModel
 
             self::FIELD_ID_ORDER_STATUS => 'required|integer|min:1|max:4294967295|exists:'.OrderStatus::TABLE_NAME,
 
-            self::FIELD_SHIPPING_INCLUDED_TAX => 'required|numeric|min:0',
+            self::FIELD_SHIPPING_TAX => 'required|numeric|min:0',
             self::FIELD_SHIPPING_COST         => 'required|numeric|min:0',
             self::FIELD_PRODUCTS_TAX          => 'required|numeric|min:0',
-            self::FIELD_PRODUCTS_TAX_DETAILS  => 'required|min:1',
+            self::FIELD_TAX_DETAILS  => 'required|min:1',
         ];
     }
 
@@ -163,10 +164,10 @@ class Order extends BaseModel
             self::FIELD_ID_ORDER_STATUS => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 OrderStatus::TABLE_NAME,
 
-            self::FIELD_SHIPPING_INCLUDED_TAX => 'sometimes|required|numeric|min:0',
+            self::FIELD_SHIPPING_TAX => 'sometimes|required|numeric|min:0',
             self::FIELD_SHIPPING_COST         => 'sometimes|required|numeric|min:0',
             self::FIELD_PRODUCTS_TAX          => 'sometimes|required|numeric|min:0',
-            self::FIELD_PRODUCTS_TAX_DETAILS  => 'sometimes|required_with:'. self::FIELD_PRODUCTS_TAX.'|min:1',
+            self::FIELD_TAX_DETAILS  => 'sometimes|required_with:'. self::FIELD_PRODUCTS_TAX.'|min:1',
         ];
     }
 
@@ -293,16 +294,6 @@ class Order extends BaseModel
             InvoiceOrder::FIELD_ID_ORDER,
             InvoiceOrder::FIELD_ID_INVOICE
         );
-    }
-
-    /**
-     * Relation to shipping orders. The order could be shipped with more than one shipment.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function shippingOrders()
-    {
-        return $this->hasMany(ShippingOrder::BIND_NAME, ShippingOrder::FIELD_ID_ORDER, self::FIELD_ID);
     }
 
     /**

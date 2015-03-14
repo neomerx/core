@@ -10,7 +10,6 @@ use \Carbon\Carbon;
  * @property      string              tracking_number
  * @property-read Carbon              created_at
  * @property-read Carbon              updated_at
- * @property      Order               order
  * @property      Carrier             carrier
  * @property      ShippingOrderStatus status
  */
@@ -22,7 +21,6 @@ class ShippingOrder extends BaseModel
     const TRACKING_NUMBER_MAX = 20;
 
     const FIELD_ID                       = 'id_shipping_order';
-    const FIELD_ID_ORDER                 = Order::FIELD_ID;
     const FIELD_ID_CARRIER               = Carrier::FIELD_ID;
     const FIELD_ID_SHIPPING_ORDER_STATUS = ShippingOrderStatus::FIELD_ID;
     const FIELD_TRACKING_NUMBER          = 'tracking_number';
@@ -72,7 +70,6 @@ class ShippingOrder extends BaseModel
      */
     protected $guarded = [
         self::FIELD_ID,
-        self::FIELD_ID_ORDER,
         self::FIELD_ID_CARRIER,
         self::FIELD_ID_SHIPPING_ORDER_STATUS,
     ];
@@ -83,7 +80,6 @@ class ShippingOrder extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_ORDER        => 'required|integer|min:1|max:4294967295|exists:'.Order::TABLE_NAME,
             self::FIELD_ID_CARRIER      => 'required|integer|min:1|max:4294967295|exists:'.Carrier::TABLE_NAME,
             self::FIELD_TRACKING_NUMBER => 'max:'.self::TRACKING_NUMBER_MAX,
 
@@ -98,7 +94,6 @@ class ShippingOrder extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_ORDER   => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Order::TABLE_NAME,
             self::FIELD_ID_CARRIER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Carrier::TABLE_NAME,
 
             self::FIELD_TRACKING_NUMBER => 'max:'.self::TRACKING_NUMBER_MAX,
@@ -126,16 +121,6 @@ class ShippingOrder extends BaseModel
     public static function withStatus()
     {
         return self::FIELD_STATUS;
-    }
-
-    /**
-     * Relation to order.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function order()
-    {
-        return $this->belongsTo(Order::BIND_NAME, self::FIELD_ID_ORDER, Order::FIELD_ID);
     }
 
     /**
