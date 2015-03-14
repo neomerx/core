@@ -15,6 +15,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      Collection properties
  * @property      Collection specification
  * @property      Collection images
+ * @property      Collection inventories
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
@@ -189,6 +190,16 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
     public function images()
     {
         return $this->hasMany(ProductImage::BIND_NAME, ProductImage::FIELD_ID_VARIANT, self::FIELD_ID);
+    }
+
+    /**
+     * Relation to inventories.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function inventories()
+    {
+        return $this->hasMany(Inventory::BIND_NAME, Inventory::FIELD_ID_VARIANT, self::FIELD_ID);
     }
 
     /**

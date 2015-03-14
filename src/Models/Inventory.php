@@ -4,8 +4,8 @@ use \Carbon\Carbon;
 
 /**
  * @property      int       id_inventory
+ * @property      int       id_variant
  * @property      int       id_warehouse
- * @property      string    sku
  * @property      int       in
  * @property      int       out
  * @property      int       reserved
@@ -13,6 +13,7 @@ use \Carbon\Carbon;
  * @property-read int       quantity
  * @property-read Carbon    created_at
  * @property-read Carbon    updated_at
+ * @property      Variant   variant
  * @property      Warehouse warehouse
  */
 class Inventory extends BaseModel
@@ -22,7 +23,7 @@ class Inventory extends BaseModel
 
     const FIELD_ID           = 'id_inventory';
     const FIELD_ID_WAREHOUSE = Warehouse::FIELD_ID;
-    const FIELD_SKU          = Variant::FIELD_SKU;
+    const FIELD_ID_VARIANT   = Variant::FIELD_ID;
     const FIELD_IN           = 'in';
     const FIELD_OUT          = 'out';
     const FIELD_RESERVED     = 'reserved';
@@ -56,7 +57,6 @@ class Inventory extends BaseModel
      * {@inheritdoc}
      */
     protected $fillable = [
-        self::FIELD_SKU,
         self::FIELD_IN,
         self::FIELD_OUT,
         self::FIELD_RESERVED,
@@ -66,6 +66,7 @@ class Inventory extends BaseModel
      * {@inheritdoc}
      */
     protected $hidden = [
+        self::FIELD_ID_VARIANT,
         self::FIELD_ID_WAREHOUSE,
     ];
 
@@ -74,6 +75,7 @@ class Inventory extends BaseModel
      */
     protected $guarded = [
         self::FIELD_ID,
+        self::FIELD_ID_VARIANT,
         self::FIELD_ID_WAREHOUSE,
     ];
 
@@ -90,9 +92,7 @@ class Inventory extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_SKU => 'required|alpha_dash|min:1|max:'.Product::SKU_MAX_LENGTH.
-                '|exists:'.Variant::TABLE_NAME.','.Variant::FIELD_SKU,
-
+            self::FIELD_ID_VARIANT   => 'required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
             self::FIELD_IN           => 'sometimes|required|integer|min:0|max:18446744073709551615',
             self::FIELD_OUT          => 'sometimes|required|integer|min:0|max:18446744073709551615',
             self::FIELD_RESERVED     => 'sometimes|required|integer|min:0|max:4294967295',
@@ -106,7 +106,7 @@ class Inventory extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_SKU          => 'forbidden',
+            self::FIELD_ID_VARIANT   => 'forbidden',
             self::FIELD_IN           => 'sometimes|required|integer|min:0|max:18446744073709551615',
             self::FIELD_OUT          => 'sometimes|required|integer|min:0|max:18446744073709551615',
             self::FIELD_RESERVED     => 'sometimes|required|integer|min:0|max:4294967295',
@@ -136,6 +136,16 @@ class Inventory extends BaseModel
     }
 
     /**
+     * Relation to variant.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function variant()
+    {
+        return $this->belongsTo(Variant::BIND_NAME, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
+    }
+
+    /**
      * Relation to warehouse.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -146,14 +156,16 @@ class Inventory extends BaseModel
     }
 
     /**
-     * @param string $sku
-     * @param int    $warehouseId
+     * @param int $variantId
+     * @param int $warehouseId
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function selectBySkuAndWarehouse($sku, $warehouseId)
+    public function selectByVariantAndWarehouse($variantId, $warehouseId)
     {
-        return $this->newQuery()->where(self::FIELD_SKU, $sku)->where(self::FIELD_ID_WAREHOUSE, $warehouseId);
+        return $this->newQuery()
+            ->where(self::FIELD_ID_VARIANT, $variantId)
+            ->where(self::FIELD_ID_WAREHOUSE, $warehouseId);
     }
 
     /**
