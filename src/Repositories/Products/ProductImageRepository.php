@@ -55,7 +55,6 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
 
         DB::beginTransaction();
         try {
-
             // set all other images' isCover to false
             /** @noinspection PhpUndefinedMethodInspection */
             $product->productImages()
@@ -68,7 +67,6 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
                 ->update([ProductImage::FIELD_IS_COVER => true]);
 
             $allExecutedOk = true;
-
         } finally {
             isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
         }

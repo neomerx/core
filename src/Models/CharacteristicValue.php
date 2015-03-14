@@ -1,7 +1,6 @@
 <?php namespace Neomerx\Core\Models;
 
 use \Carbon\Carbon;
-use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**

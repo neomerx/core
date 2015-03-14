@@ -57,7 +57,6 @@ class VariantRepository extends CodeBasedResourceRepository implements VariantRe
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
         try {
-
             $variant->saveOrFail();
             foreach ($defaultSpecs as $specRow) {
                 /** @var Specification $specRow */
@@ -67,7 +66,6 @@ class VariantRepository extends CodeBasedResourceRepository implements VariantRe
             }
 
             $allExecutedOk = true;
-
         } finally {
             /** @noinspection PhpUndefinedMethodInspection */
             isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();

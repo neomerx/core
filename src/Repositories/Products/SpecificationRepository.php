@@ -71,7 +71,6 @@ class SpecificationRepository extends IndexBasedResourceRepository implements Sp
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
         try {
-
             foreach ($variants as $variant) {
                 /** @var Variant $variant */
                 if ($variant->isDefault() === true) {
@@ -83,7 +82,6 @@ class SpecificationRepository extends IndexBasedResourceRepository implements Sp
             }
 
             $allExecutedOk = true;
-
         } finally {
             /** @noinspection PhpUndefinedMethodInspection */
             isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
@@ -114,7 +112,6 @@ class SpecificationRepository extends IndexBasedResourceRepository implements Sp
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
         try {
-
             // assign specification back to product
             $specification->{Specification::FIELD_ID_VARIANT} = null;
             $specification->saveOrFail();
@@ -146,7 +143,6 @@ class SpecificationRepository extends IndexBasedResourceRepository implements Sp
             }
 
             $allExecutedOk = true;
-
         } finally {
             /** @noinspection PhpUndefinedMethodInspection */
             isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();

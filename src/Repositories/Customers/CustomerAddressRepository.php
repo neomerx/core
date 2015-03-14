@@ -60,12 +60,10 @@ class CustomerAddressRepository extends IndexBasedResourceRepository implements 
 
         DB::beginTransaction();
         try {
-
             $allAddressQry->update([CustomerAddress::FIELD_IS_DEFAULT => false]);
             $customerAddressQry->update([CustomerAddress::FIELD_IS_DEFAULT => true]);
 
             $allExecutedOk = true;
-
         } finally {
             isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
         }

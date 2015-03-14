@@ -264,7 +264,6 @@ class Category extends BaseModel implements SelectByCodeInterface
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
         try {
-
             // orderBy clause covers this MySQL bug http://bugs.mysql.com/bug.php?id=18913
             /** @noinspection PhpUndefinedMethodInspection */
             $this->newQuery()->where(self::FIELD_RGT, '>=', $parentRight)
@@ -275,7 +274,6 @@ class Category extends BaseModel implements SelectByCodeInterface
 
             // if all executes OK and parent returns 'true' we will commit changes in 'finally'.
             $allExecutedOk = parent::onCreating();
-
         } finally {
 
             /** @noinspection PhpUndefinedMethodInspection */
@@ -313,7 +311,6 @@ class Category extends BaseModel implements SelectByCodeInterface
         /** @noinspection PhpUndefinedMethodInspection */
         DB::beginTransaction();
         try {
-
             /** @noinspection PhpUndefinedMethodInspection */
             $this->newQuery()->whereBetween(self::FIELD_LFT, [$left, $right])->delete();
             // remove a gap after the move, orderBy clause covers this MySQL bug http://bugs.mysql.com/bug.php?id=18913
@@ -326,7 +323,6 @@ class Category extends BaseModel implements SelectByCodeInterface
 
             // if all executes OK and parent returns 'true' we will commit changes in 'finally'.
             $allExecutedOk = parent::onDeleting();
-
         } finally {
             /** @noinspection PhpUndefinedMethodInspection */
             $allExecutedOk === true ? DB::commit() : DB::rollBack();
