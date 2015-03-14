@@ -82,10 +82,24 @@ class CarrierCustomerType extends BaseModel
     {
         return [
             self::FIELD_ID_CARRIER       => 'sometimes|required|forbidden',
-
-            self::FIELD_ID_CUSTOMER_TYPE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
-                CustomerType::TABLE_NAME,
+            self::FIELD_ID_CUSTOMER_TYPE => '',
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public static function withCarrier()
+    {
+        return self::FIELD_CARRIER;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withType()
+    {
+        return self::FIELD_TYPE;
     }
 
     /**

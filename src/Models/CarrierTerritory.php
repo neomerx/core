@@ -98,6 +98,22 @@ class CarrierTerritory extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withCarrier()
+    {
+        return self::FIELD_CARRIER;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withTerritory()
+    {
+        return self::FIELD_TERRITORY;
+    }
+
+    /**
      * Relation to carrier.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

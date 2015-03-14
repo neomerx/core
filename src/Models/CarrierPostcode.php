@@ -93,6 +93,14 @@ class CarrierPostcode extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withCarrier()
+    {
+        return self::FIELD_CARRIER;
+    }
+
+    /**
      * Relation to carrier.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
