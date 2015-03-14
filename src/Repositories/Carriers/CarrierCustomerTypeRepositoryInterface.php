@@ -12,7 +12,6 @@ interface CarrierCustomerTypeRepositoryInterface extends RepositoryInterface
      * @param CustomerType|null $type
      *
      * @return CarrierCustomerType
-     *
      */
     public function instance(Carrier $carrier, CustomerType $type = null);
 
@@ -20,10 +19,15 @@ interface CarrierCustomerTypeRepositoryInterface extends RepositoryInterface
      * @param CarrierCustomerType $resource
      * @param Carrier|null        $carrier
      * @param CustomerType|null   $type
-     *
-     * @return void
+     * @param bool                $isTypeEmpty Treat null in $type as 'all types' or 'not set'.
+     *                                         Allows skip saving $type.
      */
-    public function fill(CarrierCustomerType $resource, Carrier $carrier = null, CustomerType $type = null);
+    public function fill(
+        CarrierCustomerType $resource,
+        Carrier $carrier = null,
+        CustomerType $type = null,
+        $isTypeEmpty = false
+    );
 
     /**
      * @param int   $resourceId

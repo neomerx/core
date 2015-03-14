@@ -23,18 +23,27 @@ class CarrierCustomerTypeRepository extends IndexBasedResourceRepository impleme
     {
         /** @var CarrierCustomerType $resource */
         $resource = $this->makeModel();
-        $this->fill($resource, $carrier, $type);
+        $this->fill($resource, $carrier, $type, $type === null);
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(CarrierCustomerType $resource, Carrier $carrier = null, CustomerType $type = null)
-    {
-        $this->fillModel($resource, [
-            CarrierCustomerType::FIELD_ID_CARRIER       => $carrier,
-            CarrierCustomerType::FIELD_ID_CUSTOMER_TYPE => $type,
-        ]);
+    public function fill(
+        CarrierCustomerType $resource,
+        Carrier $carrier = null,
+        CustomerType $type = null,
+        $isTypeEmpty = false
+    ) {
+        $input = [
+            CarrierCustomerType::FIELD_ID_CARRIER => $carrier,
+        ];
+        if ($isTypeEmpty === false) {
+            $idx = $type === null ? null : $type->{CustomerType::FIELD_ID};
+            $resource->{CarrierCustomerType::FIELD_ID_CUSTOMER_TYPE} = $idx;
+        }
+
+        $this->fillModel($resource, $input);
     }
 }
