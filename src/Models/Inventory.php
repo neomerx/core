@@ -32,6 +32,7 @@ class Inventory extends BaseModel
     const FIELD_CREATED_AT   = 'created_at';
     const FIELD_UPDATED_AT   = 'updated_at';
     const FIELD_WAREHOUSE    = 'warehouse';
+    const FIELD_VARIANT      = 'variant';
 
     /**
      * {@inheritdoc}
