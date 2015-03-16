@@ -137,6 +137,38 @@ class SupplyOrder extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withSupplier()
+    {
+        return self::FIELD_SUPPLIER;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withWarehouse()
+    {
+        return self::FIELD_WAREHOUSE;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withCurrency()
+    {
+        return self::FIELD_CURRENCY;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withLanguage()
+    {
+        return self::FIELD_LANGUAGE;
+    }
+
+    /**
      * Relation to supplier.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
