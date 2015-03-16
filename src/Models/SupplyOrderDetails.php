@@ -26,7 +26,7 @@ class SupplyOrderDetails extends BaseModel
     const FIELD_DISCOUNT_RATE   = 'discount_rate';
     const FIELD_TAX_RATE        = 'tax_rate';
     const FIELD_SUPPLY_ORDER    = 'supplyOrder';
-    const FIELD_ITEM            = 'item';
+    const FIELD_VARIANT         = 'variant';
 
     /**
      * {@inheritdoc}
