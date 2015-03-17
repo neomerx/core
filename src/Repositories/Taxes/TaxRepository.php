@@ -31,4 +31,19 @@ class TaxRepository extends CodeBasedResourceRepository implements TaxRepository
     {
         $this->fillModel($resource, [], $attributes);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function selectTaxes(
+        $countryId,
+        $regionId,
+        $postcode,
+        $customerTypeId,
+        $productTaxTypeId
+    ) {
+        /** @var Tax $resource */
+        $resource = $this->makeModel();
+        return $resource->selectTaxes($countryId, $regionId, $postcode, $customerTypeId, $productTaxTypeId);
+    }
 }
