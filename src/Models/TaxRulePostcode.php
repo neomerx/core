@@ -92,6 +92,14 @@ class TaxRulePostcode extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withRule()
+    {
+        return self::FIELD_RULE;
+    }
+
+    /**
      * Relation to tax rule.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

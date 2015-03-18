@@ -98,6 +98,46 @@ class TaxRule extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withTax()
+    {
+        return self::FIELD_TAX;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withTerritories()
+    {
+        return self::FIELD_TERRITORIES;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withPostcodes()
+    {
+        return self::FIELD_POSTCODES;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withCustomerTypes()
+    {
+        return self::FIELD_CUSTOMER_TYPES.'.'.TaxRuleCustomerType::FIELD_TYPE;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withProductTypes()
+    {
+        return self::FIELD_PRODUCT_TYPES.'.'.TaxRuleProductType::FIELD_TYPE;
+    }
+
+    /**
      * Relation to tax.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

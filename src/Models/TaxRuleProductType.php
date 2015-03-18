@@ -88,6 +88,22 @@ class TaxRuleProductType extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withRule()
+    {
+        return self::FIELD_RULE;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withType()
+    {
+        return self::FIELD_TYPE;
+    }
+
+    /**
      * Relation to tax rule.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

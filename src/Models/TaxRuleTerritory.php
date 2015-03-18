@@ -97,6 +97,22 @@ class TaxRuleTerritory extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withRule()
+    {
+        return self::FIELD_RULE;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withTerritory()
+    {
+        return self::FIELD_TERRITORY;
+    }
+
+    /**
      * Relation to tax rule.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
