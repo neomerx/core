@@ -137,11 +137,10 @@ class Order extends BaseModel
             self::FIELD_ID_STORE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Store::TABLE_NAME,
 
             self::FIELD_ID_ORDER_STATUS => 'required|integer|min:1|max:4294967295|exists:'.OrderStatus::TABLE_NAME,
-
-            self::FIELD_SHIPPING_TAX => 'required|numeric|min:0',
-            self::FIELD_SHIPPING_COST         => 'required|numeric|min:0',
-            self::FIELD_PRODUCTS_TAX          => 'required|numeric|min:0',
-            self::FIELD_TAX_DETAILS  => 'required|min:1',
+            self::FIELD_SHIPPING_TAX    => 'required|numeric|min:0',
+            self::FIELD_SHIPPING_COST   => 'required|numeric|min:0',
+            self::FIELD_PRODUCTS_TAX    => 'required|numeric|min:0',
+            self::FIELD_TAX_DETAILS     => 'required|min:1',
         ];
     }
 
@@ -164,10 +163,10 @@ class Order extends BaseModel
             self::FIELD_ID_ORDER_STATUS => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 OrderStatus::TABLE_NAME,
 
-            self::FIELD_SHIPPING_TAX => 'sometimes|required|numeric|min:0',
-            self::FIELD_SHIPPING_COST         => 'sometimes|required|numeric|min:0',
-            self::FIELD_PRODUCTS_TAX          => 'sometimes|required|numeric|min:0',
-            self::FIELD_TAX_DETAILS  => 'sometimes|required_with:'. self::FIELD_PRODUCTS_TAX.'|min:1',
+            self::FIELD_SHIPPING_TAX  => 'sometimes|required|numeric|min:0',
+            self::FIELD_SHIPPING_COST => 'sometimes|required|numeric|min:0',
+            self::FIELD_PRODUCTS_TAX  => 'sometimes|required|numeric|min:0',
+            self::FIELD_TAX_DETAILS   => 'sometimes|required_with:'.self::FIELD_PRODUCTS_TAX . '|min:1',
         ];
     }
 
