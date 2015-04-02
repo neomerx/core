@@ -1,6 +1,7 @@
 <?php namespace Neomerx\Core\Exceptions;
 
 use \Illuminate\Validation\Validator;
+use \Neomerx\Core\Support\Translate as T;
 
 class ValidationException extends LogicException
 {
@@ -17,7 +18,7 @@ class ValidationException extends LogicException
      */
     public function __construct(Validator $validator = null, $message = '', $code = 0, \Exception $previous = null)
     {
-        parent::__construct($this->loadIfEmpty($message, 'validation_exception'), $code, $previous);
+        parent::__construct($this->loadIfEmpty($message, T::KEY_EX_VALIDATION_EXCEPTION), $code, $previous);
         $this->validator = $validator;
     }
 

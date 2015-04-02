@@ -1,5 +1,7 @@
 <?php namespace Neomerx\Core\Exceptions;
 
+use \Neomerx\Core\Support\Translate as T;
+
 class InvalidArgumentException extends LogicException
 {
     /**
@@ -13,7 +15,7 @@ class InvalidArgumentException extends LogicException
      */
     public function __construct($name, $message = '', $code = 0, \Exception $previous = null)
     {
-        parent::__construct($this->loadIfEmpty($message, 'invalid_argument_exception'), $code, $previous);
+        parent::__construct($this->loadIfEmpty($message, T::KEY_EX_INVALID_ARGUMENT_EXCEPTION), $code, $previous);
         $this->name = $name;
     }
 

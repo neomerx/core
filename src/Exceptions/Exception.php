@@ -1,5 +1,8 @@
 <?php namespace Neomerx\Core\Exceptions;
 
+use \Neomerx\Core\Support\Translate;
+use \Neomerx\Core\Support\Translate as T;
+
 class Exception extends \Exception
 {
     /**
@@ -7,7 +10,7 @@ class Exception extends \Exception
      */
     public function __construct($message = '', $code = 0, \Exception $previous = null)
     {
-        parent::__construct($this->loadIfEmpty($message, 'exception'), $code, $previous);
+        parent::__construct($this->loadIfEmpty($message, T::KEY_EX_EXCEPTION), $code, $previous);
     }
 
     /**
@@ -20,7 +23,6 @@ class Exception extends \Exception
      */
     protected function loadIfEmpty($message, $key)
     {
-        $message = ($message === null || $message === '') ? trans('nm::exceptions.'.$key) : $message;
-        return $message;
+        return empty($message) ? Translate::trans($key) : $message;
     }
 }

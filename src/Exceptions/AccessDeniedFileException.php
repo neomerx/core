@@ -1,5 +1,7 @@
 <?php namespace Neomerx\Core\Exceptions;
 
+use \Neomerx\Core\Support\Translate as T;
+
 class AccessDeniedFileException extends FileException
 {
     /**
@@ -13,7 +15,7 @@ class AccessDeniedFileException extends FileException
      */
     public function __construct($fileName, $message = '', $code = 0, \Exception $previous = null)
     {
-        parent::__construct($this->loadIfEmpty($message, 'access_denied_file_exception'), $code, $previous);
+        parent::__construct($this->loadIfEmpty($message, T::KEY_EX_ACCESS_DENIED_FILE_EXCEPTION), $code, $previous);
         $this->fileName = $fileName;
     }
 

@@ -1,10 +1,12 @@
 <?php namespace Neomerx\Core;
 
+use \Config as ConfigFacade;
 use \Neomerx\Core\Support\CoreServiceProvider;
-use \Illuminate\Support\Facades\Config as ConfigFacade;
 
 class Config
 {
+    const CONFIG_FILE_NAME_WO_EXT = CoreServiceProvider::PACKAGE_NAMESPACE;
+
     /** Disk for storing image files */
     const KEY_IMAGE_DISK = 'images';
 
@@ -27,7 +29,6 @@ class Config
      */
     public static function get($key)
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return ConfigFacade::get(CoreServiceProvider::CONFIG_ROOT_KEY)[$key];
+        return array_get(ConfigFacade::get(self::CONFIG_FILE_NAME_WO_EXT), $key);
     }
 }

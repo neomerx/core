@@ -1,5 +1,7 @@
 <?php namespace Neomerx\Core\Exceptions;
 
+use \Neomerx\Core\Support\Translate as T;
+
 class FileException extends Exception
 {
     /**
@@ -7,6 +9,6 @@ class FileException extends Exception
      */
     public function __construct($message = '', $code = 0, \Exception $previous = null)
     {
-        parent::__construct($this->loadIfEmpty($message, 'file_exception'), $code, $previous);
+        parent::__construct($this->loadIfEmpty($message, T::KEY_EX_FILE_EXCEPTION), $code, $previous);
     }
 }
