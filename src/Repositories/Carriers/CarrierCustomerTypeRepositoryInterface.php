@@ -21,6 +21,8 @@ interface CarrierCustomerTypeRepositoryInterface extends RepositoryInterface
      * @param CustomerType|null   $type
      * @param bool                $isTypeEmpty Treat null in $type as 'all types' or 'not set'.
      *                                         Allows skip saving $type.
+     *
+     * @return void
      */
     public function fill(
         CarrierCustomerType $resource,
