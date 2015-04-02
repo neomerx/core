@@ -188,7 +188,7 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->publishes([
 
-            $confDir.'config.php' => config_path(CoreConfig::CONFIG_FILE_NAME_WO_EXT.'.php', 'config'),
+            $confDir.'config.php' => config_path(CoreConfig::CONFIG_FILE_NAME_WO_EXT.'.php'),
             $transDir.'en'.DIRECTORY_SEPARATOR.$transFileName  => $this->getLangPath('en', $transFileName),
 
         ]);
