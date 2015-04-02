@@ -24,6 +24,7 @@ use \Neomerx\Core\Exceptions\ValidationException;
  *
  * @method static Builder with($conditions)
  * @method static Builder where($conditions)
+ * @method static BaseModel findOrFail($idx)
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
