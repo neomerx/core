@@ -12,11 +12,13 @@ class Action extends BaseModel implements SelectByCodeInterface
     const BIND_NAME  = __CLASS__;
     const TABLE_NAME = 'actions';
 
-    const CODE_MAX_LENGTH = 50;
+    const CODE_MAX_LENGTH        = 50;
+    const DESCRIPTION_MAX_LENGTH = 300;
 
-    const FIELD_ID    = 'id_action';
-    const FIELD_CODE  = 'code';
-    const FIELD_ROLES = 'roles';
+    const FIELD_ID          = 'id_action';
+    const FIELD_DESCRIPTION = 'description';
+    const FIELD_CODE        = 'code';
+    const FIELD_ROLES       = 'roles';
 
     /**
      * {@inheritdoc}
@@ -43,6 +45,7 @@ class Action extends BaseModel implements SelectByCodeInterface
      */
     protected $fillable = [
         self::FIELD_CODE,
+        self::FIELD_DESCRIPTION,
     ];
 
     /**
@@ -65,8 +68,10 @@ class Action extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.
+            self::FIELD_CODE        => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.
                 '|unique:'.self::TABLE_NAME,
+            self::FIELD_DESCRIPTION => 'sometimes|required|alpha_dash_dot_space|min:1|max:'.
+                self::DESCRIPTION_MAX_LENGTH,
         ];
     }
 
@@ -76,7 +81,9 @@ class Action extends BaseModel implements SelectByCodeInterface
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_CODE => 'sometimes|required|forbidden',
+            self::FIELD_CODE        => 'sometimes|required|forbidden',
+            self::FIELD_DESCRIPTION => 'sometimes|required|alpha_dash_dot_space|min:1|max:'.
+                self::DESCRIPTION_MAX_LENGTH,
         ];
     }
 
