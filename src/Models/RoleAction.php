@@ -85,6 +85,22 @@ class RoleAction extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withAction()
+    {
+        return self::FIELD_ACTION;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withRole()
+    {
+        return self::FIELD_ROLE;
+    }
+
+    /**
      * Relation to action.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
