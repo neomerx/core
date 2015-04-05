@@ -1,4 +1,4 @@
-<?php namespace Neomerx\Core\Repositories\Auth;
+<?php namespace Neomerx\Core\Repositories\Employees;
 
 use \Neomerx\Core\Models\Role;
 use \Neomerx\Core\Models\Employee;
