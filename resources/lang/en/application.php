@@ -29,5 +29,6 @@ return [
     T::KEY_EX_INVALID_ARGUMENT_EXCEPTION         => 'Invalid argument provided.',
     T::KEY_EX_LOGIC_EXCEPTION                    => 'Error occurred in program logic.',
     T::KEY_EX_VALIDATION_EXCEPTION               => 'Validation failed.',
+    T::KEY_EX_ACCESS_DENIED_EXCEPTION            => 'Access denied.',
 
 ];

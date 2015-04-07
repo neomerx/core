@@ -14,6 +14,7 @@ class Translate
     const KEY_EX_INVALID_ARGUMENT_EXCEPTION         = 'invalid_argument_exception';
     const KEY_EX_LOGIC_EXCEPTION                    = 'logic_exception';
     const KEY_EX_VALIDATION_EXCEPTION               = 'validation_exception';
+    const KEY_EX_ACCESS_DENIED_EXCEPTION            = 'access_denied';
 
     /**
      * Get translated message.
