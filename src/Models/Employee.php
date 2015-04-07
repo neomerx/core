@@ -87,7 +87,6 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
      * {@inheritdoc}
      */
     protected $hidden = [
-        self::FIELD_ID,
         self::FIELD_PASSWORD,
         self::FIELD_REMEMBER_TOKEN
     ];
@@ -203,6 +202,18 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
     public function setActiveAttribute($value)
     {
         $this->attributes[self::FIELD_ACTIVE] = ($value !== null && (strcasecmp($value, 'on') == 0 || (bool)$value));
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool
+     *
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     */
+    public function getActiveAttribute($value)
+    {
+        return (bool)$value;
     }
 
     /**
