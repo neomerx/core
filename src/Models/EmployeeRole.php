@@ -85,6 +85,22 @@ class EmployeeRole extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withEmployee()
+    {
+        return self::FIELD_EMPLOYEE;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withRole()
+    {
+        return self::FIELD_ROLE;
+    }
+
+    /**
      * Relation to employee.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
