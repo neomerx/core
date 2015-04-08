@@ -1,16 +1,16 @@
 <?php namespace Neomerx\Core\Repositories\Auth;
 
-use \Neomerx\Core\Models\Action;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Models\ObjectType;
+use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
-class ActionRepository extends CodeBasedResourceRepository implements ActionRepositoryInterface
+class ObjectTypeRepository extends IndexBasedResourceRepository implements ObjectTypeRepositoryInterface
 {
     /**
      * @inheritdoc
      */
     public function __construct()
     {
-        parent::__construct(Action::BIND_NAME);
+        parent::__construct(ObjectType::BIND_NAME);
     }
 
     /**
@@ -18,7 +18,7 @@ class ActionRepository extends CodeBasedResourceRepository implements ActionRepo
      */
     public function instance(array $attributes)
     {
-        /** @var Action $resource */
+        /** @var ObjectType $resource */
         $resource = $this->makeModel();
         $this->fill($resource, $attributes);
         return $resource;
@@ -27,7 +27,7 @@ class ActionRepository extends CodeBasedResourceRepository implements ActionRepo
     /**
      * @inheritdoc
      */
-    public function fill(Action $resource, array $attributes)
+    public function fill(ObjectType $resource, array $attributes)
     {
         $this->fillModel($resource, [], $attributes);
     }

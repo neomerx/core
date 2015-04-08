@@ -3,22 +3,20 @@
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
- * @property int        id_action
+ * @property int        id_object_type
  * @property string     code
  * @property Collection roles
  */
-class Action extends BaseModel implements SelectByCodeInterface
+class ObjectType extends BaseModel
 {
     const BIND_NAME  = __CLASS__;
-    const TABLE_NAME = 'actions';
+    const TABLE_NAME = 'object_types';
 
-    const CODE_MAX_LENGTH        = 50;
-    const DESCRIPTION_MAX_LENGTH = 300;
+    const TYPE_MAX_LENGTH = 150;
 
-    const FIELD_ID          = 'id_action';
-    const FIELD_DESCRIPTION = 'description';
-    const FIELD_CODE        = 'code';
-    const FIELD_ROLES       = 'roles';
+    const FIELD_ID    = 'id_object_type';
+    const FIELD_TYPE  = 'type';
+    const FIELD_ROLES = 'roles';
 
     /**
      * {@inheritdoc}
@@ -44,8 +42,7 @@ class Action extends BaseModel implements SelectByCodeInterface
      * {@inheritdoc}
      */
     protected $fillable = [
-        self::FIELD_CODE,
-        self::FIELD_DESCRIPTION,
+        self::FIELD_TYPE,
     ];
 
     /**
@@ -68,10 +65,7 @@ class Action extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE        => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.
-                '|unique:'.self::TABLE_NAME,
-            self::FIELD_DESCRIPTION => 'sometimes|required|alpha_dash_dot_space|min:1|max:'.
-                self::DESCRIPTION_MAX_LENGTH,
+            self::FIELD_TYPE => 'required|min:1|max:'.self::TYPE_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
         ];
     }
 
@@ -81,18 +75,8 @@ class Action extends BaseModel implements SelectByCodeInterface
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_CODE        => 'sometimes|required|forbidden',
-            self::FIELD_DESCRIPTION => 'sometimes|required|alpha_dash_dot_space|min:1|max:'.
-                self::DESCRIPTION_MAX_LENGTH,
+            self::FIELD_TYPE => 'sometimes|required|forbidden',
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 
     /**
@@ -104,9 +88,9 @@ class Action extends BaseModel implements SelectByCodeInterface
     {
         return $this->belongsToMany(
             Role::BIND_NAME,
-            RoleAction::TABLE_NAME,
-            RoleAction::FIELD_ID_ROLE,
-            RoleAction::FIELD_ID_ACTION
+            RoleObjectType::TABLE_NAME,
+            RoleObjectType::FIELD_ID_ROLE,
+            RoleObjectType::FIELD_ID_TYPE
         );
     }
 }

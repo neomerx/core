@@ -3,92 +3,93 @@
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
-class Permission
+abstract class Permission
 {
     const VIEW     = 1;
     const CREATE   = 2;
     const EDIT     = 4;
     const DELETE   = 8;
     const RESTORE  = 16;
-    const OPERATOR = 32;
-    const MASTER   = 64;
-    const OWNER    = 128;
+//    const OPERATOR = 32;
+//    const MASTER   = 64;
+//    const OWNER    = 128;
 
     /**
      * @var int
      */
-    private $mask;
+    private $permissionMask;
+
+//    /**
+//     * @var Permission
+//     */
+//    private static $privilegeView;
+//
+//    /**
+//     * @var Permission
+//     */
+//    private static $privilegeEdit;
+//
+//    /**
+//     * @var Permission
+//     */
+//    private static $privilegeCreate;
+//
+//    /**
+//     * @var Permission
+//     */
+//    private static $privilegeDelete;
+//
+//    /**
+//     * @var Permission
+//     */
+//    private static $privilegeRestore;
+//
+//    /**
+//     * @var Permission
+//     */
+//    private static $privilegeCanView;
+//
+//    /**
+//     * @var Permission
+//     */
+//    private static $privilegeCanEdit;
+//
+//    /**
+//     * @var Permission
+//     */
+//    private static $privilegeCanCreate;
+//
+//    /**
+//     * @var Permission
+//     */
+//    private static $privilegeCanDelete;
+//
+//    /**
+//     * @var Permission
+//     */
+//    private static $privilegeCanRestore;
 
     /**
-     * @var Permission
+     * @param int $permissionMask
      */
-    private static $privilegeView;
-
-    /**
-     * @var Permission
-     */
-    private static $privilegeEdit;
-
-    /**
-     * @var Permission
-     */
-    private static $privilegeCreate;
-
-    /**
-     * @var Permission
-     */
-    private static $privilegeDelete;
-
-    /**
-     * @var Permission
-     */
-    private static $privilegeRestore;
-
-    /**
-     * @var Permission
-     */
-    private static $privilegeCanView;
-
-    /**
-     * @var Permission
-     */
-    private static $privilegeCanEdit;
-
-    /**
-     * @var Permission
-     */
-    private static $privilegeCanCreate;
-
-    /**
-     * @var Permission
-     */
-    private static $privilegeCanDelete;
-
-    /**
-     * @var Permission
-     */
-    private static $privilegeCanRestore;
-
-    /**
-     * @param int $mask
-     */
-    public function __construct($mask)
+    public function __construct($permissionMask)
     {
-        settype($mask, 'int');
-        $this->mask = $mask;
+        settype($permissionMask, 'int');
+        $this->permissionMask = $permissionMask;
     }
 
     /**
-     * Check if permission has flags specified by $mask.
+     * Determine if all permission bits can pass the permissions specified in the mask.
      *
-     * @param int $mask
+     * @param Permission $permission
+     * @param int        $allowedMask
      *
      * @return bool
      */
-    public function has($mask)
+    public static function canPass(Permission $permission, $allowedMask)
     {
-        settype($mask, 'int');
-        return ($this->mask & $mask) > 0;
+        settype($allowedMask, 'int');
+        return (($permission->getPermissionMask() & $allowedMask) === $permission->getPermissionMask());
     }
 
     /**
@@ -98,8 +99,7 @@ class Permission
      */
     public static function view()
     {
-        self::$privilegeView !== null ?: (self::$privilegeView = new Permission(self::VIEW));
-        return self::$privilegeView;
+        return new ViewPermission();
     }
 
     /**
@@ -109,8 +109,7 @@ class Permission
      */
     public static function edit()
     {
-        self::$privilegeEdit !== null ?: (self::$privilegeEdit = new Permission(self::EDIT));
-        return self::$privilegeEdit;
+        return new EditPermission();
     }
 
     /**
@@ -120,8 +119,7 @@ class Permission
      */
     public static function create()
     {
-        self::$privilegeCreate !== null ?: (self::$privilegeCreate = new Permission(self::CREATE));
-        return self::$privilegeCreate;
+        return new CreatePermission();
     }
 
     /**
@@ -131,8 +129,7 @@ class Permission
      */
     public static function delete()
     {
-        self::$privilegeDelete !== null ?: (self::$privilegeDelete = new Permission(self::DELETE));
-        return self::$privilegeDelete;
+        return new DeletePermission();
     }
 
     /**
@@ -142,72 +139,79 @@ class Permission
      */
     public static function restore()
     {
-        self::$privilegeRestore !== null ?: (self::$privilegeRestore = new Permission(self::RESTORE));
-        return self::$privilegeRestore;
+        return new RestorePermission();
     }
 
     /**
-     * Get description of those who has 'view' permission.
-     *
-     * @return Permission
+     * @return int
      */
-    public static function canView()
+    public function getPermissionMask()
     {
-        self::$privilegeCanView !== null ?: (self::$privilegeCanView = new Permission(
-            self::VIEW | self::EDIT | self::OPERATOR | self::MASTER | self::OWNER
-        ));
-        return self::$privilegeCanView;
+        return $this->permissionMask;
     }
-
-    /**
-     * Get description of those who has 'edit' permission.
-     *
-     * @return Permission
-     */
-    public static function canEdit()
-    {
-        self::$privilegeCanEdit !== null ?: (self::$privilegeCanEdit = new Permission(
-            self::EDIT | self::OPERATOR | self::MASTER | self::OWNER
-        ));
-        return self::$privilegeCanEdit;
-    }
-
-    /**
-     * Get description of those who has 'create' permission.
-     *
-     * @return Permission
-     */
-    public static function canCreate()
-    {
-        self::$privilegeCanCreate !== null ?: (self::$privilegeCanCreate = new Permission(
-            self::CREATE | self::OPERATOR | self::MASTER | self::OWNER
-        ));
-        return self::$privilegeCanCreate;
-    }
-
-    /**
-     * Get description of those who has 'delete' permission.
-     *
-     * @return Permission
-     */
-    public static function canDelete()
-    {
-        self::$privilegeCanDelete !== null ?: (self::$privilegeCanDelete = new Permission(
-            self::DELETE | self::OPERATOR | self::MASTER | self::OWNER
-        ));
-        return self::$privilegeCanDelete;
-    }
-
-    /**
-     * Get description of those who has 'restore' permission.
-     *
-     * @return Permission
-     */
-    public static function canRestore()
-    {
-        self::$privilegeCanRestore !== null ?: (self::$privilegeCanRestore = new Permission(
-            self::RESTORE | self::OPERATOR | self::MASTER | self::OWNER
-        ));
-        return self::$privilegeCanRestore;
-    }
+//
+//    /**
+//     * Get description of those who has 'view' permission.
+//     *
+//     * @return Permission
+//     */
+//    public static function canView()
+//    {
+//        self::$privilegeCanView !== null ?: (self::$privilegeCanView = new Permission(
+//            self::VIEW | self::EDIT | self::OPERATOR | self::MASTER | self::OWNER
+//        ));
+//        return self::$privilegeCanView;
+//    }
+//
+//    /**
+//     * Get description of those who has 'edit' permission.
+//     *
+//     * @return Permission
+//     */
+//    public static function canEdit()
+//    {
+//        self::$privilegeCanEdit !== null ?: (self::$privilegeCanEdit = new Permission(
+//            self::EDIT | self::OPERATOR | self::MASTER | self::OWNER
+//        ));
+//        return self::$privilegeCanEdit;
+//    }
+//
+//    /**
+//     * Get description of those who has 'create' permission.
+//     *
+//     * @return Permission
+//     */
+//    public static function canCreate()
+//    {
+//        self::$privilegeCanCreate !== null ?: (self::$privilegeCanCreate = new Permission(
+//            self::CREATE | self::OPERATOR | self::MASTER | self::OWNER
+//        ));
+//        return self::$privilegeCanCreate;
+//    }
+//
+//    /**
+//     * Get description of those who has 'delete' permission.
+//     *
+//     * @return Permission
+//     */
+//    public static function canDelete()
+//    {
+//        self::$privilegeCanDelete !== null ?: (self::$privilegeCanDelete = new Permission(
+//            self::DELETE | self::OPERATOR | self::MASTER | self::OWNER
+//        ));
+//        return self::$privilegeCanDelete;
+//    }
+//
+//    /**
+//     * Get description of those who has 'restore' permission.
+//     *
+//     * @return Permission
+//     */
+//    public static function canRestore()
+//    {
+//        self::$privilegeCanRestore !== null ?: (self::$privilegeCanRestore = new Permission(
+//            self::RESTORE | self::OPERATOR | self::MASTER | self::OWNER
+//        ));
+//        return self::$privilegeCanRestore;
+//    }
 }
