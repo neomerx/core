@@ -261,8 +261,7 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
      */
     public function getIdentifier()
     {
-        $namespaceAndClass = explode('\\', get_class($this));
-        return end($namespaceAndClass);
+        return [get_class($this), $this->getKey()];
     }
 
     /**

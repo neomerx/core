@@ -8,7 +8,7 @@ interface ObjectIdentityInterface
     /**
      * Get object identifier.
      *
-     * @return string
+     * @return array
      */
     public function getIdentifier();
 }
