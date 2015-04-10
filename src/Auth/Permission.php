@@ -10,64 +10,11 @@ abstract class Permission
     const EDIT     = 4;
     const DELETE   = 8;
     const RESTORE  = 16;
-//    const OPERATOR = 32;
-//    const MASTER   = 64;
-//    const OWNER    = 128;
 
     /**
      * @var int
      */
     private $permissionMask;
-
-//    /**
-//     * @var Permission
-//     */
-//    private static $privilegeView;
-//
-//    /**
-//     * @var Permission
-//     */
-//    private static $privilegeEdit;
-//
-//    /**
-//     * @var Permission
-//     */
-//    private static $privilegeCreate;
-//
-//    /**
-//     * @var Permission
-//     */
-//    private static $privilegeDelete;
-//
-//    /**
-//     * @var Permission
-//     */
-//    private static $privilegeRestore;
-//
-//    /**
-//     * @var Permission
-//     */
-//    private static $privilegeCanView;
-//
-//    /**
-//     * @var Permission
-//     */
-//    private static $privilegeCanEdit;
-//
-//    /**
-//     * @var Permission
-//     */
-//    private static $privilegeCanCreate;
-//
-//    /**
-//     * @var Permission
-//     */
-//    private static $privilegeCanDelete;
-//
-//    /**
-//     * @var Permission
-//     */
-//    private static $privilegeCanRestore;
 
     /**
      * @param int $permissionMask
@@ -95,7 +42,7 @@ abstract class Permission
     /**
      * Get 'view' permission.
      *
-     * @return Permission
+     * @return ViewPermission
      */
     public static function view()
     {
@@ -105,7 +52,7 @@ abstract class Permission
     /**
      * Get 'edit' permission.
      *
-     * @return Permission
+     * @return EditPermission
      */
     public static function edit()
     {
@@ -115,7 +62,7 @@ abstract class Permission
     /**
      * Get 'create' permission.
      *
-     * @return Permission
+     * @return CreatePermission
      */
     public static function create()
     {
@@ -125,7 +72,7 @@ abstract class Permission
     /**
      * Get 'delete' permission.
      *
-     * @return Permission
+     * @return DeletePermission
      */
     public static function delete()
     {
@@ -135,7 +82,7 @@ abstract class Permission
     /**
      * Get 'restore' permission.
      *
-     * @return Permission
+     * @return RestorePermission
      */
     public static function restore()
     {
@@ -149,69 +96,4 @@ abstract class Permission
     {
         return $this->permissionMask;
     }
-//
-//    /**
-//     * Get description of those who has 'view' permission.
-//     *
-//     * @return Permission
-//     */
-//    public static function canView()
-//    {
-//        self::$privilegeCanView !== null ?: (self::$privilegeCanView = new Permission(
-//            self::VIEW | self::EDIT | self::OPERATOR | self::MASTER | self::OWNER
-//        ));
-//        return self::$privilegeCanView;
-//    }
-//
-//    /**
-//     * Get description of those who has 'edit' permission.
-//     *
-//     * @return Permission
-//     */
-//    public static function canEdit()
-//    {
-//        self::$privilegeCanEdit !== null ?: (self::$privilegeCanEdit = new Permission(
-//            self::EDIT | self::OPERATOR | self::MASTER | self::OWNER
-//        ));
-//        return self::$privilegeCanEdit;
-//    }
-//
-//    /**
-//     * Get description of those who has 'create' permission.
-//     *
-//     * @return Permission
-//     */
-//    public static function canCreate()
-//    {
-//        self::$privilegeCanCreate !== null ?: (self::$privilegeCanCreate = new Permission(
-//            self::CREATE | self::OPERATOR | self::MASTER | self::OWNER
-//        ));
-//        return self::$privilegeCanCreate;
-//    }
-//
-//    /**
-//     * Get description of those who has 'delete' permission.
-//     *
-//     * @return Permission
-//     */
-//    public static function canDelete()
-//    {
-//        self::$privilegeCanDelete !== null ?: (self::$privilegeCanDelete = new Permission(
-//            self::DELETE | self::OPERATOR | self::MASTER | self::OWNER
-//        ));
-//        return self::$privilegeCanDelete;
-//    }
-//
-//    /**
-//     * Get description of those who has 'restore' permission.
-//     *
-//     * @return Permission
-//     */
-//    public static function canRestore()
-//    {
-//        self::$privilegeCanRestore !== null ?: (self::$privilegeCanRestore = new Permission(
-//            self::RESTORE | self::OPERATOR | self::MASTER | self::OWNER
-//        ));
-//        return self::$privilegeCanRestore;
-//    }
 }
