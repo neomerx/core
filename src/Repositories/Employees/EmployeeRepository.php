@@ -49,8 +49,6 @@ class EmployeeRepository extends IndexBasedResourceRepository implements Employe
     protected function validate(array $attributes, array $rules)
     {
         $validator = Validator::make($attributes, $rules);
-        if ($validator->fails() === true) {
-            S\throwEx(new ValidationException($validator));
-        }
+        $validator->fails() === false ?: S\throwEx(new ValidationException($validator));
     }
 }
