@@ -6,7 +6,6 @@ use \Neomerx\Core\Auth\Permission;
 use \Neomerx\Core\Models\ObjectType;
 use \Neomerx\Core\Models\RoleObjectType;
 use \Neomerx\Core\Auth\ObjectIdentityInterface;
-use \Neomerx\Core\Auth\PermissionManagerInterface;
 use \Neomerx\Core\Exceptions\AccessDeniedException;
 use \Illuminate\Contracts\Auth\Guard as AuthInterface;
 use \Illuminate\Contracts\Cache\Repository as CacheInterface;
@@ -16,10 +15,8 @@ use \Neomerx\Core\Repositories\Auth\RoleObjectTypeRepositoryInterface;
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class CachePermissionManager implements PermissionManagerInterface
+class CachePermissionManager implements RolePermissionManagerInterface
 {
-    const USER_AUTH_ROLES = 'authRoles';
-
     /**
      * @var AuthInterface
      */
