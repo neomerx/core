@@ -135,7 +135,13 @@ abstract class UserProvider implements UserProviderInterface
     {
         $instance  = $this->createModelInstance();
         $relations = $this->getModelRelations();
-        return $instance->newQuery()->where($instance->getKeyName(), '=', $identifier)->with($relations)->first();
+
+        /** @var Model|null $model */
+        $model = $instance->newQuery()->where($instance->getKeyName(), '=', $identifier)->with($relations)->first();
+
+        assert('$model === null || $model instanceof '.Model::class);
+
+        return $model;
     }
 
     /**

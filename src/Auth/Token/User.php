@@ -10,10 +10,10 @@ class User extends stdClass implements AuthenticatableContract, JsonSerializable
     const FIELD_REMEMBER_TOKEN = 'remember_token';
 
     /**
-     * @param int         $authIdentifier
-     * @param string      $authPassword
-     * @param string|null $token
-     * @param stdClass    $attributes
+     * @param int           $authIdentifier
+     * @param string        $authPassword
+     * @param string|null   $token
+     * @param stdClass|null $attributes
      *
      * @throws InvalidArgumentException
      */
@@ -98,7 +98,7 @@ class User extends stdClass implements AuthenticatableContract, JsonSerializable
     }
 
     /**
-     * @param stdClass $attributes
+     * @param stdClass|null $attributes
      */
     private function applyAttributes(stdClass $attributes = null)
     {

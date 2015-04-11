@@ -1,5 +1,6 @@
 <?php namespace Neomerx\Core\Auth\Token;
 
+use \Closure;
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Auth\Permission;
 use \Neomerx\Core\Models\ObjectType;
@@ -107,7 +108,7 @@ class CachePermissionManager implements PermissionManagerInterface
     }
 
     /**
-     * @return callable
+     * @return Closure
      */
     private function getRoleAccessListClosure()
     {
