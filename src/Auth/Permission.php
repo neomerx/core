@@ -1,5 +1,11 @@
 <?php namespace Neomerx\Core\Auth;
 
+use \Neomerx\Core\Auth\Permissions\EditPermission;
+use \Neomerx\Core\Auth\Permissions\ViewPermission;
+use \Neomerx\Core\Auth\Permissions\DeletePermission;
+use \Neomerx\Core\Auth\Permissions\CreatePermission;
+use \Neomerx\Core\Auth\Permissions\RestorePermission;
+
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */

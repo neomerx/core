@@ -1,6 +1,6 @@
 <?php namespace Neomerx\Core\Auth;
 
-interface PermissionManagementInterface
+interface PermissionManagerInterface
 {
     /**
      * Get true/false if user has permission for object.
