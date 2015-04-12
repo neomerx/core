@@ -7,7 +7,22 @@ return [
     /*
      * Application
      */
+    T::KEY_MSG_CUSTOMER_TYPE_GENERAL             => 'General',
+    T::KEY_MSG_CUSTOMER_TYPE_MEMBER              => 'Member',
+    T::KEY_MSG_CUSTOMER_TYPE_GUEST               => 'Guest/not logged-in',
+    T::KEY_MSG_CUSTOMER_TYPE_PRIVATE             => 'Private',
+    T::KEY_MSG_CUSTOMER_TYPE_RETAIL              => 'Retail',
+    T::KEY_MSG_CUSTOMER_TYPE_WHOLESALE           => 'Wholesale',
 
+    T::KEY_MSG_ORDER_STATUS_NEW                  => 'New order',
+
+    T::KEY_MSG_PRODUCT_TAX_TYPE_SHIPPING         => 'Shipping',
+    T::KEY_MSG_PRODUCT_TAX_TYPE_EXEMPT           => 'Exempt',
+    T::KEY_MSG_PRODUCT_TAX_TYPE_TAXABLE          => 'Taxable',
+
+    T::KEY_MSG_STORE_DEFAULT_NAME                => 'Store name',
+
+    T::KEY_MSG_WAREHOUSE_DEFAULT_NAME            => 'Warehouse name',
 
     /*
      * Errors
