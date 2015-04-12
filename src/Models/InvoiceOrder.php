@@ -6,53 +6,60 @@
  * @property int     id_order
  * @property Invoice invoice
  * @property Order   order
+ *
+ * @package Neomerx\Core
  */
 class InvoiceOrder extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'invoice_order';
 
+    /** Model field name */
     const FIELD_ID         = 'id_invoice_order';
+    /** Model field name */
     const FIELD_ID_INVOICE = Invoice::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_ORDER   = Order::FIELD_ID;
+    /** Model field name */
     const FIELD_INVOICE    = 'invoice';
+    /** Model field name */
     const FIELD_ORDER      = 'order';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         '', // fillable must have at least 1 element otherwise it's ignored completely by Laravel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID_ORDER,
@@ -60,7 +67,7 @@ class InvoiceOrder extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -71,7 +78,7 @@ class InvoiceOrder extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -88,7 +95,7 @@ class InvoiceOrder extends BaseModel
      */
     public function invoice()
     {
-        return $this->belongsTo(Invoice::BIND_NAME, self::FIELD_ID_INVOICE, Invoice::FIELD_ID);
+        return $this->belongsTo(Invoice::class, self::FIELD_ID_INVOICE, Invoice::FIELD_ID);
     }
 
     /**
@@ -98,6 +105,6 @@ class InvoiceOrder extends BaseModel
      */
     public function order()
     {
-        return $this->belongsTo(Order::BIND_NAME, self::FIELD_ID_ORDER, Order::FIELD_ID);
+        return $this->belongsTo(Order::class, self::FIELD_ID_ORDER, Order::FIELD_ID);
     }
 }

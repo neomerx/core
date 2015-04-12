@@ -1,5 +1,8 @@
 <?php namespace Neomerx\Core\Filesystem;
 
+/**
+ * @package Neomerx\Core
+ */
 class FilesystemAdapter extends \Illuminate\Filesystem\FilesystemAdapter implements FilesystemInterface
 {
     /**

@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\ProductRelated;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface ProductRelatedRepositoryInterface extends RepositoryInterface
 {
     /**

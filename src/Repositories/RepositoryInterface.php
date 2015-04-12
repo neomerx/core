@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\BaseModel;
 use \Illuminate\Database\Eloquent\Collection;
 
+/**
+ * @package Neomerx\Core
+ */
 interface RepositoryInterface
 {
     /**

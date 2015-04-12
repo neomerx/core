@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Category;
 use \Neomerx\Core\Models\ProductCategory;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface ProductCategoryRepositoryInterface extends RepositoryInterface
 {
     /**

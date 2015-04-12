@@ -9,6 +9,9 @@ use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Models\SelectByCodeInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 abstract class BaseRepository
 {
     /**

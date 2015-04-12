@@ -10,6 +10,9 @@ use \Neomerx\Core\Exceptions\LogicException;
 use \Neomerx\Core\Models\CharacteristicValue;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class SpecificationRepository extends IndexBasedResourceRepository implements SpecificationRepositoryInterface
 {
     /**
@@ -17,7 +20,7 @@ class SpecificationRepository extends IndexBasedResourceRepository implements Sp
      */
     public function __construct()
     {
-        parent::__construct(Specification::BIND_NAME);
+        parent::__construct(Specification::class);
     }
 
     /**

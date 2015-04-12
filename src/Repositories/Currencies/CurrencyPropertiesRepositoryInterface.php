@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CurrencyProperties;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface CurrencyPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**

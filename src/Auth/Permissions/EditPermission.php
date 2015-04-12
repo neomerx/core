@@ -2,6 +2,9 @@
 
 use \Neomerx\Core\Auth\Permission;
 
+/**
+ * @package Neomerx\Core
+ */
 class EditPermission extends Permission
 {
     /**

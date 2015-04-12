@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class AddressRepository extends IndexBasedResourceRepository implements AddressRepositoryInterface
 {
     /**
@@ -11,7 +14,7 @@ class AddressRepository extends IndexBasedResourceRepository implements AddressR
      */
     public function __construct()
     {
-        parent::__construct(Address::BIND_NAME);
+        parent::__construct(Address::class);
     }
 
     /**

@@ -7,51 +7,61 @@
  * @property string  territory_type
  * @property mixed   territory
  * @property Carrier carrier
+ *
+ * @package Neomerx\Core
  */
 class CarrierTerritory extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'carrier_territories';
 
+    /** Model field name */
     const FIELD_ID             = 'id_carrier_territory';
+    /** Model field name */
     const FIELD_ID_CARRIER     = Carrier::FIELD_ID;
+    /** Model field name */
     const FIELD_TERRITORY_ID   = 'territory_id';
+    /** Model field name */
     const FIELD_TERRITORY_TYPE = 'territory_type';
+    /** Model field name */
     const FIELD_TERRITORY      = 'territory';
+    /** Model field name */
     const FIELD_CARRIER        = 'carrier';
 
-    const TERRITORY_TYPE_COUNTRY = Country::BIND_NAME;
-    const TERRITORY_TYPE_REGION  = Region::BIND_NAME;
+    /** Territory type code */
+    const TERRITORY_TYPE_COUNTRY = Country::class;
+    /** Territory type code */
+    const TERRITORY_TYPE_REGION  = Region::class;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         '', // fillable must have at least 1 element otherwise it's ignored completely by Laravel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_CARRIER,
@@ -60,7 +70,7 @@ class CarrierTerritory extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -70,7 +80,7 @@ class CarrierTerritory extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -84,7 +94,7 @@ class CarrierTerritory extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -120,7 +130,7 @@ class CarrierTerritory extends BaseModel
      */
     public function carrier()
     {
-        return $this->belongsTo(Carrier::BIND_NAME, self::FIELD_ID_CARRIER, Carrier::FIELD_ID);
+        return $this->belongsTo(Carrier::class, self::FIELD_ID_CARRIER, Carrier::FIELD_ID);
     }
 
     /**

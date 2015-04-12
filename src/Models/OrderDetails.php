@@ -11,44 +11,55 @@
  * @property Order         order
  * @property ShippingOrder shipping
  * @property Variant       variant
+ *
+ * @package Neomerx\Core
  */
 class OrderDetails extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'order_details';
 
+    /** Model field name */
     const FIELD_ID                = 'id_order_details';
+    /** Model field name */
     const FIELD_ID_ORDER          = Order::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_SHIPPING_ORDER = ShippingOrder::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_VARIANT        = Variant::FIELD_ID;
+    /** Model field name */
     const FIELD_PRICE_WO_TAX      = 'price_wo_tax';
+    /** Model field name */
     const FIELD_QUANTITY          = 'quantity';
+    /** Model field name */
     const FIELD_ORDER             = 'order';
+    /** Model field name */
     const FIELD_SHIPPING          = 'shipping';
+    /** Model field name */
     const FIELD_ITEM              = 'item';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_PRICE_WO_TAX,
@@ -56,14 +67,14 @@ class OrderDetails extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_VARIANT,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -73,7 +84,7 @@ class OrderDetails extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -90,7 +101,7 @@ class OrderDetails extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -113,7 +124,7 @@ class OrderDetails extends BaseModel
      */
     public function order()
     {
-        return $this->belongsTo(Order::BIND_NAME, self::FIELD_ID_ORDER, Order::FIELD_ID);
+        return $this->belongsTo(Order::class, self::FIELD_ID_ORDER, Order::FIELD_ID);
     }
 
     /**
@@ -123,7 +134,7 @@ class OrderDetails extends BaseModel
      */
     public function shipping()
     {
-        return $this->belongsTo(ShippingOrder::BIND_NAME, self::FIELD_ID_SHIPPING_ORDER, ShippingOrder::FIELD_ID);
+        return $this->belongsTo(ShippingOrder::class, self::FIELD_ID_SHIPPING_ORDER, ShippingOrder::FIELD_ID);
     }
 
     /**
@@ -133,6 +144,6 @@ class OrderDetails extends BaseModel
      */
     public function variant()
     {
-        return $this->belongsTo(Variant::BIND_NAME, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
+        return $this->belongsTo(Variant::class, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
     }
 }

@@ -12,46 +12,58 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property Collection postcodes
  * @property Collection customerTypes
  * @property Collection productTypes
+ *
+ * @package Neomerx\Core
  */
 class TaxRule extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'tax_rules';
 
+    /** Model field length */
     const NAME_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID             = 'id_tax_rule';
+    /** Model field name */
     const FIELD_ID_TAX         = Tax::FIELD_ID;
+    /** Model field name */
     const FIELD_NAME           = 'name';
+    /** Model field name */
     const FIELD_PRIORITY       = 'priority';
+    /** Model field name */
     const FIELD_TAX            = 'tax';
+    /** Model field name */
     const FIELD_TERRITORIES    = 'territories';
+    /** Model field name */
     const FIELD_POSTCODES      = 'postcodes';
+    /** Model field name */
     const FIELD_CUSTOMER_TYPES = 'customerTypes';
+    /** Model field name */
     const FIELD_PRODUCT_TYPES  = 'productTypes';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_NAME,
@@ -59,14 +71,14 @@ class TaxRule extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_TAX,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -74,7 +86,7 @@ class TaxRule extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -86,7 +98,7 @@ class TaxRule extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -144,7 +156,7 @@ class TaxRule extends BaseModel
      */
     public function tax()
     {
-        return $this->belongsTo(Tax::BIND_NAME, self::FIELD_ID_TAX, Tax::FIELD_ID);
+        return $this->belongsTo(Tax::class, self::FIELD_ID_TAX, Tax::FIELD_ID);
     }
 
     /**
@@ -154,7 +166,7 @@ class TaxRule extends BaseModel
      */
     public function territories()
     {
-        return $this->hasMany(TaxRuleTerritory::BIND_NAME, TaxRuleTerritory::FIELD_ID_TAX_RULE, self::FIELD_ID);
+        return $this->hasMany(TaxRuleTerritory::class, TaxRuleTerritory::FIELD_ID_TAX_RULE, self::FIELD_ID);
     }
 
     /**
@@ -164,7 +176,7 @@ class TaxRule extends BaseModel
      */
     public function postcodes()
     {
-        return $this->hasMany(TaxRulePostcode::BIND_NAME, TaxRulePostcode::FIELD_ID_TAX_RULE, self::FIELD_ID);
+        return $this->hasMany(TaxRulePostcode::class, TaxRulePostcode::FIELD_ID_TAX_RULE, self::FIELD_ID);
     }
 
     /**
@@ -174,7 +186,7 @@ class TaxRule extends BaseModel
      */
     public function customerTypes()
     {
-        return $this->hasMany(TaxRuleCustomerType::BIND_NAME, TaxRuleCustomerType::FIELD_ID_TAX_RULE, self::FIELD_ID);
+        return $this->hasMany(TaxRuleCustomerType::class, TaxRuleCustomerType::FIELD_ID_TAX_RULE, self::FIELD_ID);
     }
 
     /**
@@ -184,6 +196,6 @@ class TaxRule extends BaseModel
      */
     public function productTypes()
     {
-        return $this->hasMany(TaxRuleProductType::BIND_NAME, TaxRuleProductType::FIELD_ID_TAX_RULE, self::FIELD_ID);
+        return $this->hasMany(TaxRuleProductType::class, TaxRuleProductType::FIELD_ID_TAX_RULE, self::FIELD_ID);
     }
 }

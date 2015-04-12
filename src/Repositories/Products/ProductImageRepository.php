@@ -7,6 +7,9 @@ use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Models\ProductImage;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ProductImageRepository extends IndexBasedResourceRepository implements ProductImageRepositoryInterface
 {
     /**
@@ -14,7 +17,7 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
      */
     public function __construct()
     {
-        parent::__construct(ProductImage::BIND_NAME);
+        parent::__construct(ProductImage::class);
     }
 
     /**

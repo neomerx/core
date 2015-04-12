@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Carrier;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class CarrierRepository extends CodeBasedResourceRepository implements CarrierRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class CarrierRepository extends CodeBasedResourceRepository implements CarrierRe
      */
     public function __construct()
     {
-        parent::__construct(Carrier::BIND_NAME);
+        parent::__construct(Carrier::class);
     }
 
     /**

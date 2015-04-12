@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\CustomerRisk;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class CustomerRiskRepository extends CodeBasedResourceRepository implements CustomerRiskRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class CustomerRiskRepository extends CodeBasedResourceRepository implements Cust
      */
     public function __construct()
     {
-        parent::__construct(CustomerRisk::BIND_NAME);
+        parent::__construct(CustomerRisk::class);
     }
 
     /**

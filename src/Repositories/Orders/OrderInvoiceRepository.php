@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Invoice;
 use \Neomerx\Core\Models\InvoiceOrder;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class OrderInvoiceRepository extends IndexBasedResourceRepository implements OrderInvoiceRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class OrderInvoiceRepository extends IndexBasedResourceRepository implements Ord
      */
     public function __construct()
     {
-        parent::__construct(InvoiceOrder::BIND_NAME);
+        parent::__construct(InvoiceOrder::class);
     }
 
     /**

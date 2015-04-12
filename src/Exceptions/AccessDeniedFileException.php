@@ -2,6 +2,9 @@
 
 use \Neomerx\Core\Support\Translate as T;
 
+/**
+ * @package Neomerx\Core
+ */
 class AccessDeniedFileException extends FileException
 {
     /**
@@ -11,7 +14,7 @@ class AccessDeniedFileException extends FileException
 
     /**
      * @var string $fileName
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function __construct($fileName, $message = '', $code = 0, \Exception $previous = null)
     {

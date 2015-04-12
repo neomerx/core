@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\ObjectType;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ObjectTypeRepository extends IndexBasedResourceRepository implements ObjectTypeRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class ObjectTypeRepository extends IndexBasedResourceRepository implements Objec
      */
     public function __construct()
     {
-        parent::__construct(ObjectType::BIND_NAME);
+        parent::__construct(ObjectType::class);
     }
 
     /**

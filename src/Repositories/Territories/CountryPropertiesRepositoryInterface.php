@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CountryProperties;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface CountryPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**

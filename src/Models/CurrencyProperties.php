@@ -8,45 +8,56 @@
  * @property string   description
  * @property Currency currency
  * @property Language language
+ *
+ * @package Neomerx\Core
  */
 class CurrencyProperties extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'currency_properties';
 
+    /** Model field length */
     const NAME_MAX_LENGTH         = 50;
+    /** Model field length */
     const DESCRIPTION_MAX_LENGTH  = 300;
 
+    /** Model field name */
     const FIELD_ID          = 'id_currency_property';
+    /** Model field name */
     const FIELD_ID_CURRENCY = Currency::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_LANGUAGE = Language::FIELD_ID;
+    /** Model field name */
     const FIELD_NAME        = 'name';
+    /** Model field name */
     const FIELD_DESCRIPTION = 'description';
+    /** Model field name */
     const FIELD_CURRENCY    = 'currency';
+    /** Model field name */
     const FIELD_LANGUAGE    = 'language';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_NAME,
@@ -54,7 +65,7 @@ class CurrencyProperties extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_CURRENCY,
@@ -62,7 +73,7 @@ class CurrencyProperties extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -71,7 +82,7 @@ class CurrencyProperties extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -84,7 +95,7 @@ class CurrencyProperties extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -103,7 +114,7 @@ class CurrencyProperties extends BaseModel
      */
     public function currency()
     {
-        return $this->belongsTo(Currency::BIND_NAME, self::FIELD_ID_CURRENCY, Currency::FIELD_ID);
+        return $this->belongsTo(Currency::class, self::FIELD_ID_CURRENCY, Currency::FIELD_ID);
     }
 
     /**
@@ -113,6 +124,6 @@ class CurrencyProperties extends BaseModel
      */
     public function language()
     {
-        return $this->belongsTo(Language::BIND_NAME, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
+        return $this->belongsTo(Language::class, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
     }
 }

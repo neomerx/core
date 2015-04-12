@@ -6,6 +6,9 @@ use \Neomerx\Core\Models\Specification;
 use \Neomerx\Core\Models\CharacteristicValue;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface SpecificationRepositoryInterface extends RepositoryInterface
 {
     /**

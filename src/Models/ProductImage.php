@@ -12,51 +12,62 @@ use \Neomerx\Core\Exceptions\InvalidArgumentException;
  * @property Image   image
  * @property Product product
  * @property Variant variant
+ *
+ * @package Neomerx\Core
  */
 class ProductImage extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'product_images';
 
+    /** Model field name */
     const FIELD_ID         = 'id_product_image';
+    /** Model field name */
     const FIELD_ID_PRODUCT = Product::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_VARIANT = Variant::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_IMAGE   = Image::FIELD_ID;
+    /** Model field name */
     const FIELD_POSITION   = 'position';
+    /** Model field name */
     const FIELD_IS_COVER   = 'is_cover';
+    /** Model field name */
     const FIELD_IMAGE      = 'image';
+    /** Model field name */
     const FIELD_PRODUCT    = 'product';
+    /** Model field name */
     const FIELD_VARIANT    = 'variant';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_POSITION,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_PRODUCT,
@@ -64,7 +75,7 @@ class ProductImage extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -75,7 +86,7 @@ class ProductImage extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -91,7 +102,7 @@ class ProductImage extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -162,7 +173,7 @@ class ProductImage extends BaseModel
      */
     public function product()
     {
-        return $this->belongsTo(Product::BIND_NAME, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
+        return $this->belongsTo(Product::class, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
     }
 
     /**
@@ -172,7 +183,7 @@ class ProductImage extends BaseModel
      */
     public function image()
     {
-        return $this->belongsTo(Image::BIND_NAME, self::FIELD_ID_IMAGE, Image::FIELD_ID);
+        return $this->belongsTo(Image::class, self::FIELD_ID_IMAGE, Image::FIELD_ID);
     }
 
     /**
@@ -182,11 +193,11 @@ class ProductImage extends BaseModel
      */
     public function variant()
     {
-        return $this->belongsTo(Variant::BIND_NAME, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
+        return $this->belongsTo(Variant::class, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * Under normal conditions delete should work fine. However if deletion of the Image class instance failed
      * we will have inconsistency: product image would be removed but image object with its files would exist.

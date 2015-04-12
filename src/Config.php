@@ -3,8 +3,12 @@
 use \Config as ConfigFacade;
 use \Neomerx\Core\Support\CoreServiceProvider;
 
+/**
+ * @package Neomerx\Core
+ */
 class Config
 {
+    /** Config file name without .php extension */
     const CONFIG_FILE_NAME_WO_EXT = CoreServiceProvider::PACKAGE_NAMESPACE;
 
     /** Disk for storing image files */

@@ -6,6 +6,9 @@ use \Neomerx\Core\Models\CustomerRisk;
 use \Neomerx\Core\Models\CustomerType;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class CustomerRepository extends IndexBasedResourceRepository implements CustomerRepositoryInterface
 {
     /**
@@ -13,7 +16,7 @@ class CustomerRepository extends IndexBasedResourceRepository implements Custome
      */
     public function __construct()
     {
-        parent::__construct(Customer::BIND_NAME);
+        parent::__construct(Customer::class);
     }
 
     /**

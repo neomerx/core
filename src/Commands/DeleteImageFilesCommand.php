@@ -3,6 +3,9 @@
 use \Illuminate\Contracts\Bus\SelfHandling;
 use \Neomerx\Core\Filesystem\ImagesInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 class DeleteImageFilesCommand extends Command implements SelfHandling
 {
     /**

@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\OrderStatus;
 use \Neomerx\Core\Models\OrderHistory;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class OrderHistoryRepository extends IndexBasedResourceRepository implements OrderHistoryRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class OrderHistoryRepository extends IndexBasedResourceRepository implements Ord
      */
     public function __construct()
     {
-        parent::__construct(OrderHistory::BIND_NAME);
+        parent::__construct(OrderHistory::class);
     }
 
     /**

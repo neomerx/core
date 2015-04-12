@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\ObjectType;
 use \Neomerx\Core\Models\RoleObjectType;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class RoleObjectTypeRepository extends IndexBasedResourceRepository implements RoleObjectTypeRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class RoleObjectTypeRepository extends IndexBasedResourceRepository implements R
      */
     public function __construct()
     {
-        parent::__construct(RoleObjectType::BIND_NAME);
+        parent::__construct(RoleObjectType::class);
     }
 
     /**

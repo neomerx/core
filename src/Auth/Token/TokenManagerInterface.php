@@ -1,5 +1,8 @@
 <?php namespace Neomerx\Core\Auth\Token;
 
+/**
+ * @package Neomerx\Core
+ */
 interface TokenManagerInterface
 {
     /**

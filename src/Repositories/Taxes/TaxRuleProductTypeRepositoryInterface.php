@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\ProductTaxType;
 use \Neomerx\Core\Models\TaxRuleProductType;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface TaxRuleProductTypeRepositoryInterface extends RepositoryInterface
 {
     /**

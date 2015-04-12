@@ -10,56 +10,65 @@ use \Carbon\Carbon;
  * @property-read Carbon      updated_at
  * @property      OrderStatus status
  * @property      Order       order
+ *
+ * @package Neomerx\Core
  */
 class OrderHistory extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'order_history';
 
+    /** Model field name */
     const FIELD_ID              = 'id_order_history';
+    /** Model field name */
     const FIELD_ID_ORDER        = Order::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_ORDER_STATUS = OrderStatus::FIELD_ID;
+    /** Model field name */
     const FIELD_CREATED_AT      = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT      = 'updated_at';
+    /** Model field name */
     const FIELD_STATUS          = 'status';
+    /** Model field name */
     const FIELD_ORDER           = 'order';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         '', // fillable must have at least 1 element otherwise it's ignored completely by Laravel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_ORDER_STATUS,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -68,7 +77,7 @@ class OrderHistory extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -79,7 +88,7 @@ class OrderHistory extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -97,7 +106,7 @@ class OrderHistory extends BaseModel
      */
     public function status()
     {
-        return $this->belongsTo(OrderStatus::BIND_NAME, self::FIELD_ID_ORDER_STATUS, OrderStatus::FIELD_ID);
+        return $this->belongsTo(OrderStatus::class, self::FIELD_ID_ORDER_STATUS, OrderStatus::FIELD_ID);
     }
 
     /**
@@ -107,6 +116,6 @@ class OrderHistory extends BaseModel
      */
     public function order()
     {
-        return $this->belongsTo(Order::BIND_NAME, self::FIELD_ID_ORDER, Order::FIELD_ID);
+        return $this->belongsTo(Order::class, self::FIELD_ID_ORDER, Order::FIELD_ID);
     }
 }

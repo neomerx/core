@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CarrierProperties;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class CarrierPropertiesRepository extends IndexBasedResourceRepository implements CarrierPropertiesRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class CarrierPropertiesRepository extends IndexBasedResourceRepository implement
      */
     public function __construct()
     {
-        parent::__construct(CarrierProperties::BIND_NAME);
+        parent::__construct(CarrierProperties::class);
     }
 
     /**

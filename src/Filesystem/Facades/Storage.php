@@ -13,6 +13,8 @@ use \Neomerx\Core\Filesystem\FilesystemManager;
  * @method static FilesystemInterface createRackspaceDriver(array $config)
  * @method static string getDefaultDriver()
  * @method static Storage extend(string $driver, Closure $callback)
+ *
+ * @package Neomerx\Core
  */
 class Storage extends Facade
 {

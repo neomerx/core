@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\ImagePath;
 use \Neomerx\Core\Models\ImageFormat;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface ImagePathRepositoryInterface extends RepositoryInterface
 {
     /**

@@ -11,50 +11,60 @@ use \Neomerx\Core\Support as S;
  * @property Product             product
  * @property Variant             variant
  * @property CharacteristicValue value
+ *
+ * @package Neomerx\Core
  */
 class Specification extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'specifications';
 
+    /** Model field name */
     const FIELD_ID                      = 'id_specification';
+    /** Model field name */
     const FIELD_ID_PRODUCT              = Product::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_VARIANT              = Variant::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_CHARACTERISTIC_VALUE = CharacteristicValue::FIELD_ID;
+    /** Model field name */
     const FIELD_POSITION                = 'position';
+    /** Model field name */
     const FIELD_PRODUCT                 = 'product';
+    /** Model field name */
     const FIELD_VARIANT                 = 'variant';
+    /** Model field name */
     const FIELD_VALUE                   = 'value';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_POSITION,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_PRODUCT,
@@ -63,7 +73,7 @@ class Specification extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -73,7 +83,7 @@ class Specification extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -88,7 +98,7 @@ class Specification extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -133,7 +143,7 @@ class Specification extends BaseModel
      */
     public function product()
     {
-        return $this->belongsTo(Product::BIND_NAME, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
+        return $this->belongsTo(Product::class, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
     }
 
     /**
@@ -143,7 +153,7 @@ class Specification extends BaseModel
      */
     public function variant()
     {
-        return $this->belongsTo(Variant::BIND_NAME, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
+        return $this->belongsTo(Variant::class, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
     }
 
     /**
@@ -154,7 +164,7 @@ class Specification extends BaseModel
     public function value()
     {
         return $this->belongsTo(
-            CharacteristicValue::BIND_NAME,
+            CharacteristicValue::class,
             self::FIELD_ID_CHARACTERISTIC_VALUE,
             CharacteristicValue::FIELD_ID
         );

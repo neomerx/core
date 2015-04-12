@@ -3,6 +3,9 @@
 use \Illuminate\Contracts\Filesystem\Cloud;
 use \Illuminate\Contracts\Filesystem\Filesystem;
 
+/**
+ * @package Neomerx\Core
+ */
 interface FilesystemInterface extends Filesystem, Cloud
 {
     /**

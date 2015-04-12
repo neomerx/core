@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Currency;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface CurrencyRepositoryInterface extends RepositoryInterface
 {
     /**

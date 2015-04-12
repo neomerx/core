@@ -7,8 +7,12 @@ use \Neomerx\Core\Auth\Token\User;
 use \Neomerx\Core\Auth\Token\TokenManagerInterface;
 use \Illuminate\Contracts\Auth\Guard as GuardInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 class TokenAuthMiddleware
 {
+    /** HTTP header key with token */
     const HEADER_KEY = 'authToken';
 
     /**

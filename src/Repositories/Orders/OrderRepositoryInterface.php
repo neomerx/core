@@ -7,6 +7,9 @@ use \Neomerx\Core\Models\Customer;
 use \Neomerx\Core\Models\OrderStatus;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface OrderRepositoryInterface extends RepositoryInterface
 {
     /**

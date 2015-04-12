@@ -3,10 +3,13 @@
 use \Neomerx\Core\Support\Translate;
 use \Neomerx\Core\Support\Translate as T;
 
+/**
+ * @package Neomerx\Core
+ */
 class Exception extends \Exception
 {
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function __construct($message = '', $code = 0, \Exception $previous = null)
     {

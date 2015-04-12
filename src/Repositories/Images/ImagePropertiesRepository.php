@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\ImageProperties;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ImagePropertiesRepository extends IndexBasedResourceRepository implements ImagePropertiesRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class ImagePropertiesRepository extends IndexBasedResourceRepository implements 
      */
     public function __construct()
     {
-        parent::__construct(ImageProperties::BIND_NAME);
+        parent::__construct(ImageProperties::class);
     }
 
     /**

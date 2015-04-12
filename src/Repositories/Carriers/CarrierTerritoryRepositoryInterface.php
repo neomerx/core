@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\BaseModel;
 use \Neomerx\Core\Models\CarrierTerritory;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface CarrierTerritoryRepositoryInterface extends RepositoryInterface
 {
     /**

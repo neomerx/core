@@ -6,6 +6,9 @@ use \Neomerx\Core\Models\MeasurementProperties;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 use \Neomerx\Core\Repositories\Features\MeasurementPropertiesRepositoryInterface as PropertiesRepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 class MeasurementPropertiesRepository extends IndexBasedResourceRepository implements PropertiesRepositoryInterface
 {
     /**
@@ -13,7 +16,7 @@ class MeasurementPropertiesRepository extends IndexBasedResourceRepository imple
      */
     public function __construct()
     {
-        parent::__construct(MeasurementProperties::BIND_NAME);
+        parent::__construct(MeasurementProperties::class);
     }
 
     /**

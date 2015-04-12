@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\OrderStatus;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class OrderStatusRepository extends CodeBasedResourceRepository implements OrderStatusRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class OrderStatusRepository extends CodeBasedResourceRepository implements Order
      */
     public function __construct()
     {
-        parent::__construct(OrderStatus::BIND_NAME);
+        parent::__construct(OrderStatus::class);
     }
 
     /**

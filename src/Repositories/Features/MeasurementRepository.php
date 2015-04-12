@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Measurement;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class MeasurementRepository extends CodeBasedResourceRepository implements MeasurementRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class MeasurementRepository extends CodeBasedResourceRepository implements Measu
      */
     public function __construct()
     {
-        parent::__construct(Measurement::BIND_NAME);
+        parent::__construct(Measurement::class);
     }
 
     /**

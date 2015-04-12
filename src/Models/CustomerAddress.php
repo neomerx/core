@@ -10,58 +10,69 @@ use \Neomerx\Core\Exceptions\InvalidArgumentException;
  * @property bool     is_default
  * @property Customer customer
  * @property Address  address
+ *
+ * @package Neomerx\Core
  */
 class CustomerAddress extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'customers_addresses';
 
+    /** Address type */
     const TYPE_BILLING  = 'billing';
+    /** Address type */
     const TYPE_SHIPPING = 'shipping';
 
+    /** Model field name */
     const FIELD_ID          = 'id_customer_address';
+    /** Model field name */
     const FIELD_ID_ADDRESS  = Address::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_CUSTOMER = Customer::FIELD_ID;
+    /** Model field name */
     const FIELD_TYPE        = 'type';
+    /** Model field name */
     const FIELD_IS_DEFAULT  = 'is_default';
+    /** Model field name */
     const FIELD_CUSTOMER    = 'customer';
+    /** Model field name */
     const FIELD_ADDRESS     = 'address';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_TYPE,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -71,7 +82,7 @@ class CustomerAddress extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -86,7 +97,7 @@ class CustomerAddress extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -123,7 +134,7 @@ class CustomerAddress extends BaseModel
      */
     public function customer()
     {
-        return $this->belongsTo(Customer::BIND_NAME, self::FIELD_ID_CUSTOMER, Customer::FIELD_ID);
+        return $this->belongsTo(Customer::class, self::FIELD_ID_CUSTOMER, Customer::FIELD_ID);
     }
 
     /**
@@ -133,7 +144,7 @@ class CustomerAddress extends BaseModel
      */
     public function address()
     {
-        return $this->belongsTo(Address::BIND_NAME, self::FIELD_ID_ADDRESS, Address::FIELD_ID);
+        return $this->belongsTo(Address::class, self::FIELD_ID_ADDRESS, Address::FIELD_ID);
     }
 
     /**

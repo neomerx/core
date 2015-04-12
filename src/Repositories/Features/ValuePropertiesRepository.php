@@ -6,6 +6,9 @@ use \Neomerx\Core\Models\CharacteristicValueProperties;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 use \Neomerx\Core\Repositories\Features\ValuePropertiesRepositoryInterface as PropertiesRepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 class ValuePropertiesRepository extends IndexBasedResourceRepository implements PropertiesRepositoryInterface
 {
     /**
@@ -13,7 +16,7 @@ class ValuePropertiesRepository extends IndexBasedResourceRepository implements 
      */
     public function __construct()
     {
-        parent::__construct(CharacteristicValueProperties::BIND_NAME);
+        parent::__construct(CharacteristicValueProperties::class);
     }
 
     /**

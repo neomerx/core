@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Supplier;
 use \Neomerx\Core\Models\SupplierProperties;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface SupplierPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**

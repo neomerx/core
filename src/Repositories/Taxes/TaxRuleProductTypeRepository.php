@@ -6,6 +6,9 @@ use \Neomerx\Core\Models\TaxRuleProductType;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 use \Neomerx\Core\Repositories\Taxes\TaxRuleProductTypeRepositoryInterface as RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 class TaxRuleProductTypeRepository extends IndexBasedResourceRepository implements RepositoryInterface
 {
     /**
@@ -13,7 +16,7 @@ class TaxRuleProductTypeRepository extends IndexBasedResourceRepository implemen
      */
     public function __construct()
     {
-        parent::__construct(TaxRuleProductType::BIND_NAME);
+        parent::__construct(TaxRuleProductType::class);
     }
 
     /**

@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Currency;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class CurrencyRepository extends CodeBasedResourceRepository implements CurrencyRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class CurrencyRepository extends CodeBasedResourceRepository implements Currency
      */
     public function __construct()
     {
-        parent::__construct(Currency::BIND_NAME);
+        parent::__construct(Currency::class);
     }
 
     /**

@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Measurement;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface MeasurementRepositoryInterface extends RepositoryInterface
 {
     /**

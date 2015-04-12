@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CarrierProperties;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface CarrierPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**

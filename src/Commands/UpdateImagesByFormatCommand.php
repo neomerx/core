@@ -7,6 +7,9 @@ use \Illuminate\Contracts\Bus\SelfHandling;
 use \Neomerx\Core\Filesystem\ImagesInterface;
 use \Neomerx\Core\Repositories\Images\ImageFormatRepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 class UpdateImagesByFormatCommand extends Command implements SelfHandling
 {
     /**

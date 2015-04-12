@@ -7,6 +7,9 @@ use \Neomerx\Core\Models\Manufacturer;
 use \Neomerx\Core\Models\ProductTaxType;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ProductRepository extends CodeBasedResourceRepository implements ProductRepositoryInterface
 {
     /**
@@ -14,7 +17,7 @@ class ProductRepository extends CodeBasedResourceRepository implements ProductRe
      */
     public function __construct()
     {
-        parent::__construct(Product::BIND_NAME);
+        parent::__construct(Product::class);
     }
 
     /**

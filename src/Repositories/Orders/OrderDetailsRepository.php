@@ -6,6 +6,9 @@ use \Neomerx\Core\Models\OrderDetails;
 use \Neomerx\Core\Models\ShippingOrder;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class OrderDetailsRepository extends IndexBasedResourceRepository implements OrderDetailsRepositoryInterface
 {
     /**
@@ -13,7 +16,7 @@ class OrderDetailsRepository extends IndexBasedResourceRepository implements Ord
      */
     public function __construct()
     {
-        parent::__construct(OrderDetails::BIND_NAME);
+        parent::__construct(OrderDetails::class);
     }
 
     /**

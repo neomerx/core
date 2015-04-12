@@ -6,6 +6,9 @@ use \Neomerx\Core\Models\CarrierCustomerType;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 use \Neomerx\Core\Repositories\Carriers\CarrierCustomerTypeRepositoryInterface as RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 class CarrierCustomerTypeRepository extends IndexBasedResourceRepository implements RepositoryInterface
 {
     /**
@@ -13,7 +16,7 @@ class CarrierCustomerTypeRepository extends IndexBasedResourceRepository impleme
      */
     public function __construct()
     {
-        parent::__construct(CarrierCustomerType::BIND_NAME);
+        parent::__construct(CarrierCustomerType::class);
     }
 
     /**

@@ -9,55 +9,63 @@ use \Carbon\Carbon;
  * @property-read Carbon  created_at
  * @property-read Carbon  updated_at
  * @property      Invoice invoice
+ *
+ * @package Neomerx\Core
  */
 class InvoicePayment extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'invoice_payments';
 
+    /** Model field name */
     const FIELD_ID         = 'id_invoice_payment';
+    /** Model field name */
     const FIELD_ID_INVOICE = Invoice::FIELD_ID;
+    /** Model field name */
     const FIELD_AMOUNT     = 'amount';
+    /** Model field name */
     const FIELD_CREATED_AT = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT = 'updated_at';
+    /** Model field name */
     const FIELD_INVOICE    = 'invoice';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_AMOUNT,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_INVOICE,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -65,7 +73,7 @@ class InvoicePayment extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -76,7 +84,7 @@ class InvoicePayment extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -93,6 +101,6 @@ class InvoicePayment extends BaseModel
      */
     public function invoice()
     {
-        return $this->belongsTo(Invoice::BIND_NAME, self::FIELD_ID_INVOICE, Invoice::FIELD_ID);
+        return $this->belongsTo(Invoice::class, self::FIELD_ID_INVOICE, Invoice::FIELD_ID);
     }
 }

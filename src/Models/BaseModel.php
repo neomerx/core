@@ -6,6 +6,8 @@ use \Illuminate\Database\Eloquent\Model;
 use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Auth\ObjectIdentityInterface;
+use \Neomerx\Core\Models\Traits\RelationsTrait;
+use \Neomerx\Core\Models\Traits\ValidationTrait;
 use \Neomerx\Core\Exceptions\ValidationException;
 
 /**
@@ -26,6 +28,8 @@ use \Neomerx\Core\Exceptions\ValidationException;
  * @method static Builder where($conditions)
  * @method static BaseModel findOrFail($idx)
  *
+ * @package Neomerx\Core
+ *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -35,6 +39,9 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
     use RelationsTrait;
     use ValidationTrait;
 
+    /**
+     * @param array $attributes
+     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -44,7 +51,7 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getModel()
     {
@@ -52,7 +59,7 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getModelMorphs($name, $type, $modelId)
     {
@@ -60,7 +67,7 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * Add 'pre' and 'post' event handlers for each individual model.
      * They are used for handling validation and sync underlying model assets such as files.
@@ -257,7 +264,7 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getIdentifier()
     {

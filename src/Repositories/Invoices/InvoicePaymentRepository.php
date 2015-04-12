@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Invoice;
 use \Neomerx\Core\Models\InvoicePayment;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class InvoicePaymentRepository extends IndexBasedResourceRepository implements InvoicePaymentRepositoryInterface
 {
     /**
@@ -11,7 +14,7 @@ class InvoicePaymentRepository extends IndexBasedResourceRepository implements I
      */
     public function __construct()
     {
-        parent::__construct(InvoicePayment::BIND_NAME);
+        parent::__construct(InvoicePayment::class);
     }
 
     /**

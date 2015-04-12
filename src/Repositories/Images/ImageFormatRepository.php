@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\ImageFormat;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ImageFormatRepository extends CodeBasedResourceRepository implements ImageFormatRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class ImageFormatRepository extends CodeBasedResourceRepository implements Image
      */
     public function __construct()
     {
-        parent::__construct(ImageFormat::BIND_NAME);
+        parent::__construct(ImageFormat::class);
     }
 
     /**

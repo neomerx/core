@@ -6,6 +6,9 @@ use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Models\Specification;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class VariantRepository extends CodeBasedResourceRepository implements VariantRepositoryInterface
 {
     /**
@@ -18,7 +21,7 @@ class VariantRepository extends CodeBasedResourceRepository implements VariantRe
      */
     public function __construct(SpecificationRepositoryInterface $specificationRepo)
     {
-        parent::__construct(Variant::BIND_NAME);
+        parent::__construct(Variant::class);
         $this->specificationRepo = $specificationRepo;
     }
 

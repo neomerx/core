@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Supplier;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class SupplierRepository extends CodeBasedResourceRepository implements SupplierRepositoryInterface
 {
     /**
@@ -11,7 +14,7 @@ class SupplierRepository extends CodeBasedResourceRepository implements Supplier
      */
     public function __construct()
     {
-        parent::__construct(Supplier::BIND_NAME);
+        parent::__construct(Supplier::class);
     }
 
     /**

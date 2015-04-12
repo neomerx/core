@@ -17,48 +17,61 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      Collection images
  * @property      Collection inventories
  *
+ * @package Neomerx\Core
+ *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificationInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'variants';
 
+    /** Model field length */
     const SKU_MAX_LENGTH = Product::SKU_MAX_LENGTH;
 
+    /** Model field name */
     const FIELD_ID            = 'id_variant';
+    /** Model field name */
     const FIELD_ID_PRODUCT    = Product::FIELD_ID;
+    /** Model field name */
     const FIELD_SKU           = 'sku';
+    /** Model field name */
     const FIELD_PRICE_WO_TAX  = 'price_wo_tax';
+    /** Model field name */
     const FIELD_CREATED_AT    = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT    = 'updated_at';
+    /** Model field name */
     const FIELD_PRODUCT       = 'product';
+    /** Model field name */
     const FIELD_PROPERTIES    = 'properties';
+    /** Model field name */
     const FIELD_SPECIFICATION = 'specification';
+    /** Model field name */
     const FIELD_IMAGES        = 'images';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_SKU,
@@ -66,7 +79,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
@@ -74,7 +87,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -82,14 +95,14 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $touches = [
         self::FIELD_PRODUCT,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -101,7 +114,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -169,7 +182,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     public function product()
     {
-        return $this->belongsTo(Product::BIND_NAME, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
+        return $this->belongsTo(Product::class, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
     }
 
     /**
@@ -179,7 +192,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     public function specification()
     {
-        return $this->hasMany(Specification::BIND_NAME, Specification::FIELD_ID_VARIANT, self::FIELD_ID);
+        return $this->hasMany(Specification::class, Specification::FIELD_ID_VARIANT, self::FIELD_ID);
     }
 
     /**
@@ -189,7 +202,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     public function images()
     {
-        return $this->hasMany(ProductImage::BIND_NAME, ProductImage::FIELD_ID_VARIANT, self::FIELD_ID);
+        return $this->hasMany(ProductImage::class, ProductImage::FIELD_ID_VARIANT, self::FIELD_ID);
     }
 
     /**
@@ -199,7 +212,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     public function inventories()
     {
-        return $this->hasMany(Inventory::BIND_NAME, Inventory::FIELD_ID_VARIANT, self::FIELD_ID);
+        return $this->hasMany(Inventory::class, Inventory::FIELD_ID_VARIANT, self::FIELD_ID);
     }
 
     /**
@@ -209,7 +222,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     public function properties()
     {
-        return $this->hasMany(VariantProperties::BIND_NAME, VariantProperties::FIELD_ID_VARIANT, self::FIELD_ID);
+        return $this->hasMany(VariantProperties::class, VariantProperties::FIELD_ID_VARIANT, self::FIELD_ID);
     }
 
     /**
@@ -257,7 +270,7 @@ class Variant extends BaseModel implements SelectByCodeInterface, GetSpecificati
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * If an ordinary non-default variant is deleted then no specific. Just delete it with its properties.
      * Default variant could not be 'deleted'. Use 'reset to default' instead.

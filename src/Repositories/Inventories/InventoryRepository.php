@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Inventory;
 use \Neomerx\Core\Models\Warehouse;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class InventoryRepository extends IndexBasedResourceRepository implements InventoryRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class InventoryRepository extends IndexBasedResourceRepository implements Invent
      */
     public function __construct()
     {
-        parent::__construct(Inventory::BIND_NAME);
+        parent::__construct(Inventory::class);
     }
 
     /**

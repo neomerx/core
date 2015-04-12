@@ -7,6 +7,9 @@ use \Neomerx\Core\Models\Warehouse;
 use \Neomerx\Core\Models\SupplyOrder;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface SupplyOrderRepositoryInterface extends RepositoryInterface
 {
     /**

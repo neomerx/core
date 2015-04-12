@@ -2,6 +2,9 @@
 
 use \League\Flysystem\FilesystemInterface  as LeagueFilesystemInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 class FilesystemManager extends \Illuminate\Filesystem\FilesystemManager
 {
     /**

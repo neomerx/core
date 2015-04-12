@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\ShippingOrderStatus;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ShippingStatusRepository extends CodeBasedResourceRepository implements ShippingStatusRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class ShippingStatusRepository extends CodeBasedResourceRepository implements Sh
      */
     public function __construct()
     {
-        parent::__construct(ShippingOrderStatus::BIND_NAME);
+        parent::__construct(ShippingOrderStatus::class);
     }
 
     /**

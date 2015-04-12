@@ -7,45 +7,54 @@
  * @property string              value
  * @property CharacteristicValue characteristicValue
  * @property Language            language
+ *
+ * @package Neomerx\Core
  */
 class CharacteristicValueProperties extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'characteristic_value_properties';
 
+    /** Model field length */
     const VALUE_MAX_LENGTH = 100;
 
+    /** Model field name */
     const FIELD_ID                      = 'id_characteristic_value_property';
+    /** Model field name */
     const FIELD_ID_CHARACTERISTIC_VALUE = CharacteristicValue::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_LANGUAGE             = Language::FIELD_ID;
+    /** Model field name */
     const FIELD_VALUE                   = 'value';
+    /** Model field name */
     const FIELD_CHARACTERISTIC_VALUE    = 'characteristicValue';
+    /** Model field name */
     const FIELD_LANGUAGE                = 'language';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_VALUE,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_CHARACTERISTIC_VALUE,
@@ -53,7 +62,7 @@ class CharacteristicValueProperties extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -62,19 +71,19 @@ class CharacteristicValueProperties extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $touches = [
         'characteristicValue',
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -88,7 +97,7 @@ class CharacteristicValueProperties extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -109,7 +118,7 @@ class CharacteristicValueProperties extends BaseModel
     public function characteristicValue()
     {
         return $this->belongsTo(
-            CharacteristicValue::BIND_NAME,
+            CharacteristicValue::class,
             self::FIELD_ID_CHARACTERISTIC_VALUE,
             CharacteristicValue::FIELD_ID
         );
@@ -122,6 +131,6 @@ class CharacteristicValueProperties extends BaseModel
      */
     public function language()
     {
-        return $this->belongsTo(Language::BIND_NAME, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
+        return $this->belongsTo(Language::class, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
     }
 }

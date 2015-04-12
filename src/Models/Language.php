@@ -4,41 +4,48 @@
  * @property int    id_language
  * @property string name
  * @property string iso_code
+ *
+ * @package Neomerx\Core
  */
 class Language extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'languages';
 
+    /** Model field length */
     const NAME_MAX_LENGTH     = 50;
+    /** Model field length */
     const ISO_CODE_MAX_LENGTH = 3;
 
+    /** Model field name */
     const FIELD_ID       = 'id_language';
+    /** Model field name */
     const FIELD_NAME     = 'name';
+    /** Model field name */
     const FIELD_ISO_CODE = 'iso_code';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_NAME,
@@ -46,21 +53,21 @@ class Language extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -72,7 +79,7 @@ class Language extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -84,7 +91,7 @@ class Language extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($isoCode)
     {

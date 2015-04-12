@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\BaseModel;
 use \Neomerx\Core\Models\TaxRuleTerritory;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface TaxRuleTerritoryRepositoryInterface extends RepositoryInterface
 {
     /**

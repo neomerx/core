@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Tax;
 use \Neomerx\Core\Models\TaxRule;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface TaxRuleRepositoryInterface extends RepositoryInterface
 {
     /**

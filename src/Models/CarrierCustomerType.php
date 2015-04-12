@@ -6,47 +6,54 @@
  * @property int          id_customer_type
  * @property CustomerType type
  * @property Carrier      carrier
+ *
+ * @package Neomerx\Core
  */
 class CarrierCustomerType extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'carrier_customer_types';
 
+    /** Model field name */
     const FIELD_ID               = 'id_carrier_customer_type';
+    /** Model field name */
     const FIELD_ID_CARRIER       = Carrier::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_CUSTOMER_TYPE = CustomerType::FIELD_ID;
+    /** Model field name */
     const FIELD_TYPE             = 'type';
+    /** Model field name */
     const FIELD_CARRIER          = 'carrier';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         '', // fillable must have at least 1 element otherwise it's ignored completely by Laravel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_CARRIER,
@@ -54,7 +61,7 @@ class CarrierCustomerType extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -63,7 +70,7 @@ class CarrierCustomerType extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -76,7 +83,7 @@ class CarrierCustomerType extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -109,7 +116,7 @@ class CarrierCustomerType extends BaseModel
      */
     public function carrier()
     {
-        return $this->belongsTo(Carrier::BIND_NAME, self::FIELD_ID_CARRIER, Carrier::FIELD_ID);
+        return $this->belongsTo(Carrier::class, self::FIELD_ID_CARRIER, Carrier::FIELD_ID);
     }
 
     /**
@@ -119,6 +126,6 @@ class CarrierCustomerType extends BaseModel
      */
     public function type()
     {
-        return $this->belongsTo(CustomerType::BIND_NAME, self::FIELD_ID_CUSTOMER_TYPE, CustomerType::FIELD_ID);
+        return $this->belongsTo(CustomerType::class, self::FIELD_ID_CUSTOMER_TYPE, CustomerType::FIELD_ID);
     }
 }

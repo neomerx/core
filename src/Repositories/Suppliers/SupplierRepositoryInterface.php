@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Supplier;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface SupplierRepositoryInterface extends RepositoryInterface
 {
     /**

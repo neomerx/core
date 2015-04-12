@@ -24,52 +24,73 @@ use \Neomerx\Core\Exceptions\InvalidArgumentException;
  * @property      Collection assignedProducts
  * @property      Collection productCategories
  *
+ * @package Neomerx\Core
+ *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Category extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'categories';
 
+    /** Root category code */
     const ROOT_CODE       = '-';
+    /** Model field length */
     const CODE_MAX_LENGTH = 50;
+    /** Model field length */
     const LINK_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID                    = 'id_category';
+    /** Model field name */
     const FIELD_CODE                  = 'code';
+    /** Model field name */
     const FIELD_LINK                  = 'link';
+    /** Model field name */
     const FIELD_LFT                   = 'lft';
+    /** Model field name */
     const FIELD_RGT                   = 'rgt';
+    /** Model field name */
     const FIELD_ENABLED               = 'enabled';
+    /** Model field name */
     const FIELD_ID_ANCESTOR           = 'id_ancestor';
+    /** Model field name */
     const FIELD_ANCESTOR_CODE         = 'ancestor_code';
+    /** Model field name */
     const FIELD_NUMBER_OF_DESCENDANTS = 'number_of_descendants';
+    /** Model field name */
     const FIELD_ANCESTOR              = 'ancestor';
+    /** Model field name */
     const FIELD_PROPERTIES            = 'properties';
+    /** Model field name */
     const FIELD_PRODUCTS              = 'products';
+    /** Model field name */
     const FIELD_ASSIGNED_PRODUCTS     = 'assignedProducts';
+    /** Model field name */
     const FIELD_PRODUCT_CATEGORIES    = 'productCategories';
+    /** Model field name */
     const FIELD_CREATED_AT            = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT            = 'updated_at';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
@@ -79,7 +100,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     private $ancestorCode;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
@@ -89,7 +110,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
@@ -99,7 +120,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -109,14 +130,14 @@ class Category extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $appends = [
         self::FIELD_NUMBER_OF_DESCENDANTS,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -143,7 +164,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -209,7 +230,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     public function properties()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        return $this->hasMany(CategoryProperties::BIND_NAME, CategoryProperties::FIELD_ID_CATEGORY, self::FIELD_ID);
+        return $this->hasMany(CategoryProperties::class, CategoryProperties::FIELD_ID_CATEGORY, self::FIELD_ID);
     }
 
     /**
@@ -220,7 +241,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     public function assignedProducts()
     {
         return $this->belongsToMany(
-            Product::BIND_NAME,
+            Product::class,
             ProductCategory::TABLE_NAME,
             ProductCategory::FIELD_ID_CATEGORY,
             ProductCategory::FIELD_ID_PRODUCT
@@ -234,7 +255,7 @@ class Category extends BaseModel implements SelectByCodeInterface
      */
     public function productCategories()
     {
-        return $this->hasMany(ProductCategory::BIND_NAME, ProductCategory::FIELD_ID_CATEGORY, self::FIELD_ID);
+        return $this->hasMany(ProductCategory::class, ProductCategory::FIELD_ID_CATEGORY, self::FIELD_ID);
     }
 
     /**
@@ -244,11 +265,11 @@ class Category extends BaseModel implements SelectByCodeInterface
      */
     public function ancestor()
     {
-        return $this->hasOne(self::BIND_NAME, self::FIELD_ID, self::FIELD_ID_ANCESTOR);
+        return $this->hasOne(self::class, self::FIELD_ID, self::FIELD_ID_ANCESTOR);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function onCreating()
     {
@@ -284,7 +305,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function onUpdating()
     {
@@ -293,7 +314,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function onDeleting()
     {
@@ -483,7 +504,7 @@ class Category extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {

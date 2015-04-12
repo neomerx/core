@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Category;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class CategoryRepository extends CodeBasedResourceRepository implements CategoryRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class CategoryRepository extends CodeBasedResourceRepository implements Category
      */
     public function __construct()
     {
-        parent::__construct(Category::BIND_NAME);
+        parent::__construct(Category::class);
     }
 
     /**

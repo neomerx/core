@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface LanguageRepositoryInterface extends RepositoryInterface
 {
     /**

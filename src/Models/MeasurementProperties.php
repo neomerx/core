@@ -7,50 +7,59 @@
  * @property string      name
  * @property Measurement measurement
  * @property Language    language
+ *
+ * @package Neomerx\Core
  */
 class MeasurementProperties extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'measurement_properties';
 
+    /** Model field length */
     const NAME_MAX_LENGTH = 10;
 
+    /** Model field name */
     const FIELD_ID             = 'id_measurement_property';
+    /** Model field name */
     const FIELD_ID_MEASUREMENT = Measurement::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_LANGUAGE    = Language::FIELD_ID;
+    /** Model field name */
     const FIELD_NAME           = 'name';
+    /** Model field name */
     const FIELD_MEASUREMENT    = 'measurement';
+    /** Model field name */
     const FIELD_LANGUAGE       = 'language';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_NAME,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_MEASUREMENT,
@@ -58,7 +67,7 @@ class MeasurementProperties extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -67,14 +76,14 @@ class MeasurementProperties extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $touches = [
         self::FIELD_MEASUREMENT,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -86,7 +95,7 @@ class MeasurementProperties extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -106,7 +115,7 @@ class MeasurementProperties extends BaseModel
      */
     public function measurement()
     {
-        return $this->belongsTo(Measurement::BIND_NAME, self::FIELD_ID_MEASUREMENT, Measurement::FIELD_ID);
+        return $this->belongsTo(Measurement::class, self::FIELD_ID_MEASUREMENT, Measurement::FIELD_ID);
     }
 
     /**
@@ -116,6 +125,6 @@ class MeasurementProperties extends BaseModel
      */
     public function language()
     {
-        return $this->belongsTo(Language::BIND_NAME, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
+        return $this->belongsTo(Language::class, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
     }
 }

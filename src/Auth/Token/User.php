@@ -5,8 +5,12 @@ use \JsonSerializable;
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 use \Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
+/**
+ * @package Neomerx\Core
+ */
 class User extends stdClass implements AuthenticatableContract, JsonSerializable
 {
+    /** Field name */
     const FIELD_REMEMBER_TOKEN = 'remember_token';
 
     /**

@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\ObjectType;
 use \Neomerx\Core\Models\RoleObjectType;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface RoleObjectTypeRepositoryInterface extends RepositoryInterface
 {
     /**

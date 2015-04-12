@@ -6,6 +6,9 @@ use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Models\ProductImage;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface ProductImageRepositoryInterface extends RepositoryInterface
 {
     /**

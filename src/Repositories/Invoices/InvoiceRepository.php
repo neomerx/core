@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Invoice;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class InvoiceRepository extends CodeBasedResourceRepository implements InvoiceRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class InvoiceRepository extends CodeBasedResourceRepository implements InvoiceRe
      */
     public function __construct()
     {
-        parent::__construct(Invoice::BIND_NAME);
+        parent::__construct(Invoice::class);
     }
 
     /**

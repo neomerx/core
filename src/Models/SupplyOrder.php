@@ -18,53 +18,72 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      Warehouse  warehouse
  * @property      Currency   currency
  * @property      Language   language
+ *
+ * @package Neomerx\Core
  */
 class SupplyOrder extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'supply_orders';
 
+    /** Supply order status code */
     const STATUS_DRAFT     = 'draft';
+    /** Supply order status code */
     const STATUS_VALIDATED = 'validated';
+    /** Supply order status code */
     const STATUS_CANCELLED = 'cancelled';
 
+    /** Model field name */
     const FIELD_ID           = 'id_supply_order';
+    /** Model field name */
     const FIELD_ID_SUPPLIER  = 'id_supplier';
+    /** Model field name */
     const FIELD_ID_WAREHOUSE = 'id_warehouse';
+    /** Model field name */
     const FIELD_ID_CURRENCY  = 'id_currency';
+    /** Model field name */
     const FIELD_ID_LANGUAGE  = 'id_language';
+    /** Model field name */
     const FIELD_STATUS       = 'status';
+    /** Model field name */
     const FIELD_EXPECTED_AT  = 'expected_at';
+    /** Model field name */
     const FIELD_CREATED_AT   = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT   = 'updated_at';
+    /** Model field name */
     const FIELD_DETAILS      = 'details';
+    /** Model field name */
     const FIELD_SUPPLIER     = 'supplier';
+    /** Model field name */
     const FIELD_WAREHOUSE    = 'warehouse';
+    /** Model field name */
     const FIELD_CURRENCY     = 'currency';
+    /** Model field name */
     const FIELD_LANGUAGE     = 'language';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_EXPECTED_AT,
@@ -72,7 +91,7 @@ class SupplyOrder extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_SUPPLIER,
@@ -82,7 +101,7 @@ class SupplyOrder extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -93,14 +112,14 @@ class SupplyOrder extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $dates = [
         self::FIELD_EXPECTED_AT
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -117,7 +136,7 @@ class SupplyOrder extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -175,7 +194,7 @@ class SupplyOrder extends BaseModel
      */
     public function supplier()
     {
-        return $this->belongsTo(Supplier::BIND_NAME, self::FIELD_ID_SUPPLIER, Supplier::FIELD_ID);
+        return $this->belongsTo(Supplier::class, self::FIELD_ID_SUPPLIER, Supplier::FIELD_ID);
     }
 
     /**
@@ -185,7 +204,7 @@ class SupplyOrder extends BaseModel
      */
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::BIND_NAME, self::FIELD_ID_WAREHOUSE, Warehouse::FIELD_ID);
+        return $this->belongsTo(Warehouse::class, self::FIELD_ID_WAREHOUSE, Warehouse::FIELD_ID);
     }
 
     /**
@@ -195,7 +214,7 @@ class SupplyOrder extends BaseModel
      */
     public function currency()
     {
-        return $this->belongsTo(Currency::BIND_NAME, self::FIELD_ID_CURRENCY, Currency::FIELD_ID);
+        return $this->belongsTo(Currency::class, self::FIELD_ID_CURRENCY, Currency::FIELD_ID);
     }
 
     /**
@@ -205,7 +224,7 @@ class SupplyOrder extends BaseModel
      */
     public function language()
     {
-        return $this->belongsTo(Language::BIND_NAME, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
+        return $this->belongsTo(Language::class, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
     }
 
     /**
@@ -215,6 +234,6 @@ class SupplyOrder extends BaseModel
      */
     public function details()
     {
-        return $this->hasMany(SupplyOrderDetails::BIND_NAME, SupplyOrderDetails::FIELD_ID_SUPPLY_ORDER, self::FIELD_ID);
+        return $this->hasMany(SupplyOrderDetails::class, SupplyOrderDetails::FIELD_ID_SUPPLY_ORDER, self::FIELD_ID);
     }
 }

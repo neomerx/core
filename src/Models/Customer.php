@@ -26,65 +26,94 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      Collection   customerAddresses
  * @property      Collection   orders
  *
+ * @package Neomerx\Core
+ *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 class Customer extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'customers';
 
+    /** Model field length */
     const FIRST_NAME_MAX_LENGTH = 50;
+    /** Model field length */
     const LAST_NAME_MAX_LENGTH  = 50;
+    /** Model field length */
     const EMAIL_MAX_LENGTH      = 100;
+    /** Model field length */
     const MOBILE_MAX_LENGTH     = 13;
 
+    /** Customer gender code */
     const GENDER_MALE   = 'male';
+    /** Customer gender code */
     const GENDER_FEMALE = 'female';
 
+    /** Model field name */
     const FIELD_ID                       = 'id_customer';
+    /** Model field name */
     const FIELD_ID_CUSTOMER_RISK         = CustomerRisk::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_CUSTOMER_TYPE         = CustomerType::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_LANGUAGE              = Language::FIELD_ID;
+    /** Model field name */
     const FIELD_FIRST_NAME               = 'first_name';
+    /** Model field name */
     const FIELD_LAST_NAME                = 'last_name';
+    /** Model field name */
     const FIELD_EMAIL                    = 'email';
+    /** Model field name */
     const FIELD_MOBILE                   = 'mobile';
+    /** Model field name */
     const FIELD_GENDER                   = 'gender';
+    /** Model field name */
     const FIELD_CREATED_AT               = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT               = 'updated_at';
+    /** Model field name */
     const FIELD_RISK                     = 'risk';
+    /** Model field name */
     const FIELD_TYPE                     = 'type';
+    /** Model field name */
     const FIELD_LANGUAGE                 = 'language';
+    /** Model field name */
     const FIELD_ADDRESSES                = 'addresses';
+    /** Model field name */
     const FIELD_BILLING_ADDRESSES        = 'billingAddresses';
+    /** Model field name */
     const FIELD_SHIPPING_ADDRESSES       = 'shippingAddresses';
+    /** Model field name */
     const FIELD_DEFAULT_SHIPPING_ADDRESS = 'defaultShippingAddress';
+    /** Model field name */
     const FIELD_DEFAULT_BILLING_ADDRESS  = 'defaultBillingAddress';
+    /** Model field name */
     const FIELD_CUSTOMER_ADDRESSES       = 'customerAddresses';
+    /** Model field name */
     const FIELD_ORDERS                   = 'orders';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_FIRST_NAME,
@@ -95,7 +124,7 @@ class Customer extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_CUSTOMER_RISK,
@@ -104,7 +133,7 @@ class Customer extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -114,7 +143,7 @@ class Customer extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -136,7 +165,7 @@ class Customer extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -215,7 +244,7 @@ class Customer extends BaseModel
      */
     public function risk()
     {
-        return $this->belongsTo(CustomerRisk::BIND_NAME, self::FIELD_ID_CUSTOMER_RISK, CustomerRisk::FIELD_ID);
+        return $this->belongsTo(CustomerRisk::class, self::FIELD_ID_CUSTOMER_RISK, CustomerRisk::FIELD_ID);
     }
 
     /**
@@ -225,7 +254,7 @@ class Customer extends BaseModel
      */
     public function type()
     {
-        return $this->belongsTo(CustomerType::BIND_NAME, self::FIELD_ID_CUSTOMER_TYPE, CustomerType::FIELD_ID);
+        return $this->belongsTo(CustomerType::class, self::FIELD_ID_CUSTOMER_TYPE, CustomerType::FIELD_ID);
     }
 
     /**
@@ -235,7 +264,7 @@ class Customer extends BaseModel
      */
     public function language()
     {
-        return $this->belongsTo(Language::BIND_NAME, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
+        return $this->belongsTo(Language::class, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
     }
 
     /**
@@ -246,7 +275,7 @@ class Customer extends BaseModel
     public function addresses()
     {
         return $this->belongsToMany(
-            Address::BIND_NAME,
+            Address::class,
             CustomerAddress::TABLE_NAME,
             CustomerAddress::FIELD_ID_CUSTOMER,
             CustomerAddress::FIELD_ID_ADDRESS
@@ -298,7 +327,7 @@ class Customer extends BaseModel
      */
     public function customerAddresses()
     {
-        return $this->hasMany(CustomerAddress::BIND_NAME, CustomerAddress::FIELD_ID_CUSTOMER, self::FIELD_ID);
+        return $this->hasMany(CustomerAddress::class, CustomerAddress::FIELD_ID_CUSTOMER, self::FIELD_ID);
     }
 
     /**
@@ -308,6 +337,6 @@ class Customer extends BaseModel
      */
     public function orders()
     {
-        return $this->hasMany(Order::BIND_NAME, Order::FIELD_ID_CUSTOMER, self::FIELD_ID);
+        return $this->hasMany(Order::class, Order::FIELD_ID_CUSTOMER, self::FIELD_ID);
     }
 }

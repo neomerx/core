@@ -7,61 +7,68 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property string     code
  * @property Collection payments
  * @property Collection orders
+ *
+ * @package Neomerx\Core
  */
 class Invoice extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'invoices';
 
+    /** Model field length */
     const CODE_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID       = 'id_invoice';
+    /** Model field name */
     const FIELD_CODE     = 'code';
+    /** Model field name */
     const FIELD_PAYMENTS = 'payments';
+    /** Model field name */
     const FIELD_ORDERS   = 'orders';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_CODE,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -71,7 +78,7 @@ class Invoice extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -87,7 +94,7 @@ class Invoice extends BaseModel implements SelectByCodeInterface
      */
     public function payments()
     {
-        return $this->hasMany(InvoicePayment::BIND_NAME, InvoicePayment::FIELD_ID_INVOICE, self::FIELD_ID);
+        return $this->hasMany(InvoicePayment::class, InvoicePayment::FIELD_ID_INVOICE, self::FIELD_ID);
     }
 
     /**
@@ -98,7 +105,7 @@ class Invoice extends BaseModel implements SelectByCodeInterface
     public function orders()
     {
         return $this->belongsToMany(
-            Order::BIND_NAME,
+            Order::class,
             InvoiceOrder::TABLE_NAME,
             InvoiceOrder::FIELD_ID_INVOICE,
             InvoiceOrder::FIELD_ID_ORDER
@@ -106,7 +113,7 @@ class Invoice extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {

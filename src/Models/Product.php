@@ -33,66 +33,96 @@ use \Neomerx\Core\Repositories\Products\VariantRepositoryInterface;
  * @property      Collection     productImages
  * @property      Collection     variants
  *
+ * @package Neomerx\Core
+ *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Product extends BaseModel implements SelectByCodeInterface, GetSpecificationInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'products';
 
+    /** Model field length */
     const SKU_MAX_LENGTH  = 64;
+    /** Model field length */
     const LINK_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID                  = 'id_product';
+    /** Model field name */
     const FIELD_ID_CATEGORY_DEFAULT = 'id_category_default';
+    /** Model field name */
     const FIELD_ID_MANUFACTURER     = Manufacturer::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_PRODUCT_TAX_TYPE = ProductTaxType::FIELD_ID;
+    /** Model field name */
     const FIELD_SKU                 = 'sku';
+    /** Model field name */
     const FIELD_LINK                = 'link';
+    /** Model field name */
     const FIELD_PRICE_WO_TAX        = 'price_wo_tax';
+    /** Model field name */
     const FIELD_ENABLED             = 'enabled';
+    /** Model field name */
     const FIELD_CREATED_AT          = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT          = 'updated_at';
+    /** Model field name */
     const FIELD_TAX_TYPE            = 'taxType';
+    /** Model field name */
     const FIELD_DEFAULT_CATEGORY    = 'defaultCategory';
+    /** Model field name */
     const FIELD_ASSIGNED_CATEGORIES = 'assignedCategories';
+    /** Model field name */
     const FIELD_PRODUCT_CATEGORIES  = 'productCategories';
+    /** Model field name */
     const FIELD_RELATED_PRODUCTS    = 'relatedProducts';
+    /** Model field name */
     const FIELD_PRODUCT_IMAGES      = 'productImages';
+    /** Model field name */
     const FIELD_RELATED             = 'related';
+    /** Model field name */
     const FIELD_MANUFACTURER        = 'manufacturer';
+    /** Model field name */
     const FIELD_PROPERTIES          = 'properties';
+    /** Model field name */
     const FIELD_SPECIFICATION       = 'specification';
+    /** Model field name */
     const FIELD_IMAGES              = 'images';
+    /** Model field name */
     const FIELD_VARIANTS            = 'variants';
+    /** Model field name */
     const FIELD_PKG_HEIGHT          = 'pkg_height';
+    /** Model field name */
     const FIELD_PKG_WIDTH           = 'pkg_width';
+    /** Model field name */
     const FIELD_PKG_LENGTH          = 'pkg_length';
+    /** Model field name */
     const FIELD_PKG_WEIGHT          = 'pkg_weight';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_SKU,
@@ -106,7 +136,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
@@ -116,7 +146,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -126,7 +156,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -154,7 +184,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -221,7 +251,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     public function defaultCategory()
     {
-        return $this->hasOne(Category::BIND_NAME, Category::FIELD_ID, self::FIELD_ID_CATEGORY_DEFAULT);
+        return $this->hasOne(Category::class, Category::FIELD_ID, self::FIELD_ID_CATEGORY_DEFAULT);
     }
 
     /**
@@ -233,7 +263,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     {
         return $this
             ->belongsToMany(
-                Category::BIND_NAME,
+                Category::class,
                 ProductCategory::TABLE_NAME,
                 ProductCategory::FIELD_ID_PRODUCT,
                 ProductCategory::FIELD_ID_CATEGORY
@@ -247,7 +277,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     public function productCategories()
     {
-        return $this->hasMany(ProductCategory::BIND_NAME, ProductCategory::FIELD_ID_PRODUCT, self::FIELD_ID);
+        return $this->hasMany(ProductCategory::class, ProductCategory::FIELD_ID_PRODUCT, self::FIELD_ID);
     }
 
     /**
@@ -257,7 +287,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     public function related()
     {
-        return $this->hasMany(ProductRelated::BIND_NAME, ProductRelated::FIELD_ID_PRODUCT, self::FIELD_ID);
+        return $this->hasMany(ProductRelated::class, ProductRelated::FIELD_ID_PRODUCT, self::FIELD_ID);
     }
 
     /**
@@ -268,7 +298,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     public function relatedProducts()
     {
         return $this->belongsToMany(
-            self::BIND_NAME,
+            self::class,
             ProductRelated::TABLE_NAME,
             ProductRelated::FIELD_ID_PRODUCT,
             ProductRelated::FIELD_ID_RELATED_PRODUCT
@@ -283,7 +313,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     public function properties()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        return $this->hasMany(ProductProperties::BIND_NAME, ProductProperties::FIELD_ID_PRODUCT, self::FIELD_ID);
+        return $this->hasMany(ProductProperties::class, ProductProperties::FIELD_ID_PRODUCT, self::FIELD_ID);
     }
 
     /**
@@ -294,7 +324,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     public function specification()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        return $this->hasMany(Specification::BIND_NAME, Specification::FIELD_ID_PRODUCT, self::FIELD_ID)
+        return $this->hasMany(Specification::class, Specification::FIELD_ID_PRODUCT, self::FIELD_ID)
             ->whereNull(Variant::FIELD_ID);
     }
 
@@ -306,7 +336,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     public function productImages()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        return $this->hasMany(ProductImage::BIND_NAME, ProductImage::FIELD_ID_PRODUCT, self::FIELD_ID)
+        return $this->hasMany(ProductImage::class, ProductImage::FIELD_ID_PRODUCT, self::FIELD_ID)
             ->whereNull(Variant::FIELD_ID);
     }
 
@@ -317,7 +347,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     public function manufacturer()
     {
-        return $this->belongsTo(Manufacturer::BIND_NAME, self::FIELD_ID_MANUFACTURER, Manufacturer::FIELD_ID);
+        return $this->belongsTo(Manufacturer::class, self::FIELD_ID_MANUFACTURER, Manufacturer::FIELD_ID);
     }
 
     /**
@@ -327,7 +357,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     public function taxType()
     {
-        return $this->belongsTo(ProductTaxType::BIND_NAME, self::FIELD_ID_PRODUCT_TAX_TYPE, ProductTaxType::FIELD_ID);
+        return $this->belongsTo(ProductTaxType::class, self::FIELD_ID_PRODUCT_TAX_TYPE, ProductTaxType::FIELD_ID);
     }
 
     /**
@@ -337,7 +367,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     public function variants()
     {
-        return $this->hasMany(Variant::BIND_NAME, Variant::FIELD_ID_PRODUCT, self::FIELD_ID);
+        return $this->hasMany(Variant::class, Variant::FIELD_ID_PRODUCT, self::FIELD_ID);
     }
 
     /**

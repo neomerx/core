@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Employee;
 use \Neomerx\Core\Models\EmployeeRole;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class EmployeeRoleRepository extends IndexBasedResourceRepository implements EmployeeRoleRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class EmployeeRoleRepository extends IndexBasedResourceRepository implements Emp
      */
     public function __construct()
     {
-        parent::__construct(EmployeeRole::BIND_NAME);
+        parent::__construct(EmployeeRole::class);
     }
 
     /**

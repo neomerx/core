@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\CustomerType;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface CustomerTypeRepositoryInterface extends RepositoryInterface
 {
     /**

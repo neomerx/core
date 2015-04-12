@@ -7,42 +7,50 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property string     code
  * @property string     name
  * @property Collection customers
+ *
+ * @package Neomerx\Core
  */
 class CustomerRisk extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'customer_risks';
 
+    /** Model field length */
     const NAME_MAX_LENGTH = 50;
+    /** Model field length */
     const CODE_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID        = 'id_customer_risk';
+    /** Model field name */
     const FIELD_CODE      = 'code';
+    /** Model field name */
     const FIELD_NAME      = 'name';
+    /** Model field name */
     const FIELD_CUSTOMERS = 'customers';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
@@ -50,21 +58,21 @@ class CustomerRisk extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -77,7 +85,7 @@ class CustomerRisk extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -94,11 +102,11 @@ class CustomerRisk extends BaseModel implements SelectByCodeInterface
      */
     public function customers()
     {
-        return $this->hasMany(Customer::BIND_NAME, Customer::FIELD_ID_CUSTOMER_RISK, self::FIELD_ID);
+        return $this->hasMany(Customer::class, Customer::FIELD_ID_CUSTOMER_RISK, self::FIELD_ID);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {

@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CategoryProperties;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class CategoryPropertiesRepository extends IndexBasedResourceRepository implements CategoryPropertiesRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class CategoryPropertiesRepository extends IndexBasedResourceRepository implemen
      */
     public function __construct()
     {
-        parent::__construct(CategoryProperties::BIND_NAME);
+        parent::__construct(CategoryProperties::class);
     }
 
     /**

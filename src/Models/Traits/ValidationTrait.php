@@ -1,7 +1,11 @@
-<?php namespace Neomerx\Core\Models;
+<?php namespace Neomerx\Core\Models\Traits;
 
 use \Validator;
+use \Neomerx\Core\Models\BaseModelInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 trait ValidationTrait
 {
     /**
@@ -14,6 +18,9 @@ trait ValidationTrait
      */
     private $baseModelVT;
 
+    /**
+     * @param BaseModelInterface $baseModel
+     */
     public function initValidationTrait(BaseModelInterface $baseModel)
     {
         $this->baseModelVT = $baseModel;

@@ -17,54 +17,72 @@ use \Illuminate\Database\Eloquent\SoftDeletes;
  * @property Collection shippingCustomers
  * @property Collection billingOrders
  * @property Collection shippingOrders
+ *
+ * @package Neomerx\Core
  */
 class Address extends BaseModel
 {
     use SoftDeletes;
 
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'addresses';
 
+    /** Model field length */
     const CITY_MAX_LENGTH      = 50;
+    /** Model field length */
     const POSTCODE_MAX_LENGTH  = 12;
+    /** Model field length */
     const ADDRESS_1_MAX_LENGTH = 100;
+    /** Model field length */
     const ADDRESS_2_MAX_LENGTH = 100;
 
+    /** Model field name */
     const FIELD_ID                 = 'id_address';
+    /** Model field name */
     const FIELD_ID_REGION          = Region::FIELD_ID;
+    /** Model field name */
     const FIELD_CITY               = 'city';
+    /** Model field name */
     const FIELD_POSTCODE           = 'postcode';
+    /** Model field name */
     const FIELD_ADDRESS1           = 'address1';
+    /** Model field name */
     const FIELD_ADDRESS2           = 'address2';
+    /** Model field name */
     const FIELD_DELETED_AT         = 'deleted_at';
+    /** Model field name */
     const FIELD_REGION             = 'region';
+    /** Model field name */
     const FIELD_BILLING_CUSTOMERS  = 'billingCustomers';
+    /** Model field name */
     const FIELD_SHIPPING_CUSTOMERS = 'shippingCustomers';
+    /** Model field name */
     const FIELD_BILLING_ORDERS     = 'billingOrders';
+    /** Model field name */
     const FIELD_SHIPPING_ORDERS    = 'shippingOrders';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CITY,
@@ -74,7 +92,7 @@ class Address extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_REGION,
@@ -82,7 +100,7 @@ class Address extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -91,7 +109,7 @@ class Address extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -105,7 +123,7 @@ class Address extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -135,7 +153,7 @@ class Address extends BaseModel
      */
     public function region()
     {
-        return $this->belongsTo(Region::BIND_NAME, self::FIELD_ID_REGION, Region::FIELD_ID);
+        return $this->belongsTo(Region::class, self::FIELD_ID_REGION, Region::FIELD_ID);
     }
 
     /**
@@ -146,7 +164,7 @@ class Address extends BaseModel
     public function billingCustomers()
     {
         return $this->belongsToMany(
-            Customer::BIND_NAME,
+            Customer::class,
             CustomerAddress::TABLE_NAME,
             CustomerAddress::FIELD_ID_ADDRESS,
             CustomerAddress::FIELD_ID_CUSTOMER
@@ -161,7 +179,7 @@ class Address extends BaseModel
     public function shippingCustomers()
     {
         return $this->belongsToMany(
-            Customer::BIND_NAME,
+            Customer::class,
             CustomerAddress::TABLE_NAME,
             CustomerAddress::FIELD_ID_ADDRESS,
             CustomerAddress::FIELD_ID_CUSTOMER
@@ -175,7 +193,7 @@ class Address extends BaseModel
      */
     public function billingOrders()
     {
-        return $this->hasMany(Order::BIND_NAME, Order::FIELD_ID_BILLING_ADDRESS, self::FIELD_ID);
+        return $this->hasMany(Order::class, Order::FIELD_ID_BILLING_ADDRESS, self::FIELD_ID);
     }
 
     /**
@@ -185,6 +203,6 @@ class Address extends BaseModel
      */
     public function shippingOrders()
     {
-        return $this->hasMany(Order::BIND_NAME, Order::FIELD_ID_SHIPPING_ADDRESS, self::FIELD_ID);
+        return $this->hasMany(Order::class, Order::FIELD_ID_SHIPPING_ADDRESS, self::FIELD_ID);
     }
 }

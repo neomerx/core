@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Warehouse;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface WarehouseRepositoryInterface extends RepositoryInterface
 {
     /**

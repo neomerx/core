@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Employee;
 use \Neomerx\Core\Models\EmployeeRole;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface EmployeeRoleRepositoryInterface extends RepositoryInterface
 {
     /**

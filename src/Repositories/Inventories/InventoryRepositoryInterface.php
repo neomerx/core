@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Inventory;
 use \Neomerx\Core\Models\Warehouse;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface InventoryRepositoryInterface extends RepositoryInterface
 {
     /**

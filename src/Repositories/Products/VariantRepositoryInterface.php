@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Variant;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface VariantRepositoryInterface extends RepositoryInterface
 {
     /**

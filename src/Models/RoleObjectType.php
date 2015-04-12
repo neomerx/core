@@ -6,42 +6,51 @@
  * @property int        id_role
  * @property ObjectType type
  * @property Role       role
+ *
+ * @package Neomerx\Core
  */
 class RoleObjectType extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'roles_object_types';
 
+    /** Model field name */
     const FIELD_ID         = 'id_role_object_type';
+    /** Model field name */
     const FIELD_ID_TYPE    = ObjectType::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_ROLE    = Role::FIELD_ID;
+    /** Model field name */
     const FIELD_ALLOW_MASK = 'allow_mask';
+    /** Model field name */
     const FIELD_DENY_MASK  = 'deny_mask';
+    /** Model field name */
     const FIELD_TYPE       = 'type';
+    /** Model field name */
     const FIELD_ROLE       = 'role';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_ALLOW_MASK,
@@ -49,7 +58,7 @@ class RoleObjectType extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_TYPE,
@@ -57,7 +66,7 @@ class RoleObjectType extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -66,7 +75,7 @@ class RoleObjectType extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -79,7 +88,7 @@ class RoleObjectType extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -114,7 +123,7 @@ class RoleObjectType extends BaseModel
      */
     public function type()
     {
-        return $this->belongsTo(ObjectType::BIND_NAME, self::FIELD_ID_TYPE, ObjectType::FIELD_ID);
+        return $this->belongsTo(ObjectType::class, self::FIELD_ID_TYPE, ObjectType::FIELD_ID);
     }
 
     /**
@@ -124,6 +133,6 @@ class RoleObjectType extends BaseModel
      */
     public function role()
     {
-        return $this->belongsTo(Role::BIND_NAME, self::FIELD_ID_ROLE, Role::FIELD_ID);
+        return $this->belongsTo(Role::class, self::FIELD_ID_ROLE, Role::FIELD_ID);
     }
 }

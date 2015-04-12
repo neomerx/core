@@ -9,42 +9,50 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property Collection properties
  *
  * @link https://en.wikipedia.org/wiki/ISO_4217
+ *
+ * @package Neomerx\Core
  */
 class Currency extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'currencies';
 
+    /** Model field length */
     const CODE_MIN_LENGTH = 3;
+    /** Model field length */
     const CODE_MAX_LENGTH = 3;
 
+    /** Model field name */
     const FIELD_ID             = 'id_currency';
+    /** Model field name */
     const FIELD_CODE           = 'code';
+    /** Model field name */
     const FIELD_DECIMAL_DIGITS = 'decimal_digits';
+    /** Model field name */
     const FIELD_PROPERTIES     = 'properties';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_ID,
@@ -52,11 +60,14 @@ class Currency extends BaseModel implements SelectByCodeInterface
         self::FIELD_DECIMAL_DIGITS,
     ];
 
+    /**
+     * @inheritdoc
+     */
     public $guarded = [
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -71,7 +82,7 @@ class Currency extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -99,11 +110,11 @@ class Currency extends BaseModel implements SelectByCodeInterface
      */
     public function properties()
     {
-        return $this->hasMany(CurrencyProperties::BIND_NAME, CurrencyProperties::FIELD_ID_CURRENCY, self::FIELD_ID);
+        return $this->hasMany(CurrencyProperties::class, CurrencyProperties::FIELD_ID_CURRENCY, self::FIELD_ID);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {

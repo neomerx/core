@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\CustomerType;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class CustomerTypeRepository extends CodeBasedResourceRepository implements CustomerTypeRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class CustomerTypeRepository extends CodeBasedResourceRepository implements Cust
      */
     public function __construct()
     {
-        parent::__construct(CustomerType::BIND_NAME);
+        parent::__construct(CustomerType::class);
     }
 
     /**

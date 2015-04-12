@@ -28,6 +28,8 @@ use \Illuminate\Database\Eloquent\SoftDeletes;
  * @property      Collection  invoices
  * @property      Collection  shippingOrders
  *
+ * @package Neomerx\Core
+ *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
@@ -35,59 +37,81 @@ class Order extends BaseModel
 {
     use SoftDeletes;
 
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'orders';
 
+    /** Model field name */
     const FIELD_ID                    = 'id_order';
+    /** Model field name */
     const FIELD_ID_CUSTOMER           = Customer::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_BILLING_ADDRESS    = 'id_billing_address';
+    /** Model field name */
     const FIELD_ID_SHIPPING_ADDRESS   = 'id_shipping_address';
+    /** Model field name */
     const FIELD_ID_STORE              = Store::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_ORDER_STATUS       = OrderStatus::FIELD_ID;
+    /** Model field name */
     const FIELD_PRODUCTS_TAX          = 'products_tax';
+    /** Model field name */
     const FIELD_SHIPPING_TAX          = 'shipping_tax';
+    /** Model field name */
     const FIELD_TAX_DETAILS           = 'tax_details';
+    /** Model field name */
     const FIELD_SHIPPING_COST         = 'shipping_cost';
+    /** Model field name */
     const FIELD_CREATED_AT            = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT            = 'updated_at';
+    /** Model field name */
     const FIELD_DELETED_AT            = 'deleted_at';
+    /** Model field name */
     const FIELD_CUSTOMER              = 'customer';
+    /** Model field name */
     const FIELD_SHIPPING_ADDRESS      = 'shippingAddress';
+    /** Model field name */
     const FIELD_BILLING_ADDRESS       = 'billingAddress';
+    /** Model field name */
     const FIELD_STORE                 = 'store';
+    /** Model field name */
     const FIELD_STATUS                = 'status';
+    /** Model field name */
     const FIELD_DETAILS               = 'details';
+    /** Model field name */
     const FIELD_HISTORY               = 'history';
+    /** Model field name */
     const FIELD_INVOICES              = 'invoices';
+    /** Model field name */
     const FIELD_SHIPPING_ORDERS       = 'shippingOrders';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $dates = [self::FIELD_DELETED_AT];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_SHIPPING_TAX,
@@ -97,7 +121,7 @@ class Order extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_STORE,
@@ -105,7 +129,7 @@ class Order extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $guarded = [
         self::FIELD_ID,
@@ -121,7 +145,7 @@ class Order extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -145,7 +169,7 @@ class Order extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -217,7 +241,7 @@ class Order extends BaseModel
      */
     public function customer()
     {
-        return $this->belongsTo(Customer::BIND_NAME, self::FIELD_ID_CUSTOMER, Customer::FIELD_ID);
+        return $this->belongsTo(Customer::class, self::FIELD_ID_CUSTOMER, Customer::FIELD_ID);
     }
 
     /**
@@ -227,7 +251,7 @@ class Order extends BaseModel
      */
     public function shippingAddress()
     {
-        return $this->belongsTo(Address::BIND_NAME, self::FIELD_ID_SHIPPING_ADDRESS, Address::FIELD_ID);
+        return $this->belongsTo(Address::class, self::FIELD_ID_SHIPPING_ADDRESS, Address::FIELD_ID);
     }
 
     /**
@@ -237,7 +261,7 @@ class Order extends BaseModel
      */
     public function billingAddress()
     {
-        return $this->belongsTo(Address::BIND_NAME, self::FIELD_ID_BILLING_ADDRESS, Address::FIELD_ID);
+        return $this->belongsTo(Address::class, self::FIELD_ID_BILLING_ADDRESS, Address::FIELD_ID);
     }
 
     /**
@@ -247,7 +271,7 @@ class Order extends BaseModel
      */
     public function store()
     {
-        return $this->belongsTo(Store::BIND_NAME, self::FIELD_ID_STORE, Store::FIELD_ID);
+        return $this->belongsTo(Store::class, self::FIELD_ID_STORE, Store::FIELD_ID);
     }
 
     /**
@@ -257,7 +281,7 @@ class Order extends BaseModel
      */
     public function status()
     {
-        return $this->belongsTo(OrderStatus::BIND_NAME, self::FIELD_ID_ORDER_STATUS, OrderStatus::FIELD_ID);
+        return $this->belongsTo(OrderStatus::class, self::FIELD_ID_ORDER_STATUS, OrderStatus::FIELD_ID);
     }
 
     /**
@@ -267,7 +291,7 @@ class Order extends BaseModel
      */
     public function details()
     {
-        return $this->hasMany(OrderDetails::BIND_NAME, OrderDetails::FIELD_ID_ORDER, self::FIELD_ID);
+        return $this->hasMany(OrderDetails::class, OrderDetails::FIELD_ID_ORDER, self::FIELD_ID);
     }
 
     /**
@@ -277,7 +301,7 @@ class Order extends BaseModel
      */
     public function history()
     {
-        return $this->hasMany(OrderHistory::BIND_NAME, OrderHistory::FIELD_ID_ORDER, self::FIELD_ID);
+        return $this->hasMany(OrderHistory::class, OrderHistory::FIELD_ID_ORDER, self::FIELD_ID);
     }
 
     /**
@@ -288,7 +312,7 @@ class Order extends BaseModel
     public function invoices()
     {
         return $this->belongsToMany(
-            Invoice::BIND_NAME,
+            Invoice::class,
             InvoiceOrder::TABLE_NAME,
             InvoiceOrder::FIELD_ID_ORDER,
             InvoiceOrder::FIELD_ID_INVOICE
@@ -296,7 +320,7 @@ class Order extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * Stores order status history on changes.
      */
@@ -310,7 +334,7 @@ class Order extends BaseModel
             $oldIdOrderStatus = $this->getOriginal(self::FIELD_ID_ORDER_STATUS);
             /** @noinspection PhpUndefinedMethodInspection */
             /** @var \Neomerx\Core\Models\OrderHistory $orderHistory */
-            $orderHistory = App::make(OrderHistory::BIND_NAME);
+            $orderHistory = App::make(OrderHistory::class);
             $orderHistory->{OrderHistory::FIELD_ID_ORDER_STATUS} = $oldIdOrderStatus;
             $historySaved = (false !== $this->history()->save($orderHistory));
         }

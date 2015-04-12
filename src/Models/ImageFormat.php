@@ -14,45 +14,54 @@ use \Neomerx\Core\Commands\UpdateImagesByFormatCommand;
  * @property int        height
  * @property Collection paths
  * @property Collection images
+ *
+ * @package Neomerx\Core
  */
 class ImageFormat extends BaseModel implements SelectByCodeInterface
 {
     use DispatchesCommands;
 
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'image_formats';
 
+    /** Model field length */
     const NAME_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID     = 'id_image_format';
+    /** Model field name */
     const FIELD_CODE   = 'code';
+    /** Model field name */
     const FIELD_WIDTH  = 'width';
+    /** Model field name */
     const FIELD_HEIGHT = 'height';
+    /** Model field name */
     const FIELD_PATHS  = 'paths';
+    /** Model field name */
     const FIELD_IMAGES = 'images';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
@@ -61,21 +70,21 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -87,7 +96,7 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -105,7 +114,7 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
      */
     public function paths()
     {
-        return $this->hasMany(ImagePath::BIND_NAME, ImagePath::FIELD_ID_IMAGE_FORMAT, self::FIELD_ID);
+        return $this->hasMany(ImagePath::class, ImagePath::FIELD_ID_IMAGE_FORMAT, self::FIELD_ID);
     }
 
     /**
@@ -121,7 +130,7 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * Generates image paths for new format.
      */
@@ -139,7 +148,7 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * Regenerates all image paths with new format parameters.
      */
@@ -157,7 +166,7 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * Delete all image paths for the format.
      */

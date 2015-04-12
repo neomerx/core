@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\CharacteristicValue;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 use \Neomerx\Core\Models\CharacteristicValueProperties;
 
+/**
+ * @package Neomerx\Core
+ */
 interface ValuePropertiesRepositoryInterface extends RepositoryInterface
 {
     /**

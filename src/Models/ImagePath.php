@@ -10,52 +10,61 @@ use \Neomerx\Core\Commands\DeleteImageFilesCommand;
  * @property string      path
  * @property Image       image
  * @property ImageFormat format
+ *
+ * @package Neomerx\Core
  */
 class ImagePath extends BaseModel
 {
     use DispatchesCommands;
 
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'image_paths';
 
+    /** Model field length */
     const PATH_MAX_LENGTH = 255;
 
+    /** Model field name */
     const FIELD_ID              = 'id_image_path';
+    /** Model field name */
     const FIELD_ID_IMAGE        = Image::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_IMAGE_FORMAT = ImageFormat::FIELD_ID;
+    /** Model field name */
     const FIELD_PATH            = 'path';
+    /** Model field name */
     const FIELD_IMAGE           = 'image';
+    /** Model field name */
     const FIELD_FORMAT          = 'format';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_PATH,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_IMAGE,
@@ -63,7 +72,7 @@ class ImagePath extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -72,7 +81,7 @@ class ImagePath extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -86,7 +95,7 @@ class ImagePath extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -104,7 +113,7 @@ class ImagePath extends BaseModel
      */
     public function image()
     {
-        return $this->belongsTo(Image::BIND_NAME, self::FIELD_ID_IMAGE, Image::FIELD_ID);
+        return $this->belongsTo(Image::class, self::FIELD_ID_IMAGE, Image::FIELD_ID);
     }
 
     /**
@@ -114,11 +123,11 @@ class ImagePath extends BaseModel
      */
     public function format()
     {
-        return $this->belongsTo(ImageFormat::BIND_NAME, self::FIELD_ID_IMAGE_FORMAT, ImageFormat::FIELD_ID);
+        return $this->belongsTo(ImageFormat::class, self::FIELD_ID_IMAGE_FORMAT, ImageFormat::FIELD_ID);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * Delete all image paths for the format.
      */

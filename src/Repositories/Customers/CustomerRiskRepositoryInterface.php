@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\CustomerRisk;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface CustomerRiskRepositoryInterface extends RepositoryInterface
 {
     /**

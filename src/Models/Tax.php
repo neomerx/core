@@ -13,31 +13,51 @@ use \Symfony\Component\ExpressionLanguage\ExpressionLanguage;
  * @property string     expression_serialized
  * @property bool       is_formula
  * @property Collection rules
+ *
+ * @package Neomerx\Core
  */
 class Tax extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'taxes';
 
+    /** Model field length */
     const CODE_MAX_LENGTH = 50;
 
+    /** Expression language implementation class */
     const EXPRESSION_LANGUAGE_CLASS = ExpressionLanguage::class;
 
+    /** Allowed name in tax formulas */
     const PARAM_ADDRESS_TO     = 'address_to';
+    /** Allowed name in tax formulas */
     const PARAM_ADDRESS_FROM   = 'address_from';
+    /** Allowed name in tax formulas */
     const PARAM_CUMULATIVE_TAX = 'cumulative_tax';
+    /** Allowed name in tax formulas */
     const PARAM_CUSTOMER       = 'customer';
+    /** Allowed name in tax formulas */
     const PARAM_PRODUCT        = 'product';
+    /** Allowed name in tax formulas */
     const PARAM_QUANTITY       = 'quantity';
+    /** Allowed name in tax formulas */
     const PARAM_PRICE          = 'price';
 
+    /** Model field name */
     const FIELD_ID                    = 'id_tax';
+    /** Model field name */
     const FIELD_CODE                  = 'code';
+    /** Model field name */
     const FIELD_EXPRESSION            = 'expression';
+    /** Model field name */
     const FIELD_IS_FORMULA            = 'is_formula';
+    /** Model field name */
     const FIELD_EXPRESSION_SERIALIZED = 'expression_serialized';
+    /** Model field name */
     const FIELD_RULES                 = 'rules';
 
+    /**
+     * @var array Allowed names in tax formulas.
+     */
     private static $allowedNamesInFormula = [
         self::PARAM_ADDRESS_TO,
         self::PARAM_ADDRESS_FROM,
@@ -48,27 +68,27 @@ class Tax extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
@@ -76,7 +96,7 @@ class Tax extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
@@ -84,7 +104,7 @@ class Tax extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -92,14 +112,14 @@ class Tax extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $appends = [
         self::FIELD_IS_FORMULA,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -113,7 +133,7 @@ class Tax extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -125,7 +145,7 @@ class Tax extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {
@@ -139,7 +159,7 @@ class Tax extends BaseModel implements SelectByCodeInterface
      */
     public function rules()
     {
-        return $this->hasMany(TaxRule::BIND_NAME, TaxRule::FIELD_ID_TAX, self::FIELD_ID);
+        return $this->hasMany(TaxRule::class, TaxRule::FIELD_ID_TAX, self::FIELD_ID);
     }
 
     /**

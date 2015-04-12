@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\SupplyOrder;
 use \Neomerx\Core\Models\SupplyOrderDetails;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class SupplyOrderDetailsRepository extends IndexBasedResourceRepository implements SupplyOrderDetailsRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class SupplyOrderDetailsRepository extends IndexBasedResourceRepository implemen
      */
     public function __construct()
     {
-        parent::__construct(SupplyOrderDetails::BIND_NAME);
+        parent::__construct(SupplyOrderDetails::class);
     }
 
     /**

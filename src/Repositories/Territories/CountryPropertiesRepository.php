@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CountryProperties;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class CountryPropertiesRepository extends IndexBasedResourceRepository implements CountryPropertiesRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class CountryPropertiesRepository extends IndexBasedResourceRepository implement
      */
     public function __construct()
     {
-        parent::__construct(CountryProperties::BIND_NAME);
+        parent::__construct(CountryProperties::class);
     }
 
     /**

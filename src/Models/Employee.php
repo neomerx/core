@@ -17,53 +17,71 @@ use \Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
  * @property bool       active
  * @property string     remember_token
  * @property Collection roles
+ *
+ * @package Neomerx\Core
  */
 class Employee extends BaseModel implements AuthenticatableContract, CanResetPasswordContract
 {
     use Authenticatable, CanResetPassword;
 
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'employees';
 
+    /** Model field length */
     const FIRST_NAME_MAX_LENGTH = 50;
+    /** Model field length */
     const LAST_NAME_MAX_LENGTH  = 50;
+    /** Model field length */
     const EMAIL_MAX_LENGTH      = 100;
+    /** Model field length */
     const PASSWORD_MIN_LENGTH   = 8;
 
     /**
+     * Model field length
+     *
      * This is not max length for password. The password could be any length.
      * This is the length of the password hash stored in the database.
      */
     const PASSWORD_LENGTH       = 60;
+    /** Model field length */
     const REMEMBER_TOKEN_LENGTH = 100;
 
+    /** Input data parameter name for password confirmation */
     const PARAM_PASSWORD_CONFIRMATION = 'password_confirmation';
 
+    /** Model field name */
     const FIELD_ID             = 'id_employee';
+    /** Model field name */
     const FIELD_FIRST_NAME     = 'first_name';
+    /** Model field name */
     const FIELD_LAST_NAME      = 'last_name';
+    /** Model field name */
     const FIELD_EMAIL          = 'email';
+    /** Model field name */
     const FIELD_PASSWORD       = 'password';
+    /** Model field name */
     const FIELD_ACTIVE         = 'active';
+    /** Model field name */
     const FIELD_REMEMBER_TOKEN = 'remember_token';
+    /** Model field name */
     const FIELD_ROLES          = 'roles';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
@@ -73,7 +91,7 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
     private $roleModel;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_FIRST_NAME,
@@ -84,7 +102,7 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_PASSWORD,
@@ -92,7 +110,7 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -100,7 +118,7 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function __construct(
         array $attributes = [],
@@ -109,11 +127,11 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
         parent::__construct($attributes);
 
         /** @noinspection PhpUndefinedMethodInspection */
-        $this->roleModel = ($role !== null ?: App::make(Role::BIND_NAME));
+        $this->roleModel = ($role !== null ?: App::make(Role::class));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getInputOnCreateRules()
     {
@@ -128,7 +146,7 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -143,7 +161,7 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getInputOnUpdateRules()
     {
@@ -159,7 +177,7 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -224,7 +242,7 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
     public function roles()
     {
         return $this->belongsToMany(
-            Role::BIND_NAME,
+            Role::class,
             EmployeeRole::TABLE_NAME,
             EmployeeRole::FIELD_ID_EMPLOYEE,
             EmployeeRole::FIELD_ID_ROLE

@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Tax;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class TaxRepository extends CodeBasedResourceRepository implements TaxRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class TaxRepository extends CodeBasedResourceRepository implements TaxRepository
      */
     public function __construct()
     {
-        parent::__construct(Tax::BIND_NAME);
+        parent::__construct(Tax::class);
     }
 
     /**

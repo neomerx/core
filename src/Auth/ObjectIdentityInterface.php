@@ -2,6 +2,8 @@
 
 /**
  * Interface could be used to identify object by class, class and ID or even object properties.
+ *
+ * @package Neomerx\Core
  */
 interface ObjectIdentityInterface
 {

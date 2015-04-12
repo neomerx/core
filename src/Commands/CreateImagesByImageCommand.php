@@ -8,6 +8,9 @@ use \Neomerx\Core\Repositories\Images\ImageRepositoryInterface;
 use \Neomerx\Core\Repositories\Images\ImagePathRepositoryInterface;
 use \Neomerx\Core\Repositories\Images\ImageFormatRepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 class CreateImagesByImageCommand extends Command implements SelfHandling
 {
     /**

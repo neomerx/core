@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Invoice;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface InvoiceRepositoryInterface extends RepositoryInterface
 {
     /**

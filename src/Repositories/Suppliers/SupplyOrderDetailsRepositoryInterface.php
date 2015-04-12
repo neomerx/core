@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\SupplyOrder;
 use \Neomerx\Core\Models\SupplyOrderDetails;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface SupplyOrderDetailsRepositoryInterface extends RepositoryInterface
 {
     /**

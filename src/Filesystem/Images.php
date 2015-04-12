@@ -9,6 +9,9 @@ use \Intervention\Image\Image as InterventionImage;
 use \Neomerx\Core\Exceptions\AccessDeniedFileException;
 use \Intervention\Image\Facades\Image as InterventionImageFacade;
 
+/**
+ * @package Neomerx\Core
+ */
 class Images implements ImagesInterface
 {
     /**

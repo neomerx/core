@@ -7,57 +7,66 @@
  * @property string   alt
  * @property Image    image
  * @property Language language
+ *
+ * @package Neomerx\Core
  */
 class ImageProperties extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'image_properties';
 
+    /** Model field length */
     const ALT_MAX_LENGTH = 100;
 
+    /** Model field name */
     const FIELD_ID          = 'id_image_property';
+    /** Model field name */
     const FIELD_ID_IMAGE    = Image::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_LANGUAGE = Language::FIELD_ID;
+    /** Model field name */
     const FIELD_ALT         = 'alt';
+    /** Model field name */
     const FIELD_IMAGE       = 'image';
+    /** Model field name */
     const FIELD_LANGUAGE    = 'language';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_ALT,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_LANGUAGE,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -66,7 +75,7 @@ class ImageProperties extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -78,7 +87,7 @@ class ImageProperties extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -96,7 +105,7 @@ class ImageProperties extends BaseModel
      */
     public function image()
     {
-        return $this->belongsTo(Image::BIND_NAME, self::FIELD_ID_IMAGE, Image::FIELD_ID);
+        return $this->belongsTo(Image::class, self::FIELD_ID_IMAGE, Image::FIELD_ID);
     }
 
     /**
@@ -106,6 +115,6 @@ class ImageProperties extends BaseModel
      */
     public function language()
     {
-        return $this->belongsTo(Language::BIND_NAME, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
+        return $this->belongsTo(Language::class, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
     }
 }

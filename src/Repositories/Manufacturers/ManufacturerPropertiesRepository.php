@@ -6,6 +6,9 @@ use \Neomerx\Core\Models\ManufacturerProperties;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 use \Neomerx\Core\Repositories\Manufacturers\ManufacturerPropertiesRepositoryInterface as PropertiesRepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 class ManufacturerPropertiesRepository extends IndexBasedResourceRepository implements PropertiesRepositoryInterface
 {
     /**
@@ -13,7 +16,7 @@ class ManufacturerPropertiesRepository extends IndexBasedResourceRepository impl
      */
     public function __construct()
     {
-        parent::__construct(ManufacturerProperties::BIND_NAME);
+        parent::__construct(ManufacturerProperties::class);
     }
 
     /**

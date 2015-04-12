@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\OrderStatus;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface OrderStatusRepositoryInterface extends RepositoryInterface
 {
     /**

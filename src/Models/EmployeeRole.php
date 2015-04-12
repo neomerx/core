@@ -6,47 +6,54 @@
  * @property int      id_role
  * @property Employee employee
  * @property Role     role
+ *
+ * @package Neomerx\Core
  */
 class EmployeeRole extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'employees_roles';
 
+    /** Model field name */
     const FIELD_ID          = 'id_employee_role';
+    /** Model field name */
     const FIELD_ID_EMPLOYEE = Employee::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_ROLE     = Role::FIELD_ID;
+    /** Model field name */
     const FIELD_EMPLOYEE    = 'employee';
+    /** Model field name */
     const FIELD_ROLE        = 'role';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         '', // fillable must have at least 1 element otherwise it's ignored completely by Laravel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_EMPLOYEE,
@@ -54,7 +61,7 @@ class EmployeeRole extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -63,7 +70,7 @@ class EmployeeRole extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -74,7 +81,7 @@ class EmployeeRole extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -107,7 +114,7 @@ class EmployeeRole extends BaseModel
      */
     public function employee()
     {
-        return $this->belongsTo(Employee::BIND_NAME, self::FIELD_ID_EMPLOYEE, Employee::FIELD_ID);
+        return $this->belongsTo(Employee::class, self::FIELD_ID_EMPLOYEE, Employee::FIELD_ID);
     }
 
     /**
@@ -117,6 +124,6 @@ class EmployeeRole extends BaseModel
      */
     public function role()
     {
-        return $this->belongsTo(Role::BIND_NAME, self::FIELD_ID_ROLE, Role::FIELD_ID);
+        return $this->belongsTo(Role::class, self::FIELD_ID_ROLE, Role::FIELD_ID);
     }
 }

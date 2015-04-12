@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Category;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface CategoryRepositoryInterface extends RepositoryInterface
 {
     /**

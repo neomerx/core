@@ -11,58 +11,68 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property-read Carbon     updated_at
  * @property      Address    address
  * @property      Collection properties
+ *
+ * @package Neomerx\Core
  */
 class Supplier extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'suppliers';
 
+    /** Model field length */
     const CODE_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID         = 'id_supplier';
+    /** Model field name */
     const FIELD_ID_ADDRESS = 'id_address';
+    /** Model field name */
     const FIELD_CODE       = 'code';
+    /** Model field name */
     const FIELD_CREATED_AT = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT = 'updated_at';
+    /** Model field name */
     const FIELD_ADDRESS    = 'address';
+    /** Model field name */
     const FIELD_PROPERTIES = 'properties';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -70,7 +80,7 @@ class Supplier extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -83,7 +93,7 @@ class Supplier extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -116,7 +126,7 @@ class Supplier extends BaseModel implements SelectByCodeInterface
      */
     public function address()
     {
-        return $this->belongsTo(Address::BIND_NAME, self::FIELD_ID_ADDRESS, Address::FIELD_ID);
+        return $this->belongsTo(Address::class, self::FIELD_ID_ADDRESS, Address::FIELD_ID);
     }
 
     /**
@@ -126,11 +136,11 @@ class Supplier extends BaseModel implements SelectByCodeInterface
      */
     public function properties()
     {
-        return $this->hasMany(SupplierProperties::BIND_NAME, SupplierProperties::FIELD_ID_SUPPLIER, self::FIELD_ID);
+        return $this->hasMany(SupplierProperties::class, SupplierProperties::FIELD_ID_SUPPLIER, self::FIELD_ID);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {

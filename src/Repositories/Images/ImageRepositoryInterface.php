@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface ImageRepositoryInterface extends RepositoryInterface
 {
     /**

@@ -10,48 +10,61 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property Address    address
  * @property Collection orders
  * @property Collection warehouses
+ *
+ * @package Neomerx\Core
  */
 class Store extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'stores';
 
+    /** Model field length */
     const CODE_MAX_LENGTH = 50;
+    /** Model field length */
     const NAME_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID         = 'id_store';
+    /** Model field name */
     const FIELD_ID_ADDRESS = Address::FIELD_ID;
+    /** Model field name */
     const FIELD_CODE       = 'code';
+    /** Model field name */
     const FIELD_NAME       = 'name';
+    /** Model field name */
     const FIELD_ADDRESS    = 'address';
+    /** Model field name */
     const FIELD_ORDERS     = 'orders';
+    /** Model field name */
     const FIELD_WAREHOUSES = 'warehouses';
 
+    /** Default store Id */
     const DEFAULT_ID   = 1;
+    /** Default store code */
     const DEFAULT_CODE = 'DEFAULT';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
@@ -59,14 +72,14 @@ class Store extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -74,7 +87,7 @@ class Store extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -88,7 +101,7 @@ class Store extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -126,7 +139,7 @@ class Store extends BaseModel implements SelectByCodeInterface
      */
     public function address()
     {
-        return $this->belongsTo(Address::BIND_NAME, self::FIELD_ID_ADDRESS, Address::FIELD_ID);
+        return $this->belongsTo(Address::class, self::FIELD_ID_ADDRESS, Address::FIELD_ID);
     }
 
     /**
@@ -137,7 +150,7 @@ class Store extends BaseModel implements SelectByCodeInterface
     public function warehouses()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        return $this->hasMany(Warehouse::BIND_NAME, Warehouse::FIELD_ID_STORE, self::FIELD_ID);
+        return $this->hasMany(Warehouse::class, Warehouse::FIELD_ID_STORE, self::FIELD_ID);
     }
 
     /**
@@ -148,11 +161,11 @@ class Store extends BaseModel implements SelectByCodeInterface
     public function orders()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        return $this->hasMany(Order::BIND_NAME, Order::FIELD_ID_STORE, self::FIELD_ID);
+        return $this->hasMany(Order::class, Order::FIELD_ID_STORE, self::FIELD_ID);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {

@@ -8,6 +8,9 @@ use \Neomerx\Core\Models\BaseModel;
 use \Neomerx\Core\Models\CarrierTerritory;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class CarrierTerritoryRepository extends IndexBasedResourceRepository implements CarrierTerritoryRepositoryInterface
 {
     /**
@@ -15,7 +18,7 @@ class CarrierTerritoryRepository extends IndexBasedResourceRepository implements
      */
     public function __construct()
     {
-        parent::__construct(CarrierTerritory::BIND_NAME);
+        parent::__construct(CarrierTerritory::class);
     }
 
     /**
@@ -99,6 +102,10 @@ class CarrierTerritoryRepository extends IndexBasedResourceRepository implements
         $this->fillModel($resource, [CarrierTerritory::FIELD_ID_CARRIER => $carrier]);
     }
 
+    /**
+     * @param CarrierTerritory $resource
+     * @param string           $type
+     */
     private function fillTerritory(CarrierTerritory $resource, $type)
     {
         if ($resource->exists === true) {

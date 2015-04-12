@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Measurement;
 use \Neomerx\Core\Models\MeasurementProperties;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface MeasurementPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**

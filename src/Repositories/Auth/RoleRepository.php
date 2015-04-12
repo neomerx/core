@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Role;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class RoleRepository extends CodeBasedResourceRepository implements RoleRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class RoleRepository extends CodeBasedResourceRepository implements RoleReposito
      */
     public function __construct()
     {
-        parent::__construct(Role::BIND_NAME);
+        parent::__construct(Role::class);
     }
 
     /**

@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Category;
 use \Neomerx\Core\Models\ProductCategory;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ProductCategoryRepository extends IndexBasedResourceRepository implements ProductCategoryRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class ProductCategoryRepository extends IndexBasedResourceRepository implements 
      */
     public function __construct()
     {
-        parent::__construct(ProductCategory::BIND_NAME);
+        parent::__construct(ProductCategory::class);
     }
 
     /**

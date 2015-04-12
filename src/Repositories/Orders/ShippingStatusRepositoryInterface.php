@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\ShippingOrderStatus;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface ShippingStatusRepositoryInterface extends RepositoryInterface
 {
     /**

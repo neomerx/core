@@ -3,6 +3,9 @@
 use \Illuminate\Validation\Validator;
 use \Neomerx\Core\Support\Translate as T;
 
+/**
+ * @package Neomerx\Core
+ */
 class ValidationException extends LogicException
 {
     /**
@@ -14,7 +17,7 @@ class ValidationException extends LogicException
      * Constructor.
      *
      * @param Validator|null $validator
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function __construct(Validator $validator = null, $message = '', $code = 0, \Exception $previous = null)
     {

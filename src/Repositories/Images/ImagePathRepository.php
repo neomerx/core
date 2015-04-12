@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\ImagePath;
 use \Neomerx\Core\Models\ImageFormat;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ImagePathRepository extends IndexBasedResourceRepository implements ImagePathRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class ImagePathRepository extends IndexBasedResourceRepository implements ImageP
      */
     public function __construct()
     {
-        parent::__construct(ImagePath::BIND_NAME);
+        parent::__construct(ImagePath::class);
     }
 
     /**

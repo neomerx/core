@@ -7,42 +7,50 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property string     name
  * @property string     code
  * @property Collection shippingOrders
+ *
+ * @package Neomerx\Core
  */
 class ShippingOrderStatus extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'shipping_order_statuses';
 
+    /** Model field length */
     const NAME_MAX_LENGTH = 50;
+    /** Model field length */
     const CODE_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID              = 'id_shipping_order_status';
+    /** Model field name */
     const FIELD_CODE            = 'code';
+    /** Model field name */
     const FIELD_NAME            = 'name';
+    /** Model field name */
     const FIELD_SHIPPING_ORDERS = 'shippingOrders';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
@@ -50,21 +58,21 @@ class ShippingOrderStatus extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -77,7 +85,7 @@ class ShippingOrderStatus extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -94,11 +102,11 @@ class ShippingOrderStatus extends BaseModel implements SelectByCodeInterface
      */
     public function shippingOrders()
     {
-        return $this->hasMany(ShippingOrder::BIND_NAME, ShippingOrder::FIELD_ID_SHIPPING_ORDER_STATUS, self::FIELD_ID);
+        return $this->hasMany(ShippingOrder::class, ShippingOrder::FIELD_ID_SHIPPING_ORDER_STATUS, self::FIELD_ID);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {

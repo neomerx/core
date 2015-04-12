@@ -2,6 +2,9 @@
 
 use \Neomerx\Core\Support\Translate as T;
 
+/**
+ * @package Neomerx\Core
+ */
 class InvalidArgumentException extends LogicException
 {
     /**
@@ -11,7 +14,7 @@ class InvalidArgumentException extends LogicException
 
     /**
      * @var string $name
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function __construct($name, $message = '', $code = 0, \Exception $previous = null)
     {

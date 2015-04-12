@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CurrencyProperties;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class CurrencyPropertiesRepository extends IndexBasedResourceRepository implements CurrencyPropertiesRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class CurrencyPropertiesRepository extends IndexBasedResourceRepository implemen
      */
     public function __construct()
     {
-        parent::__construct(CurrencyProperties::BIND_NAME);
+        parent::__construct(CurrencyProperties::class);
     }
 
     /**

@@ -7,6 +7,8 @@ use \Illuminate\Http\Response;
 /**
  * This middleware could be used as a first defense line from CSRF attacks because AJAX header cannot
  * be added to the cross domain request without the consent of the server via CORS.
+ *
+ * @package Neomerx\Core
  */
 class RequireAjaxRequestMiddleware
 {

@@ -7,14 +7,21 @@ use \Neomerx\Core\Auth\Permissions\CreatePermission;
 use \Neomerx\Core\Auth\Permissions\RestorePermission;
 
 /**
+ * @package Neomerx\Core
+ *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 abstract class Permission
 {
+    /** Permission code */
     const VIEW     = 1;
+    /** Permission code */
     const CREATE   = 2;
+    /** Permission code */
     const EDIT     = 4;
+    /** Permission code */
     const DELETE   = 8;
+    /** Permission code */
     const RESTORE  = 16;
 
     /**

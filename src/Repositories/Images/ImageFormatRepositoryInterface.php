@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\ImageFormat;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface ImageFormatRepositoryInterface extends RepositoryInterface
 {
     /**

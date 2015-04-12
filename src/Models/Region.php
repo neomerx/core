@@ -10,45 +10,56 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property int        position
  * @property Country    country
  * @property Collection addresses
+ *
+ * @package Neomerx\Core
  */
 class Region extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'regions';
 
+    /** Model field length */
     const CODE_MAX_LENGTH = 50;
+    /** Model field length */
     const NAME_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID         = 'id_region';
+    /** Model field name */
     const FIELD_ID_COUNTRY = Country::FIELD_ID;
+    /** Model field name */
     const FIELD_CODE       = 'code';
+    /** Model field name */
     const FIELD_NAME       = 'name';
+    /** Model field name */
     const FIELD_POSITION   = 'position';
+    /** Model field name */
     const FIELD_COUNTRY    = 'country';
+    /** Model field name */
     const FIELD_ADDRESSES  = 'addresses';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
@@ -57,7 +68,7 @@ class Region extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
@@ -65,7 +76,7 @@ class Region extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -73,7 +84,7 @@ class Region extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -89,7 +100,7 @@ class Region extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -118,7 +129,7 @@ class Region extends BaseModel implements SelectByCodeInterface
      */
     public function country()
     {
-        return $this->belongsTo(Country::BIND_NAME, self::FIELD_ID_COUNTRY, Country::FIELD_ID);
+        return $this->belongsTo(Country::class, self::FIELD_ID_COUNTRY, Country::FIELD_ID);
     }
 
     /**
@@ -128,11 +139,11 @@ class Region extends BaseModel implements SelectByCodeInterface
      */
     public function addresses()
     {
-        return $this->hasMany(Address::BIND_NAME, Address::FIELD_ID_REGION, self::FIELD_ID);
+        return $this->hasMany(Address::class, Address::FIELD_ID_REGION, self::FIELD_ID);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {

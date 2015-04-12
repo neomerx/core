@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Carrier;
 use \Neomerx\Core\Models\CarrierPostcode;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface CarrierPostcodeRepositoryInterface extends RepositoryInterface
 {
     /**

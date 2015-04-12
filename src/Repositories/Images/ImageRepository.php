@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ImageRepository extends IndexBasedResourceRepository implements ImageRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class ImageRepository extends IndexBasedResourceRepository implements ImageRepos
      */
     public function __construct()
     {
-        parent::__construct(Image::BIND_NAME);
+        parent::__construct(Image::class);
     }
 
     /**

@@ -1,7 +1,9 @@
-<?php namespace Neomerx\Core\Models;
+<?php namespace Neomerx\Core\Models\Traits;
 
+use \Neomerx\Core\Models\BaseModel;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Database\Eloquent\Model;
+use \Neomerx\Core\Models\BaseModelInterface;
 use \Illuminate\Database\Eloquent\Relations\HasOne;
 use \Illuminate\Database\Eloquent\Relations\HasMany;
 use \Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -12,6 +14,9 @@ use \Illuminate\Database\Eloquent\Relations\MorphToMany;
 use \Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use \Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
+/**
+ * @package Neomerx\Core
+ */
 trait RelationsTrait
 {
     /**
@@ -19,6 +24,9 @@ trait RelationsTrait
      */
     private $baseModelRT;
 
+    /**
+     * @param BaseModelInterface $baseModel
+     */
     public function initRelationsTrait(BaseModelInterface $baseModel)
     {
         $this->baseModelRT = $baseModel;

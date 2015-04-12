@@ -7,6 +7,9 @@ use \Neomerx\Core\Models\Warehouse;
 use \Neomerx\Core\Models\SupplyOrder;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class SupplyOrderRepository extends IndexBasedResourceRepository implements SupplyOrderRepositoryInterface
 {
     /**
@@ -14,7 +17,7 @@ class SupplyOrderRepository extends IndexBasedResourceRepository implements Supp
      */
     public function __construct()
     {
-        parent::__construct(SupplyOrder::BIND_NAME);
+        parent::__construct(SupplyOrder::class);
     }
 
     /**

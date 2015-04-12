@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Manufacturer;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ManufacturerRepository extends CodeBasedResourceRepository implements ManufacturerRepositoryInterface
 {
     /**
@@ -11,7 +14,7 @@ class ManufacturerRepository extends CodeBasedResourceRepository implements Manu
      */
     public function __construct()
     {
-        parent::__construct(Manufacturer::BIND_NAME);
+        parent::__construct(Manufacturer::class);
     }
 
     /**

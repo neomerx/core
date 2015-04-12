@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Warehouse;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class WarehouseRepository extends CodeBasedResourceRepository implements WarehouseRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class WarehouseRepository extends CodeBasedResourceRepository implements Warehou
      */
     public function __construct()
     {
-        parent::__construct(Warehouse::BIND_NAME);
+        parent::__construct(Warehouse::class);
     }
 
     /**

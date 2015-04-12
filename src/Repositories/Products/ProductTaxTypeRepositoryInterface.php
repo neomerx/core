@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\ProductTaxType;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface ProductTaxTypeRepositoryInterface extends RepositoryInterface
 {
     /**

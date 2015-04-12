@@ -10,6 +10,8 @@ use \Neomerx\Core\Auth\PermissionManagerInterface;
  *
  * @method static bool has(ObjectIdentityInterface $object, Permission $permission)
  * @method static void check(ObjectIdentityInterface $object, Permission $permission)
+ *
+ * @package Neomerx\Core
  */
 class Permissions extends Facade
 {

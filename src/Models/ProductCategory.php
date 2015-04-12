@@ -7,48 +7,56 @@
  * @property int      position
  * @property Product  product
  * @property Category category
+ *
+ * @package Neomerx\Core
  */
 class ProductCategory extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'categories_products';
 
+    /** Model field name */
     const FIELD_ID          = 'id_category_product';
+    /** Model field name */
     const FIELD_ID_PRODUCT  = Product::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_CATEGORY = Category::FIELD_ID;
+    /** Model field name */
     const FIELD_POSITION    = 'position';
+    /** Model field name */
     const FIELD_PRODUCT     = 'product';
+    /** Model field name */
     const FIELD_CATEGORY    = 'category';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_POSITION,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_PRODUCT,
@@ -56,7 +64,7 @@ class ProductCategory extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -65,7 +73,7 @@ class ProductCategory extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -77,7 +85,7 @@ class ProductCategory extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -111,7 +119,7 @@ class ProductCategory extends BaseModel
      */
     public function product()
     {
-        return $this->belongsTo(Product::BIND_NAME, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
+        return $this->belongsTo(Product::class, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
     }
 
     /**
@@ -121,7 +129,7 @@ class ProductCategory extends BaseModel
      */
     public function category()
     {
-        return $this->belongsTo(Category::BIND_NAME, self::FIELD_ID_CATEGORY, Category::FIELD_ID);
+        return $this->belongsTo(Category::class, self::FIELD_ID_CATEGORY, Category::FIELD_ID);
     }
 
     /**

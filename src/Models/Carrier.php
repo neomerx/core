@@ -24,55 +24,76 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property Collection postcodes
  * @property Collection territories
  * @property Collection shippingOrders
+ *
+ * @package Neomerx\Core
  */
 class Carrier extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'carriers';
 
+    /** Model field length */
     const CODE_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID              = 'id_carrier';
+    /** Model field name */
     const FIELD_CODE            = 'code';
+    /** Model field name */
     const FIELD_MIN_WEIGHT      = 'min_weight';
+    /** Model field name */
     const FIELD_MAX_WEIGHT      = 'max_weight';
+    /** Model field name */
     const FIELD_MIN_COST        = 'min_cost';
+    /** Model field name */
     const FIELD_MAX_COST        = 'max_cost';
+    /** Model field name */
     const FIELD_MIN_DIMENSION   = 'min_dimension';
+    /** Model field name */
     const FIELD_MAX_DIMENSION   = 'max_dimension';
+    /** Model field name */
     const FIELD_IS_TAXABLE      = 'is_taxable';
+    /** Model field name */
     const FIELD_SETTINGS        = 'settings';
+    /** Model field name */
     const FIELD_DATA            = 'data';
+    /** Model field name */
     const FIELD_CACHE           = 'cache';
+    /** Model field name */
     const FIELD_CALCULATOR_CODE = 'calculator_code';
+    /** Model field name */
     const FIELD_ORDERS          = 'orders';
+    /** Model field name */
     const FIELD_PROPERTIES      = 'properties';
+    /** Model field name */
     const FIELD_REGIONS         = 'regions';
+    /** Model field name */
     const FIELD_CUSTOMER_TYPES  = 'customerTypes';
+    /** Model field name */
     const FIELD_SHIPPING_ORDERS = 'shippingOrders';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
@@ -89,7 +110,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
@@ -97,7 +118,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -105,7 +126,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -128,7 +149,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -185,7 +206,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
      */
     public function shippingOrders()
     {
-        return $this->hasMany(ShippingOrder::BIND_NAME, ShippingOrder::FIELD_ID_CARRIER, self::FIELD_ID);
+        return $this->hasMany(ShippingOrder::class, ShippingOrder::FIELD_ID_CARRIER, self::FIELD_ID);
     }
 
     /**
@@ -196,7 +217,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     public function properties()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        return $this->hasMany(CarrierProperties::BIND_NAME, CarrierProperties::FIELD_ID_CARRIER, self::FIELD_ID);
+        return $this->hasMany(CarrierProperties::class, CarrierProperties::FIELD_ID_CARRIER, self::FIELD_ID);
     }
 
     /**
@@ -206,7 +227,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
      */
     public function customerTypes()
     {
-        return $this->hasMany(CarrierCustomerType::BIND_NAME, CarrierCustomerType::FIELD_ID_CARRIER, self::FIELD_ID);
+        return $this->hasMany(CarrierCustomerType::class, CarrierCustomerType::FIELD_ID_CARRIER, self::FIELD_ID);
     }
 
     /**
@@ -216,7 +237,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
      */
     public function postcodes()
     {
-        return $this->hasMany(CarrierPostcode::BIND_NAME, CarrierPostcode::FIELD_ID_CARRIER, self::FIELD_ID);
+        return $this->hasMany(CarrierPostcode::class, CarrierPostcode::FIELD_ID_CARRIER, self::FIELD_ID);
     }
 
     /**
@@ -226,11 +247,11 @@ class Carrier extends BaseModel implements SelectByCodeInterface
      */
     public function territories()
     {
-        return $this->hasMany(CarrierTerritory::BIND_NAME, CarrierTerritory::FIELD_ID_CARRIER, self::FIELD_ID);
+        return $this->hasMany(CarrierTerritory::class, CarrierTerritory::FIELD_ID_CARRIER, self::FIELD_ID);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {

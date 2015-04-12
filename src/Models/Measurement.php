@@ -10,64 +10,73 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property-read Carbon     updated_at
  * @property      Collection characteristics
  * @property      Collection properties
+ *
+ * @package Neomerx\Core
  */
 class Measurement extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'measurements';
 
+    /** Model field length */
     const CODE_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID              = 'id_measurement';
+    /** Model field name */
     const FIELD_CODE            = 'code';
+    /** Model field name */
     const FIELD_CREATED_AT      = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT      = 'updated_at';
+    /** Model field name */
     const FIELD_CHARACTERISTICS = 'characteristics';
+    /** Model field name */
     const FIELD_PROPERTIES      = 'properties';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -78,7 +87,7 @@ class Measurement extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -104,7 +113,7 @@ class Measurement extends BaseModel implements SelectByCodeInterface
      */
     public function characteristics()
     {
-        return $this->hasMany(Characteristic::BIND_NAME, Characteristic::FIELD_ID_MEASUREMENT, self::FIELD_ID);
+        return $this->hasMany(Characteristic::class, Characteristic::FIELD_ID_MEASUREMENT, self::FIELD_ID);
     }
 
     /**
@@ -116,14 +125,14 @@ class Measurement extends BaseModel implements SelectByCodeInterface
     {
         /** @noinspection PhpUndefinedMethodInspection */
         return $this->hasMany(
-            MeasurementProperties::BIND_NAME,
+            MeasurementProperties::class,
             MeasurementProperties::FIELD_ID_MEASUREMENT,
             self::FIELD_ID
         );
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {

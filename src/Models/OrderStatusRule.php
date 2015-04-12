@@ -6,47 +6,54 @@
  * @property int         id_order_status_to
  * @property OrderStatus canChangeFrom
  * @property OrderStatus canChangeTo
+ *
+ * @package Neomerx\Core
  */
 class OrderStatusRule extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'order_status_rules';
 
+    /** Model field name */
     const FIELD_ID                   = 'id_order_status_rule';
+    /** Model field name */
     const FIELD_ID_ORDER_STATUS_FROM = 'id_order_status_from';
+    /** Model field name */
     const FIELD_ID_ORDER_STATUS_TO   = 'id_order_status_to';
+    /** Model field name */
     const FIELD_CAN_CHANGE_FROM      = 'canChangeFrom';
+    /** Model field name */
     const FIELD_CAN_CHANGE_TO        = 'canChangeTo';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         '', // fillable must have at least 1 element otherwise it's ignored completely by Laravel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_ORDER_STATUS_FROM,
@@ -54,7 +61,7 @@ class OrderStatusRule extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -63,7 +70,7 @@ class OrderStatusRule extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -77,7 +84,7 @@ class OrderStatusRule extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -97,7 +104,7 @@ class OrderStatusRule extends BaseModel
      */
     public function canChangeFrom()
     {
-        return $this->belongsTo(OrderStatus::BIND_NAME, self::FIELD_ID_ORDER_STATUS_FROM, OrderStatus::FIELD_ID);
+        return $this->belongsTo(OrderStatus::class, self::FIELD_ID_ORDER_STATUS_FROM, OrderStatus::FIELD_ID);
     }
 
     /**
@@ -107,6 +114,6 @@ class OrderStatusRule extends BaseModel
      */
     public function canChangeTo()
     {
-        return $this->belongsTo(OrderStatus::BIND_NAME, self::FIELD_ID_ORDER_STATUS_TO, OrderStatus::FIELD_ID);
+        return $this->belongsTo(OrderStatus::class, self::FIELD_ID_ORDER_STATUS_TO, OrderStatus::FIELD_ID);
     }
 }

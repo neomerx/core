@@ -6,6 +6,9 @@ use \Neomerx\Core\Models\Customer;
 use \Neomerx\Core\Models\CustomerAddress;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class CustomerAddressRepository extends IndexBasedResourceRepository implements CustomerAddressRepositoryInterface
 {
     /**
@@ -13,7 +16,7 @@ class CustomerAddressRepository extends IndexBasedResourceRepository implements 
      */
     public function __construct()
     {
-        parent::__construct(CustomerAddress::BIND_NAME);
+        parent::__construct(CustomerAddress::class);
     }
 
     /**

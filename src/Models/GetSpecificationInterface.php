@@ -1,5 +1,8 @@
 <?php namespace Neomerx\Core\Models;
 
+/**
+ * @package Neomerx\Core
+ */
 interface GetSpecificationInterface
 {
     /**

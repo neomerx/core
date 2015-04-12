@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\OrderStatus;
 use \Neomerx\Core\Models\OrderHistory;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface OrderHistoryRepositoryInterface extends RepositoryInterface
 {
     /**

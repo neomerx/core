@@ -3,6 +3,9 @@
 use \Neomerx\Core\Auth\Permission;
 use \Neomerx\Core\Support\Translate as T;
 
+/**
+ * @package Neomerx\Core
+ */
 class AccessDeniedException extends Exception
 {
     /**
@@ -11,7 +14,7 @@ class AccessDeniedException extends Exception
     private $permission;
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function __construct(Permission $permission, $message = '', $code = 0, \Exception $previous = null)
     {

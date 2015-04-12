@@ -7,43 +7,52 @@
  * @property int     postcode_to
  * @property string  postcode_mask
  * @property Carrier carrier
+ *
+ * @package Neomerx\Core
  */
 class CarrierPostcode extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'carrier_postcodes';
 
+    /** Model field length */
     const POSTCODE_MASK_MAX_LENGTH = 255;
 
+    /** Model field name */
     const FIELD_ID            = 'id_carrier_postcode';
+    /** Model field name */
     const FIELD_ID_CARRIER    = Carrier::FIELD_ID;
+    /** Model field name */
     const FIELD_POSTCODE_FROM = 'postcode_from';
+    /** Model field name */
     const FIELD_POSTCODE_TO   = 'postcode_to';
+    /** Model field name */
     const FIELD_POSTCODE_MASK = 'postcode_mask';
+    /** Model field name */
     const FIELD_CARRIER       = 'carrier';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_POSTCODE_TO,
@@ -52,14 +61,14 @@ class CarrierPostcode extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_CARRIER,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -67,7 +76,7 @@ class CarrierPostcode extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -80,7 +89,7 @@ class CarrierPostcode extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -107,6 +116,6 @@ class CarrierPostcode extends BaseModel
      */
     public function carrier()
     {
-        return $this->belongsTo(Carrier::BIND_NAME, self::FIELD_ID_CARRIER, Carrier::FIELD_ID);
+        return $this->belongsTo(Carrier::class, self::FIELD_ID_CARRIER, Carrier::FIELD_ID);
     }
 }

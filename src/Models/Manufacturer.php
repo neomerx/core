@@ -12,59 +12,70 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      Address    address
  * @property      Collection products
  * @property      Collection properties
+ *
+ * @package Neomerx\Core
  */
 class Manufacturer extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'manufacturers';
 
+    /** Model field length */
     const CODE_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID         = 'id_manufacturer';
+    /** Model field name */
     const FIELD_ID_ADDRESS = Address::FIELD_ID;
+    /** Model field name */
     const FIELD_CODE       = 'code';
+    /** Model field name */
     const FIELD_CREATED_AT = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT = 'updated_at';
+    /** Model field name */
     const FIELD_ADDRESS    = 'address';
+    /** Model field name */
     const FIELD_PRODUCTS   = 'products';
+    /** Model field name */
     const FIELD_PROPERTIES = 'properties';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -72,7 +83,7 @@ class Manufacturer extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -85,7 +96,7 @@ class Manufacturer extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -119,7 +130,7 @@ class Manufacturer extends BaseModel implements SelectByCodeInterface
      */
     public function address()
     {
-        return $this->belongsTo(Address::BIND_NAME, self::FIELD_ID_ADDRESS, Address::FIELD_ID);
+        return $this->belongsTo(Address::class, self::FIELD_ID_ADDRESS, Address::FIELD_ID);
     }
 
     /**
@@ -129,7 +140,7 @@ class Manufacturer extends BaseModel implements SelectByCodeInterface
      */
     public function products()
     {
-        return $this->hasMany(Product::BIND_NAME, Product::FIELD_ID_MANUFACTURER, self::FIELD_ID);
+        return $this->hasMany(Product::class, Product::FIELD_ID_MANUFACTURER, self::FIELD_ID);
     }
 
     /**
@@ -140,14 +151,14 @@ class Manufacturer extends BaseModel implements SelectByCodeInterface
     public function properties()
     {
         return $this->hasMany(
-            ManufacturerProperties::BIND_NAME,
+            ManufacturerProperties::class,
             ManufacturerProperties::FIELD_ID_MANUFACTURER,
             self::FIELD_ID
         );
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {

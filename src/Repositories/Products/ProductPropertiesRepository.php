@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\ProductProperties;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ProductPropertiesRepository extends IndexBasedResourceRepository implements ProductPropertiesRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class ProductPropertiesRepository extends IndexBasedResourceRepository implement
      */
     public function __construct()
     {
-        parent::__construct(ProductProperties::BIND_NAME);
+        parent::__construct(ProductProperties::class);
     }
 
     /**

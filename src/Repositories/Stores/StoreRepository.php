@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Store;
 use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class StoreRepository extends CodeBasedResourceRepository implements StoreRepositoryInterface
 {
     /**
@@ -11,7 +14,7 @@ class StoreRepository extends CodeBasedResourceRepository implements StoreReposi
      */
     public function __construct()
     {
-        parent::__construct(Store::BIND_NAME);
+        parent::__construct(Store::class);
     }
 
     /**

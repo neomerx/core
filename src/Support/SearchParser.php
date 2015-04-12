@@ -2,6 +2,9 @@
 
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
+/**
+ * @package Neomerx\Core
+ */
 class SearchParser
 {
     /**
@@ -14,6 +17,9 @@ class SearchParser
      */
     const ALLOWED_OPERATIONS_ALL = '*';
 
+    /**
+     * @var array Allowed operators.
+     */
     private $operationsMap = [
         'eq'      => 'Equals',
         'equals'  => 'Equals',

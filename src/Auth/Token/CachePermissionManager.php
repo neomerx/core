@@ -14,6 +14,8 @@ use \Neomerx\Core\Repositories\Auth\RoleObjectTypeRepositoryInterface;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ *
+ * @package Neomerx\Core
  */
 class CachePermissionManager implements RolePermissionManagerInterface
 {
@@ -66,7 +68,7 @@ class CachePermissionManager implements RolePermissionManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      */
@@ -97,7 +99,7 @@ class CachePermissionManager implements RolePermissionManagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function check(ObjectIdentityInterface $object, Permission $permission)
     {

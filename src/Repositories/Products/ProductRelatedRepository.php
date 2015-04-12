@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\ProductRelated;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ProductRelatedRepository extends IndexBasedResourceRepository implements ProductRelatedRepositoryInterface
 {
     /**
@@ -11,7 +14,7 @@ class ProductRelatedRepository extends IndexBasedResourceRepository implements P
      */
     public function __construct()
     {
-        parent::__construct(ProductRelated::BIND_NAME);
+        parent::__construct(ProductRelated::class);
     }
 
     /**

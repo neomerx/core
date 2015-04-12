@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\TaxRule;
 use \Neomerx\Core\Models\TaxRulePostcode;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class TaxRulePostcodeRepository extends IndexBasedResourceRepository implements TaxRulePostcodeRepositoryInterface
 {
     /**
@@ -11,7 +14,7 @@ class TaxRulePostcodeRepository extends IndexBasedResourceRepository implements 
      */
     public function __construct()
     {
-        parent::__construct(TaxRulePostcode::BIND_NAME);
+        parent::__construct(TaxRulePostcode::class);
     }
 
     /**

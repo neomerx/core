@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Characteristic;
 use \Neomerx\Core\Models\CharacteristicValue;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ValueRepository extends CodeBasedResourceRepository implements ValueRepositoryInterface
 {
     /**
@@ -11,7 +14,7 @@ class ValueRepository extends CodeBasedResourceRepository implements ValueReposi
      */
     public function __construct()
     {
-        parent::__construct(CharacteristicValue::BIND_NAME);
+        parent::__construct(CharacteristicValue::class);
     }
 
     /**

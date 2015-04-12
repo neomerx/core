@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Manufacturer;
 use \Neomerx\Core\Models\ManufacturerProperties;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface ManufacturerPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**

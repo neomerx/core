@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Customer;
 use \Neomerx\Core\Models\CustomerAddress;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface CustomerAddressRepositoryInterface extends RepositoryInterface
 {
     /**

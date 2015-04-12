@@ -12,53 +12,65 @@ use \Carbon\Carbon;
  * @property-read Carbon              updated_at
  * @property      Carrier             carrier
  * @property      ShippingOrderStatus status
+ *
+ * @package Neomerx\Core
  */
 class ShippingOrder extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'shipping_orders';
 
+    /** Model field max length */
     const TRACKING_NUMBER_MAX = 20;
 
+    /** Model field name */
     const FIELD_ID                       = 'id_shipping_order';
+    /** Model field name */
     const FIELD_ID_CARRIER               = Carrier::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_SHIPPING_ORDER_STATUS = ShippingOrderStatus::FIELD_ID;
+    /** Model field name */
     const FIELD_TRACKING_NUMBER          = 'tracking_number';
+    /** Model field name */
     const FIELD_CREATED_AT               = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT               = 'updated_at';
+    /** Model field name */
     const FIELD_ORDER                    = 'order';
+    /** Model field name */
     const FIELD_CARRIER                  = 'carrier';
+    /** Model field name */
     const FIELD_STATUS                   = 'status';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_TRACKING_NUMBER,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_CARRIER,
@@ -66,7 +78,7 @@ class ShippingOrder extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -75,7 +87,7 @@ class ShippingOrder extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -89,7 +101,7 @@ class ShippingOrder extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -130,7 +142,7 @@ class ShippingOrder extends BaseModel
      */
     public function carrier()
     {
-        return $this->belongsTo(Carrier::BIND_NAME, self::FIELD_ID_CARRIER, Carrier::FIELD_ID);
+        return $this->belongsTo(Carrier::class, self::FIELD_ID_CARRIER, Carrier::FIELD_ID);
     }
 
     /**
@@ -141,7 +153,7 @@ class ShippingOrder extends BaseModel
     public function status()
     {
         return $this->belongsTo(
-            ShippingOrderStatus::BIND_NAME,
+            ShippingOrderStatus::class,
             self::FIELD_ID_SHIPPING_ORDER_STATUS,
             ShippingOrderStatus::FIELD_ID
         );

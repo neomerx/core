@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\CustomerType;
 use \Neomerx\Core\Models\CarrierCustomerType;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface CarrierCustomerTypeRepositoryInterface extends RepositoryInterface
 {
     /**

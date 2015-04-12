@@ -13,53 +13,65 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      array       specification
  * @property      array       values
  * @property      Collection  properties
+ *
+ * @package Neomerx\Core
  */
 class Characteristic extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'characteristic';
 
+    /** Model field length */
     const CODE_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID             = 'id_characteristic';
+    /** Model field name */
     const FIELD_ID_MEASUREMENT = Measurement::FIELD_ID;
+    /** Model field name */
     const FIELD_CODE           = 'code';
+    /** Model field name */
     const FIELD_CREATED_AT     = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT     = 'updated_at';
+    /** Model field name */
     const FIELD_MEASUREMENT    = 'measurement';
+    /** Model field name */
     const FIELD_SPECIFICATION  = 'specification';
+    /** Model field name */
     const FIELD_VALUES         = 'values';
+    /** Model field name */
     const FIELD_PROPERTIES     = 'properties';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
@@ -67,7 +79,7 @@ class Characteristic extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -75,7 +87,7 @@ class Characteristic extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -89,7 +101,7 @@ class Characteristic extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -127,7 +139,7 @@ class Characteristic extends BaseModel implements SelectByCodeInterface
     public function properties()
     {
         return $this->hasMany(
-            CharacteristicProperties::BIND_NAME,
+            CharacteristicProperties::class,
             CharacteristicProperties::FIELD_ID_CHARACTERISTIC,
             self::FIELD_ID
         );
@@ -141,7 +153,7 @@ class Characteristic extends BaseModel implements SelectByCodeInterface
     public function values()
     {
         return $this->hasMany(
-            CharacteristicValue::BIND_NAME,
+            CharacteristicValue::class,
             CharacteristicValue::FIELD_ID_CHARACTERISTIC,
             self::FIELD_ID
         );
@@ -154,11 +166,11 @@ class Characteristic extends BaseModel implements SelectByCodeInterface
      */
     public function measurement()
     {
-        return $this->belongsTo(Measurement::BIND_NAME, self::FIELD_ID_MEASUREMENT, Measurement::FIELD_ID);
+        return $this->belongsTo(Measurement::class, self::FIELD_ID_MEASUREMENT, Measurement::FIELD_ID);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {

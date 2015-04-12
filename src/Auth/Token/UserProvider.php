@@ -5,6 +5,9 @@ use \Illuminate\Contracts\Hashing\Hasher as HashInterface;
 use \Illuminate\Contracts\Auth\Authenticatable as UserInterface;
 use \Illuminate\Contracts\Auth\UserProvider as UserProviderInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 abstract class UserProvider implements UserProviderInterface
 {
     /**

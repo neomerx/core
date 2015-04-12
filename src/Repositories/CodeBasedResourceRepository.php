@@ -1,5 +1,8 @@
 <?php namespace Neomerx\Core\Repositories;
 
+/**
+ * @package Neomerx\Core
+ */
 abstract class CodeBasedResourceRepository extends BaseRepository
 {
     /**

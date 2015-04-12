@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Country;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class RegionRepository extends CodeBasedResourceRepository implements RegionRepositoryInterface
 {
     /**
@@ -11,7 +14,7 @@ class RegionRepository extends CodeBasedResourceRepository implements RegionRepo
      */
     public function __construct()
     {
-        parent::__construct(Region::BIND_NAME);
+        parent::__construct(Region::class);
     }
 
     /**

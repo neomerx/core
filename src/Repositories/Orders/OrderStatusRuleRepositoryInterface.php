@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\OrderStatus;
 use \Neomerx\Core\Models\OrderStatusRule;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface OrderStatusRuleRepositoryInterface extends RepositoryInterface
 {
     /**

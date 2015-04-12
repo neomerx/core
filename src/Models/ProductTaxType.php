@@ -7,44 +7,58 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property string     code
  * @property string     name
  * @property Collection products
+ *
+ * @package Neomerx\Core
  */
 class ProductTaxType extends BaseModel implements SelectByCodeInterface
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'product_tax_types';
 
+    /** Model field length */
     const NAME_MAX_LENGTH = 50;
+    /** Model field length */
     const CODE_MAX_LENGTH = 50;
 
+    /** Model field name */
     const FIELD_ID       = 'id_product_tax_type';
+    /** Model field name */
     const FIELD_CODE     = 'code';
+    /** Model field name */
     const FIELD_NAME     = 'name';
+    /** Model field name */
     const FIELD_PRODUCTS = 'products';
 
+    /** Product tax type Id */
     const SHIPPING_ID   = 1;
-    const SHIPPING_CODE = 'SHIPPING';
+    /** Product tax type Id */
     const EXEMPT_ID     = 2;
-    const EXEMPT_CODE   = 'EXEMPT';
+    /** Product tax type Id */
     const TAXABLE_ID    = 3;
+    /** Product tax type code */
+    const SHIPPING_CODE = 'SHIPPING';
+    /** Product tax type code */
+    const EXEMPT_CODE   = 'EXEMPT';
+    /** Product tax type code */
     const TAXABLE_CODE  = 'TAXABLE';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_CODE,
@@ -52,26 +66,26 @@ class ProductTaxType extends BaseModel implements SelectByCodeInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -82,7 +96,7 @@ class ProductTaxType extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -99,11 +113,11 @@ class ProductTaxType extends BaseModel implements SelectByCodeInterface
      */
     public function products()
     {
-        return $this->hasMany(Product::BIND_NAME, Product::FIELD_ID_PRODUCT_TAX_TYPE, self::FIELD_ID);
+        return $this->hasMany(Product::class, Product::FIELD_ID_PRODUCT_TAX_TYPE, self::FIELD_ID);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function selectByCode($code)
     {

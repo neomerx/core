@@ -6,47 +6,54 @@
  * @property int     id_related_product
  * @property Product product
  * @property Product related
+ *
+ * @package Neomerx\Core
  */
 class ProductRelated extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'product_related';
 
+    /** Model field name */
     const FIELD_ID                 = 'id';
+    /** Model field name */
     const FIELD_ID_PRODUCT         = Product::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_RELATED_PRODUCT = 'id_related_product';
+    /** Model field name */
     const FIELD_PRODUCT            = 'product';
+    /** Model field name */
     const FIELD_RELATED            = 'related';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         '', // fillable must have at least 1 element otherwise it's ignored completely by Laravel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_PRODUCT,
@@ -54,7 +61,7 @@ class ProductRelated extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -63,7 +70,7 @@ class ProductRelated extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -75,7 +82,7 @@ class ProductRelated extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -110,7 +117,7 @@ class ProductRelated extends BaseModel
      */
     public function product()
     {
-        return $this->belongsTo(Product::BIND_NAME, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
+        return $this->belongsTo(Product::class, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
     }
 
     /**
@@ -120,6 +127,6 @@ class ProductRelated extends BaseModel
      */
     public function related()
     {
-        return $this->belongsTo(Product::BIND_NAME, self::FIELD_ID_RELATED_PRODUCT, Product::FIELD_ID);
+        return $this->belongsTo(Product::class, self::FIELD_ID_RELATED_PRODUCT, Product::FIELD_ID);
     }
 }

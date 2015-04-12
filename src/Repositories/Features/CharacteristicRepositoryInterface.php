@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Measurement;
 use \Neomerx\Core\Models\Characteristic;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface CharacteristicRepositoryInterface extends RepositoryInterface
 {
     /**

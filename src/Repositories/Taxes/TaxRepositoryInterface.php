@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Tax;
 use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface TaxRepositoryInterface extends RepositoryInterface
 {
     /**

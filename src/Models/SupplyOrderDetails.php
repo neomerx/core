@@ -12,44 +12,55 @@ use \Neomerx\Core\Support as S;
  * @property float       tax_rate
  * @property SupplyOrder supplyOrder
  * @property Variant     variant
+ *
+ * @package Neomerx\Core
  */
 class SupplyOrderDetails extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'supply_order_details';
 
+    /** Model field name */
     const FIELD_ID              = 'id_supply_order_details';
+    /** Model field name */
     const FIELD_ID_SUPPLY_ORDER = 'id_supply_order';
+    /** Model field name */
     const FIELD_ID_VARIANT      = Variant::FIELD_ID;
+    /** Model field name */
     const FIELD_PRICE_WO_TAX    = 'price_wo_tax';
+    /** Model field name */
     const FIELD_QUANTITY        = 'quantity';
+    /** Model field name */
     const FIELD_DISCOUNT_RATE   = 'discount_rate';
+    /** Model field name */
     const FIELD_TAX_RATE        = 'tax_rate';
+    /** Model field name */
     const FIELD_SUPPLY_ORDER    = 'supplyOrder';
+    /** Model field name */
     const FIELD_VARIANT         = 'variant';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_PRICE_WO_TAX,
@@ -59,14 +70,14 @@ class SupplyOrderDetails extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_VARIANT,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -75,7 +86,7 @@ class SupplyOrderDetails extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -90,7 +101,7 @@ class SupplyOrderDetails extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -114,7 +125,7 @@ class SupplyOrderDetails extends BaseModel
      */
     public function supplyOrder()
     {
-        return $this->belongsTo(SupplyOrder::BIND_NAME, self::FIELD_ID_SUPPLY_ORDER, SupplyOrder::FIELD_ID);
+        return $this->belongsTo(SupplyOrder::class, self::FIELD_ID_SUPPLY_ORDER, SupplyOrder::FIELD_ID);
     }
 
     /**
@@ -124,6 +135,6 @@ class SupplyOrderDetails extends BaseModel
      */
     public function variant()
     {
-        return $this->belongsTo(Variant::BIND_NAME, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
+        return $this->belongsTo(Variant::class, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
     }
 }

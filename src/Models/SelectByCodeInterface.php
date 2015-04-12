@@ -2,6 +2,9 @@
 
 use \Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @package Neomerx\Core
+ */
 interface SelectByCodeInterface
 {
     /**

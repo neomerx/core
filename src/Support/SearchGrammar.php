@@ -5,18 +5,28 @@ use \Carbon\Carbon;
 use \Illuminate\Database\Eloquent\Builder;
 
 /**
+ * @package Neomerx\Core
+ *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 class SearchGrammar
 {
+    /** Search parameter type */
     const TYPE_BOOL   = 'bool';
+    /** Search parameter type */
     const TYPE_DATE   = 'date';
+    /** Search parameter type */
     const TYPE_FLOAT  = 'float';
+    /** Search parameter type */
     const TYPE_INT    = 'int';
+    /** Search parameter type */
     const TYPE_STRING = 'string';
+    /** Search parameter type */
     const TYPE_LIMIT  = 'limit';
 
+    /** How many records skip in search results */
     const LIMIT_SKIP = 'skip';
+    /** How many records take from search results */
     const LIMIT_TAKE = 'take';
 
     /**

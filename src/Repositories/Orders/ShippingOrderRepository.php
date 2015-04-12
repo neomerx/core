@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\ShippingOrder;
 use \Neomerx\Core\Models\ShippingOrderStatus;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class ShippingOrderRepository extends IndexBasedResourceRepository implements ShippingOrderRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class ShippingOrderRepository extends IndexBasedResourceRepository implements Sh
      */
     public function __construct()
     {
-        parent::__construct(ShippingOrder::BIND_NAME);
+        parent::__construct(ShippingOrder::class);
     }
 
     /**

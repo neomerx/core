@@ -8,6 +8,9 @@ use \Neomerx\Core\Models\BaseModel;
 use \Neomerx\Core\Models\TaxRuleTerritory;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class TaxRuleTerritoryRepository extends IndexBasedResourceRepository implements TaxRuleTerritoryRepositoryInterface
 {
     /**
@@ -15,7 +18,7 @@ class TaxRuleTerritoryRepository extends IndexBasedResourceRepository implements
      */
     public function __construct()
     {
-        parent::__construct(TaxRuleTerritory::BIND_NAME);
+        parent::__construct(TaxRuleTerritory::class);
     }
 
     /**
@@ -99,6 +102,10 @@ class TaxRuleTerritoryRepository extends IndexBasedResourceRepository implements
         $this->fillModel($resource, [TaxRuleTerritory::FIELD_ID_TAX_RULE => $rule]);
     }
 
+    /**
+     * @param TaxRuleTerritory $resource
+     * @param string           $type
+     */
     private function fillTerritory(TaxRuleTerritory $resource, $type)
     {
         if ($resource->exists === true) {

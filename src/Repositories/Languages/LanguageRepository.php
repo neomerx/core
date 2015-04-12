@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class LanguageRepository extends CodeBasedResourceRepository implements LanguageRepositoryInterface
 {
     /**
@@ -10,7 +13,7 @@ class LanguageRepository extends CodeBasedResourceRepository implements Language
      */
     public function __construct()
     {
-        parent::__construct(Language::BIND_NAME);
+        parent::__construct(Language::class);
     }
 
     /**

@@ -15,47 +15,61 @@ use \Carbon\Carbon;
  * @property-read Carbon    updated_at
  * @property      Variant   variant
  * @property      Warehouse warehouse
+ *
+ * @package Neomerx\Core
  */
 class Inventory extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'inventory';
 
+    /** Model field name */
     const FIELD_ID           = 'id_inventory';
+    /** Model field name */
     const FIELD_ID_WAREHOUSE = Warehouse::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_VARIANT   = Variant::FIELD_ID;
+    /** Model field name */
     const FIELD_IN           = 'in';
+    /** Model field name */
     const FIELD_OUT          = 'out';
+    /** Model field name */
     const FIELD_RESERVED     = 'reserved';
+    /** Model field name */
     const FIELD_AVAILABLE    = 'available';
+    /** Model field name */
     const FIELD_QUANTITY     = 'quantity';
+    /** Model field name */
     const FIELD_CREATED_AT   = 'created_at';
+    /** Model field name */
     const FIELD_UPDATED_AT   = 'updated_at';
+    /** Model field name */
     const FIELD_WAREHOUSE    = 'warehouse';
+    /** Model field name */
     const FIELD_VARIANT      = 'variant';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_IN,
@@ -64,7 +78,7 @@ class Inventory extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_VARIANT,
@@ -72,7 +86,7 @@ class Inventory extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -81,14 +95,14 @@ class Inventory extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $appends = [
         self::FIELD_QUANTITY,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -102,7 +116,7 @@ class Inventory extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -143,7 +157,7 @@ class Inventory extends BaseModel
      */
     public function variant()
     {
-        return $this->belongsTo(Variant::BIND_NAME, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
+        return $this->belongsTo(Variant::class, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
     }
 
     /**
@@ -153,7 +167,7 @@ class Inventory extends BaseModel
      */
     public function warehouse()
     {
-        return $this->belongsTo(Warehouse::BIND_NAME, self::FIELD_ID_WAREHOUSE, Warehouse::FIELD_ID);
+        return $this->belongsTo(Warehouse::class, self::FIELD_ID_WAREHOUSE, Warehouse::FIELD_ID);
     }
 
     /**

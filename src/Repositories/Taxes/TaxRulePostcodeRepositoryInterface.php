@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\TaxRule;
 use \Neomerx\Core\Models\TaxRulePostcode;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface TaxRulePostcodeRepositoryInterface extends RepositoryInterface
 {
     /**

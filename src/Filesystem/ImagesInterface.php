@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Models\ImageFormat;
 
+/**
+ * @package Neomerx\Core
+ */
 interface ImagesInterface
 {
     /**

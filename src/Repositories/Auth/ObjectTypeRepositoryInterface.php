@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\ObjectType;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface ObjectTypeRepositoryInterface extends RepositoryInterface
 {
     /**

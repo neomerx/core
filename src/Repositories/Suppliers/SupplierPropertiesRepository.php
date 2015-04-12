@@ -6,6 +6,9 @@ use \Neomerx\Core\Models\SupplierProperties;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 use \Neomerx\Core\Repositories\Suppliers\SupplierPropertiesRepositoryInterface as PropertiesRepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 class SupplierPropertiesRepository extends IndexBasedResourceRepository implements PropertiesRepositoryInterface
 {
     /**
@@ -13,7 +16,7 @@ class SupplierPropertiesRepository extends IndexBasedResourceRepository implemen
      */
     public function __construct()
     {
-        parent::__construct(SupplierProperties::BIND_NAME);
+        parent::__construct(SupplierProperties::class);
     }
 
     /**

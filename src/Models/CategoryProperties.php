@@ -11,51 +11,68 @@
  * @property string   meta_description
  * @property Category category
  * @property Language language
+ *
+ * @package Neomerx\Core
  */
 class CategoryProperties extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'category_properties';
 
+    /** Model field length */
     const NAME_MAX_LENGTH             = 50;
+    /** Model field length */
     const DESCRIPTION_MAX_LENGTH      = 300;
+    /** Model field length */
     const META_TITLE_MAX_LENGTH       = 100;
+    /** Model field length */
     const META_KEYWORDS_MAX_LENGTH    = 150;
+    /** Model field length */
     const META_DESCRIPTION_MAX_LENGTH = 300;
 
+    /** Model field name */
     const FIELD_ID               = 'id_category_property';
+    /** Model field name */
     const FIELD_ID_CATEGORY      = Category::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_LANGUAGE      = Language::FIELD_ID;
+    /** Model field name */
     const FIELD_NAME             = 'name';
+    /** Model field name */
     const FIELD_DESCRIPTION      = 'description';
+    /** Model field name */
     const FIELD_META_TITLE       = 'meta_title';
+    /** Model field name */
     const FIELD_META_KEYWORDS    = 'meta_keywords';
+    /** Model field name */
     const FIELD_META_DESCRIPTION = 'meta_description';
+    /** Model field name */
     const FIELD_CATEGORY         = 'category';
+    /** Model field name */
     const FIELD_LANGUAGE         = 'language';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_NAME,
@@ -66,7 +83,7 @@ class CategoryProperties extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_CATEGORY,
@@ -74,7 +91,7 @@ class CategoryProperties extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -83,14 +100,14 @@ class CategoryProperties extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $touches = [
         self::FIELD_CATEGORY,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -111,7 +128,7 @@ class CategoryProperties extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -139,7 +156,7 @@ class CategoryProperties extends BaseModel
      */
     public function category()
     {
-        return $this->belongsTo(Category::BIND_NAME, self::FIELD_ID_CATEGORY, Category::FIELD_ID);
+        return $this->belongsTo(Category::class, self::FIELD_ID_CATEGORY, Category::FIELD_ID);
     }
 
     /**
@@ -149,6 +166,6 @@ class CategoryProperties extends BaseModel
      */
     public function language()
     {
-        return $this->belongsTo(Language::BIND_NAME, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
+        return $this->belongsTo(Language::class, self::FIELD_ID_LANGUAGE, Language::FIELD_ID);
     }
 }

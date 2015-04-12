@@ -146,10 +146,13 @@ use \Neomerx\Core\Repositories\Manufacturers\ManufacturerPropertiesRepositoryInt
  * Provides necessary Neomerx registrations in a single location. It bootstraps
  * such components as facades, validation rules and etc.
  *
+ * @package Neomerx\Core
+ *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class CoreServiceProvider extends ServiceProvider
 {
+    /** Package namespace */
     const PACKAGE_NAMESPACE = 'nm-core';
 
     /**

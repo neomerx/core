@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Measurement;
 use \Neomerx\Core\Models\Characteristic;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class CharacteristicRepository extends CodeBasedResourceRepository implements CharacteristicRepositoryInterface
 {
     /**
@@ -11,7 +14,7 @@ class CharacteristicRepository extends CodeBasedResourceRepository implements Ch
      */
     public function __construct()
     {
-        parent::__construct(Characteristic::BIND_NAME);
+        parent::__construct(Characteristic::class);
     }
 
     /**

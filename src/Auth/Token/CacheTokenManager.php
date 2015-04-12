@@ -4,6 +4,8 @@ use \Illuminate\Contracts\Cache\Repository as CacheInterface;
 
 /**
  * Cache based implementation of token manager.
+ *
+ * @package Neomerx\Core
  */
 class CacheTokenManager implements TokenManagerInterface
 {

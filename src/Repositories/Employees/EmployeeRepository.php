@@ -6,6 +6,9 @@ use \Neomerx\Core\Models\Employee;
 use \Neomerx\Core\Exceptions\ValidationException;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class EmployeeRepository extends IndexBasedResourceRepository implements EmployeeRepositoryInterface
 {
     /**
@@ -13,7 +16,7 @@ class EmployeeRepository extends IndexBasedResourceRepository implements Employe
      */
     public function __construct()
     {
-        parent::__construct(Employee::BIND_NAME);
+        parent::__construct(Employee::class);
     }
 
     /**

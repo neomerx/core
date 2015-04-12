@@ -2,6 +2,9 @@
 
 use \Illuminate\Database\Eloquent\Model;
 
+/**
+ * @package Neomerx\Core
+ */
 interface BaseModelInterface
 {
     /**

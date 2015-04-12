@@ -1,5 +1,8 @@
 <?php namespace Neomerx\Core\Auth;
 
+/**
+ * @package Neomerx\Core
+ */
 interface PermissionManagerInterface
 {
     /**

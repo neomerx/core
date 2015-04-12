@@ -4,6 +4,9 @@ use \Neomerx\Core\Models\Tax;
 use \Neomerx\Core\Models\TaxRule;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class TaxRuleRepository extends IndexBasedResourceRepository implements TaxRuleRepositoryInterface
 {
     /**
@@ -11,7 +14,7 @@ class TaxRuleRepository extends IndexBasedResourceRepository implements TaxRuleR
      */
     public function __construct()
     {
-        parent::__construct(TaxRule::BIND_NAME);
+        parent::__construct(TaxRule::class);
     }
 
     /**

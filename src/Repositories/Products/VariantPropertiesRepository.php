@@ -5,6 +5,9 @@ use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\VariantProperties;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
+/**
+ * @package Neomerx\Core
+ */
 class VariantPropertiesRepository extends IndexBasedResourceRepository implements VariantPropertiesRepositoryInterface
 {
     /**
@@ -12,7 +15,7 @@ class VariantPropertiesRepository extends IndexBasedResourceRepository implement
      */
     public function __construct()
     {
-        parent::__construct(VariantProperties::BIND_NAME);
+        parent::__construct(VariantProperties::class);
     }
 
     /**

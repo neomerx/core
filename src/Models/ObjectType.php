@@ -6,61 +6,67 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property int        id_object_type
  * @property string     code
  * @property Collection roles
+ *
+ * @package Neomerx\Core
  */
 class ObjectType extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'object_types';
 
+    /** Model field length */
     const TYPE_MAX_LENGTH = 150;
 
+    /** Model field name */
     const FIELD_ID    = 'id_object_type';
+    /** Model field name */
     const FIELD_TYPE  = 'type';
+    /** Model field name */
     const FIELD_ROLES = 'roles';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_TYPE,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -70,7 +76,7 @@ class ObjectType extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -87,7 +93,7 @@ class ObjectType extends BaseModel
     public function roles()
     {
         return $this->belongsToMany(
-            Role::BIND_NAME,
+            Role::class,
             RoleObjectType::TABLE_NAME,
             RoleObjectType::FIELD_ID_ROLE,
             RoleObjectType::FIELD_ID_TYPE

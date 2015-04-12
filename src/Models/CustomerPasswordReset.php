@@ -8,41 +8,48 @@ use \Carbon\Carbon;
  * @property string      token
  * @property-read Carbon created_at
  * @property-read Carbon updated_at
+ *
+ * @package Neomerx\Core
  */
 class CustomerPasswordReset extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'customer_password_resets';
 
+    /** Model field length */
     const EMAIL_MAX_LENGTH = Customer::EMAIL_MAX_LENGTH;
+    /** Model field length */
     const TOKEN_MAX_LENGTH = 255;
 
+    /** Model field name */
     const FIELD_ID    = 'id_reset';
+    /** Model field name */
     const FIELD_EMAIL = 'email';
+    /** Model field name */
     const FIELD_TOKEN = 'token';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_EMAIL,
@@ -50,21 +57,21 @@ class CustomerPasswordReset extends BaseModel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $guarded = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $hidden = [
         self::FIELD_TOKEN,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -75,7 +82,7 @@ class CustomerPasswordReset extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {

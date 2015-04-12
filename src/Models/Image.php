@@ -12,6 +12,8 @@ use \Neomerx\Core\Commands\CreateImagesByImageCommand;
  * @property Collection   properties
  * @property ProductImage productImage
  *
+ * @package Neomerx\Core
+ *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
@@ -19,60 +21,66 @@ class Image extends BaseModel
 {
     use DispatchesCommands;
 
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'images';
 
+    /** Model field length */
     const ORIGINAL_FILE_NAME_MAX_LENGTH = 255;
 
+    /** Model field name */
     const FIELD_ID            = 'id_image';
+    /** Model field name */
     const FIELD_ORIGINAL_FILE = 'original_file';
+    /** Model field name */
     const FIELD_PROPERTIES    = 'properties';
+    /** Model field name */
     const FIELD_PRODUCT_IMAGE = 'productImage';
+    /** Model field name */
     const FIELD_PATHS         = 'paths';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         self::FIELD_ORIGINAL_FILE,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -83,7 +91,7 @@ class Image extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -107,7 +115,7 @@ class Image extends BaseModel
      */
     public function paths()
     {
-        return $this->hasMany(ImagePath::BIND_NAME, ImagePath::FIELD_ID_IMAGE, self::FIELD_ID);
+        return $this->hasMany(ImagePath::class, ImagePath::FIELD_ID_IMAGE, self::FIELD_ID);
     }
 
     /**
@@ -117,7 +125,7 @@ class Image extends BaseModel
      */
     public function properties()
     {
-        return $this->hasMany(ImageProperties::BIND_NAME, ImageProperties::FIELD_ID_IMAGE, self::FIELD_ID);
+        return $this->hasMany(ImageProperties::class, ImageProperties::FIELD_ID_IMAGE, self::FIELD_ID);
     }
 
     /**
@@ -127,11 +135,11 @@ class Image extends BaseModel
      */
     public function productImage()
     {
-        return $this->hasOne(ProductImage::BIND_NAME, ProductImage::FIELD_ID_IMAGE, self::FIELD_ID);
+        return $this->hasOne(ProductImage::class, ProductImage::FIELD_ID_IMAGE, self::FIELD_ID);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      *
      * When model saved we should generate the image in required formats.
      */
@@ -149,7 +157,7 @@ class Image extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function onDeleting()
     {

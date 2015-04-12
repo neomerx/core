@@ -3,6 +3,9 @@
 use \Neomerx\Core\Models\Role;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
+/**
+ * @package Neomerx\Core
+ */
 interface RoleRepositoryInterface extends RepositoryInterface
 {
     /**

@@ -6,49 +6,56 @@
  * @property int            id_product_tax_type
  * @property ProductTaxType type
  * @property TaxRule        rule
+ *
+ * @package Neomerx\Core
  */
 class TaxRuleProductType extends BaseModel
 {
-    const BIND_NAME  = __CLASS__;
+    /** Model table name */
     const TABLE_NAME = 'tax_rule_product_types';
 
+    /** Model field name */
     const FIELD_ID                  = 'id_tax_rule_product_type';
+    /** Model field name */
     const FIELD_ID_TAX_RULE         = TaxRule::FIELD_ID;
+    /** Model field name */
     const FIELD_ID_PRODUCT_TAX_TYPE = ProductTaxType::FIELD_ID;
+    /** Model field name */
     const FIELD_TYPE                = 'type';
+    /** Model field name */
     const FIELD_RULE                = 'rule';
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $table = self::TABLE_NAME;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $primaryKey = self::FIELD_ID;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $incrementing = true;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $fillable = [
         '', // fillable must have at least 1 element otherwise it's ignored completely by Laravel
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $hidden = [
         self::FIELD_ID_PRODUCT_TAX_TYPE,
     ];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected $guarded = [
         self::FIELD_ID,
@@ -57,12 +64,12 @@ class TaxRuleProductType extends BaseModel
     ];
     
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public $timestamps = false;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnCreateRules()
     {
@@ -75,7 +82,7 @@ class TaxRuleProductType extends BaseModel
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getDataOnUpdateRules()
     {
@@ -110,7 +117,7 @@ class TaxRuleProductType extends BaseModel
      */
     public function rule()
     {
-        return $this->belongsTo(TaxRule::BIND_NAME, self::FIELD_ID_TAX_RULE, TaxRule::FIELD_ID);
+        return $this->belongsTo(TaxRule::class, self::FIELD_ID_TAX_RULE, TaxRule::FIELD_ID);
     }
 
     /**
@@ -120,6 +127,6 @@ class TaxRuleProductType extends BaseModel
      */
     public function type()
     {
-        return $this->belongsTo(ProductTaxType::BIND_NAME, self::FIELD_ID_PRODUCT_TAX_TYPE, ProductTaxType::FIELD_ID);
+        return $this->belongsTo(ProductTaxType::class, self::FIELD_ID_PRODUCT_TAX_TYPE, ProductTaxType::FIELD_ID);
     }
 }
