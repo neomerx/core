@@ -2,7 +2,7 @@
 
 use \Closure;
 use \Illuminate\Http\Request;
-use \Illuminate\Http\Response;
+use \Illuminate\Http\JsonResponse;
 
 /**
  * This middleware could be used as a first defense line from CSRF attacks because AJAX header cannot
@@ -28,10 +28,10 @@ class RequireAjaxRequestMiddleware
     /**
      * Get response for a request with invalid 'X-Requested-With' header.
      *
-     * @return Response
+     * @return JsonResponse
      */
     protected function getInvalidAjaxHeadersResponse()
     {
-        return new Response('\'X-Requested-With: XMLHttpRequest\' header required', 400);
+        return new JsonResponse('\'X-Requested-With: XMLHttpRequest\' header required', 400);
     }
 }
