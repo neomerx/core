@@ -57,9 +57,10 @@ class TokenAuthMiddleware
     protected function loginUsingToken(Request $request)
     {
         $token = $request->header(self::HEADER_KEY);
-        return isset($token) === true &&
-        ($payload = $this->tokenManager->getPayload($token)) !== null &&
-        $this->loginUsingPayload($payload, $token) === true;
+        return
+            empty($token) === false &&
+            ($payload = $this->tokenManager->getPayload($token)) !== null &&
+            $this->loginUsingPayload($payload, $token) === true;
     }
 
     /**
