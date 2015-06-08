@@ -50,7 +50,7 @@ class Language extends BaseModel implements SelectByCodeInterface
     /**
      * @inheritdoc
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * @inheritdoc

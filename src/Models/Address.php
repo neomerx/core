@@ -85,7 +85,7 @@ class Address extends BaseModel
     /**
      * @inheritdoc
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * @inheritdoc
