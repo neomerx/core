@@ -115,18 +115,27 @@ trait RelationsTrait
      * @param string|null $through
      * @param string|null $firstKey
      * @param string|null $secondKey
+     * @param string|null $localKey
      *
      * @return HasManyThrough
      */
-    public function hasManyThrough($related, $through, $firstKey = null, $secondKey = null)
+    public function hasManyThrough($related, $through, $firstKey = null, $secondKey = null, $localKey = null)
     {
+        /** @var Model $through */
+        $through = app($through);
+
+        $firstKey  = $firstKey  ?: $this->rtModel()->getForeignKey();
+        $secondKey = $secondKey ?: $through->getForeignKey();
+        $localKey  = $localKey  ?: $this->rtModel()->getKeyName();
+
         /** @noinspection PhpUndefinedMethodInspection */
         return new HasManyThrough(
-            App::make($related)->newQuery(),
+            app($related)->newQuery(),
             $this->rtModel(),
-            App::make($through),
+            $through,
             $firstKey,
-            $secondKey
+            $secondKey,
+            $localKey
         );
     }
 
