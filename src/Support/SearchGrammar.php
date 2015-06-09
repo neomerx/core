@@ -468,7 +468,7 @@ class SearchGrammar
      */
     public function isTypeSupported($type)
     {
-        return in_array($type, $this->supportedTypes);
+        return in_array($type, $this->supportedTypes, true);
     }
 
     /**

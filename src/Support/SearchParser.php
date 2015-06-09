@@ -96,7 +96,7 @@ class SearchParser
 
             // check operation is allowed
             if ($allowedOperations !== self::ALLOWED_OPERATIONS_ALL &&
-                in_array($operation, $allowedOperations) === false) {
+                in_array($operation, $allowedOperations, true) === false) {
                 throw new InvalidArgumentException($name);
             }
 
