@@ -27,6 +27,7 @@ use \Neomerx\Core\Exceptions\ValidationException;
  * @method static Builder with($conditions)
  * @method static Builder where($conditions)
  * @method static BaseModel findOrFail($idx)
+ * @method static BaseModel find($idx)
  *
  * @package Neomerx\Core
  *
