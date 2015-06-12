@@ -3,9 +3,9 @@
 use \Carbon\Carbon;
 
 /**
- * @property int         id_language
- * @property string      name
- * @property string      iso_code
+ * @property      int    id_language
+ * @property      string name
+ * @property      string iso_code
  * @property-read Carbon created_at
  * @property-read Carbon updated_at
  *
@@ -22,11 +22,11 @@ class Language extends BaseModel implements SelectByCodeInterface
     const ISO_CODE_MAX_LENGTH = 3;
 
     /** Model field name */
-    const FIELD_ID       = 'id_language';
+    const FIELD_ID         = 'id_language';
     /** Model field name */
-    const FIELD_NAME     = 'name';
+    const FIELD_NAME       = 'name';
     /** Model field name */
-    const FIELD_ISO_CODE = 'iso_code';
+    const FIELD_ISO_CODE   = 'iso_code';
     /** Model field name */
     const FIELD_CREATED_AT = 'created_at';
     /** Model field name */

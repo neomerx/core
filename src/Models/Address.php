@@ -5,20 +5,20 @@ use \Illuminate\Database\Eloquent\Collection;
 use \Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property int         id_address
- * @property int         id_region
- * @property string      city
- * @property string      postcode
- * @property string      address1
- * @property string      address2
- * @property Region      region
- * @property Collection  billingCustomers
- * @property Collection  shippingCustomers
- * @property Collection  billingOrders
- * @property Collection  shippingOrders
- * @property-read Carbon created_at
- * @property-read Carbon updated_at
- * @property-read Carbon deleted_at
+ * @property      int        id_address
+ * @property      int        id_region
+ * @property      string     city
+ * @property      string     postcode
+ * @property      string     address1
+ * @property      string     address2
+ * @property      Region     region
+ * @property-read Carbon     created_at
+ * @property-read Carbon     updated_at
+ * @property-read Carbon     deleted_at
+ * @property      Collection billingCustomers
+ * @property      Collection shippingCustomers
+ * @property      Collection billingOrders
+ * @property      Collection shippingOrders
  *
  * @package Neomerx\Core
  */
@@ -63,9 +63,9 @@ class Address extends BaseModel
     /** Model field name */
     const FIELD_SHIPPING_ORDERS    = 'shippingOrders';
     /** Model field name */
-    const FIELD_CREATED_AT = 'created_at';
+    const FIELD_CREATED_AT         = 'created_at';
     /** Model field name */
-    const FIELD_UPDATED_AT = 'updated_at';
+    const FIELD_UPDATED_AT         = 'updated_at';
 
     /**
      * @inheritdoc

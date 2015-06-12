@@ -1,12 +1,15 @@
 <?php namespace Neomerx\Core\Models;
 
+use \Carbon\Carbon;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
- * @property int        id_country
- * @property string     code
- * @property Collection properties
- * @property Collection regions
+ * @property      int        id_country
+ * @property      string     code
+ * @property-read Carbon     created_at
+ * @property-read Carbon     updated_at
+ * @property      Collection properties
+ * @property      Collection regions
  *
  * @package Neomerx\Core
  */
@@ -26,6 +29,10 @@ class Country extends BaseModel implements SelectByCodeInterface
     const FIELD_PROPERTIES = 'properties';
     /** Model field name */
     const FIELD_REGIONS    = 'regions';
+    /** Model field name */
+    const FIELD_CREATED_AT = 'created_at';
+    /** Model field name */
+    const FIELD_UPDATED_AT = 'updated_at';
 
     /**
      * @inheritdoc
@@ -45,7 +52,7 @@ class Country extends BaseModel implements SelectByCodeInterface
     /**
      * @inheritdoc
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * @inheritdoc
