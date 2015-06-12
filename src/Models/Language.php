@@ -1,9 +1,13 @@
 <?php namespace Neomerx\Core\Models;
 
+use \Carbon\Carbon;
+
 /**
- * @property int    id_language
- * @property string name
- * @property string iso_code
+ * @property int         id_language
+ * @property string      name
+ * @property string      iso_code
+ * @property-read Carbon created_at
+ * @property-read Carbon updated_at
  *
  * @package Neomerx\Core
  */
@@ -23,6 +27,10 @@ class Language extends BaseModel implements SelectByCodeInterface
     const FIELD_NAME     = 'name';
     /** Model field name */
     const FIELD_ISO_CODE = 'iso_code';
+    /** Model field name */
+    const FIELD_CREATED_AT = 'created_at';
+    /** Model field name */
+    const FIELD_UPDATED_AT = 'updated_at';
 
     /**
      * @inheritdoc
