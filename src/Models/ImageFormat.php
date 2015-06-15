@@ -1,25 +1,28 @@
 <?php namespace Neomerx\Core\Models;
 
+use \Carbon\Carbon;
 use \Neomerx\Core\Support as S;
 use \Illuminate\Database\Eloquent\Collection;
-use \Illuminate\Foundation\Bus\DispatchesCommands;
+use \Illuminate\Foundation\Bus\DispatchesJobs;
 use \Neomerx\Core\Commands\DeleteImageFilesCommand;
 use \Neomerx\Core\Commands\CreateImagesByFormatCommand;
 use \Neomerx\Core\Commands\UpdateImagesByFormatCommand;
 
 /**
- * @property int        id_image_format
- * @property string     code
- * @property int        width
- * @property int        height
- * @property Collection paths
- * @property Collection images
+ * @property      int        id_image_format
+ * @property      string     code
+ * @property      int        width
+ * @property      int        height
+ * @property-read Carbon     created_at
+ * @property-read Carbon     updated_at
+ * @property      Collection paths
+ * @property      Collection images
  *
  * @package Neomerx\Core
  */
 class ImageFormat extends BaseModel implements SelectByCodeInterface
 {
-    use DispatchesCommands;
+    use DispatchesJobs;
 
     /** Model table name */
     const TABLE_NAME = 'image_formats';
@@ -39,6 +42,10 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
     const FIELD_PATHS  = 'paths';
     /** Model field name */
     const FIELD_IMAGES = 'images';
+    /** Model field name */
+    const FIELD_CREATED_AT = 'created_at';
+    /** Model field name */
+    const FIELD_UPDATED_AT = 'updated_at';
 
     /**
      * @inheritdoc
@@ -58,7 +65,7 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
     /**
      * @inheritdoc
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * @inheritdoc

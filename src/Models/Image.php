@@ -1,25 +1,25 @@
 <?php namespace Neomerx\Core\Models;
 
+use \Carbon\Carbon;
 use \Illuminate\Database\Eloquent\Collection;
-use \Illuminate\Foundation\Bus\DispatchesCommands;
+use \Illuminate\Foundation\Bus\DispatchesJobs;
 use \Neomerx\Core\Commands\DeleteImageFilesCommand;
 use \Neomerx\Core\Commands\CreateImagesByImageCommand;
 
 /**
- * @property int          id_image
- * @property string       original_file
- * @property Collection   paths
- * @property Collection   properties
- * @property ProductImage productImage
+ * @property      int          id_image
+ * @property      string       original_file
+ * @property-read Carbon       created_at
+ * @property-read Carbon       updated_at
+ * @property      Collection   paths
+ * @property      Collection   properties
+ * @property      ProductImage productImage
  *
  * @package Neomerx\Core
- *
- * @SuppressWarnings(PHPMD.TooManyMethods)
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Image extends BaseModel
 {
-    use DispatchesCommands;
+    use DispatchesJobs;
 
     /** Model table name */
     const TABLE_NAME = 'images';
@@ -56,7 +56,7 @@ class Image extends BaseModel
     /**
      * @inheritdoc
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * @inheritdoc

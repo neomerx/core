@@ -1,6 +1,6 @@
 <?php namespace Neomerx\Core\Models;
 
-use \Illuminate\Foundation\Bus\DispatchesCommands;
+use \Illuminate\Foundation\Bus\DispatchesJobs;
 use \Neomerx\Core\Commands\DeleteImageFilesCommand;
 
 /**
@@ -15,7 +15,7 @@ use \Neomerx\Core\Commands\DeleteImageFilesCommand;
  */
 class ImagePath extends BaseModel
 {
-    use DispatchesCommands;
+    use DispatchesJobs;
 
     /** Model table name */
     const TABLE_NAME = 'image_paths';
