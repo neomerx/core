@@ -37,6 +37,10 @@ class Image extends BaseModel
     const FIELD_PRODUCT_IMAGE = 'productImage';
     /** Model field name */
     const FIELD_PATHS         = 'paths';
+    /** Model field name */
+    const FIELD_CREATED_AT    = 'created_at';
+    /** Model field name */
+    const FIELD_UPDATED_AT    = 'updated_at';
 
     /**
      * @inheritdoc
