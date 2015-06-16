@@ -113,6 +113,14 @@ class Image extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public static function withPaths()
+    {
+        return self::FIELD_PATHS.'.'.ImagePath::FIELD_FORMAT;
+    }
+
+    /**
      * Relation to image paths with image formats.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
