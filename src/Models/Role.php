@@ -6,6 +6,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property int        id_role
  * @property string     code
  * @property Collection employees
+ * @property Collection objectTypes
  *
  * @package Neomerx\Core
  */
@@ -20,13 +21,15 @@ class Role extends BaseModel implements SelectByCodeInterface
     const DESCRIPTION_MAX_LENGTH = 300;
 
     /** Model field name */
-    const FIELD_ID          = 'id_role';
+    const FIELD_ID           = 'id_role';
     /** Model field name */
-    const FIELD_CODE        = 'code';
+    const FIELD_CODE         = 'code';
     /** Model field name */
-    const FIELD_DESCRIPTION = 'description';
+    const FIELD_DESCRIPTION  = 'description';
     /** Model field name */
-    const FIELD_EMPLOYEES   = 'employees';
+    const FIELD_EMPLOYEES    = 'employees';
+    /** Model field name */
+    const FIELD_OBJECT_TYPES = 'objectTypes';
 
     /**
      * @inheritdoc
@@ -116,5 +119,21 @@ class Role extends BaseModel implements SelectByCodeInterface
             EmployeeRole::FIELD_ID_ROLE,
             EmployeeRole::FIELD_ID_EMPLOYEE
         );
+    }
+
+    /**
+     * Relation to object types.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function objectTypes()
+    {
+        return $this
+            ->belongsToMany(
+                ObjectType::class,
+                RoleObjectType::TABLE_NAME,
+                RoleObjectType::FIELD_ID_ROLE,
+                RoleObjectType::FIELD_ID_TYPE
+            )->withPivot([RoleObjectType::FIELD_ALLOW_MASK, RoleObjectType::FIELD_DENY_MASK]);
     }
 }
