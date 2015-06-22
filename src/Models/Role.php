@@ -6,6 +6,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property int        id_role
  * @property string     code
  * @property Collection employees
+ * @property Collection roleObjectTypes
  * @property Collection objectTypes
  *
  * @package Neomerx\Core
@@ -28,6 +29,8 @@ class Role extends BaseModel implements SelectByCodeInterface
     const FIELD_DESCRIPTION  = 'description';
     /** Model field name */
     const FIELD_EMPLOYEES    = 'employees';
+    /** Model field name */
+    const FIELD_ROLE_OBJECT_TYPES = 'roleObjectTypes';
     /** Model field name */
     const FIELD_OBJECT_TYPES = 'objectTypes';
 
@@ -118,6 +121,20 @@ class Role extends BaseModel implements SelectByCodeInterface
             EmployeeRole::TABLE_NAME,
             EmployeeRole::FIELD_ID_ROLE,
             EmployeeRole::FIELD_ID_EMPLOYEE
+        );
+    }
+
+    /**
+     * Relation to role object types.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function roleObjectTypes()
+    {
+        return $this->hasMany(
+            RoleObjectType::class,
+            RoleObjectType::FIELD_ID_ROLE,
+            self::FIELD_ID
         );
     }
 
