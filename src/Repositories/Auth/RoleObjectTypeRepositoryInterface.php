@@ -20,13 +20,19 @@ interface RoleObjectTypeRepositoryInterface extends RepositoryInterface
     public function instance(Role $role, ObjectType $objectType, array $attributes);
 
     /**
-     * @param ObjectType|null $objectType
-     * @param RoleObjectType  $resource
-     * @param Role|null       $role
+     * @param ObjectType|null     $objectType
+     * @param RoleObjectType|null $resource
+     * @param Role|null           $role
+     * @param array|null          $attributes
      *
      * @return void
      */
-    public function fill(RoleObjectType $resource, Role $role = null, ObjectType $objectType = null);
+    public function fill(
+        RoleObjectType $resource,
+        Role $role = null,
+        ObjectType $objectType = null,
+        $attributes = null
+    );
 
     /**
      * @param int   $resourceId

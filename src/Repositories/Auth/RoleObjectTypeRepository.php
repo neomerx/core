@@ -36,7 +36,7 @@ class RoleObjectTypeRepository extends IndexBasedResourceRepository implements R
         RoleObjectType $resource,
         Role $role = null,
         ObjectType $objectType = null,
-        array $attributes = null
+        $attributes = null
     ) {
         $this->fillModel($resource, [
             RoleObjectType::FIELD_ID_TYPE => $objectType,
