@@ -110,6 +110,16 @@ class Role extends BaseModel implements SelectByCodeInterface
     }
 
     /**
+     * Get model relation.
+     *
+     * @return string
+     */
+    public static function withObjectTypes()
+    {
+        return self::FIELD_ROLE_OBJECT_TYPES . '.' . RoleObjectType::FIELD_TYPE;
+    }
+
+    /**
      * Relation to employees.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
