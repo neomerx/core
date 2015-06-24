@@ -1,12 +1,15 @@
 <?php namespace Neomerx\Core\Models;
 
+use \Carbon\Carbon;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
- * @property int        id_customer_type
- * @property string     code
- * @property string     name
- * @property Collection customers
+ * @property      int        id_customer_type
+ * @property      string     code
+ * @property      string     name
+ * @property-read Carbon     created_at
+ * @property-read Carbon     updated_at
+ * @property      Collection customers
  *
  * @package Neomerx\Core
  */
@@ -27,6 +30,10 @@ class CustomerType extends BaseModel implements SelectByCodeInterface
     /** Model field name */
     const FIELD_NAME      = 'name';
     /** Model field name */
+    const FIELD_CREATED_AT = 'created_at';
+    /** Model field name */
+    const FIELD_UPDATED_AT = 'updated_at';
+    /** Model field name */
     const FIELD_CUSTOMERS = 'customers';
 
     /**
@@ -43,6 +50,11 @@ class CustomerType extends BaseModel implements SelectByCodeInterface
      * @inheritdoc
      */
     public $incrementing = true;
+
+    /**
+     * @inheritdoc
+     */
+    public $timestamps = true;
 
     /**
      * @inheritdoc
@@ -65,11 +77,6 @@ class CustomerType extends BaseModel implements SelectByCodeInterface
     protected $guarded = [
         self::FIELD_ID,
     ];
-
-    /**
-     * @inheritdoc
-     */
-    public $timestamps = false;
 
     /**
      * @inheritdoc
