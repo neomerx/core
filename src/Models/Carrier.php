@@ -23,7 +23,6 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      Collection orders
  * @property      Collection properties
  * @property      Collection customerTypes
- * @property      Collection regions
  * @property      Collection postcodes
  * @property      Collection territories
  * @property      Collection shippingOrders
@@ -73,7 +72,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     /** Model field name */
     const FIELD_PROPERTIES      = 'properties';
     /** Model field name */
-    const FIELD_REGIONS         = 'regions';
+    const FIELD_TERRITORIES     = 'territories';
     /** Model field name */
     const FIELD_CUSTOMER_TYPES  = 'customerTypes';
     /** Model field name */
