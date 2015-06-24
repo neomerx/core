@@ -1,29 +1,32 @@
 <?php namespace Neomerx\Core\Models;
 
+use \Carbon\Carbon;
 use \Illuminate\Support\Facades\DB;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
- * @property int        id_carrier
- * @property string     code
- * @property float      min_weight
- * @property float      max_weight
- * @property float      min_cost
- * @property float      max_cost
- * @property float      min_dimension
- * @property float      max_dimension
- * @property bool       is_taxable
- * @property string     settings
- * @property string     data
- * @property string     cache
- * @property string     factory
- * @property Collection orders
- * @property Collection properties
- * @property Collection customerTypes
- * @property Collection regions
- * @property Collection postcodes
- * @property Collection territories
- * @property Collection shippingOrders
+ * @property      int        id_carrier
+ * @property      string     code
+ * @property      float      min_weight
+ * @property      float      max_weight
+ * @property      float      min_cost
+ * @property      float      max_cost
+ * @property      float      min_dimension
+ * @property      float      max_dimension
+ * @property      bool       is_taxable
+ * @property      string     settings
+ * @property      string     data
+ * @property      string     cache
+ * @property      string     factory
+ * @property-read Carbon     created_at
+ * @property-read Carbon     updated_at
+ * @property      Collection orders
+ * @property      Collection properties
+ * @property      Collection customerTypes
+ * @property      Collection regions
+ * @property      Collection postcodes
+ * @property      Collection territories
+ * @property      Collection shippingOrders
  *
  * @package Neomerx\Core
  */
@@ -62,6 +65,10 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     /** Model field name */
     const FIELD_CALCULATOR_CODE = 'calculator_code';
     /** Model field name */
+    const FIELD_CREATED_AT      = 'created_at';
+    /** Model field name */
+    const FIELD_UPDATED_AT      = 'updated_at';
+    /** Model field name */
     const FIELD_ORDERS          = 'orders';
     /** Model field name */
     const FIELD_PROPERTIES      = 'properties';
@@ -90,7 +97,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     /**
      * @inheritdoc
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * @inheritdoc
