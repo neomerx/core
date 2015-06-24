@@ -74,6 +74,8 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     /** Model field name */
     const FIELD_TERRITORIES     = 'territories';
     /** Model field name */
+    const FIELD_POSTCODES       = 'postcodes';
+    /** Model field name */
     const FIELD_CUSTOMER_TYPES  = 'customerTypes';
     /** Model field name */
     const FIELD_SHIPPING_ORDERS = 'shippingOrders';
