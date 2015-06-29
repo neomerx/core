@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Models;
 
 /**
- * @property int     id_tax_rule_territory
- * @property int     id_carrier
- * @property int     territory_id
- * @property string  territory_type
- * @property mixed   territory
- * @property Carrier carrier
+ * @property int       id_tax_rule_territory
+ * @property int       id_carrier
+ * @property int       territory_id
+ * @property string    territory_type
+ * @property BaseModel territory
+ * @property Carrier   carrier
  *
  * @package Neomerx\Core
  */
