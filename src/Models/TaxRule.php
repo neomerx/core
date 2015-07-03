@@ -1,17 +1,20 @@
 <?php namespace Neomerx\Core\Models;
 
+use \Carbon\Carbon;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
- * @property int        id_tax_rule
- * @property int        id_tax
- * @property string     name
- * @property int        priority
- * @property Tax        tax
- * @property Collection territories
- * @property Collection postcodes
- * @property Collection customerTypes
- * @property Collection productTypes
+ * @property      int        id_tax_rule
+ * @property      int        id_tax
+ * @property      string     name
+ * @property      int        priority
+ * @property      Tax        tax
+ * @property-read Carbon     created_at
+ * @property-read Carbon     updated_at
+ * @property      Collection territories
+ * @property      Collection postcodes
+ * @property      Collection customerTypes
+ * @property      Collection productTypes
  *
  * @package Neomerx\Core
  */
@@ -31,6 +34,10 @@ class TaxRule extends BaseModel
     const FIELD_NAME           = 'name';
     /** Model field name */
     const FIELD_PRIORITY       = 'priority';
+    /** Model field name */
+    const FIELD_CREATED_AT     = 'created_at';
+    /** Model field name */
+    const FIELD_UPDATED_AT     = 'updated_at';
     /** Model field name */
     const FIELD_TAX            = 'tax';
     /** Model field name */
@@ -60,7 +67,7 @@ class TaxRule extends BaseModel
     /**
      * @inheritdoc
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     /**
      * @inheritdoc

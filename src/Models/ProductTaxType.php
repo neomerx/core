@@ -1,12 +1,15 @@
 <?php namespace Neomerx\Core\Models;
 
+use \Carbon\Carbon;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
- * @property int        id_product_tax_type
- * @property string     code
- * @property string     name
- * @property Collection products
+ * @property      int        id_product_tax_type
+ * @property      string     code
+ * @property      string     name
+ * @property-read Carbon     created_at
+ * @property-read Carbon     updated_at
+ * @property      Collection products
  *
  * @package Neomerx\Core
  */
@@ -21,13 +24,17 @@ class ProductTaxType extends BaseModel implements SelectByCodeInterface
     const CODE_MAX_LENGTH = 50;
 
     /** Model field name */
-    const FIELD_ID       = 'id_product_tax_type';
+    const FIELD_ID         = 'id_product_tax_type';
     /** Model field name */
-    const FIELD_CODE     = 'code';
+    const FIELD_CODE       = 'code';
     /** Model field name */
-    const FIELD_NAME     = 'name';
+    const FIELD_NAME       = 'name';
     /** Model field name */
-    const FIELD_PRODUCTS = 'products';
+    const FIELD_PRODUCTS   = 'products';
+    /** Model field name */
+    const FIELD_CREATED_AT = 'created_at';
+    /** Model field name */
+    const FIELD_UPDATED_AT = 'updated_at';
 
     /** Product tax type Id */
     const SHIPPING_ID   = 1;
@@ -60,6 +67,11 @@ class ProductTaxType extends BaseModel implements SelectByCodeInterface
     /**
      * @inheritdoc
      */
+    public $timestamps = true;
+
+    /**
+     * @inheritdoc
+     */
     protected $fillable = [
         self::FIELD_CODE,
         self::FIELD_NAME,
@@ -78,11 +90,6 @@ class ProductTaxType extends BaseModel implements SelectByCodeInterface
     protected $guarded = [
         self::FIELD_ID,
     ];
-
-    /**
-     * @inheritdoc
-     */
-    public $timestamps = false;
 
     /**
      * @inheritdoc
