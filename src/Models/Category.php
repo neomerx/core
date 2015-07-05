@@ -267,6 +267,17 @@ class Category extends BaseModel implements SelectByCodeInterface
     {
         return $this->hasOne(self::class, self::FIELD_ID, self::FIELD_ID_ANCESTOR);
     }
+    /**
+     * @param mixed $value
+     *
+     * @return bool
+     *
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     */
+    public function getEnabledAttribute($value)
+    {
+        return (bool)$value;
+    }
 
     /**
      * @inheritdoc
