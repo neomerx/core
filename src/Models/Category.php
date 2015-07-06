@@ -321,7 +321,16 @@ class Category extends BaseModel implements SelectByCodeInterface
     protected function onUpdating()
     {
         // root category can't be changed
-        return parent::onUpdating() && $this->code !== self::ROOT_CODE;
+        $allowUpdate = $this->code !== self::ROOT_CODE;
+
+        // if ancestor code has been changed then we update the model in database
+        if ($allowUpdate === true && $this->ancestorCode !== null) {
+            /** @var Category $parentCategory */
+            $parentCategory = $this->selectByCode($this->ancestorCode)->firstOrFail();
+            $this->attachToCategory($parentCategory);
+        }
+
+        return parent::onUpdating() && $allowUpdate;
     }
 
     /**
