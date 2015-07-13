@@ -5,13 +5,13 @@ use \Neomerx\Core\Support as S;
 /**
  * @property int         id_supply_order_details
  * @property int         id_supply_order
- * @property int         id_variant
+ * @property int         id_product
  * @property float       price_wo_tax
  * @property int         quantity
  * @property float       discount_rate
  * @property float       tax_rate
  * @property SupplyOrder supplyOrder
- * @property Variant     variant
+ * @property Product     product
  *
  * @package Neomerx\Core
  */
@@ -25,7 +25,7 @@ class SupplyOrderDetails extends BaseModel
     /** Model field name */
     const FIELD_ID_SUPPLY_ORDER = 'id_supply_order';
     /** Model field name */
-    const FIELD_ID_VARIANT      = Variant::FIELD_ID;
+    const FIELD_ID_PRODUCT      = Product::FIELD_ID;
     /** Model field name */
     const FIELD_PRICE_WO_TAX    = 'price_wo_tax';
     /** Model field name */
@@ -37,7 +37,7 @@ class SupplyOrderDetails extends BaseModel
     /** Model field name */
     const FIELD_SUPPLY_ORDER    = 'supplyOrder';
     /** Model field name */
-    const FIELD_VARIANT         = 'variant';
+    const FIELD_PRODUCT         = 'product';
 
     /**
      * @inheritdoc
@@ -73,7 +73,7 @@ class SupplyOrderDetails extends BaseModel
      * @inheritdoc
      */
     protected $hidden = [
-        self::FIELD_ID_VARIANT,
+        self::FIELD_ID_PRODUCT,
     ];
 
     /**
@@ -82,7 +82,7 @@ class SupplyOrderDetails extends BaseModel
     protected $guarded = [
         self::FIELD_ID,
         self::FIELD_ID_SUPPLY_ORDER,
-        self::FIELD_ID_VARIANT,
+        self::FIELD_ID_PRODUCT,
     ];
 
     /**
@@ -92,7 +92,7 @@ class SupplyOrderDetails extends BaseModel
     {
         return [
             self::FIELD_ID_SUPPLY_ORDER => 'required|integer|min:1|max:4294967295|exists:'.SupplyOrder::TABLE_NAME,
-            self::FIELD_ID_VARIANT      => 'required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
+            self::FIELD_ID_PRODUCT      => 'required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
             self::FIELD_PRICE_WO_TAX    => 'required|numeric|min:0',
             self::FIELD_QUANTITY        => 'required|integer|min:1|max:4294967295',
             self::FIELD_DISCOUNT_RATE   => 'sometimes|required|numeric|min:0|max:100',
@@ -109,7 +109,7 @@ class SupplyOrderDetails extends BaseModel
             self::FIELD_ID_SUPPLY_ORDER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 SupplyOrder::TABLE_NAME,
 
-            self::FIELD_ID_VARIANT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
+            self::FIELD_ID_PRODUCT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
 
             self::FIELD_PRICE_WO_TAX  => 'sometimes|required|numeric|min:0',
             self::FIELD_QUANTITY      => 'sometimes|required|integer|min:1|max:4294967295',
@@ -129,12 +129,12 @@ class SupplyOrderDetails extends BaseModel
     }
 
     /**
-     * Relation to variant.
+     * Relation to product.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function variant()
+    public function product()
     {
-        return $this->belongsTo(Variant::class, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
+        return $this->belongsTo(Product::class, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
     }
 }

@@ -5,11 +5,7 @@
  * @property int      id_product
  * @property int      id_language
  * @property string   name
- * @property string   description_short
  * @property string   description
- * @property string   meta_title
- * @property string   meta_keywords
- * @property string   meta_description
  * @property Product  product
  * @property Language language
  *
@@ -21,40 +17,24 @@ class ProductProperties extends BaseModel
     const TABLE_NAME = 'product_properties';
 
     /** Model field length */
-    const NAME_MAX_LENGTH              = 50;
+    const NAME_MAX_LENGTH         = 50;
     /** Model field length */
-    const DESCRIPTION_SHORT_MAX_LENGTH = 100;
-    /** Model field length */
-    const DESCRIPTION_MAX_LENGTH       = 300;
-    /** Model field length */
-    const META_TITLE_MAX_LENGTH        = 100;
-    /** Model field length */
-    const META_KEYWORDS_MAX_LENGTH     = 150;
-    /** Model field length */
-    const META_DESCRIPTION_MAX_LENGTH  = 300;
+    const DESCRIPTION_MAX_LENGTH  = 300;
 
     /** Model field name */
-    const FIELD_ID                = 'id_product_property';
+    const FIELD_ID          = 'id_product_property';
     /** Model field name */
-    const FIELD_ID_PRODUCT        = Product::FIELD_ID;
+    const FIELD_ID_PRODUCT  = Product::FIELD_ID;
     /** Model field name */
-    const FIELD_ID_LANGUAGE       = Language::FIELD_ID;
+    const FIELD_ID_LANGUAGE = Language::FIELD_ID;
     /** Model field name */
-    const FIELD_NAME              = 'name';
+    const FIELD_NAME        = 'name';
     /** Model field name */
-    const FIELD_DESCRIPTION       = 'description';
+    const FIELD_DESCRIPTION = 'description';
     /** Model field name */
-    const FIELD_DESCRIPTION_SHORT = 'description_short';
+    const FIELD_PRODUCT     = 'product';
     /** Model field name */
-    const FIELD_META_TITLE        = 'meta_title';
-    /** Model field name */
-    const FIELD_META_KEYWORDS     = 'meta_keywords';
-    /** Model field name */
-    const FIELD_META_DESCRIPTION  = 'meta_description';
-    /** Model field name */
-    const FIELD_PRODUCT           = 'product';
-    /** Model field name */
-    const FIELD_LANGUAGE          = 'language';
+    const FIELD_LANGUAGE    = 'language';
 
     /**
      * @inheritdoc
@@ -74,13 +54,14 @@ class ProductProperties extends BaseModel
     /**
      * @inheritdoc
      */
+    public $timestamps = false;
+
+    /**
+     * @inheritdoc
+     */
     protected $fillable = [
         self::FIELD_NAME,
-        self::FIELD_DESCRIPTION_SHORT,
         self::FIELD_DESCRIPTION,
-        self::FIELD_META_TITLE,
-        self::FIELD_META_KEYWORDS,
-        self::FIELD_META_DESCRIPTION,
     ];
 
     /**
@@ -103,7 +84,9 @@ class ProductProperties extends BaseModel
     /**
      * @inheritdoc
      */
-    public $timestamps = false;
+    protected $touches = [
+        self::FIELD_PRODUCT,
+    ];
 
     /**
      * @inheritdoc
@@ -111,14 +94,10 @@ class ProductProperties extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_PRODUCT        => 'required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
-            self::FIELD_ID_LANGUAGE       => 'required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
-            self::FIELD_NAME              => 'required|min:1|max:'.self::NAME_MAX_LENGTH,
-            self::FIELD_DESCRIPTION_SHORT => 'required|min:1|max:'.self::DESCRIPTION_SHORT_MAX_LENGTH,
-            self::FIELD_DESCRIPTION       => 'required|min:1|max:'.self::DESCRIPTION_MAX_LENGTH,
-            self::FIELD_META_TITLE        => 'required|min:1|max:'.self::META_TITLE_MAX_LENGTH,
-            self::FIELD_META_KEYWORDS     => 'required|min:1|max:'.self::META_KEYWORDS_MAX_LENGTH,
-            self::FIELD_META_DESCRIPTION  => 'required|min:1|max:'.self::META_DESCRIPTION_MAX_LENGTH,
+            self::FIELD_ID_PRODUCT  => 'required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
+            self::FIELD_ID_LANGUAGE => 'required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
+            self::FIELD_NAME        => 'required|min:1|max:'.self::NAME_MAX_LENGTH,
+            self::FIELD_DESCRIPTION => 'required|min:1|max:'.self::DESCRIPTION_MAX_LENGTH,
         ];
     }
 
@@ -130,13 +109,8 @@ class ProductProperties extends BaseModel
         return [
             self::FIELD_ID_PRODUCT  => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
             self::FIELD_ID_LANGUAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
-
-            self::FIELD_NAME              => 'sometimes|required|min:1|max:'.self::NAME_MAX_LENGTH,
-            self::FIELD_DESCRIPTION_SHORT => 'sometimes|required|min:1|max:'.self::DESCRIPTION_SHORT_MAX_LENGTH,
-            self::FIELD_DESCRIPTION       => 'sometimes|required|min:1|max:'.self::DESCRIPTION_MAX_LENGTH,
-            self::FIELD_META_TITLE        => 'sometimes|required|min:1|max:'.self::META_TITLE_MAX_LENGTH,
-            self::FIELD_META_KEYWORDS     => 'sometimes|required|min:1|max:'.self::META_KEYWORDS_MAX_LENGTH,
-            self::FIELD_META_DESCRIPTION  => 'sometimes|required|min:1|max:'.self::META_DESCRIPTION_MAX_LENGTH,
+            self::FIELD_NAME        => 'sometimes|required|min:1|max:'.self::NAME_MAX_LENGTH,
+            self::FIELD_DESCRIPTION => 'sometimes|required|min:1|max:'.self::DESCRIPTION_MAX_LENGTH,
         ];
     }
 

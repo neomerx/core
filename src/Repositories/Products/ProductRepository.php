@@ -1,9 +1,10 @@
 <?php namespace Neomerx\Core\Repositories\Products;
 
-use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Category;
-use \Neomerx\Core\Models\Manufacturer;
+use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Models\BaseProduct;
+use \Neomerx\Core\Models\Specification;
 use \Neomerx\Core\Models\ProductTaxType;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
@@ -13,25 +14,31 @@ use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 class ProductRepository extends CodeBasedResourceRepository implements ProductRepositoryInterface
 {
     /**
+     * @var SpecificationRepositoryInterface $specificationRepository
+     */
+    private $specificationRepo;
+
+    /**
      * @inheritdoc
      */
-    public function __construct()
+    public function __construct(SpecificationRepositoryInterface $specificationRepo)
     {
         parent::__construct(Product::class);
+        $this->specificationRepo = $specificationRepo;
     }
 
     /**
      * @inheritdoc
      */
     public function instance(
+        BaseProduct $baseProduct,
         Category $category,
-        Manufacturer $manufacturer,
         ProductTaxType $taxType,
         array $attributes
     ) {
-        /** @var \Neomerx\Core\Models\Product $product */
+        /** @var Product $product */
         $product = $this->makeModel();
-        $this->fill($product, $category, $manufacturer, $taxType, $attributes);
+        $this->fill($product, $baseProduct, $category, $taxType, $attributes);
         return $product;
     }
 
@@ -40,15 +47,55 @@ class ProductRepository extends CodeBasedResourceRepository implements ProductRe
      */
     public function fill(
         Product $product,
+        BaseProduct $baseProduct = null,
         Category $category = null,
-        Manufacturer $manufacturer = null,
         ProductTaxType $taxType = null,
         array $attributes = null
     ) {
+        /** @var BaseProduct $baseProduct */
+        if ($baseProduct !== null) {
+            $product->setAttribute(Product::FIELD_SKU, $baseProduct->getAttribute(BaseProduct::FIELD_SKU));
+        }
+
         $this->fillModel($product, [
+            Product::FIELD_ID_BASE_PRODUCT          => $baseProduct,
             Product::FIELD_ID_CATEGORY_DEFAULT => $category,
-            Product::FIELD_ID_MANUFACTURER     => $manufacturer,
             Product::FIELD_ID_PRODUCT_TAX_TYPE => $taxType,
         ], $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create(
+        BaseProduct $baseProduct,
+        Category $category,
+        ProductTaxType $taxType,
+        array $attributes
+    ) {
+        $defaultProduct = $baseProduct->getDefaultProduct();
+        // for just created base products there is no default product yet
+        $defaultSpecs = $defaultProduct !== null ? $defaultProduct->specification : [];
+
+        $product = $this->instance($baseProduct, $category, $taxType, $attributes);
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        DB::beginTransaction();
+        try {
+            $product->saveOrFail();
+            foreach ($defaultSpecs as $specRow) {
+                /** @var Specification $specRow */
+                $this->specificationRepo
+                    ->instance($baseProduct, $specRow->value, $specRow->attributesToArray(), $product)
+                    ->saveOrFail();
+            }
+
+            $allExecutedOk = true;
+        } finally {
+            /** @noinspection PhpUndefinedMethodInspection */
+            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
+        }
+
+        return $product;
     }
 }

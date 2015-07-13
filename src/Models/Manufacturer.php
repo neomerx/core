@@ -10,7 +10,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property-read Carbon     created_at
  * @property-read Carbon     updated_at
  * @property      Address    address
- * @property      Collection products
+ * @property      Collection baseProducts
  * @property      Collection properties
  *
  * @package Neomerx\Core
@@ -24,21 +24,21 @@ class Manufacturer extends BaseModel implements SelectByCodeInterface
     const CODE_MAX_LENGTH = 50;
 
     /** Model field name */
-    const FIELD_ID         = 'id_manufacturer';
+    const FIELD_ID            = 'id_manufacturer';
     /** Model field name */
-    const FIELD_ID_ADDRESS = Address::FIELD_ID;
+    const FIELD_ID_ADDRESS    = Address::FIELD_ID;
     /** Model field name */
-    const FIELD_CODE       = 'code';
+    const FIELD_CODE          = 'code';
     /** Model field name */
-    const FIELD_CREATED_AT = 'created_at';
+    const FIELD_CREATED_AT    = 'created_at';
     /** Model field name */
-    const FIELD_UPDATED_AT = 'updated_at';
+    const FIELD_UPDATED_AT    = 'updated_at';
     /** Model field name */
-    const FIELD_ADDRESS    = 'address';
+    const FIELD_ADDRESS       = 'address';
     /** Model field name */
-    const FIELD_PRODUCTS   = 'products';
+    const FIELD_BASE_PRODUCTS = 'baseProducts';
     /** Model field name */
-    const FIELD_PROPERTIES = 'properties';
+    const FIELD_PROPERTIES    = 'properties';
 
     /**
      * @inheritdoc
@@ -134,13 +134,13 @@ class Manufacturer extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * Relation to products.
+     * Relation to base products.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function products()
+    public function baseProducts()
     {
-        return $this->hasMany(Product::class, Product::FIELD_ID_MANUFACTURER, self::FIELD_ID);
+        return $this->hasMany(BaseProduct::class, BaseProduct::FIELD_ID_MANUFACTURER, self::FIELD_ID);
     }
 
     /**

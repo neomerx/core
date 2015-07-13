@@ -1,6 +1,6 @@
 <?php namespace Neomerx\Core\Repositories\Suppliers;
 
-use \Neomerx\Core\Models\Variant;
+use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\SupplyOrder;
 use \Neomerx\Core\Models\SupplyOrderDetails;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
@@ -21,11 +21,11 @@ class SupplyOrderDetailsRepository extends IndexBasedResourceRepository implemen
     /**
      * @inheritdoc
      */
-    public function instance(SupplyOrder $order, Variant $variant, array $attributes)
+    public function instance(SupplyOrder $order, Product $product, array $attributes)
     {
         /** @var SupplyOrderDetails $resource */
         $resource = $this->makeModel();
-        $this->fill($resource, $order, $variant, $attributes);
+        $this->fill($resource, $order, $product, $attributes);
         return $resource;
     }
 
@@ -35,12 +35,12 @@ class SupplyOrderDetailsRepository extends IndexBasedResourceRepository implemen
     public function fill(
         SupplyOrderDetails $resource,
         SupplyOrder $order = null,
-        Variant $variant = null,
+        Product $product = null,
         array $attributes = null
     ) {
         $this->fillModel($resource, [
             SupplyOrderDetails::FIELD_ID_SUPPLY_ORDER => $order,
-            SupplyOrderDetails::FIELD_ID_VARIANT      => $variant,
+            SupplyOrderDetails::FIELD_ID_PRODUCT      => $product,
         ], $attributes);
     }
 }

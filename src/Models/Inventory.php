@@ -4,7 +4,7 @@ use \Carbon\Carbon;
 
 /**
  * @property      int       id_inventory
- * @property      int       id_variant
+ * @property      int       id_product
  * @property      int       id_warehouse
  * @property      int       in
  * @property      int       out
@@ -13,7 +13,7 @@ use \Carbon\Carbon;
  * @property-read int       quantity
  * @property-read Carbon    created_at
  * @property-read Carbon    updated_at
- * @property      Variant   variant
+ * @property      Product   product
  * @property      Warehouse warehouse
  *
  * @package Neomerx\Core
@@ -28,7 +28,7 @@ class Inventory extends BaseModel
     /** Model field name */
     const FIELD_ID_WAREHOUSE = Warehouse::FIELD_ID;
     /** Model field name */
-    const FIELD_ID_VARIANT   = Variant::FIELD_ID;
+    const FIELD_ID_PRODUCT   = Product::FIELD_ID;
     /** Model field name */
     const FIELD_IN           = 'in';
     /** Model field name */
@@ -46,7 +46,7 @@ class Inventory extends BaseModel
     /** Model field name */
     const FIELD_WAREHOUSE    = 'warehouse';
     /** Model field name */
-    const FIELD_VARIANT      = 'variant';
+    const FIELD_PRODUCT      = 'product';
 
     /**
      * @inheritdoc
@@ -81,7 +81,7 @@ class Inventory extends BaseModel
      * @inheritdoc
      */
     protected $hidden = [
-        self::FIELD_ID_VARIANT,
+        self::FIELD_ID_PRODUCT,
         self::FIELD_ID_WAREHOUSE,
     ];
 
@@ -90,7 +90,7 @@ class Inventory extends BaseModel
      */
     protected $guarded = [
         self::FIELD_ID,
-        self::FIELD_ID_VARIANT,
+        self::FIELD_ID_PRODUCT,
         self::FIELD_ID_WAREHOUSE,
     ];
 
@@ -107,7 +107,7 @@ class Inventory extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_VARIANT   => 'required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
+            self::FIELD_ID_PRODUCT   => 'required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
             self::FIELD_IN           => 'sometimes|required|integer|min:0|max:18446744073709551615',
             self::FIELD_OUT          => 'sometimes|required|integer|min:0|max:18446744073709551615',
             self::FIELD_RESERVED     => 'sometimes|required|integer|min:0|max:4294967295',
@@ -121,7 +121,7 @@ class Inventory extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_VARIANT   => 'forbidden',
+            self::FIELD_ID_PRODUCT   => 'forbidden',
             self::FIELD_IN           => 'sometimes|required|integer|min:0|max:18446744073709551615',
             self::FIELD_OUT          => 'sometimes|required|integer|min:0|max:18446744073709551615',
             self::FIELD_RESERVED     => 'sometimes|required|integer|min:0|max:4294967295',
@@ -151,13 +151,13 @@ class Inventory extends BaseModel
     }
 
     /**
-     * Relation to variant.
+     * Relation to product.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function variant()
+    public function product()
     {
-        return $this->belongsTo(Variant::class, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
+        return $this->belongsTo(Product::class, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
     }
 
     /**
@@ -171,15 +171,15 @@ class Inventory extends BaseModel
     }
 
     /**
-     * @param int $variantId
+     * @param int $productId
      * @param int $warehouseId
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function selectByVariantAndWarehouse($variantId, $warehouseId)
+    public function selectByProductAndWarehouse($productId, $warehouseId)
     {
         return $this->newQuery()
-            ->where(self::FIELD_ID_VARIANT, $variantId)
+            ->where(self::FIELD_ID_PRODUCT, $productId)
             ->where(self::FIELD_ID_WAREHOUSE, $warehouseId);
     }
 

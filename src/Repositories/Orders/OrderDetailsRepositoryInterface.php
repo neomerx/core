@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Repositories\Orders;
 
 use \Neomerx\Core\Models\Order;
-use \Neomerx\Core\Models\Variant;
+use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\OrderDetails;
 use \Neomerx\Core\Models\ShippingOrder;
 use \Neomerx\Core\Repositories\RepositoryInterface;
@@ -13,7 +13,7 @@ interface OrderDetailsRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param Order              $order
-     * @param Variant            $variant
+     * @param Product            $product
      * @param array              $attributes
      * @param ShippingOrder|null $shippingOrder
      *
@@ -21,7 +21,7 @@ interface OrderDetailsRepositoryInterface extends RepositoryInterface
      */
     public function instance(
         Order $order,
-        Variant $variant,
+        Product $product,
         array $attributes,
         ShippingOrder $shippingOrder = null
     );
@@ -29,7 +29,7 @@ interface OrderDetailsRepositoryInterface extends RepositoryInterface
     /**
      * @param OrderDetails       $details
      * @param Order|null         $order
-     * @param Variant|null       $variant
+     * @param Product|null       $product
      * @param array|null         $attributes
      * @param ShippingOrder|null $shippingOrder
      *
@@ -38,7 +38,7 @@ interface OrderDetailsRepositoryInterface extends RepositoryInterface
     public function fill(
         OrderDetails $details,
         Order $order = null,
-        Variant $variant = null,
+        Product $product = null,
         array $attributes = null,
         ShippingOrder $shippingOrder = null
     );

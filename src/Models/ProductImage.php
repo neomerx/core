@@ -3,15 +3,15 @@
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 /**
- * @property int     id_product_image
- * @property int     id_product
- * @property int     id_variant
- * @property int     id_image
- * @property int     position
- * @property bool    is_cover
- * @property Image   image
- * @property Product product
- * @property Variant variant
+ * @property int         id_product_image
+ * @property int         id_base_product
+ * @property int         id_product
+ * @property int         id_image
+ * @property int         position
+ * @property bool        is_cover
+ * @property Image       image
+ * @property BaseProduct baseProduct
+ * @property Product     product
  *
  * @package Neomerx\Core
  */
@@ -21,23 +21,23 @@ class ProductImage extends BaseModel
     const TABLE_NAME = 'product_images';
 
     /** Model field name */
-    const FIELD_ID         = 'id_product_image';
+    const FIELD_ID              = 'id_product_image';
     /** Model field name */
-    const FIELD_ID_PRODUCT = Product::FIELD_ID;
+    const FIELD_ID_BASE_PRODUCT = BaseProduct::FIELD_ID;
     /** Model field name */
-    const FIELD_ID_VARIANT = Variant::FIELD_ID;
+    const FIELD_ID_PRODUCT      = Product::FIELD_ID;
     /** Model field name */
-    const FIELD_ID_IMAGE   = Image::FIELD_ID;
+    const FIELD_ID_IMAGE        = Image::FIELD_ID;
     /** Model field name */
-    const FIELD_POSITION   = 'position';
+    const FIELD_POSITION        = 'position';
     /** Model field name */
-    const FIELD_IS_COVER   = 'is_cover';
+    const FIELD_IS_COVER        = 'is_cover';
     /** Model field name */
-    const FIELD_IMAGE      = 'image';
+    const FIELD_IMAGE           = 'image';
     /** Model field name */
-    const FIELD_PRODUCT    = 'product';
+    const FIELD_BASE_PRODUCT    = 'baseProduct';
     /** Model field name */
-    const FIELD_VARIANT    = 'variant';
+    const FIELD_PRODUCT         = 'product';
 
     /**
      * @inheritdoc
@@ -70,8 +70,8 @@ class ProductImage extends BaseModel
      * @inheritdoc
      */
     protected $hidden = [
+        self::FIELD_ID_BASE_PRODUCT,
         self::FIELD_ID_PRODUCT,
-        self::FIELD_ID_VARIANT,
     ];
 
     /**
@@ -79,8 +79,8 @@ class ProductImage extends BaseModel
      */
     protected $guarded = [
         self::FIELD_ID,
+        self::FIELD_ID_BASE_PRODUCT,
         self::FIELD_ID_PRODUCT,
-        self::FIELD_ID_VARIANT,
         self::FIELD_ID_IMAGE,
         self::FIELD_IS_COVER,
     ];
@@ -91,10 +91,10 @@ class ProductImage extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_PRODUCT => 'required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
-            self::FIELD_ID_VARIANT => 'sometimes|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
-            self::FIELD_ID_IMAGE   => 'required|integer|min:1|max:4294967295|exists:'.Image::TABLE_NAME,
-            self::FIELD_POSITION   => 'required|numeric|min:0|max:255',
+            self::FIELD_ID_BASE_PRODUCT => 'required|integer|min:1|max:4294967295|exists:'.BaseProduct::TABLE_NAME,
+            self::FIELD_ID_PRODUCT      => 'sometimes|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
+            self::FIELD_ID_IMAGE        => 'required|integer|min:1|max:4294967295|exists:'.Image::TABLE_NAME,
+            self::FIELD_POSITION        => 'required|numeric|min:0|max:255',
 
             // direct change  of 'is cover' is forbidden use repository's method instead
             self::FIELD_IS_COVER   => 'sometimes|required|forbidden',
@@ -107,14 +107,25 @@ class ProductImage extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_PRODUCT => 'sometimes|required|forbidden',
-            self::FIELD_ID_VARIANT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Variant::TABLE_NAME,
-            self::FIELD_ID_IMAGE   => 'sometimes|required|forbidden',
-            self::FIELD_POSITION   => 'sometimes|required|numeric|min:0|max:255',
+            self::FIELD_ID_BASE_PRODUCT => 'sometimes|required|forbidden',
+
+            self::FIELD_ID_PRODUCT      => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
+                Product::TABLE_NAME,
+
+            self::FIELD_ID_IMAGE        => 'sometimes|required|forbidden',
+            self::FIELD_POSITION        => 'sometimes|required|numeric|min:0|max:255',
 
             // direct change  of 'is cover' is forbidden use repository's method instead
-            self::FIELD_IS_COVER   => 'sometimes|required|forbidden',
+            self::FIELD_IS_COVER        => 'sometimes|required|forbidden',
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public static function withBaseProduct()
+    {
+        return self::FIELD_BASE_PRODUCT;
     }
 
     /**
@@ -123,14 +134,6 @@ class ProductImage extends BaseModel
     public static function withProduct()
     {
         return self::FIELD_PRODUCT;
-    }
-
-    /**
-     * @return string
-     */
-    public static function withVariant()
-    {
-        return self::FIELD_VARIANT;
     }
 
     /**
@@ -167,13 +170,13 @@ class ProductImage extends BaseModel
     }
 
     /**
-     * Relation to product.
+     * Relation to base product.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product()
+    public function baseProduct()
     {
-        return $this->belongsTo(Product::class, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
+        return $this->belongsTo(BaseProduct::class, self::FIELD_ID_BASE_PRODUCT, BaseProduct::FIELD_ID);
     }
 
     /**
@@ -187,13 +190,13 @@ class ProductImage extends BaseModel
     }
 
     /**
-     * Relation to variant.
+     * Relation to product.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function variant()
+    public function product()
     {
-        return $this->belongsTo(Variant::class, self::FIELD_ID_VARIANT, Variant::FIELD_ID);
+        return $this->belongsTo(Product::class, self::FIELD_ID_PRODUCT, Product::FIELD_ID);
     }
 
     /**

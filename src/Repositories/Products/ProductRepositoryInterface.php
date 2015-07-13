@@ -2,7 +2,7 @@
 
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Category;
-use \Neomerx\Core\Models\Manufacturer;
+use \Neomerx\Core\Models\BaseProduct;
 use \Neomerx\Core\Models\ProductTaxType;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
@@ -12,35 +12,49 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface ProductRepositoryInterface extends RepositoryInterface
 {
     /**
+     * @param BaseProduct    $baseProduct
      * @param Category       $category
-     * @param Manufacturer   $manufacturer
      * @param ProductTaxType $taxType
      * @param array          $attributes
      *
      * @return Product
      */
     public function instance(
+        BaseProduct $baseProduct,
         Category $category,
-        Manufacturer $manufacturer,
         ProductTaxType $taxType,
         array $attributes
     );
 
     /**
      * @param Product             $product
+     * @param BaseProduct|null    $baseProduct
      * @param Category|null       $category
-     * @param Manufacturer|null   $manufacturer
      * @param ProductTaxType|null $taxType
      * @param array|null          $attributes
      *
-     * @return void
      */
     public function fill(
         Product $product,
+        BaseProduct $baseProduct = null,
         Category $category = null,
-        Manufacturer $manufacturer = null,
         ProductTaxType $taxType = null,
         array $attributes = null
+    );
+
+    /**
+     * @param BaseProduct    $baseProduct
+     * @param Category       $category
+     * @param ProductTaxType $taxType
+     * @param array          $attributes
+     *
+     * @return Product
+     */
+    public function create(
+        BaseProduct $baseProduct,
+        Category $category,
+        ProductTaxType $taxType,
+        array $attributes
     );
 
     /**

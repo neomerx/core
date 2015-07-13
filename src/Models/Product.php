@@ -2,36 +2,28 @@
 
 use \Carbon\Carbon;
 use \Neomerx\Core\Support as S;
-use \Illuminate\Support\Facades\App;
 use \Illuminate\Database\Eloquent\Collection;
-use \Neomerx\Core\Repositories\Products\VariantRepositoryInterface;
 
 /**
  * @property      int            id_product
+ * @property      int            id_base_product
  * @property      int            id_category_default
- * @property      int            id_manufacturer
  * @property      int            id_product_tax_type
  * @property      string         sku
- * @property      string         link
  * @property      float          price_wo_tax
- * @property      float          pkg_height
- * @property      float          pkg_width
- * @property      float          pkg_length
- * @property      float          pkg_weight
- * @property      bool           enabled
+ * @property      Category       defaultCategory
+ * @property      ProductTaxType taxType
  * @property-read Carbon         created_at
  * @property-read Carbon         updated_at
- * @property      Category       defaultCategory
- * @property      Manufacturer   manufacturer
- * @property      ProductTaxType taxType
+ * @property      BaseProduct    baseProduct
+ * @property      Collection     properties
  * @property      Collection     assignedCategories
  * @property      Collection     productCategories
  * @property      Collection     related
  * @property      Collection     relatedProducts
- * @property      Collection     properties
  * @property      Collection     specification
- * @property      Collection     productImages
- * @property      Collection     variants
+ * @property      Collection     images
+ * @property      Collection     inventories
  *
  * @package Neomerx\Core
  *
@@ -44,34 +36,28 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     const TABLE_NAME = 'products';
 
     /** Model field length */
-    const SKU_MAX_LENGTH  = 64;
-    /** Model field length */
-    const LINK_MAX_LENGTH = 50;
+    const SKU_MAX_LENGTH = BaseProduct::SKU_MAX_LENGTH;
 
     /** Model field name */
     const FIELD_ID                  = 'id_product';
     /** Model field name */
-    const FIELD_ID_CATEGORY_DEFAULT = 'id_category_default';
-    /** Model field name */
-    const FIELD_ID_MANUFACTURER     = Manufacturer::FIELD_ID;
-    /** Model field name */
-    const FIELD_ID_PRODUCT_TAX_TYPE = ProductTaxType::FIELD_ID;
+    const FIELD_ID_BASE_PRODUCT     = BaseProduct::FIELD_ID;
     /** Model field name */
     const FIELD_SKU                 = 'sku';
     /** Model field name */
-    const FIELD_LINK                = 'link';
-    /** Model field name */
     const FIELD_PRICE_WO_TAX        = 'price_wo_tax';
     /** Model field name */
-    const FIELD_ENABLED             = 'enabled';
+    const FIELD_ID_CATEGORY_DEFAULT = 'id_category_default';
+    /** Model field name */
+    const FIELD_ID_PRODUCT_TAX_TYPE = ProductTaxType::FIELD_ID;
     /** Model field name */
     const FIELD_CREATED_AT          = 'created_at';
     /** Model field name */
     const FIELD_UPDATED_AT          = 'updated_at';
     /** Model field name */
-    const FIELD_TAX_TYPE            = 'taxType';
+    const FIELD_BASE_PRODUCT        = 'baseProduct';
     /** Model field name */
-    const FIELD_DEFAULT_CATEGORY    = 'defaultCategory';
+    const FIELD_PROPERTIES          = 'properties';
     /** Model field name */
     const FIELD_ASSIGNED_CATEGORIES = 'assignedCategories';
     /** Model field name */
@@ -79,27 +65,13 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     /** Model field name */
     const FIELD_RELATED_PRODUCTS    = 'relatedProducts';
     /** Model field name */
-    const FIELD_PRODUCT_IMAGES      = 'productImages';
-    /** Model field name */
-    const FIELD_RELATED             = 'related';
-    /** Model field name */
-    const FIELD_MANUFACTURER        = 'manufacturer';
-    /** Model field name */
-    const FIELD_PROPERTIES          = 'properties';
-    /** Model field name */
     const FIELD_SPECIFICATION       = 'specification';
     /** Model field name */
     const FIELD_IMAGES              = 'images';
     /** Model field name */
-    const FIELD_VARIANTS            = 'variants';
+    const FIELD_DEFAULT_CATEGORY    = 'defaultCategory';
     /** Model field name */
-    const FIELD_PKG_HEIGHT          = 'pkg_height';
-    /** Model field name */
-    const FIELD_PKG_WIDTH           = 'pkg_width';
-    /** Model field name */
-    const FIELD_PKG_LENGTH          = 'pkg_length';
-    /** Model field name */
-    const FIELD_PKG_WEIGHT          = 'pkg_weight';
+    const FIELD_TAX_TYPE            = 'taxType';
 
     /**
      * @inheritdoc
@@ -126,13 +98,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     protected $fillable = [
         self::FIELD_SKU,
-        self::FIELD_LINK,
-        self::FIELD_ENABLED,
         self::FIELD_PRICE_WO_TAX,
-        self::FIELD_PKG_WEIGHT,
-        self::FIELD_PKG_LENGTH,
-        self::FIELD_PKG_WIDTH,
-        self::FIELD_PKG_HEIGHT,
     ];
 
     /**
@@ -140,8 +106,8 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     protected $hidden = [
         self::FIELD_ID,
+        self::FIELD_ID_BASE_PRODUCT,
         self::FIELD_ID_CATEGORY_DEFAULT,
-        self::FIELD_ID_MANUFACTURER,
         self::FIELD_ID_PRODUCT_TAX_TYPE,
     ];
 
@@ -150,9 +116,16 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     protected $guarded = [
         self::FIELD_ID,
+        self::FIELD_ID_BASE_PRODUCT,
         self::FIELD_ID_CATEGORY_DEFAULT,
-        self::FIELD_ID_MANUFACTURER,
         self::FIELD_ID_PRODUCT_TAX_TYPE,
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    protected $touches = [
+        self::FIELD_BASE_PRODUCT,
     ];
 
     /**
@@ -161,25 +134,15 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_SKU => 'required|alpha_dash|min:1|max:'.self::SKU_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
+            self::FIELD_ID_BASE_PRODUCT => 'required|integer|min:1|max:4294967295',
+            self::FIELD_SKU             => 'required|alpha_dash|min:1|max:'.self::SKU_MAX_LENGTH,
+            self::FIELD_PRICE_WO_TAX    => 'sometimes|required|numeric|min:0',
 
             self::FIELD_ID_CATEGORY_DEFAULT => 'required|integer|min:1|max:4294967295|exists:'.
                 Category::TABLE_NAME.','.Category::FIELD_ID,
 
-            self::FIELD_LINK => 'required|alpha_dash|min:1|max:'.self::LINK_MAX_LENGTH.
-                '|unique:'.self::TABLE_NAME,
-
-            self::FIELD_ID_MANUFACTURER => 'required|integer|min:1|max:4294967295|exists:'.Manufacturer::TABLE_NAME,
-
             self::FIELD_ID_PRODUCT_TAX_TYPE => 'required|integer|min:1|max:4294967295|exists:'.
                 ProductTaxType::TABLE_NAME,
-
-            self::FIELD_ENABLED      => 'required|boolean',
-            self::FIELD_PRICE_WO_TAX => 'required|numeric|min:0',
-            self::FIELD_PKG_HEIGHT   => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_WIDTH    => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_LENGTH   => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_WEIGHT   => 'sometimes|required|numeric|min:0',
         ];
     }
 
@@ -189,26 +152,15 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_SKU  => 'sometimes|required|forbidden',
+            self::FIELD_ID_BASE_PRODUCT => 'sometimes|required|forbidden',
+            self::FIELD_SKU             => 'sometimes|required|forbidden',
+            self::FIELD_PRICE_WO_TAX    => 'sometimes|numeric|min:0',
 
             self::FIELD_ID_CATEGORY_DEFAULT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 Category::TABLE_NAME.','.Category::FIELD_ID,
 
-            self::FIELD_LINK => 'sometimes|required|alpha_dash|min:1|max:'.self::LINK_MAX_LENGTH.
-                '|unique:'.self::TABLE_NAME,
-
-            self::FIELD_ID_MANUFACTURER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
-                Manufacturer::TABLE_NAME,
-
-            self::FIELD_ID_PRODUCT_TAX_TYPE  => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
+            self::FIELD_ID_PRODUCT_TAX_TYPE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 ProductTaxType::TABLE_NAME,
-
-            self::FIELD_ENABLED      => 'sometimes|required|boolean',
-            self::FIELD_PRICE_WO_TAX => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_HEIGHT   => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_WIDTH    => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_LENGTH   => 'sometimes|required|numeric|min:0',
-            self::FIELD_PKG_WEIGHT   => 'sometimes|required|numeric|min:0',
         ];
     }
 
@@ -223,20 +175,14 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     /**
      * @return string
      */
-    public static function withManufacturer()
-    {
-        return self::FIELD_MANUFACTURER;
-    }
-
-    /**
-     * @return string
-     */
     public static function withDefaultCategory()
     {
         return self::FIELD_DEFAULT_CATEGORY;
     }
 
     /**
+     * Get model relation.
+     *
      * @return string
      */
     public static function withTaxType()
@@ -245,13 +191,13 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     }
 
     /**
-     * Relation to default category.
+     * Get model relation.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return string
      */
-    public function defaultCategory()
+    public static function withManufacturer()
     {
-        return $this->hasOne(Category::class, Category::FIELD_ID, self::FIELD_ID_CATEGORY_DEFAULT);
+        return self::FIELD_BASE_PRODUCT.'.'.BaseProduct::FIELD_MANUFACTURER;
     }
 
     /**
@@ -306,14 +252,25 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     }
 
     /**
-     * Relation to product language properties (translations).
+     * Get product price if specified otherwise return parent's product price.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @param $value
+     *
+     * @return float
      */
-    public function properties()
+    public function getPriceWoTaxAttribute($value)
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return $this->hasMany(ProductProperties::class, ProductProperties::FIELD_ID_PRODUCT, self::FIELD_ID);
+        return $value !== null ? $value : $this->{self::FIELD_BASE_PRODUCT}->price_wo_tax;
+    }
+
+    /**
+     * Relation to product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function baseProduct()
+    {
+        return $this->belongsTo(BaseProduct::class, self::FIELD_ID_BASE_PRODUCT, BaseProduct::FIELD_ID);
     }
 
     /**
@@ -323,9 +280,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
      */
     public function specification()
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return $this->hasMany(Specification::class, Specification::FIELD_ID_PRODUCT, self::FIELD_ID)
-            ->whereNull(Variant::FIELD_ID);
+        return $this->hasMany(Specification::class, Specification::FIELD_ID_PRODUCT, self::FIELD_ID);
     }
 
     /**
@@ -333,21 +288,29 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function productImages()
+    public function images()
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return $this->hasMany(ProductImage::class, ProductImage::FIELD_ID_PRODUCT, self::FIELD_ID)
-            ->whereNull(Variant::FIELD_ID);
+        return $this->hasMany(ProductImage::class, ProductImage::FIELD_ID_PRODUCT, self::FIELD_ID);
     }
 
     /**
-     * Relation to manufacturer.
+     * Relation to inventories.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function manufacturer()
+    public function inventories()
     {
-        return $this->belongsTo(Manufacturer::class, self::FIELD_ID_MANUFACTURER, Manufacturer::FIELD_ID);
+        return $this->hasMany(Inventory::class, Inventory::FIELD_ID_PRODUCT, self::FIELD_ID);
+    }
+
+    /**
+     * Relation to default category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function defaultCategory()
+    {
+        return $this->hasOne(Category::class, Category::FIELD_ID, self::FIELD_ID_CATEGORY_DEFAULT);
     }
 
     /**
@@ -361,32 +324,35 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     }
 
     /**
-     * Relation to product variants.
+     * Relation to product language properties (translations).
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function variants()
+    public function properties()
     {
-        return $this->hasMany(Variant::class, Variant::FIELD_ID_PRODUCT, self::FIELD_ID);
+        return $this->hasMany(ProductProperties::class, ProductProperties::FIELD_ID_PRODUCT, self::FIELD_ID);
     }
 
     /**
-     * Create default variant on product creation.
+     * Check if product is default.
      *
      * @return bool
      */
-    protected function onCreated()
+    public function isDefault()
     {
-        $productCreated = parent::onCreated();
+        return $this->{self::FIELD_SKU} === $this->{self::FIELD_BASE_PRODUCT}->{BaseProduct::FIELD_SKU};
+    }
 
-        if ($productCreated === true) {
-            /** @noinspection PhpUndefinedMethodInspection */
-            /** @var VariantRepositoryInterface $variantRepo */
-            $variantRepo = App::make(VariantRepositoryInterface::class);
-            $variantRepo->create($this, [Variant::FIELD_SKU => $this->getAttribute(self::FIELD_SKU)]);
-        }
-
-        return $productCreated;
+    /**
+     * Select default product for base product.
+     *
+     * @param BaseProduct $base
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function selectDefault(BaseProduct $base)
+    {
+        return static::query()->where(self::FIELD_SKU, '=', $base->{BaseProduct::FIELD_SKU});
     }
 
     /**
@@ -412,19 +378,18 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     }
 
     /**
-     * Get default product variant.
+     * @inheritdoc
      *
-     * @return Variant|null
+     * If an ordinary non-default product is deleted then no specific. Just delete it with its properties.
+     * Default product could not be 'deleted'. Use 'reset to default' instead.
      */
-    public function getDefaultVariant()
+    protected function onDeleting()
     {
-        foreach ($this->variants as $variant) {
-            /** @var Variant $variant */
-            if ($variant->isDefault() === true) {
-                return $variant;
-            }
-        }
+        $parentOnDeleting = parent::onDeleting();
 
-        return null;
+        // only non-default product could actually be deleted.
+        $canBeDeleted = !$this->isDefault();
+
+        return $parentOnDeleting && $canBeDeleted;
     }
 }

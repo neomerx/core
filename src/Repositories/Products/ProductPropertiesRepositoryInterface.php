@@ -11,7 +11,7 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface ProductPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Product $resource
+     * @param Product  $resource
      * @param Language $language
      * @param array    $attributes
      *

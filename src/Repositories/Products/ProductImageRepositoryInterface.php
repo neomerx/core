@@ -2,7 +2,7 @@
 
 use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Models\Product;
-use \Neomerx\Core\Models\Variant;
+use \Neomerx\Core\Models\BaseProduct;
 use \Neomerx\Core\Models\ProductImage;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
@@ -12,30 +12,30 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface ProductImageRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Product      $product
+     * @param BaseProduct  $base
      * @param Image        $image
      * @param array        $attributes
-     * @param Variant|null $variant
+     * @param Product|null $product
      *
      * @return ProductImage
      */
-    public function instance(Product $product, Image $image, array $attributes, Variant $variant = null);
+    public function instance(BaseProduct $base, Image $image, array $attributes, Product $product = null);
 
     /**
-     * @param ProductImage $resource
-     * @param Product|null $product
-     * @param Image|null   $image
-     * @param array|null   $attributes
-     * @param Variant|null $variant
+     * @param ProductImage     $resource
+     * @param BaseProduct|null $base
+     * @param Image|null       $image
+     * @param array|null       $attributes
+     * @param Product|null     $product
      *
      * @return void
      */
     public function fill(
         ProductImage $resource,
-        Product $product = null,
+        BaseProduct $base = null,
         Image $image = null,
         array $attributes = null,
-        Variant $variant = null
+        Product $product = null
     );
 
     /**

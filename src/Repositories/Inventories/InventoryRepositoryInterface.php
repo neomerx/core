@@ -1,6 +1,6 @@
 <?php namespace Neomerx\Core\Repositories\Inventories;
 
-use \Neomerx\Core\Models\Variant;
+use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Inventory;
 use \Neomerx\Core\Models\Warehouse;
 use \Neomerx\Core\Repositories\RepositoryInterface;
@@ -11,17 +11,17 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface InventoryRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Variant   $variant
+     * @param Product   $product
      * @param Warehouse $warehouse
      * @param array     $attributes
      *
      * @return Inventory
      */
-    public function instance(Variant $variant, Warehouse $warehouse, array $attributes);
+    public function instance(Product $product, Warehouse $warehouse, array $attributes);
 
     /**
      * @param Inventory      $resource
-     * @param Variant|null   $variant
+     * @param Product|null   $product
      * @param Warehouse|null $warehouse
      * @param array|null     $attributes
      *
@@ -29,7 +29,7 @@ interface InventoryRepositoryInterface extends RepositoryInterface
      */
     public function fill(
         Inventory $resource,
-        Variant $variant = null,
+        Product $product = null,
         Warehouse $warehouse = null,
         array $attributes = null
     );

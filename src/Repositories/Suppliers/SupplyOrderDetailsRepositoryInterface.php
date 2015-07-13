@@ -1,6 +1,6 @@
 <?php namespace Neomerx\Core\Repositories\Suppliers;
 
-use \Neomerx\Core\Models\Variant;
+use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\SupplyOrder;
 use \Neomerx\Core\Models\SupplyOrderDetails;
 use \Neomerx\Core\Repositories\RepositoryInterface;
@@ -12,17 +12,17 @@ interface SupplyOrderDetailsRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param SupplyOrder $order
-     * @param Variant     $variant
+     * @param Product     $product
      * @param array       $attributes
      *
      * @return SupplyOrderDetails
      */
-    public function instance(SupplyOrder $order, Variant $variant, array $attributes);
+    public function instance(SupplyOrder $order, Product $product, array $attributes);
 
     /**
      * @param SupplyOrderDetails $resource
      * @param SupplyOrder|null   $order
-     * @param Variant|null       $variant
+     * @param Product|null       $product
      * @param array|null         $attributes
      *
      * @return void
@@ -30,7 +30,7 @@ interface SupplyOrderDetailsRepositoryInterface extends RepositoryInterface
     public function fill(
         SupplyOrderDetails $resource,
         SupplyOrder $order = null,
-        Variant $variant = null,
+        Product $product = null,
         array $attributes = null
     );
 

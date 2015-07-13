@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Repositories\Products;
 
 use \Neomerx\Core\Models\Product;
-use \Neomerx\Core\Models\Variant;
+use \Neomerx\Core\Models\BaseProduct;
 use \Neomerx\Core\Models\Specification;
 use \Neomerx\Core\Models\CharacteristicValue;
 use \Neomerx\Core\Repositories\RepositoryInterface;
@@ -12,35 +12,35 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface SpecificationRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Product             $product
+     * @param BaseProduct         $base
      * @param CharacteristicValue $value
      * @param array               $attributes
-     * @param Variant|null        $variant
+     * @param Product|null        $product
      *
      * @return Specification
      */
     public function instance(
-        Product $product,
+        BaseProduct $base,
         CharacteristicValue $value,
         array $attributes,
-        Variant $variant = null
+        Product $product = null
     );
 
     /**
      * @param Specification            $specification
-     * @param Product|null             $product
+     * @param BaseProduct|null         $base
      * @param CharacteristicValue|null $value
      * @param array|null               $attributes
-     * @param Variant|null             $variant
+     * @param Product|null             $product
      *
      * @return void
      */
     public function fill(
         Specification $specification,
-        Product $product = null,
+        BaseProduct $base = null,
         CharacteristicValue $value = null,
         array $attributes = null,
-        Variant $variant = null
+        Product $product = null
     );
 
     /**
@@ -69,9 +69,9 @@ interface SpecificationRepositoryInterface extends RepositoryInterface
     /**
      * Get max/last specification position for product.
      *
-     * @param Product $product
+     * @param BaseProduct $base
      *
      * @return int
      */
-    public function getMaxPosition(Product $product);
+    public function getMaxPosition(BaseProduct $base);
 }
