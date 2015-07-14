@@ -1,6 +1,7 @@
 <?php namespace Neomerx\Core\Repositories\Products;
 
 use \Neomerx\Core\Support as S;
+use \Neomerx\Core\Models\Currency;
 use \Neomerx\Core\Models\BaseProduct;
 use \Neomerx\Core\Models\Manufacturer;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
@@ -23,11 +24,12 @@ class BaseProductRepository extends CodeBasedResourceRepository implements BaseP
      */
     public function instance(
         Manufacturer $manufacturer,
+        Currency $currency,
         array $attributes
     ) {
         /** @var BaseProduct $base */
         $base = $this->makeModel();
-        $this->fill($base, $manufacturer, $attributes);
+        $this->fill($base, $manufacturer, $currency, $attributes);
         return $base;
     }
 
@@ -37,10 +39,12 @@ class BaseProductRepository extends CodeBasedResourceRepository implements BaseP
     public function fill(
         BaseProduct $base,
         Manufacturer $manufacturer = null,
+        Currency $currency = null,
         array $attributes = null
     ) {
         $this->fillModel($base, [
-            BaseProduct::FIELD_ID_MANUFACTURER     => $manufacturer,
+            BaseProduct::FIELD_ID_CURRENCY     => $currency,
+            BaseProduct::FIELD_ID_MANUFACTURER => $manufacturer,
         ], $attributes);
     }
 }

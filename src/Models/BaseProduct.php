@@ -5,23 +5,24 @@ use \Neomerx\Core\Support as S;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
- * @property      int            id_base_product
- * @property      int            id_manufacturer
- * @property      string         sku
- * @property      string         link
- * @property      float          price_wo_tax
- * @property      float          pkg_height
- * @property      float          pkg_width
- * @property      float          pkg_length
- * @property      float          pkg_weight
- * @property      bool           enabled
- * @property-read Carbon         created_at
- * @property-read Carbon         updated_at
- * @property      Manufacturer   manufacturer
- * @property      Collection     properties
- * @property      Collection     specification
- * @property      Collection     productImages
- * @property      Collection     products
+ * @property      int          id_base_product
+ * @property      int          id_manufacturer
+ * @property      string       sku
+ * @property      string       link
+ * @property      float        price_wo_tax
+ * @property      float        pkg_height
+ * @property      float        pkg_width
+ * @property      float        pkg_length
+ * @property      float        pkg_weight
+ * @property      bool         enabled
+ * @property-read Carbon       created_at
+ * @property-read Carbon       updated_at
+ * @property      Currency     currency
+ * @property      Manufacturer manufacturer
+ * @property      Collection   properties
+ * @property      Collection   specification
+ * @property      Collection   productImages
+ * @property      Collection   products
  *
  * @package Neomerx\Core
  *
@@ -48,6 +49,8 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetSpecifi
     const FIELD_LINK                = 'link';
     /** Model field name */
     const FIELD_PRICE_WO_TAX        = 'price_wo_tax';
+    /** Model field name */
+    const FIELD_ID_CURRENCY         = Currency::FIELD_ID;
     /** Model field name */
     const FIELD_ENABLED             = 'enabled';
     /** Model field name */
@@ -76,6 +79,8 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetSpecifi
     const FIELD_PKG_LENGTH          = 'pkg_length';
     /** Model field name */
     const FIELD_PKG_WEIGHT          = 'pkg_weight';
+    /** Model field name */
+    const FIELD_CURRENCY            = 'currency';
 
     /**
      * @inheritdoc
@@ -117,6 +122,7 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetSpecifi
     protected $hidden = [
         self::FIELD_ID,
         self::FIELD_ID_MANUFACTURER,
+        self::FIELD_ID_CURRENCY,
     ];
 
     /**
@@ -125,6 +131,7 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetSpecifi
     protected $guarded = [
         self::FIELD_ID,
         self::FIELD_ID_MANUFACTURER,
+        self::FIELD_ID_CURRENCY,
     ];
 
     /**
@@ -139,6 +146,7 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetSpecifi
                 '|unique:'.self::TABLE_NAME,
 
             self::FIELD_ID_MANUFACTURER => 'required|integer|min:1|max:4294967295|exists:'.Manufacturer::TABLE_NAME,
+            self::FIELD_ID_CURRENCY     => 'required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
 
             self::FIELD_ENABLED      => 'required|boolean',
             self::FIELD_PRICE_WO_TAX => 'required|numeric|min:0',
@@ -163,6 +171,7 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetSpecifi
             self::FIELD_ID_MANUFACTURER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 Manufacturer::TABLE_NAME,
 
+            self::FIELD_ID_CURRENCY  => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
             self::FIELD_ENABLED      => 'sometimes|required|boolean',
             self::FIELD_PRICE_WO_TAX => 'sometimes|required|numeric|min:0',
             self::FIELD_PKG_HEIGHT   => 'sometimes|required|numeric|min:0',
@@ -186,6 +195,14 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetSpecifi
     public static function withManufacturer()
     {
         return self::FIELD_MANUFACTURER;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withCurrency()
+    {
+        return self::FIELD_CURRENCY;
     }
 
     /**
@@ -234,6 +251,16 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetSpecifi
     public function manufacturer()
     {
         return $this->belongsTo(Manufacturer::class, self::FIELD_ID_MANUFACTURER, Manufacturer::FIELD_ID);
+    }
+
+    /**
+     * Relation to currency.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, self::FIELD_ID_CURRENCY, Currency::FIELD_ID);
     }
 
     /**

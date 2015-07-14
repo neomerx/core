@@ -23,6 +23,7 @@ use \Illuminate\Database\Eloquent\SoftDeletes;
  * @property      Address     billingAddress
  * @property      Store       store
  * @property      OrderStatus status
+ * @property      Currency    currency
  * @property      Collection  details
  * @property      Collection  history
  * @property      Collection  invoices
@@ -53,6 +54,8 @@ class Order extends BaseModel
     /** Model field name */
     const FIELD_ID_ORDER_STATUS       = OrderStatus::FIELD_ID;
     /** Model field name */
+    const FIELD_ID_CURRENCY           = Currency::FIELD_ID;
+    /** Model field name */
     const FIELD_PRODUCTS_TAX          = 'products_tax';
     /** Model field name */
     const FIELD_SHIPPING_TAX          = 'shipping_tax';
@@ -76,6 +79,8 @@ class Order extends BaseModel
     const FIELD_STORE                 = 'store';
     /** Model field name */
     const FIELD_STATUS                = 'status';
+    /** Model field name */
+    const FIELD_CURRENCY              = 'currency';
     /** Model field name */
     const FIELD_DETAILS               = 'details';
     /** Model field name */
@@ -126,6 +131,7 @@ class Order extends BaseModel
     protected $hidden = [
         self::FIELD_ID_STORE,
         self::FIELD_ID_ORDER_STATUS,
+        self::FIELD_ID_CURRENCY,
     ];
 
     /**
@@ -138,6 +144,7 @@ class Order extends BaseModel
         self::FIELD_ID_SHIPPING_ADDRESS,
         self::FIELD_ID_STORE,
         self::FIELD_ID_ORDER_STATUS,
+        self::FIELD_ID_CURRENCY,
         self::FIELD_PRODUCTS_TAX,
         self::FIELD_SHIPPING_TAX,
         self::FIELD_SHIPPING_COST,
@@ -161,6 +168,7 @@ class Order extends BaseModel
             self::FIELD_ID_STORE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Store::TABLE_NAME,
 
             self::FIELD_ID_ORDER_STATUS => 'required|integer|min:1|max:4294967295|exists:'.OrderStatus::TABLE_NAME,
+            self::FIELD_ID_CURRENCY     => 'required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
             self::FIELD_SHIPPING_TAX    => 'required|numeric|min:0',
             self::FIELD_SHIPPING_COST   => 'required|numeric|min:0',
             self::FIELD_PRODUCTS_TAX    => 'required|numeric|min:0',
@@ -187,6 +195,7 @@ class Order extends BaseModel
             self::FIELD_ID_ORDER_STATUS => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 OrderStatus::TABLE_NAME,
 
+            self::FIELD_ID_CURRENCY   => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
             self::FIELD_SHIPPING_TAX  => 'sometimes|required|numeric|min:0',
             self::FIELD_SHIPPING_COST => 'sometimes|required|numeric|min:0',
             self::FIELD_PRODUCTS_TAX  => 'sometimes|required|numeric|min:0',
@@ -232,6 +241,14 @@ class Order extends BaseModel
     public static function withStatus()
     {
         return self::FIELD_STATUS;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withCurrency()
+    {
+        return self::FIELD_CURRENCY;
     }
 
     /**
@@ -282,6 +299,16 @@ class Order extends BaseModel
     public function status()
     {
         return $this->belongsTo(OrderStatus::class, self::FIELD_ID_ORDER_STATUS, OrderStatus::FIELD_ID);
+    }
+
+    /**
+     * Relation to currency.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, self::FIELD_ID_CURRENCY, Currency::FIELD_ID);
     }
 
     /**

@@ -36,13 +36,13 @@ class SupplyOrder extends BaseModel
     /** Model field name */
     const FIELD_ID           = 'id_supply_order';
     /** Model field name */
-    const FIELD_ID_SUPPLIER  = 'id_supplier';
+    const FIELD_ID_SUPPLIER  = Supplier::FIELD_ID;
     /** Model field name */
-    const FIELD_ID_WAREHOUSE = 'id_warehouse';
+    const FIELD_ID_WAREHOUSE = Warehouse::FIELD_ID;
     /** Model field name */
-    const FIELD_ID_CURRENCY  = 'id_currency';
+    const FIELD_ID_CURRENCY  = Currency::FIELD_ID;
     /** Model field name */
-    const FIELD_ID_LANGUAGE  = 'id_language';
+    const FIELD_ID_LANGUAGE  = Language::FIELD_ID;
     /** Model field name */
     const FIELD_STATUS       = 'status';
     /** Model field name */
