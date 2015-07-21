@@ -21,7 +21,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      Collection     productCategories
  * @property      Collection     related
  * @property      Collection     relatedProducts
- * @property      Collection     specification
+ * @property      Collection     aspects
  * @property      Collection     images
  * @property      Collection     inventories
  *
@@ -30,7 +30,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Product extends BaseModel implements SelectByCodeInterface, GetSpecificationInterface
+class Product extends BaseModel implements SelectByCodeInterface, GetAspectsInterface
 {
     /** Model table name */
     const TABLE_NAME = 'products';
@@ -65,7 +65,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     /** Model field name */
     const FIELD_RELATED_PRODUCTS    = 'relatedProducts';
     /** Model field name */
-    const FIELD_SPECIFICATION       = 'specification';
+    const FIELD_ASPECTS             = 'aspects';
     /** Model field name */
     const FIELD_IMAGES              = 'images';
     /** Model field name */
@@ -274,13 +274,11 @@ class Product extends BaseModel implements SelectByCodeInterface, GetSpecificati
     }
 
     /**
-     * Relation to specification.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @inheritdoc
      */
-    public function specification()
+    public function aspects()
     {
-        return $this->hasMany(Specification::class, Specification::FIELD_ID_PRODUCT, self::FIELD_ID);
+        return $this->hasMany(Aspect::class, Aspect::FIELD_ID_PRODUCT, self::FIELD_ID);
     }
 
     /**

@@ -3,38 +3,38 @@
 use \Neomerx\Core\Support as S;
 
 /**
- * @property int                 id_specification
- * @property int                 id_base_product
- * @property int                 id_product
- * @property int                 id_characteristic_value
- * @property int                 position
- * @property BaseProduct         baseProduct
- * @property Product             product
- * @property CharacteristicValue value
+ * @property int          id_aspect
+ * @property int          id_base_product
+ * @property int          id_product
+ * @property int          id_feature_value
+ * @property int          position
+ * @property BaseProduct  baseProduct
+ * @property Product      product
+ * @property FeatureValue value
  *
  * @package Neomerx\Core
  */
-class Specification extends BaseModel
+class Aspect extends BaseModel
 {
     /** Model table name */
-    const TABLE_NAME = 'specifications';
+    const TABLE_NAME = 'aspects';
 
     /** Model field name */
-    const FIELD_ID                      = 'id_specification';
+    const FIELD_ID              = 'id_aspect';
     /** Model field name */
-    const FIELD_ID_BASE_PRODUCT         = BaseProduct::FIELD_ID;
+    const FIELD_ID_BASE_PRODUCT = BaseProduct::FIELD_ID;
     /** Model field name */
-    const FIELD_ID_PRODUCT              = Product::FIELD_ID;
+    const FIELD_ID_PRODUCT      = Product::FIELD_ID;
     /** Model field name */
-    const FIELD_ID_CHARACTERISTIC_VALUE = CharacteristicValue::FIELD_ID;
+    const FIELD_ID_VALUE        = FeatureValue::FIELD_ID;
     /** Model field name */
-    const FIELD_POSITION                = 'position';
+    const FIELD_POSITION        = 'position';
     /** Model field name */
-    const FIELD_BASE_PRODUCT            = 'baseProduct';
+    const FIELD_BASE_PRODUCT    = 'baseProduct';
     /** Model field name */
-    const FIELD_PRODUCT                 = 'product';
+    const FIELD_PRODUCT         = 'product';
     /** Model field name */
-    const FIELD_VALUE                   = 'value';
+    const FIELD_VALUE           = 'value';
 
     /**
      * @inheritdoc
@@ -69,7 +69,7 @@ class Specification extends BaseModel
     protected $hidden = [
         self::FIELD_ID_BASE_PRODUCT,
         self::FIELD_ID_PRODUCT,
-        self::FIELD_ID_CHARACTERISTIC_VALUE,
+        self::FIELD_ID_VALUE,
     ];
 
     /**
@@ -79,7 +79,7 @@ class Specification extends BaseModel
         self::FIELD_ID,
         self::FIELD_ID_BASE_PRODUCT,
         self::FIELD_ID_PRODUCT,
-        self::FIELD_ID_CHARACTERISTIC_VALUE,
+        self::FIELD_ID_VALUE,
     ];
 
     /**
@@ -89,11 +89,10 @@ class Specification extends BaseModel
     {
         return [
             self::FIELD_ID_BASE_PRODUCT => 'required|integer|min:1|max:4294967295|exists:'.BaseProduct::TABLE_NAME,
-            self::FIELD_ID_PRODUCT     => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
-            self::FIELD_POSITION       => 'required|numeric|min:0|max:255',
 
-            self::FIELD_ID_CHARACTERISTIC_VALUE => 'required|integer|min:1|max:4294967295|exists:'.
-                CharacteristicValue::TABLE_NAME,
+            self::FIELD_ID_PRODUCT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
+            self::FIELD_POSITION   => 'required|numeric|min:0|max:255',
+            self::FIELD_ID_VALUE   => 'required|integer|min:1|max:4294967295|exists:'.FeatureValue::TABLE_NAME,
         ];
     }
 
@@ -109,8 +108,7 @@ class Specification extends BaseModel
             self::FIELD_ID_PRODUCT => 'sometimes|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
             self::FIELD_POSITION   => 'sometimes|required|numeric|min:0|max:255',
 
-            self::FIELD_ID_CHARACTERISTIC_VALUE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
-                CharacteristicValue::TABLE_NAME,
+            self::FIELD_ID_VALUE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.FeatureValue::TABLE_NAME,
         ];
     }
 
@@ -159,16 +157,12 @@ class Specification extends BaseModel
     }
 
     /**
-     * Relation to characteristic value.
+     * Relation to feature value.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function value()
     {
-        return $this->belongsTo(
-            CharacteristicValue::class,
-            self::FIELD_ID_CHARACTERISTIC_VALUE,
-            CharacteristicValue::FIELD_ID
-        );
+        return $this->belongsTo(FeatureValue::class, self::FIELD_ID_VALUE, FeatureValue::FIELD_ID);
     }
 }

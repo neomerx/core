@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Repositories\Features;
 
-use \Neomerx\Core\Models\Characteristic;
-use \Neomerx\Core\Models\CharacteristicValue;
+use \Neomerx\Core\Models\Feature;
+use \Neomerx\Core\Models\FeatureValue;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
 /**
@@ -10,23 +10,23 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface ValueRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Characteristic $characteristic
-     * @param array          $attributes
+     * @param Feature $feature
+     * @param array   $attributes
      *
-     * @return CharacteristicValue
+     * @return FeatureValue
      */
-    public function instance(Characteristic $characteristic, array $attributes);
+    public function instance(Feature $feature, array $attributes);
 
     /**
-     * @param CharacteristicValue $resource
-     * @param Characteristic|null $characteristic
-     * @param array|null          $attributes
+     * @param FeatureValue $resource
+     * @param Feature|null $feature
+     * @param array|null   $attributes
      *
      * @return void
      */
     public function fill(
-        CharacteristicValue $resource,
-        Characteristic $characteristic = null,
+        FeatureValue $resource,
+        Feature $feature = null,
         array $attributes = null
     );
 
@@ -35,7 +35,7 @@ interface ValueRepositoryInterface extends RepositoryInterface
      * @param array  $scopes
      * @param array  $columns
      *
-     * @return CharacteristicValue
+     * @return FeatureValue
      */
     public function read($code, array $scopes = [], array $columns = ['*']);
 }

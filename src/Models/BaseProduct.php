@@ -20,7 +20,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      Currency     currency
  * @property      Manufacturer manufacturer
  * @property      Collection   properties
- * @property      Collection   specification
+ * @property      Collection   aspects
  * @property      Collection   productImages
  * @property      Collection   products
  *
@@ -29,7 +29,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class BaseProduct extends BaseModel implements SelectByCodeInterface, GetSpecificationInterface
+class BaseProduct extends BaseModel implements SelectByCodeInterface, GetAspectsInterface
 {
     /** Model table name */
     const TABLE_NAME = 'base_products';
@@ -40,47 +40,47 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetSpecifi
     const LINK_MAX_LENGTH = 50;
 
     /** Model field name */
-    const FIELD_ID                  = 'id_base_product';
+    const FIELD_ID              = 'id_base_product';
     /** Model field name */
-    const FIELD_ID_MANUFACTURER     = Manufacturer::FIELD_ID;
+    const FIELD_ID_MANUFACTURER = Manufacturer::FIELD_ID;
     /** Model field name */
-    const FIELD_SKU                 = 'sku';
+    const FIELD_SKU             = 'sku';
     /** Model field name */
-    const FIELD_LINK                = 'link';
+    const FIELD_LINK            = 'link';
     /** Model field name */
-    const FIELD_PRICE_WO_TAX        = 'price_wo_tax';
+    const FIELD_PRICE_WO_TAX    = 'price_wo_tax';
     /** Model field name */
-    const FIELD_ID_CURRENCY         = Currency::FIELD_ID;
+    const FIELD_ID_CURRENCY     = Currency::FIELD_ID;
     /** Model field name */
-    const FIELD_ENABLED             = 'enabled';
+    const FIELD_ENABLED         = 'enabled';
     /** Model field name */
-    const FIELD_CREATED_AT          = 'created_at';
+    const FIELD_CREATED_AT      = 'created_at';
     /** Model field name */
-    const FIELD_UPDATED_AT          = 'updated_at';
+    const FIELD_UPDATED_AT      = 'updated_at';
     /** Model field name */
-    const FIELD_PRODUCT_IMAGES      = 'productImages';
+    const FIELD_PRODUCT_IMAGES  = 'productImages';
     /** Model field name */
-    const FIELD_RELATED             = 'related';
+    const FIELD_RELATED         = 'related';
     /** Model field name */
-    const FIELD_MANUFACTURER        = 'manufacturer';
+    const FIELD_MANUFACTURER    = 'manufacturer';
     /** Model field name */
-    const FIELD_PROPERTIES          = 'properties';
+    const FIELD_PROPERTIES      = 'properties';
     /** Model field name */
-    const FIELD_SPECIFICATION       = 'specification';
+    const FIELD_ASPECTS         = 'aspects';
     /** Model field name */
-    const FIELD_IMAGES              = 'images';
+    const FIELD_IMAGES          = 'images';
     /** Model field name */
-    const FIELD_PRODUCTS            = 'products';
+    const FIELD_PRODUCTS        = 'products';
     /** Model field name */
-    const FIELD_PKG_HEIGHT          = 'pkg_height';
+    const FIELD_PKG_HEIGHT      = 'pkg_height';
     /** Model field name */
-    const FIELD_PKG_WIDTH           = 'pkg_width';
+    const FIELD_PKG_WIDTH       = 'pkg_width';
     /** Model field name */
-    const FIELD_PKG_LENGTH          = 'pkg_length';
+    const FIELD_PKG_LENGTH      = 'pkg_length';
     /** Model field name */
-    const FIELD_PKG_WEIGHT          = 'pkg_weight';
+    const FIELD_PKG_WEIGHT      = 'pkg_weight';
     /** Model field name */
-    const FIELD_CURRENCY            = 'currency';
+    const FIELD_CURRENCY        = 'currency';
 
     /**
      * @inheritdoc
@@ -140,10 +140,8 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetSpecifi
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_SKU => 'required|alpha_dash|min:1|max:'.self::SKU_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
-
-            self::FIELD_LINK => 'required|alpha_dash|min:1|max:'.self::LINK_MAX_LENGTH.
-                '|unique:'.self::TABLE_NAME,
+            self::FIELD_SKU  => 'required|alpha_dash|min:1|max:'.self::SKU_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
+            self::FIELD_LINK => 'required|alpha_dash|min:1|max:'.self::LINK_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
 
             self::FIELD_ID_MANUFACTURER => 'required|integer|min:1|max:4294967295|exists:'.Manufacturer::TABLE_NAME,
             self::FIELD_ID_CURRENCY     => 'required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
@@ -220,14 +218,12 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetSpecifi
     }
 
     /**
-     * Relation to specification.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @inheritdoc
      */
-    public function specification()
+    public function aspects()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        return $this->hasMany(Specification::class, Specification::FIELD_ID_BASE_PRODUCT, self::FIELD_ID)
+        return $this->hasMany(Aspect::class, Aspect::FIELD_ID_BASE_PRODUCT, self::FIELD_ID)
             ->whereNull(Product::FIELD_ID);
     }
 

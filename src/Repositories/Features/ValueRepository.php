@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Repositories\Features;
 
-use \Neomerx\Core\Models\Characteristic;
-use \Neomerx\Core\Models\CharacteristicValue;
+use \Neomerx\Core\Models\Feature;
+use \Neomerx\Core\Models\FeatureValue;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
 /**
@@ -14,17 +14,17 @@ class ValueRepository extends CodeBasedResourceRepository implements ValueReposi
      */
     public function __construct()
     {
-        parent::__construct(CharacteristicValue::class);
+        parent::__construct(FeatureValue::class);
     }
 
     /**
      * @inheritdoc
      */
-    public function instance(Characteristic $characteristic, array $attributes)
+    public function instance(Feature $feature, array $attributes)
     {
-        /** @var CharacteristicValue $resource */
+        /** @var FeatureValue $resource */
         $resource = $this->makeModel();
-        $this->fill($resource, $characteristic, $attributes);
+        $this->fill($resource, $feature, $attributes);
         return $resource;
     }
 
@@ -32,12 +32,12 @@ class ValueRepository extends CodeBasedResourceRepository implements ValueReposi
      * @inheritdoc
      */
     public function fill(
-        CharacteristicValue $resource,
-        Characteristic $characteristic = null,
+        FeatureValue $resource,
+        Feature $feature = null,
         array $attributes = null
     ) {
         $this->fillModel($resource, [
-            CharacteristicValue::FIELD_ID_CHARACTERISTIC => $characteristic,
+            FeatureValue::FIELD_ID_FEATURE => $feature,
         ], $attributes);
     }
 }

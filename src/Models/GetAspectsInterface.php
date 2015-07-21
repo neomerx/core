@@ -3,12 +3,12 @@
 /**
  * @package Neomerx\Core
  */
-interface GetSpecificationInterface
+interface GetAspectsInterface
 {
     /**
-     * Relation to specification.
+     * Relation to aspects.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function specification();
+    public function aspects();
 }

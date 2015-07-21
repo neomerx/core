@@ -1,8 +1,8 @@
 <?php namespace Neomerx\Core\Repositories\Features;
 
 use \Neomerx\Core\Models\Language;
-use \Neomerx\Core\Models\CharacteristicValue;
-use \Neomerx\Core\Models\CharacteristicValueProperties;
+use \Neomerx\Core\Models\FeatureValue;
+use \Neomerx\Core\Models\FeatureValueProperties;
 use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 use \Neomerx\Core\Repositories\Features\ValuePropertiesRepositoryInterface as PropertiesRepositoryInterface;
 
@@ -16,15 +16,15 @@ class ValuePropertiesRepository extends IndexBasedResourceRepository implements 
      */
     public function __construct()
     {
-        parent::__construct(CharacteristicValueProperties::class);
+        parent::__construct(FeatureValueProperties::class);
     }
 
     /**
      * @inheritdoc
      */
-    public function instance(CharacteristicValue $resource, Language $language, array $attributes)
+    public function instance(FeatureValue $resource, Language $language, array $attributes)
     {
-        /** @var CharacteristicValueProperties $properties */
+        /** @var FeatureValueProperties $properties */
         $properties = $this->makeModel();
         $this->fill($properties, $resource, $language, $attributes);
         return $properties;
@@ -34,14 +34,14 @@ class ValuePropertiesRepository extends IndexBasedResourceRepository implements 
      * @inheritdoc
      */
     public function fill(
-        CharacteristicValueProperties $properties,
-        CharacteristicValue $resource = null,
+        FeatureValueProperties $properties,
+        FeatureValue $resource = null,
         Language $language = null,
         array $attributes = null
     ) {
         $data = [
-            CharacteristicValueProperties::FIELD_ID_CHARACTERISTIC_VALUE => $resource,
-            CharacteristicValueProperties::FIELD_ID_LANGUAGE             => $language
+            FeatureValueProperties::FIELD_ID_FEATURE_VALUE => $resource,
+            FeatureValueProperties::FIELD_ID_LANGUAGE      => $language
         ];
         $this->fillModel($properties, $data, $attributes);
     }

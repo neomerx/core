@@ -1,20 +1,20 @@
 <?php namespace Neomerx\Core\Repositories\Features;
 
+use \Neomerx\Core\Models\Feature;
 use \Neomerx\Core\Models\Measurement;
-use \Neomerx\Core\Models\Characteristic;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
 /**
  * @package Neomerx\Core
  */
-class CharacteristicRepository extends CodeBasedResourceRepository implements CharacteristicRepositoryInterface
+class FeatureRepository extends CodeBasedResourceRepository implements FeatureRepositoryInterface
 {
     /**
      * @inheritdoc
      */
     public function __construct()
     {
-        parent::__construct(Characteristic::class);
+        parent::__construct(Feature::class);
     }
 
     /**
@@ -22,7 +22,7 @@ class CharacteristicRepository extends CodeBasedResourceRepository implements Ch
      */
     public function instance(array $attributes, Measurement $measurement = null)
     {
-        /** @var Characteristic $resource */
+        /** @var Feature $resource */
         $resource = $this->makeModel();
         $this->fill($resource, $attributes, $measurement);
         return $resource;
@@ -31,10 +31,10 @@ class CharacteristicRepository extends CodeBasedResourceRepository implements Ch
     /**
      * @inheritdoc
      */
-    public function fill(Characteristic $resource, array $attributes = null, Measurement $measurement = null)
+    public function fill(Feature $resource, array $attributes = null, Measurement $measurement = null)
     {
         $this->fillModel($resource, [
-            Characteristic::FIELD_ID_MEASUREMENT => $measurement,
+            Feature::FIELD_ID_MEASUREMENT => $measurement,
         ], $attributes);
     }
 }

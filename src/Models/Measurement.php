@@ -8,7 +8,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      string     code
  * @property-read Carbon     created_at
  * @property-read Carbon     updated_at
- * @property      Collection characteristics
+ * @property      Collection features
  * @property      Collection properties
  *
  * @package Neomerx\Core
@@ -22,17 +22,17 @@ class Measurement extends BaseModel implements SelectByCodeInterface
     const CODE_MAX_LENGTH = 50;
 
     /** Model field name */
-    const FIELD_ID              = 'id_measurement';
+    const FIELD_ID         = 'id_measurement';
     /** Model field name */
-    const FIELD_CODE            = 'code';
+    const FIELD_CODE       = 'code';
     /** Model field name */
-    const FIELD_CREATED_AT      = 'created_at';
+    const FIELD_CREATED_AT = 'created_at';
     /** Model field name */
-    const FIELD_UPDATED_AT      = 'updated_at';
+    const FIELD_UPDATED_AT = 'updated_at';
     /** Model field name */
-    const FIELD_CHARACTERISTICS = 'characteristics';
+    const FIELD_FEATURES   = 'features';
     /** Model field name */
-    const FIELD_PROPERTIES      = 'properties';
+    const FIELD_PROPERTIES = 'properties';
 
     /**
      * @inheritdoc
@@ -81,8 +81,7 @@ class Measurement extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.
-                '|unique:'.self::TABLE_NAME,
+            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
         ];
     }
 
@@ -107,13 +106,13 @@ class Measurement extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * Relation to characteristics.
+     * Relation to features.
      *
      * @return \Illuminate\Database\Eloquent\Relations\hasMany
      */
-    public function characteristics()
+    public function features()
     {
-        return $this->hasMany(Characteristic::class, Characteristic::FIELD_ID_MEASUREMENT, self::FIELD_ID);
+        return $this->hasMany(Feature::class, Feature::FIELD_ID_MEASUREMENT, self::FIELD_ID);
     }
 
     /**

@@ -4,28 +4,27 @@ use \Carbon\Carbon;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
- * @property      int         id_characteristic
+ * @property      int         id_feature
  * @property      int         id_measurement
  * @property      string      code
  * @property-read Carbon      created_at
  * @property-read Carbon      updated_at
  * @property      Measurement measurement
- * @property      array       specification
- * @property      array       values
+ * @property      Collection  values
  * @property      Collection  properties
  *
  * @package Neomerx\Core
  */
-class Characteristic extends BaseModel implements SelectByCodeInterface
+class Feature extends BaseModel implements SelectByCodeInterface
 {
     /** Model table name */
-    const TABLE_NAME = 'characteristic';
+    const TABLE_NAME = 'features';
 
     /** Model field length */
     const CODE_MAX_LENGTH = 50;
 
     /** Model field name */
-    const FIELD_ID             = 'id_characteristic';
+    const FIELD_ID             = 'id_feature';
     /** Model field name */
     const FIELD_ID_MEASUREMENT = Measurement::FIELD_ID;
     /** Model field name */
@@ -36,8 +35,6 @@ class Characteristic extends BaseModel implements SelectByCodeInterface
     const FIELD_UPDATED_AT     = 'updated_at';
     /** Model field name */
     const FIELD_MEASUREMENT    = 'measurement';
-    /** Model field name */
-    const FIELD_SPECIFICATION  = 'specification';
     /** Model field name */
     const FIELD_VALUES         = 'values';
     /** Model field name */
@@ -92,9 +89,7 @@ class Characteristic extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.
-                '|unique:'.self::TABLE_NAME,
-
+            self::FIELD_CODE           => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
             self::FIELD_ID_MEASUREMENT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 Measurement::TABLE_NAME,
         ];
@@ -118,7 +113,7 @@ class Characteristic extends BaseModel implements SelectByCodeInterface
      */
     public static function withProperties()
     {
-        return self::FIELD_PROPERTIES.'.'.CharacteristicProperties::FIELD_LANGUAGE;
+        return self::FIELD_PROPERTIES.'.'.FeatureProperties::FIELD_LANGUAGE;
     }
 
     /**
@@ -138,11 +133,7 @@ class Characteristic extends BaseModel implements SelectByCodeInterface
      */
     public function properties()
     {
-        return $this->hasMany(
-            CharacteristicProperties::class,
-            CharacteristicProperties::FIELD_ID_CHARACTERISTIC,
-            self::FIELD_ID
-        );
+        return $this->hasMany(FeatureProperties::class, FeatureProperties::FIELD_ID_FEATURE, self::FIELD_ID);
     }
 
     /**
@@ -152,11 +143,7 @@ class Characteristic extends BaseModel implements SelectByCodeInterface
      */
     public function values()
     {
-        return $this->hasMany(
-            CharacteristicValue::class,
-            CharacteristicValue::FIELD_ID_CHARACTERISTIC,
-            self::FIELD_ID
-        );
+        return $this->hasMany(FeatureValue::class, FeatureValue::FIELD_ID_FEATURE, self::FIELD_ID);
     }
 
     /**

@@ -4,41 +4,41 @@ use \Carbon\Carbon;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
- * @property      int            id_characteristic_value
- * @property      int            id_characteristic
- * @property      string         code
- * @property-read Carbon         created_at
- * @property-read Carbon         updated_at
- * @property      Characteristic characteristic
- * @property      Collection     properties
- * @property      Collection     specification
+ * @property      int        id_feature_value
+ * @property      int        id_feature
+ * @property      string     code
+ * @property-read Carbon     created_at
+ * @property-read Carbon     updated_at
+ * @property      Feature    feature
+ * @property      Collection properties
+ * @property      Collection aspects
  *
  * @package Neomerx\Core
  */
-class CharacteristicValue extends BaseModel implements SelectByCodeInterface
+class FeatureValue extends BaseModel implements SelectByCodeInterface
 {
     /** Model table name */
-    const TABLE_NAME = 'characteristic_values';
+    const TABLE_NAME = 'feature_values';
 
     /** Model field length */
     const CODE_MAX_LENGTH = 50;
 
     /** Model field name */
-    const FIELD_ID                = 'id_characteristic_value';
+    const FIELD_ID         = 'id_feature_value';
     /** Model field name */
-    const FIELD_ID_CHARACTERISTIC = Characteristic::FIELD_ID;
+    const FIELD_ID_FEATURE = Feature::FIELD_ID;
     /** Model field name */
-    const FIELD_CODE              = 'code';
+    const FIELD_CODE       = 'code';
     /** Model field name */
-    const FIELD_CREATED_AT        = 'created_at';
+    const FIELD_CREATED_AT = 'created_at';
     /** Model field name */
-    const FIELD_UPDATED_AT        = 'updated_at';
+    const FIELD_UPDATED_AT = 'updated_at';
     /** Model field name */
-    const FIELD_CHARACTERISTIC    = 'characteristic';
+    const FIELD_FEATURE    = 'feature';
     /** Model field name */
-    const FIELD_PROPERTIES        = 'properties';
+    const FIELD_PROPERTIES = 'properties';
     /** Model field name */
-    const FIELD_SPECIFICATION     = 'specification';
+    const FIELD_ASPECTS    = 'aspects';
 
     /**
      * @inheritdoc
@@ -72,7 +72,7 @@ class CharacteristicValue extends BaseModel implements SelectByCodeInterface
      */
     protected $hidden = [
         self::FIELD_ID,
-        self::FIELD_ID_CHARACTERISTIC,
+        self::FIELD_ID_FEATURE,
     ];
 
     /**
@@ -80,7 +80,7 @@ class CharacteristicValue extends BaseModel implements SelectByCodeInterface
      */
     protected $guarded = [
         self::FIELD_ID,
-        self::FIELD_ID_CHARACTERISTIC,
+        self::FIELD_ID_FEATURE,
     ];
 
     /**
@@ -89,11 +89,8 @@ class CharacteristicValue extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_CODE => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.
-                '|unique:'.self::TABLE_NAME,
-
-            self::FIELD_ID_CHARACTERISTIC => 'required|integer|min:1|max:4294967295|exists:'.
-                Characteristic::TABLE_NAME,
+            self::FIELD_CODE       => 'required|code|min:1|max:'.self::CODE_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
+            self::FIELD_ID_FEATURE => 'required|integer|min:1|max:4294967295|exists:'.Feature::TABLE_NAME,
         ];
     }
 
@@ -103,9 +100,8 @@ class CharacteristicValue extends BaseModel implements SelectByCodeInterface
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_CODE              => 'sometimes|required|forbidden',
-            self::FIELD_ID_CHARACTERISTIC => 'required|integer|min:1|max:4294967295|exists:'.
-                Characteristic::TABLE_NAME,
+            self::FIELD_CODE       => 'sometimes|required|forbidden',
+            self::FIELD_ID_FEATURE => 'required|integer|min:1|max:4294967295|exists:'.Feature::TABLE_NAME,
         ];
     }
 
@@ -116,17 +112,17 @@ class CharacteristicValue extends BaseModel implements SelectByCodeInterface
      */
     public static function withProperties()
     {
-        return self::FIELD_PROPERTIES.'.'.CharacteristicValueProperties::FIELD_LANGUAGE;
+        return self::FIELD_PROPERTIES.'.'.FeatureValueProperties::FIELD_LANGUAGE;
     }
 
     /**
-     * Relation to characteristic.
+     * Relation to feature.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function characteristic()
+    public function feature()
     {
-        return $this->belongsTo(Characteristic::class, self::FIELD_ID_CHARACTERISTIC, Characteristic::FIELD_ID);
+        return $this->belongsTo(Feature::class, self::FIELD_ID_FEATURE, Feature::FIELD_ID);
     }
 
     /**
@@ -138,20 +134,20 @@ class CharacteristicValue extends BaseModel implements SelectByCodeInterface
     {
         /** @noinspection PhpUndefinedMethodInspection */
         return $this->hasMany(
-            CharacteristicValueProperties::class,
-            CharacteristicValueProperties::FIELD_ID_CHARACTERISTIC_VALUE,
+            FeatureValueProperties::class,
+            FeatureValueProperties::FIELD_ID_FEATURE_VALUE,
             self::FIELD_ID
         );
     }
 
     /**
-     * Relation to product specification.
+     * Relation to product aspects.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function specification()
+    public function aspects()
     {
-        return $this->hasMany(Specification::class, Specification::FIELD_ID_CHARACTERISTIC_VALUE, self::FIELD_ID);
+        return $this->hasMany(Aspect::class, Aspect::FIELD_ID_VALUE, self::FIELD_ID);
     }
 
     /**

@@ -1,35 +1,35 @@
 <?php namespace Neomerx\Core\Models;
 
 /**
- * @property int            id_characteristic_property
- * @property int            id_characteristic
- * @property int            id_language
- * @property string         name
- * @property Characteristic characteristic
- * @property Language       language
+ * @property int      id_feature_property
+ * @property int      id_feature
+ * @property int      id_language
+ * @property string   name
+ * @property Feature  $feature
+ * @property Language language
  *
  * @package Neomerx\Core
  */
-class CharacteristicProperties extends BaseModel
+class FeatureProperties extends BaseModel
 {
     /** Model table name */
-    const TABLE_NAME = 'characteristic_properties';
+    const TABLE_NAME = 'feature_properties';
 
     /** Model field length */
     const NAME_MAX_LENGTH = 50;
 
     /** Model field name */
-    const FIELD_ID                = 'id_characteristic_property';
+    const FIELD_ID          = 'id_feature_property';
     /** Model field name */
-    const FIELD_ID_CHARACTERISTIC = Characteristic::FIELD_ID;
+    const FIELD_ID_FEATURE  = Feature::FIELD_ID;
     /** Model field name */
-    const FIELD_ID_LANGUAGE       = Language::FIELD_ID;
+    const FIELD_ID_LANGUAGE = Language::FIELD_ID;
     /** Model field name */
-    const FIELD_NAME              = 'name';
+    const FIELD_NAME        = 'name';
     /** Model field name */
-    const FIELD_CHARACTERISTIC    = 'characteristic';
+    const FIELD_FEATURE     = 'feature';
     /** Model field name */
-    const FIELD_LANGUAGE          = 'language';
+    const FIELD_LANGUAGE    = 'language';
 
     /**
      * @inheritdoc
@@ -57,7 +57,7 @@ class CharacteristicProperties extends BaseModel
      * @inheritdoc
      */
     protected $hidden = [
-        self::FIELD_ID_CHARACTERISTIC,
+        self::FIELD_ID_FEATURE,
         self::FIELD_ID_LANGUAGE,
     ];
     /**
@@ -65,7 +65,7 @@ class CharacteristicProperties extends BaseModel
      */
     protected $guarded = [
         self::FIELD_ID,
-        self::FIELD_ID_CHARACTERISTIC,
+        self::FIELD_ID_FEATURE,
         self::FIELD_ID_LANGUAGE,
     ];
 
@@ -73,7 +73,7 @@ class CharacteristicProperties extends BaseModel
      * @inheritdoc
      */
     protected $touches = [
-        self::FIELD_CHARACTERISTIC,
+        self::FIELD_FEATURE,
     ];
 
     /**
@@ -87,9 +87,7 @@ class CharacteristicProperties extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID_CHARACTERISTIC => 'required|integer|min:1|max:4294967295|exists:'.
-                Characteristic::TABLE_NAME,
-
+            self::FIELD_ID_FEATURE  => 'required|integer|min:1|max:4294967295|exists:'.Feature::TABLE_NAME,
             self::FIELD_ID_LANGUAGE => 'required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
             self::FIELD_NAME        => 'required|min:1|max:'.self::NAME_MAX_LENGTH,
         ];
@@ -101,24 +99,20 @@ class CharacteristicProperties extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ID_CHARACTERISTIC => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
-                Characteristic::TABLE_NAME,
-
-            self::FIELD_ID_LANGUAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
-                Language::TABLE_NAME,
-
-            self::FIELD_NAME => 'sometimes|required|min:1|max:'.self::NAME_MAX_LENGTH,
+            self::FIELD_ID_FEATURE  => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Feature::TABLE_NAME,
+            self::FIELD_ID_LANGUAGE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Language::TABLE_NAME,
+            self::FIELD_NAME        => 'sometimes|required|min:1|max:'.self::NAME_MAX_LENGTH,
         ];
     }
 
     /**
-     * Relation to characteristic.
+     * Relation to feature.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function characteristic()
+    public function feature()
     {
-        return $this->belongsTo(Characteristic::class, self::FIELD_ID_CHARACTERISTIC, Characteristic::FIELD_ID);
+        return $this->belongsTo(Feature::class, self::FIELD_ID_FEATURE, Feature::FIELD_ID);
     }
 
     /**

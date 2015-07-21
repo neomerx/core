@@ -1,10 +1,10 @@
 <?php namespace Neomerx\Core\Repositories\Products;
 
+use \Neomerx\Core\Models\Aspect;
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Category;
 use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Models\BaseProduct;
-use \Neomerx\Core\Models\Specification;
 use \Neomerx\Core\Models\ProductTaxType;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
@@ -14,17 +14,17 @@ use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 class ProductRepository extends CodeBasedResourceRepository implements ProductRepositoryInterface
 {
     /**
-     * @var SpecificationRepositoryInterface $specificationRepository
+     * @var AspectRepositoryInterface
      */
-    private $specificationRepo;
+    private $aspectRepo;
 
     /**
      * @inheritdoc
      */
-    public function __construct(SpecificationRepositoryInterface $specificationRepo)
+    public function __construct(AspectRepositoryInterface $aspectRepo)
     {
         parent::__construct(Product::class);
-        $this->specificationRepo = $specificationRepo;
+        $this->aspectRepo = $aspectRepo;
     }
 
     /**
@@ -75,7 +75,7 @@ class ProductRepository extends CodeBasedResourceRepository implements ProductRe
     ) {
         $defaultProduct = $baseProduct->getDefaultProduct();
         // for just created base products there is no default product yet
-        $defaultSpecs = $defaultProduct !== null ? $defaultProduct->specification : [];
+        $defaultAspects = $defaultProduct !== null ? $defaultProduct->{Product::FIELD_ASPECTS} : [];
 
         $product = $this->instance($baseProduct, $category, $taxType, $attributes);
 
@@ -83,10 +83,10 @@ class ProductRepository extends CodeBasedResourceRepository implements ProductRe
         DB::beginTransaction();
         try {
             $product->saveOrFail();
-            foreach ($defaultSpecs as $specRow) {
-                /** @var Specification $specRow */
-                $this->specificationRepo
-                    ->instance($baseProduct, $specRow->value, $specRow->attributesToArray(), $product)
+            foreach ($defaultAspects as $aspect) {
+                /** @var Aspect $aspect */
+                $this->aspectRepo
+                    ->instance($baseProduct, $aspect->value, $aspect->attributesToArray(), $product)
                     ->saveOrFail();
             }
 
