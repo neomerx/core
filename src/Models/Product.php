@@ -65,9 +65,9 @@ class Product extends BaseModel implements SelectByCodeInterface, GetAspectsInte
     /** Model field name */
     const FIELD_RELATED_PRODUCTS    = 'relatedProducts';
     /** Model field name */
-    const FIELD_ASPECTS             = 'aspects';
+    const FIELD_ASPECTS             = BaseProduct::FIELD_ASPECTS;
     /** Model field name */
-    const FIELD_IMAGES              = 'images';
+    const FIELD_PRODUCT_IMAGES      = BaseProduct::FIELD_PRODUCT_IMAGES;
     /** Model field name */
     const FIELD_DEFAULT_CATEGORY    = 'defaultCategory';
     /** Model field name */
