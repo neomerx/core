@@ -35,6 +35,8 @@ class Aspect extends BaseModel
     const FIELD_PRODUCT         = 'product';
     /** Model field name */
     const FIELD_VALUE           = 'value';
+    /** Model field name */
+    const FIELD_IS_SHARED       = 'isShared';
 
     /**
      * @inheritdoc
@@ -80,6 +82,13 @@ class Aspect extends BaseModel
         self::FIELD_ID_BASE_PRODUCT,
         self::FIELD_ID_PRODUCT,
         self::FIELD_ID_VALUE,
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    protected $appends = [
+        self::FIELD_IS_SHARED,
     ];
 
     /**
@@ -134,6 +143,16 @@ class Aspect extends BaseModel
     public static function withValue()
     {
         return self::FIELD_VALUE;
+    }
+
+    /**
+     * @return bool
+     *
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     */
+    public function getIsSharedAttribute()
+    {
+        return empty($this->getAttributeValue(self::FIELD_ID_PRODUCT));
     }
 
     /**

@@ -229,7 +229,6 @@ class Category extends BaseModel implements SelectByCodeInterface
      */
     public function properties()
     {
-        /** @noinspection PhpUndefinedMethodInspection */
         return $this->hasMany(CategoryProperties::class, CategoryProperties::FIELD_ID_CATEGORY, self::FIELD_ID);
     }
 
