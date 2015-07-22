@@ -45,7 +45,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetAspectsInte
     /** Model field name */
     const FIELD_SKU                 = 'sku';
     /** Model field name */
-    const FIELD_PRICE_WO_TAX        = 'price_wo_tax';
+    const FIELD_PRICE_WO_TAX        = BaseProduct::FIELD_PRICE_WO_TAX;
     /** Model field name */
     const FIELD_ID_CATEGORY_DEFAULT = 'id_category_default';
     /** Model field name */
