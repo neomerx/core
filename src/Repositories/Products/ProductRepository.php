@@ -85,9 +85,11 @@ class ProductRepository extends CodeBasedResourceRepository implements ProductRe
             $product->saveOrFail();
             foreach ($defaultAspects as $aspect) {
                 /** @var Aspect $aspect */
-                $this->aspectRepo
-                    ->instance($baseProduct, $aspect->value, $aspect->attributesToArray(), $product)
-                    ->saveOrFail();
+                if ($aspect->{Aspect::FIELD_IS_SHARED} === false) {
+                    $this->aspectRepo
+                        ->instance($baseProduct, $aspect->value, $aspect->attributesToArray(), $product)
+                        ->saveOrFail();
+                }
             }
 
             $allExecutedOk = true;

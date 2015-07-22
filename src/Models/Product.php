@@ -278,7 +278,14 @@ class Product extends BaseModel implements SelectByCodeInterface, GetAspectsInte
      */
     public function aspects()
     {
-        return $this->hasMany(Aspect::class, Aspect::FIELD_ID_PRODUCT, self::FIELD_ID);
+        // all aspects of the base product + aspects of the product
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        return $this
+            ->hasMany(Aspect::class, Aspect::FIELD_ID_BASE_PRODUCT, self::FIELD_ID_BASE_PRODUCT)
+            ->whereNull(Aspect::FIELD_ID_PRODUCT)
+            ->orWhere(Aspect::FIELD_ID_PRODUCT, '=', $this->{self::FIELD_ID})
+            ->orderBy(Aspect::FIELD_POSITION);
     }
 
     /**
@@ -288,7 +295,14 @@ class Product extends BaseModel implements SelectByCodeInterface, GetAspectsInte
      */
     public function images()
     {
-        return $this->hasMany(ProductImage::class, ProductImage::FIELD_ID_PRODUCT, self::FIELD_ID);
+        // all images of the base product + images of the product
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        return $this
+            ->hasMany(ProductImage::class, ProductImage::FIELD_ID_BASE_PRODUCT, self::FIELD_ID_BASE_PRODUCT)
+            ->whereNull(ProductImage::FIELD_ID_PRODUCT)
+            ->orWhere(ProductImage::FIELD_ID_PRODUCT, '=', $this->{self::FIELD_ID})
+            ->orderBy(ProductImage::FIELD_POSITION);
     }
 
     /**
