@@ -3,15 +3,16 @@
 use \Neomerx\Core\Exceptions\InvalidArgumentException;
 
 /**
- * @property int         id_product_image
- * @property int         id_base_product
- * @property int         id_product
- * @property int         id_image
- * @property int         position
- * @property bool        is_cover
- * @property Image       image
- * @property BaseProduct baseProduct
- * @property Product     product
+ * @property      int         id_product_image
+ * @property      int         id_base_product
+ * @property      int         id_product
+ * @property      int         id_image
+ * @property      int         position
+ * @property      bool        is_cover
+ * @property-read bool        is_shared
+ * @property      Image       image
+ * @property      BaseProduct baseProduct
+ * @property      Product     product
  *
  * @package Neomerx\Core
  */
@@ -38,6 +39,8 @@ class ProductImage extends BaseModel
     const FIELD_BASE_PRODUCT    = 'baseProduct';
     /** Model field name */
     const FIELD_PRODUCT         = 'product';
+    /** Model field name */
+    const FIELD_IS_SHARED       = 'is_shared';
 
     /**
      * @inheritdoc
@@ -83,6 +86,13 @@ class ProductImage extends BaseModel
         self::FIELD_ID_PRODUCT,
         self::FIELD_ID_IMAGE,
         self::FIELD_IS_COVER,
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    protected $appends = [
+        self::FIELD_IS_SHARED,
     ];
 
     /**
@@ -167,6 +177,16 @@ class ProductImage extends BaseModel
     public function getIsCoverAttribute($value)
     {
         return (bool)$value;
+    }
+
+    /**
+     * @return bool
+     *
+     * @SuppressWarnings(PHPMD.BooleanGetMethodName)
+     */
+    public function getIsSharedAttribute()
+    {
+        return empty($this->getAttributeValue(self::FIELD_ID_PRODUCT));
     }
 
     /**
