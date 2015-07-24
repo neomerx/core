@@ -3,14 +3,15 @@
 use \Neomerx\Core\Support as S;
 
 /**
- * @property int          id_aspect
- * @property int          id_base_product
- * @property int          id_product
- * @property int          id_feature_value
- * @property int          position
- * @property BaseProduct  baseProduct
- * @property Product      product
- * @property FeatureValue value
+ * @property      int          id_aspect
+ * @property      int          id_base_product
+ * @property      int          id_product
+ * @property      int          id_feature_value
+ * @property      int          position
+ * @property-read bool         is_shared
+ * @property      BaseProduct  baseProduct
+ * @property      Product      product
+ * @property      FeatureValue value
  *
  * @package Neomerx\Core
  */
@@ -36,7 +37,7 @@ class Aspect extends BaseModel
     /** Model field name */
     const FIELD_VALUE           = 'value';
     /** Model field name */
-    const FIELD_IS_SHARED       = 'isShared';
+    const FIELD_IS_SHARED       = 'is_shared';
 
     /**
      * @inheritdoc
