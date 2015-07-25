@@ -137,6 +137,13 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetAspects
     /**
      * @inheritdoc
      */
+    protected $casts = [
+        self::FIELD_ENABLED => 'bool',
+    ];
+
+    /**
+     * @inheritdoc
+     */
     public function getDataOnCreateRules()
     {
         return [
