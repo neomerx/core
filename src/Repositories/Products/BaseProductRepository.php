@@ -4,12 +4,12 @@ use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\Currency;
 use \Neomerx\Core\Models\BaseProduct;
 use \Neomerx\Core\Models\Manufacturer;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 
 /**
  * @package Neomerx\Core
  */
-class BaseProductRepository extends CodeBasedResourceRepository implements BaseProductRepositoryInterface
+class BaseProductRepository extends IndexBasedResourceRepository implements BaseProductRepositoryInterface
 {
     /**
      * @inheritdoc
