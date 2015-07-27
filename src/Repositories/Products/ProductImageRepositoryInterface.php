@@ -4,6 +4,7 @@ use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\BaseProduct;
 use \Neomerx\Core\Models\ProductImage;
+use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
 /**
@@ -53,4 +54,39 @@ interface ProductImageRepositoryInterface extends RepositoryInterface
      * @return void
      */
     public function setAsCover(ProductImage $image);
+
+
+    /**
+     * Get product images for base product.
+     *
+     * @param int   $baseProductId
+     * @param array $relations
+     * @param array $columns
+     *
+     * @return Collection
+     */
+    public function getBaseProductImages($baseProductId, array $relations = [], array $columns = ['*']);
+
+    /**
+     * Get product images for product.
+     *
+     * @param int   $productId
+     * @param array $relations
+     * @param array $columns
+     *
+     * @return Collection
+     */
+    public function getProductOnlyImages($productId, array $relations = [], array $columns = ['*']);
+
+    /**
+     * Get product images for product.
+     *
+     * @param int   $baseProductId
+     * @param int   $productId
+     * @param array $relations
+     * @param array $columns
+     *
+     * @return Collection
+     */
+    public function getProductImages($baseProductId, $productId, array $relations = [], array $columns = ['*']);
 }

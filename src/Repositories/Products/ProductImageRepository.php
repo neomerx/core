@@ -73,4 +73,43 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
             isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
         }
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBaseProductImages($baseProductId, array $relations = [], array $columns = ['*'])
+    {
+        /** @noinspection PhpUndefinedMethodInspection */
+        $builder = $this
+            ->createBuilder($relations)
+            ->where(ProductImage::FIELD_ID_BASE_PRODUCT, '=', $baseProductId)
+            ->whereNull(ProductImage::FIELD_ID_PRODUCT);
+
+        return $this->executeBuilder($builder, $columns);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getProductOnlyImages($productId, array $relations = [], array $columns = ['*'])
+    {
+        $builder = $this
+            ->createBuilder($relations)
+            ->where(ProductImage::FIELD_ID_PRODUCT, '=', $productId);
+
+        return $this->executeBuilder($builder, $columns);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getProductImages($baseProductId, $productId, array $relations = [], array $columns = ['*'])
+    {
+        $builder = $this
+            ->createBuilder($relations)
+            ->where(ProductImage::FIELD_ID_BASE_PRODUCT, '=', $baseProductId)
+            ->orWhere(ProductImage::FIELD_ID_PRODUCT, '=', $productId);
+
+        return $this->executeBuilder($builder, $columns);
+    }
 }

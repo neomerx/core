@@ -54,6 +54,19 @@ abstract class BaseRepository
     }
 
     /**
+     * @param array $relations
+     *
+     * @return Builder
+     */
+    protected function createBuilder(array $relations = [])
+    {
+        $builder = $this->getUnderlyingModel()->newQuery();
+        empty($relations) === true ?: $builder->with($relations);
+
+        return $builder;
+    }
+
+    /**
      * @param string $code
      * @param array  $relations
      *
@@ -131,6 +144,20 @@ abstract class BaseRepository
     }
 
     /**
+     * @param Builder $builder
+     * @param array   $columns
+     *
+     * @return Collection
+     */
+    protected function executeBuilder(Builder $builder, array $columns = ['*'])
+    {
+        /** @var Collection $result */
+        $result = $builder->get($columns);
+
+        return $result;
+    }
+
+    /**
      * Search resources.
      * If both $parameters and $rules are not specified then all resources will be returned.
      *
@@ -143,17 +170,13 @@ abstract class BaseRepository
      */
     public function search(array $relations = [], array $parameters = null, array $rules = null, array $columns = ['*'])
     {
-        $builder = $this->getUnderlyingModel()->newQuery();
-        empty($relations) === true ?: $builder->with($relations);
+        $builder = $this->createBuilder($relations);
 
         if (empty($parameters) === false && empty($rules) === false) {
             $parser  = new SearchParser(new SearchGrammar($builder), $rules);
             $builder = $parser->buildQuery($parameters);
         }
 
-        /** @var Collection $result */
-        $result = $builder->get($columns);
-
-        return $result;
+        return $this->executeBuilder($builder, $columns);
     }
 }
