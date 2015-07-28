@@ -55,7 +55,6 @@ interface ProductImageRepositoryInterface extends RepositoryInterface
      */
     public function setAsCover(ProductImage $image);
 
-
     /**
      * Get product images for base product.
      *
@@ -66,6 +65,18 @@ interface ProductImageRepositoryInterface extends RepositoryInterface
      * @return Collection
      */
     public function getBaseProductImages($baseProductId, array $relations = [], array $columns = ['*']);
+
+    /**
+     * Get product image for base product.
+     *
+     * @param int   $baseProductId
+     * @param int   $productImageId
+     * @param array $relations
+     * @param array $columns
+     *
+     * @return ProductImage
+     */
+    public function getBaseProductImage($baseProductId, $productImageId, array $relations = [], array $columns = ['*']);
 
     /**
      * Get product images for product.
@@ -89,4 +100,16 @@ interface ProductImageRepositoryInterface extends RepositoryInterface
      * @return Collection
      */
     public function getProductImages($baseProductId, $productId, array $relations = [], array $columns = ['*']);
+
+    /**
+     * Get product image for base product.
+     *
+     * @param int   $productId
+     * @param int   $productImageId
+     * @param array $relations
+     * @param array $columns
+     *
+     * @return ProductImage
+     */
+    public function getProductImage($productId, $productImageId, array $relations = [], array $columns = ['*']);
 }

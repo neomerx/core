@@ -149,10 +149,24 @@ abstract class BaseRepository
      *
      * @return Collection
      */
-    protected function executeBuilder(Builder $builder, array $columns = ['*'])
+    protected function executeGet(Builder $builder, array $columns = ['*'])
     {
         /** @var Collection $result */
         $result = $builder->get($columns);
+
+        return $result;
+    }
+
+    /**
+     * @param Builder $builder
+     * @param array   $columns
+     *
+     * @return BaseModel
+     */
+    protected function executeFirstOrFail(Builder $builder, array $columns = ['*'])
+    {
+        /** @var BaseModel $result */
+        $result = $builder->firstOrFail($columns);
 
         return $result;
     }
@@ -177,6 +191,6 @@ abstract class BaseRepository
             $builder = $parser->buildQuery($parameters);
         }
 
-        return $this->executeBuilder($builder, $columns);
+        return $this->executeGet($builder, $columns);
     }
 }

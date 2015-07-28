@@ -85,7 +85,7 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
             ->where(ProductImage::FIELD_ID_BASE_PRODUCT, '=', $baseProductId)
             ->whereNull(ProductImage::FIELD_ID_PRODUCT);
 
-        return $this->executeBuilder($builder, $columns);
+        return $this->executeGet($builder, $columns);
     }
 
     /**
@@ -97,7 +97,7 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
             ->createBuilder($relations)
             ->where(ProductImage::FIELD_ID_PRODUCT, '=', $productId);
 
-        return $this->executeBuilder($builder, $columns);
+        return $this->executeGet($builder, $columns);
     }
 
     /**
@@ -110,6 +110,32 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
             ->where(ProductImage::FIELD_ID_BASE_PRODUCT, '=', $baseProductId)
             ->orWhere(ProductImage::FIELD_ID_PRODUCT, '=', $productId);
 
-        return $this->executeBuilder($builder, $columns);
+        return $this->executeGet($builder, $columns);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBaseProductImage($baseProductId, $productImageId, array $relations = [], array $columns = ['*'])
+    {
+        $builder = $this
+            ->createBuilder($relations)
+            ->where(ProductImage::FIELD_ID, '=', $productImageId)
+            ->where(ProductImage::FIELD_ID_BASE_PRODUCT, '=', $baseProductId);
+
+        return $this->executeFirstOrFail($builder, $columns);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getProductImage($productId, $productImageId, array $relations = [], array $columns = ['*'])
+    {
+        $builder = $this
+            ->createBuilder($relations)
+            ->where(ProductImage::FIELD_ID, '=', $productImageId)
+            ->where(ProductImage::FIELD_ID_PRODUCT, '=', $productId);
+
+        return $this->executeFirstOrFail($builder, $columns);
     }
 }
