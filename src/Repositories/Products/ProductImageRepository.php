@@ -68,6 +68,11 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
                 ->where(ProductImage::FIELD_ID, '=', $image->{ProductImage::FIELD_ID})
                 ->update([ProductImage::FIELD_IS_COVER => true]);
 
+            // direct change of 'is_cover' is prohibited in model so we use this hack
+            $rawAttributes = $image->getAttributes();
+            $rawAttributes[ProductImage::FIELD_IS_COVER] = true;
+            $image->setRawAttributes($rawAttributes);
+
             $allExecutedOk = true;
         } finally {
             isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
