@@ -23,6 +23,24 @@ interface ProductImageRepositoryInterface extends RepositoryInterface
     public function instance(BaseProduct $base, Image $image, array $attributes, Product $product = null);
 
     /**
+     * @param BaseProduct $base
+     * @param Image       $image
+     * @param array       $attributes
+     *
+     * @return ProductImage
+     */
+    public function instanceForBaseProduct(BaseProduct $base, Image $image, array $attributes);
+
+    /**
+     * @param Product $product
+     * @param Image   $image
+     * @param array   $attributes
+     *
+     * @return ProductImage
+     */
+    public function instanceForProduct(Product $product, Image $image, array $attributes);
+
+    /**
      * @param ProductImage     $resource
      * @param BaseProduct|null $base
      * @param Image|null       $image

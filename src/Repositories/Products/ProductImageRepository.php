@@ -34,6 +34,22 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
     /**
      * @inheritdoc
      */
+    public function instanceForBaseProduct(BaseProduct $base, Image $image, array $attributes)
+    {
+        return $this->instance($base, $image, $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function instanceForProduct(Product $product, Image $image, array $attributes)
+    {
+        return $this->instance($product->{Product::FIELD_BASE_PRODUCT}, $image, $attributes, $product);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function fill(
         ProductImage $resource,
         BaseProduct $base = null,
