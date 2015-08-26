@@ -9,8 +9,8 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      string     code
  * @property      float      min_weight
  * @property      float      max_weight
- * @property      float      min_cost
- * @property      float      max_cost
+ * @property      int        min_cost
+ * @property      int        max_cost
  * @property      float      min_dimension
  * @property      float      max_dimension
  * @property      bool       is_taxable
@@ -20,6 +20,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      string     factory
  * @property-read Carbon     created_at
  * @property-read Carbon     updated_at
+ * @property      Currency   currency
  * @property      Collection orders
  * @property      Collection properties
  * @property      Collection customerTypes
@@ -50,6 +51,8 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     /** Model field name */
     const FIELD_MAX_COST        = 'max_cost';
     /** Model field name */
+    const FIELD_ID_CURRENCY     = Currency::FIELD_ID;
+    /** Model field name */
     const FIELD_MIN_DIMENSION   = 'min_dimension';
     /** Model field name */
     const FIELD_MAX_DIMENSION   = 'max_dimension';
@@ -79,6 +82,8 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     const FIELD_CUSTOMER_TYPES  = 'customerTypes';
     /** Model field name */
     const FIELD_SHIPPING_ORDERS = 'shippingOrders';
+    /** Model field name */
+    const FIELD_CURRENCY        = 'currency';
 
     /**
      * @inheritdoc
@@ -123,6 +128,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     protected $hidden = [
         self::FIELD_ID,
         self::FIELD_CACHE,
+        self::FIELD_ID_CURRENCY,
     ];
 
     /**
@@ -131,6 +137,7 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     protected $guarded = [
         self::FIELD_ID,
         self::FIELD_CACHE,
+        self::FIELD_ID_CURRENCY,
     ];
 
     /**
@@ -144,8 +151,9 @@ class Carrier extends BaseModel implements SelectByCodeInterface
 
             self::FIELD_MIN_WEIGHT      => 'sometimes|required|numeric|min:0',
             self::FIELD_MAX_WEIGHT      => 'sometimes|required|numeric|min:0',
-            self::FIELD_MIN_COST        => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_COST        => 'sometimes|required|numeric|min:0',
+            self::FIELD_MIN_COST        => 'sometimes|required|integer|min:0',
+            self::FIELD_MAX_COST        => 'sometimes|required|integer|min:0',
+            self::FIELD_ID_CURRENCY     => 'required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
             self::FIELD_MIN_DIMENSION   => 'sometimes|required|numeric|min:0',
             self::FIELD_MAX_DIMENSION   => 'sometimes|required|numeric|min:0',
             self::FIELD_IS_TAXABLE      => 'required|boolean',
@@ -162,11 +170,14 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_CODE            => 'sometimes|required|forbidden',
-            self::FIELD_MIN_WEIGHT      => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_WEIGHT      => 'sometimes|required|numeric|min:0',
-            self::FIELD_MIN_COST        => 'sometimes|required|numeric|min:0',
-            self::FIELD_MAX_COST        => 'sometimes|required|numeric|min:0',
+            self::FIELD_CODE        => 'sometimes|required|forbidden',
+            self::FIELD_MIN_WEIGHT  => 'sometimes|required|numeric|min:0',
+            self::FIELD_MAX_WEIGHT  => 'sometimes|required|numeric|min:0',
+            self::FIELD_MIN_COST    => 'sometimes|required|integer|min:0',
+            self::FIELD_MAX_COST    => 'sometimes|required|integer|min:0',
+
+            self::FIELD_ID_CURRENCY => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
+
             self::FIELD_MIN_DIMENSION   => 'sometimes|required|numeric|min:0',
             self::FIELD_MAX_DIMENSION   => 'sometimes|required|numeric|min:0',
             self::FIELD_IS_TAXABLE      => 'sometimes|required|boolean',
@@ -205,6 +216,14 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     public function getIsTaxableAttribute($value)
     {
         return (bool)$value;
+    }
+
+    /**
+     * @return string
+     */
+    public static function withCurrency()
+    {
+        return self::FIELD_CURRENCY;
     }
 
     /**
@@ -256,6 +275,16 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     public function territories()
     {
         return $this->hasMany(CarrierTerritory::class, CarrierTerritory::FIELD_ID_CARRIER, self::FIELD_ID);
+    }
+
+    /**
+     * Relation to currency.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class, self::FIELD_ID_CURRENCY, Currency::FIELD_ID);
     }
 
     /**

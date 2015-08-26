@@ -1,6 +1,7 @@
 <?php namespace Neomerx\Core\Repositories\Carriers;
 
 use \Neomerx\Core\Models\Carrier;
+use \Neomerx\Core\Models\Currency;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
 
 /**
@@ -19,20 +20,22 @@ class CarrierRepository extends CodeBasedResourceRepository implements CarrierRe
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function instance(array $attributes, Currency $currency)
     {
         /** @var Carrier $resource */
         $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $this->fill($resource, $attributes, $currency);
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Carrier $resource, array $attributes)
+    public function fill(Carrier $resource, array $attributes, Currency $currency = null)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->fillModel($resource, [
+            Carrier::FIELD_ID_CURRENCY => $currency,
+        ], $attributes);
     }
 
     /**

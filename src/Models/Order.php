@@ -11,10 +11,10 @@ use \Illuminate\Database\Eloquent\SoftDeletes;
  * @property      int         id_billing_address
  * @property      int         id_shipping_address
  * @property      int         id_order_status
- * @property      float       products_tax
+ * @property      int         products_tax
  * @property      string      products_tax_details
- * @property      float       shipping_included_tax
- * @property      float       shipping_cost
+ * @property      int         shipping_included_tax
+ * @property      int         shipping_cost
  * @property-read Carbon      created_at
  * @property-read Carbon      updated_at
  * @property-read Carbon      deleted_at
@@ -169,9 +169,9 @@ class Order extends BaseModel
 
             self::FIELD_ID_ORDER_STATUS => 'required|integer|min:1|max:4294967295|exists:'.OrderStatus::TABLE_NAME,
             self::FIELD_ID_CURRENCY     => 'required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
-            self::FIELD_SHIPPING_TAX    => 'required|numeric|min:0',
-            self::FIELD_SHIPPING_COST   => 'required|numeric|min:0',
-            self::FIELD_PRODUCTS_TAX    => 'required|numeric|min:0',
+            self::FIELD_SHIPPING_TAX    => 'required|integer|min:0',
+            self::FIELD_SHIPPING_COST   => 'required|integer|min:0',
+            self::FIELD_PRODUCTS_TAX    => 'required|integer|min:0',
             self::FIELD_TAX_DETAILS     => 'required|min:1',
         ];
     }
@@ -196,9 +196,9 @@ class Order extends BaseModel
                 OrderStatus::TABLE_NAME,
 
             self::FIELD_ID_CURRENCY   => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
-            self::FIELD_SHIPPING_TAX  => 'sometimes|required|numeric|min:0',
-            self::FIELD_SHIPPING_COST => 'sometimes|required|numeric|min:0',
-            self::FIELD_PRODUCTS_TAX  => 'sometimes|required|numeric|min:0',
+            self::FIELD_SHIPPING_TAX  => 'sometimes|required|integer|min:0',
+            self::FIELD_SHIPPING_COST => 'sometimes|required|integer|min:0',
+            self::FIELD_PRODUCTS_TAX  => 'sometimes|required|integer|min:0',
             self::FIELD_TAX_DETAILS   => 'sometimes|required_with:'.self::FIELD_PRODUCTS_TAX . '|min:1',
         ];
     }

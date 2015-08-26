@@ -6,7 +6,7 @@
  * @property int           id_store
  * @property int           id_shipping_order
  * @property int           id_product
- * @property float         price_wo_tax
+ * @property int           price_wo_tax
  * @property int           quantity
  * @property Order         order
  * @property ShippingOrder shipping
@@ -95,7 +95,7 @@ class OrderDetails extends BaseModel
             self::FIELD_ID_SHIPPING_ORDER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 ShippingOrder::TABLE_NAME,
 
-            self::FIELD_PRICE_WO_TAX => 'required|numeric|min:0',
+            self::FIELD_PRICE_WO_TAX => 'required|integer|min:0',
             self::FIELD_QUANTITY     => 'required|integer|min:1|max:65535',
         ];
     }
@@ -112,7 +112,7 @@ class OrderDetails extends BaseModel
             self::FIELD_ID_SHIPPING_ORDER => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 ShippingOrder::TABLE_NAME,
 
-            self::FIELD_PRICE_WO_TAX => 'sometimes|required|numeric|min:0',
+            self::FIELD_PRICE_WO_TAX => 'sometimes|required|integer|min:0',
             self::FIELD_QUANTITY     => 'sometimes|required|integer|min:1|max:65535',
         ];
     }

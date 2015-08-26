@@ -101,7 +101,7 @@ class Aspect extends BaseModel
             self::FIELD_ID_BASE_PRODUCT => 'required|integer|min:1|max:4294967295|exists:'.BaseProduct::TABLE_NAME,
 
             self::FIELD_ID_PRODUCT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
-            self::FIELD_POSITION   => 'required|numeric|min:0|max:255',
+            self::FIELD_POSITION   => 'required|integer|min:0|max:255',
             self::FIELD_ID_VALUE   => 'required|integer|min:1|max:4294967295|exists:'.FeatureValue::TABLE_NAME,
         ];
     }
@@ -116,7 +116,7 @@ class Aspect extends BaseModel
                 BaseProduct::TABLE_NAME,
 
             self::FIELD_ID_PRODUCT => 'sometimes|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
-            self::FIELD_POSITION   => 'sometimes|required|numeric|min:0|max:255',
+            self::FIELD_POSITION   => 'sometimes|required|integer|min:0|max:255',
 
             self::FIELD_ID_VALUE => 'sometimes|required|integer|min:1|max:4294967295|exists:'.FeatureValue::TABLE_NAME,
         ];

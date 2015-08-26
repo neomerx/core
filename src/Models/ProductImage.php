@@ -104,7 +104,7 @@ class ProductImage extends BaseModel
             self::FIELD_ID_BASE_PRODUCT => 'required|integer|min:1|max:4294967295|exists:'.BaseProduct::TABLE_NAME,
             self::FIELD_ID_PRODUCT      => 'sometimes|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
             self::FIELD_ID_IMAGE        => 'required|integer|min:1|max:4294967295|exists:'.Image::TABLE_NAME,
-            self::FIELD_POSITION        => 'required|numeric|min:0|max:255',
+            self::FIELD_POSITION        => 'required|integer|min:0|max:255',
 
             // direct change  of 'is cover' is forbidden use repository's method instead
             self::FIELD_IS_COVER   => 'sometimes|required|forbidden',
@@ -123,7 +123,7 @@ class ProductImage extends BaseModel
                 Product::TABLE_NAME,
 
             self::FIELD_ID_IMAGE        => 'sometimes|required|forbidden',
-            self::FIELD_POSITION        => 'sometimes|required|numeric|min:0|max:255',
+            self::FIELD_POSITION        => 'sometimes|required|integer|min:0|max:255',
 
             // direct change  of 'is cover' is forbidden use repository's method instead
             self::FIELD_IS_COVER        => 'sometimes|required|forbidden',

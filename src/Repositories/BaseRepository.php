@@ -13,6 +13,8 @@ use \Neomerx\Core\Models\SelectByCodeInterface;
 
 /**
  * @package Neomerx\Core
+ *
+ * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 abstract class BaseRepository
 {

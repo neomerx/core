@@ -1,6 +1,7 @@
 <?php namespace Neomerx\Core\Repositories\Carriers;
 
 use \Neomerx\Core\Models\Carrier;
+use \Neomerx\Core\Models\Currency;
 use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
@@ -10,19 +11,21 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface CarrierRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param array $attributes
+     * @param array    $attributes
+     * @param Currency $currency
      *
      * @return Carrier
      */
-    public function instance(array $attributes);
+    public function instance(array $attributes, Currency $currency);
 
     /**
-     * @param Carrier    $resource
-     * @param array|null $attributes
+     * @param Carrier       $resource
+     * @param array|null    $attributes
+     * @param Currency|null $currency
      *
      * @return void
      */
-    public function fill(Carrier $resource, array $attributes);
+    public function fill(Carrier $resource, array $attributes, Currency $currency = null);
 
     /**
      * @param string $index

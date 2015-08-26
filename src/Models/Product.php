@@ -10,7 +10,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      int            id_category_default
  * @property      int            id_product_tax_type
  * @property      string         sku
- * @property      float          price_wo_tax
+ * @property      int            price_wo_tax
  * @property      Category       defaultCategory
  * @property      ProductTaxType taxType
  * @property-read Carbon         created_at
@@ -136,7 +136,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetAspectsInte
         return [
             self::FIELD_ID_BASE_PRODUCT => 'required|integer|min:1|max:4294967295',
             self::FIELD_SKU             => 'required|alpha_dash|min:1|max:'.self::SKU_MAX_LENGTH,
-            self::FIELD_PRICE_WO_TAX    => 'sometimes|required|numeric|min:0',
+            self::FIELD_PRICE_WO_TAX    => 'sometimes|required|integer|min:0',
 
             self::FIELD_ID_CATEGORY_DEFAULT => 'required|integer|min:1|max:4294967295|exists:'.
                 Category::TABLE_NAME.','.Category::FIELD_ID,
@@ -154,7 +154,7 @@ class Product extends BaseModel implements SelectByCodeInterface, GetAspectsInte
         return [
             self::FIELD_ID_BASE_PRODUCT => 'sometimes|required|forbidden',
             self::FIELD_SKU             => 'sometimes|required|forbidden',
-            self::FIELD_PRICE_WO_TAX    => 'sometimes|numeric|min:0',
+            self::FIELD_PRICE_WO_TAX    => 'sometimes|integer|min:0',
 
             self::FIELD_ID_CATEGORY_DEFAULT => 'sometimes|required|integer|min:1|max:4294967295|exists:'.
                 Category::TABLE_NAME.','.Category::FIELD_ID,

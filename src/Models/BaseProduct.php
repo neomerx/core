@@ -9,7 +9,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      int          id_manufacturer
  * @property      string       sku
  * @property      string       link
- * @property      float        price_wo_tax
+ * @property      int          price_wo_tax
  * @property      float        pkg_height
  * @property      float        pkg_width
  * @property      float        pkg_length
@@ -154,7 +154,7 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetAspects
             self::FIELD_ID_CURRENCY     => 'required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
 
             self::FIELD_ENABLED      => 'required|boolean',
-            self::FIELD_PRICE_WO_TAX => 'required|numeric|min:0',
+            self::FIELD_PRICE_WO_TAX => 'required|integer|min:0',
             self::FIELD_PKG_HEIGHT   => 'sometimes|required|numeric|min:0',
             self::FIELD_PKG_WIDTH    => 'sometimes|required|numeric|min:0',
             self::FIELD_PKG_LENGTH   => 'sometimes|required|numeric|min:0',
@@ -178,7 +178,7 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetAspects
 
             self::FIELD_ID_CURRENCY  => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
             self::FIELD_ENABLED      => 'sometimes|required|boolean',
-            self::FIELD_PRICE_WO_TAX => 'sometimes|required|numeric|min:0',
+            self::FIELD_PRICE_WO_TAX => 'sometimes|required|integer|min:0',
             self::FIELD_PKG_HEIGHT   => 'sometimes|required|numeric|min:0',
             self::FIELD_PKG_WIDTH    => 'sometimes|required|numeric|min:0',
             self::FIELD_PKG_LENGTH   => 'sometimes|required|numeric|min:0',
