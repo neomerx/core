@@ -40,7 +40,7 @@ class UpdateImagesByFormatCommand extends Command implements SelfHandling
      */
     public function handle(ImageFormatRepositoryInterface $formatRepo, ImagesInterface $images)
     {
-        $format = $formatRepo->read($this->formatCode);
+        $format = $formatRepo->readByCode($this->formatCode);
         foreach ($format->{ImageFormat::FIELD_PATHS} as $path) {
             /** @var ImagePath $path */
             /** @var Image $image */

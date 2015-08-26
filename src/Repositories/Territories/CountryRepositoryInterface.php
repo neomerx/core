@@ -25,13 +25,22 @@ interface CountryRepositoryInterface extends RepositoryInterface
     public function fill(Country $country, array $attributes = null);
 
     /**
+     * @param string $index
+     * @param array  $relations
+     * @param array  $columns
+     *
+     * @return Country
+     */
+    public function read($index, array $relations = [], array $columns = ['*']);
+
+    /**
      * @param string $code
      * @param array  $relations
      * @param array  $columns
      *
      * @return Country
      */
-    public function read($code, array $relations = [], array $columns = ['*']);
+    public function readByCode($code, array $relations = [], array $columns = ['*']);
 
     /**
      * @param Country $resource

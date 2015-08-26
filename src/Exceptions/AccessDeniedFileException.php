@@ -5,7 +5,7 @@ use \Neomerx\Core\Support\Translate as T;
 /**
  * @package Neomerx\Core
  */
-class AccessDeniedFileException extends FileException
+class AccessDeniedFileException extends FileException implements ExceptionInterface
 {
     /**
      * @var string

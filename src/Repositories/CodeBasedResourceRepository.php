@@ -8,7 +8,7 @@ abstract class CodeBasedResourceRepository extends BaseRepository
     /**
      * @inheritdoc
      */
-    public function read($code, array $scopes = [], array $columns = ['*'])
+    public function readByCode($code, array $scopes = [], array $columns = ['*'])
     {
         return $this->findModelByCode($code, $scopes, $columns);
     }

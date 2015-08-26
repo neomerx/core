@@ -58,11 +58,20 @@ interface ProductRepositoryInterface extends RepositoryInterface
     );
 
     /**
+     * @param string $index
+     * @param array  $relations
+     * @param array  $columns
+     *
+     * @return Product
+     */
+    public function read($index, array $relations = [], array $columns = ['*']);
+
+    /**
      * @param string $sku
      * @param array  $relations
      * @param array  $columns
      *
      * @return Product
      */
-    public function read($sku, array $relations = [], array $columns = ['*']);
+    public function readByCode($sku, array $relations = [], array $columns = ['*']);
 }

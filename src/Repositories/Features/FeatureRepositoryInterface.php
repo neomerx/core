@@ -27,11 +27,20 @@ interface FeatureRepositoryInterface extends RepositoryInterface
     public function fill(Feature $resource, array $attributes = null, Measurement $measurement = null);
 
     /**
+     * @param string $index
+     * @param array  $scopes
+     * @param array  $columns
+     *
+     * @return Feature
+     */
+    public function read($index, array $scopes = [], array $columns = ['*']);
+
+    /**
      * @param string $code
      * @param array  $scopes
      * @param array  $columns
      *
      * @return Feature
      */
-    public function read($code, array $scopes = [], array $columns = ['*']);
+    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 }

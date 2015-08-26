@@ -5,7 +5,7 @@ use \Neomerx\Core\Support\Translate as T;
 /**
  * @package Neomerx\Core
  */
-class InvalidArgumentException extends LogicException
+class InvalidArgumentException extends LogicException implements ExceptionInterface
 {
     /**
      * @var string

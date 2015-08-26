@@ -1,5 +1,7 @@
 <?php namespace Neomerx\Core\Repositories;
 
+use \DB;
+use \Closure;
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\BaseModel;
 use \Illuminate\Support\Facades\App;
@@ -33,6 +35,13 @@ abstract class BaseRepository
         assert('is_subclass_of(\''.get_class($this).'\', \''.RepositoryInterface::class.'\')');
 
         $this->modelBindName = $modelBindName;
+    }
+    /**
+     * @inheritdoc
+     */
+    public function read($index, array $scopes = [], array $columns = ['*'])
+    {
+        return $this->findModelById($index, $scopes, $columns);
     }
 
     /**
@@ -192,5 +201,22 @@ abstract class BaseRepository
         }
 
         return $this->executeGet($builder, $columns);
+    }
+
+    /**
+     * @param Closure $closure
+     *
+     * @return void
+     */
+    protected function executeInTransaction(Closure $closure)
+    {
+        DB::beginTransaction();
+        try {
+            $closure();
+
+            $allExecutedOk = true;
+        } finally {
+            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
+        }
     }
 }

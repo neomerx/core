@@ -1,6 +1,5 @@
 <?php namespace Neomerx\Core\Repositories\Customers;
 
-use \DB;
 use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Customer;
 use \Neomerx\Core\Models\CustomerAddress;
@@ -61,14 +60,9 @@ class CustomerAddressRepository extends IndexBasedResourceRepository implements 
             CustomerAddress::FIELD_ID => $customerAddress->{CustomerAddress::FIELD_ID}
         ]);
 
-        DB::beginTransaction();
-        try {
+        $this->executeInTransaction(function () use ($allAddressQry, $customerAddressQry) {
             $allAddressQry->update([CustomerAddress::FIELD_IS_DEFAULT => false]);
             $customerAddressQry->update([CustomerAddress::FIELD_IS_DEFAULT => true]);
-
-            $allExecutedOk = true;
-        } finally {
-            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
-        }
+        });
     }
 }

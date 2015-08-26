@@ -30,11 +30,20 @@ interface WarehouseRepositoryInterface extends RepositoryInterface
     public function fill(Warehouse $resource, array $attributes = null, Address $address = null, Store $store = null);
 
     /**
+     * @param string $index
+     * @param array  $scopes
+     * @param array  $columns
+     *
+     * @return Warehouse
+     */
+    public function read($index, array $scopes = [], array $columns = ['*']);
+
+    /**
      * @param string $code
      * @param array  $scopes
      * @param array  $columns
      *
      * @return Warehouse
      */
-    public function read($code, array $scopes = [], array $columns = ['*']);
+    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 }

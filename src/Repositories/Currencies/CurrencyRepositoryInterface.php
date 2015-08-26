@@ -31,4 +31,13 @@ interface CurrencyRepositoryInterface extends RepositoryInterface
      * @return Currency
      */
     public function read($code, array $scopes = [], array $columns = ['*']);
+
+    /**
+     * @param string $code
+     * @param array  $scopes
+     * @param array  $columns
+     *
+     * @return Currency
+     */
+    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 }

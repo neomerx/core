@@ -25,13 +25,22 @@ interface TaxRepositoryInterface extends RepositoryInterface
     public function fill(Tax $resource, array $attributes);
 
     /**
+     * @param string $index
+     * @param array  $scopes
+     * @param array  $columns
+     *
+     * @return Tax
+     */
+    public function read($index, array $scopes = [], array $columns = ['*']);
+
+    /**
      * @param string $code
      * @param array  $scopes
      * @param array  $columns
      *
      * @return Tax
      */
-    public function read($code, array $scopes = [], array $columns = ['*']);
+    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 
     /**
      * Select taxes.

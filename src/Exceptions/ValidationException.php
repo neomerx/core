@@ -1,35 +1,26 @@
 <?php namespace Neomerx\Core\Exceptions;
 
 use \Illuminate\Validation\Validator;
-use \Neomerx\Core\Support\Translate as T;
+use \Illuminate\Contracts\Validation\ValidationException as BaseValidationException;
 
 /**
  * @package Neomerx\Core
  */
-class ValidationException extends LogicException
+class ValidationException extends BaseValidationException implements ExceptionInterface
 {
     /**
-     * @var \Illuminate\Validation\Validator
+     * @param Validator $validator
      */
-    private $validator;
-
-    /**
-     * Constructor.
-     *
-     * @param Validator|null $validator
-     * @inheritdoc
-     */
-    public function __construct(Validator $validator = null, $message = '', $code = 0, \Exception $previous = null)
+    public function __construct(Validator $validator)
     {
-        parent::__construct($this->loadIfEmpty($message, T::KEY_EX_VALIDATION_EXCEPTION), $code, $previous);
-        $this->validator = $validator;
+        parent::__construct($validator);
     }
 
     /**
-     * @return \Illuminate\Validation\Validator
+     * @return Validator
      */
     public function getValidator()
     {
-        return $this->validator;
+        return $this->getMessageProvider();
     }
 }

@@ -6,7 +6,7 @@ use \Neomerx\Core\Support\Translate as T;
 /**
  * @package Neomerx\Core
  */
-class Exception extends \Exception
+class Exception extends \Exception implements ExceptionInterface
 {
     /**
      * @inheritdoc

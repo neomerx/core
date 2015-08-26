@@ -1,6 +1,5 @@
 <?php namespace Neomerx\Core\Repositories\Products;
 
-use \DB;
 use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\BaseProduct;
@@ -72,8 +71,7 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
         /** @var BaseProduct $base */
         $base = $image->{ProductImage::FIELD_BASE_PRODUCT};
 
-        DB::beginTransaction();
-        try {
+        $this->executeInTransaction(function () use ($base, $image) {
             // set all other images' isCover to false
             /** @noinspection PhpUndefinedMethodInspection */
             $base->productImages()->update([ProductImage::FIELD_IS_COVER => false]);
@@ -88,11 +86,7 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
             $rawAttributes = $image->getAttributes();
             $rawAttributes[ProductImage::FIELD_IS_COVER] = true;
             $image->setRawAttributes($rawAttributes);
-
-            $allExecutedOk = true;
-        } finally {
-            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
-        }
+        });
     }
 
     /**

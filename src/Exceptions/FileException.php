@@ -5,7 +5,7 @@ use \Neomerx\Core\Support\Translate as T;
 /**
  * @package Neomerx\Core
  */
-class FileException extends Exception
+class FileException extends Exception implements ExceptionInterface
 {
     /**
      * @inheritdoc

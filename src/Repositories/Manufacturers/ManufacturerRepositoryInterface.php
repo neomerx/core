@@ -27,11 +27,20 @@ interface ManufacturerRepositoryInterface extends RepositoryInterface
     public function fill(Manufacturer $resource, Address $address = null, array $attributes = null);
 
     /**
+     * @param string $index
+     * @param array  $scopes
+     * @param array  $columns
+     *
+     * @return Manufacturer
+     */
+    public function read($index, array $scopes = [], array $columns = ['*']);
+
+    /**
      * @param string $code
      * @param array  $scopes
      * @param array  $columns
      *
      * @return Manufacturer
      */
-    public function read($code, array $scopes = [], array $columns = ['*']);
+    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 }

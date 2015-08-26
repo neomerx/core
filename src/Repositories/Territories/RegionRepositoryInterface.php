@@ -28,11 +28,20 @@ interface RegionRepositoryInterface extends RepositoryInterface
     public function fill(Region $resource, Country $country = null, array $attributes = null);
 
     /**
+     * @param string $index
+     * @param array  $relations
+     * @param array  $columns
+     *
+     * @return Region
+     */
+    public function read($index, array $relations = [], array $columns = ['*']);
+
+    /**
      * @param string $code
      * @param array  $relations
      * @param array  $columns
      *
      * @return Region
      */
-    public function read($code, array $relations = [], array $columns = ['*']);
+    public function readByCode($code, array $relations = [], array $columns = ['*']);
 }

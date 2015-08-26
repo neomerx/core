@@ -72,8 +72,7 @@ class AspectRepository extends IndexBasedResourceRepository implements AspectRep
         $attributes = $aspect->attributesToArray();
 
         /** @noinspection PhpUndefinedMethodInspection */
-        DB::beginTransaction();
-        try {
+        $this->executeInTransaction(function () use ($products, $aspect, $base, $value, $attributes) {
             foreach ($products as $product) {
                 /** @var Product $product */
                 if ($product->isDefault() === true) {
@@ -83,12 +82,7 @@ class AspectRepository extends IndexBasedResourceRepository implements AspectRep
                     $this->instance($base, $value, $attributes, $product)->saveOrFail();
                 }
             }
-
-            $allExecutedOk = true;
-        } finally {
-            /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
-        }
+        });
     }
 
     /**
@@ -112,9 +106,7 @@ class AspectRepository extends IndexBasedResourceRepository implements AspectRep
         }
 
         $featureId = $aspect->{Aspect::FIELD_VALUE}->{FeatureValue::FIELD_FEATURE}->{Feature::FIELD_ID};
-        /** @noinspection PhpUndefinedMethodInspection */
-        DB::beginTransaction();
-        try {
+        $this->executeInTransaction(function () use ($aspect, $base, $featureId) {
             // assign aspect back to product
             $aspect->{Aspect::FIELD_ID_PRODUCT} = null;
             $aspect->saveOrFail();
@@ -144,12 +136,7 @@ class AspectRepository extends IndexBasedResourceRepository implements AspectRep
                 /** @noinspection PhpUndefinedMethodInspection */
                 DB::table(Aspect::TABLE_NAME)->whereIn(Aspect::FIELD_ID, $specIdsToDelete)->delete();
             }
-
-            $allExecutedOk = true;
-        } finally {
-            /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
-        }
+        });
     }
 
     /**

@@ -47,7 +47,7 @@ class CreateImagesByFormatCommand extends Command implements SelfHandling
         ImagePathRepositoryInterface $pathRepo,
         ImagesInterface $images
     ) {
-        $format = $formatRepo->read($this->formatCode);
+        $format = $formatRepo->readByCode($this->formatCode);
         foreach ($imageRepo->search() as $image) {
             /** @var Image $image */
             $savedToFileName = $images->resize($image, $format);

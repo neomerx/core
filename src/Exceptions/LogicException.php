@@ -5,7 +5,7 @@ use \Neomerx\Core\Support\Translate as T;
 /**
  * @package Neomerx\Core
  */
-class LogicException extends Exception
+class LogicException extends Exception implements ExceptionInterface
 {
     /**
      * @inheritdoc

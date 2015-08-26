@@ -3,7 +3,6 @@
 use \Neomerx\Core\Models\Aspect;
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Category;
-use \Illuminate\Support\Facades\DB;
 use \Neomerx\Core\Models\BaseProduct;
 use \Neomerx\Core\Models\ProductTaxType;
 use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
@@ -58,7 +57,7 @@ class ProductRepository extends CodeBasedResourceRepository implements ProductRe
         }
 
         $this->fillModel($product, [
-            Product::FIELD_ID_BASE_PRODUCT          => $baseProduct,
+            Product::FIELD_ID_BASE_PRODUCT     => $baseProduct,
             Product::FIELD_ID_CATEGORY_DEFAULT => $category,
             Product::FIELD_ID_PRODUCT_TAX_TYPE => $taxType,
         ], $attributes);
@@ -79,9 +78,7 @@ class ProductRepository extends CodeBasedResourceRepository implements ProductRe
 
         $product = $this->instance($baseProduct, $category, $taxType, $attributes);
 
-        /** @noinspection PhpUndefinedMethodInspection */
-        DB::beginTransaction();
-        try {
+        $this->executeInTransaction(function () use ($product, $defaultAspects, $baseProduct) {
             $product->saveOrFail();
             foreach ($defaultAspects as $aspect) {
                 /** @var Aspect $aspect */
@@ -91,12 +88,7 @@ class ProductRepository extends CodeBasedResourceRepository implements ProductRe
                         ->saveOrFail();
                 }
             }
-
-            $allExecutedOk = true;
-        } finally {
-            /** @noinspection PhpUndefinedMethodInspection */
-            isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
-        }
+        });
 
         return $product;
     }
