@@ -24,7 +24,7 @@ interface ImageFormatRepositoryInterface extends RepositoryInterface
     public function fill(ImageFormat $resource, array $attributes = null);
 
     /**
-     * @param string $index
+     * @param int    $index
      * @param array  $scopes
      * @param array  $columns
      *

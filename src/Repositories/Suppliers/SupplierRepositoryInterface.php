@@ -27,7 +27,7 @@ interface SupplierRepositoryInterface extends RepositoryInterface
     public function fill(Supplier $resource, Address $address = null, array $attributes = null);
 
     /**
-     * @param string $index
+     * @param int    $index
      * @param array  $scopes
      * @param array  $columns
      *

@@ -28,7 +28,7 @@ interface RegionRepositoryInterface extends RepositoryInterface
     public function fill(Region $resource, Country $country = null, array $attributes = null);
 
     /**
-     * @param string $index
+     * @param int    $index
      * @param array  $relations
      * @param array  $columns
      *

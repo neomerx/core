@@ -24,7 +24,7 @@ interface CategoryRepositoryInterface extends RepositoryInterface
     public function fill(Category $resource, array $attributes);
 
     /**
-     * @param string $index
+     * @param int    $index
      * @param array  $scopes
      * @param array  $columns
      *

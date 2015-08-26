@@ -25,7 +25,7 @@ interface TaxRepositoryInterface extends RepositoryInterface
     public function fill(Tax $resource, array $attributes);
 
     /**
-     * @param string $index
+     * @param int    $index
      * @param array  $scopes
      * @param array  $columns
      *

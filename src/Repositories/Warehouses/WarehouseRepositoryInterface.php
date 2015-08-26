@@ -30,7 +30,7 @@ interface WarehouseRepositoryInterface extends RepositoryInterface
     public function fill(Warehouse $resource, array $attributes = null, Address $address = null, Store $store = null);
 
     /**
-     * @param string $index
+     * @param int    $index
      * @param array  $scopes
      * @param array  $columns
      *

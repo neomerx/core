@@ -28,7 +28,7 @@ interface CarrierRepositoryInterface extends RepositoryInterface
     public function fill(Carrier $resource, array $attributes, Currency $currency = null);
 
     /**
-     * @param string $index
+     * @param int    $index
      * @param array  $scopes
      * @param array  $columns
      *

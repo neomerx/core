@@ -31,7 +31,7 @@ interface ValueRepositoryInterface extends RepositoryInterface
     );
 
     /**
-     * @param string $index
+     * @param int    $index
      * @param array  $scopes
      * @param array  $columns
      *

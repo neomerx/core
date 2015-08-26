@@ -27,7 +27,7 @@ interface FeatureRepositoryInterface extends RepositoryInterface
     public function fill(Feature $resource, array $attributes = null, Measurement $measurement = null);
 
     /**
-     * @param string $index
+     * @param int    $index
      * @param array  $scopes
      * @param array  $columns
      *

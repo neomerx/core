@@ -27,7 +27,7 @@ interface ManufacturerRepositoryInterface extends RepositoryInterface
     public function fill(Manufacturer $resource, Address $address = null, array $attributes = null);
 
     /**
-     * @param string $index
+     * @param int    $index
      * @param array  $scopes
      * @param array  $columns
      *
