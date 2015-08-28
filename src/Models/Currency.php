@@ -21,9 +21,15 @@ class Currency extends BaseModel implements SelectByCodeInterface
     const CODE_MIN_LENGTH = 3;
     /** Model field length */
     const CODE_MAX_LENGTH = 3;
+    /** Model field length */
+    const NUMBER_MIN = 1;
+    /** Model field length */
+    const NUMBER_MAX = 999;
 
     /** Model field name */
     const FIELD_ID                       = 'id_currency';
+    /** Model field name */
+    const FIELD_NUMBER                   = 'number';
     /** Model field name */
     const FIELD_CODE                     = 'code';
     /** Model field name */
@@ -53,19 +59,14 @@ class Currency extends BaseModel implements SelectByCodeInterface
     /**
      * @inheritdoc
      */
-    public $incrementing = false;
-
-    /**
-     * @inheritdoc
-     */
     public $timestamps = false;
 
     /**
      * @inheritdoc
      */
     protected $fillable = [
-        self::FIELD_ID,
         self::FIELD_CODE,
+        self::FIELD_NUMBER,
         self::FIELD_DECIMAL_DIGITS,
         self::FIELD_DECIMAL_POINTS_SEPARATOR,
         self::FIELD_THOUSANDS_SEPARATOR,
@@ -74,7 +75,15 @@ class Currency extends BaseModel implements SelectByCodeInterface
     /**
      * @inheritdoc
      */
+    protected $hidden = [
+        self::FIELD_ID,
+    ];
+
+    /**
+     * @inheritdoc
+     */
     public $guarded = [
+        self::FIELD_ID,
     ];
 
     /**
@@ -83,7 +92,8 @@ class Currency extends BaseModel implements SelectByCodeInterface
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ID => 'required|integer|min:1|max:999'.'|unique:'.self::TABLE_NAME,
+            self::FIELD_NUMBER => 'required|integer|min:'.self::NUMBER_MIN.
+                '|max:'.self::NUMBER_MAX.'|unique:'.self::TABLE_NAME,
 
             self::FIELD_CODE => 'required|code|min:'.self::CODE_MIN_LENGTH.
                 '|max:'.self::CODE_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
