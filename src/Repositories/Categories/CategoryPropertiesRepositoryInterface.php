@@ -17,7 +17,16 @@ interface CategoryPropertiesRepositoryInterface extends RepositoryInterface
      *
      * @return CategoryProperties
      */
-    public function instance(Category $resource, Language $language, array $attributes);
+    public function createWithObjects(Category $resource, Language $language, array $attributes);
+
+    /**
+     * @param int   $categoryId
+     * @param int   $languageId
+     * @param array $attributes
+     *
+     * @return CategoryProperties
+     */
+    public function create($categoryId, $languageId, array $attributes);
 
     /**
      * @param CategoryProperties $properties
@@ -27,10 +36,25 @@ interface CategoryPropertiesRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         CategoryProperties $properties,
         Category $resource = null,
         Language $language = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param CategoryProperties $properties
+     * @param int|null           $categoryId
+     * @param int|null           $languageId
+     * @param array|null         $attributes
+     *
+     * @return void
+     */
+    public function update(
+        CategoryProperties $properties,
+        $categoryId = null,
+        $languageId = null,
         array $attributes = null
     );
 

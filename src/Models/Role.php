@@ -11,7 +11,7 @@ use \Illuminate\Database\Eloquent\Collection;
  *
  * @package Neomerx\Core
  */
-class Role extends BaseModel implements SelectByCodeInterface
+class Role extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'roles';
@@ -99,14 +99,6 @@ class Role extends BaseModel implements SelectByCodeInterface
             self::FIELD_DESCRIPTION => 'sometimes|required|alpha_dash_dot_space|min:1|max:'.
                 self::DESCRIPTION_MAX_LENGTH,
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 
     /**

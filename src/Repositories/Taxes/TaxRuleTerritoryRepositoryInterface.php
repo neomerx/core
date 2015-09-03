@@ -2,6 +2,7 @@
 
 use \Neomerx\Core\Models\TaxRule;
 use \Neomerx\Core\Models\BaseModel;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Models\TaxRuleTerritory;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
@@ -17,23 +18,16 @@ interface TaxRuleTerritoryRepositoryInterface extends RepositoryInterface
      * @return TaxRuleTerritory
      *
      */
-    public function instance(TaxRule $rule, BaseModel $territory);
+    public function createWithObjects(TaxRule $rule, BaseModel $territory);
 
     /**
-     * @param TaxRule $rule
+     * @param int      $ruleId
+     * @param string   $territoryType Class of the territory (country or region)
+     * @param int|null $territoryId
      *
      * @return TaxRuleTerritory
-     *
      */
-    public function instanceAllCountries(TaxRule $rule);
-
-    /**
-     * @param TaxRule $rule
-     *
-     * @return TaxRuleTerritory
-     *
-     */
-    public function instanceAllRegions(TaxRule $rule);
+    public function create($ruleId, $territoryType, $territoryId);
 
     /**
      * @param TaxRuleTerritory $resource
@@ -42,23 +36,20 @@ interface TaxRuleTerritoryRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(TaxRuleTerritory $resource, TaxRule $rule = null, BaseModel $territory = null);
+    public function updateWithObjects(TaxRuleTerritory $resource, TaxRule $rule = null, BaseModel $territory = null);
 
     /**
      * @param TaxRuleTerritory $resource
-     * @param TaxRule|null     $rule
-     *
-     * @return void
+     * @param int|null         $ruleId
+     * @param string|null      $territoryType
+     * @param Nullable|null    $territoryId
      */
-    public function fillAllCountries(TaxRuleTerritory $resource, TaxRule $rule = null);
-
-    /**
-     * @param TaxRuleTerritory $resource
-     * @param TaxRule|null     $rule
-     *
-     * @return void
-     */
-    public function fillAllRegions(TaxRuleTerritory $resource, TaxRule $rule = null);
+    public function update(
+        TaxRuleTerritory $resource,
+        $ruleId = null,
+        $territoryType = null,
+        Nullable $territoryId = null
+    );
 
     /**
      * @param int   $resourceId

@@ -12,12 +12,21 @@ interface ManufacturerPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param Manufacturer $resource
-     * @param Language $language
-     * @param array    $attributes
+     * @param Language     $language
+     * @param array        $attributes
      *
      * @return ManufacturerProperties
      */
-    public function instance(Manufacturer $resource, Language $language, array $attributes);
+    public function createWithObjects(Manufacturer $resource, Language $language, array $attributes);
+
+    /**
+     * @param int   $manufacturerId
+     * @param int   $languageId
+     * @param array $attributes
+     *
+     * @return ManufacturerProperties
+     */
+    public function create($manufacturerId, $languageId, array $attributes);
 
     /**
      * @param ManufacturerProperties $properties
@@ -27,10 +36,25 @@ interface ManufacturerPropertiesRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         ManufacturerProperties $properties,
         Manufacturer $resource = null,
         Language $language = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param ManufacturerProperties $properties
+     * @param int|null               $manufacturerId
+     * @param int|null               $languageId
+     * @param array|null             $attributes
+     *
+     * @return void
+     */
+    public function update(
+        ManufacturerProperties $properties,
+        $manufacturerId = null,
+        $languageId = null,
         array $attributes = null
     );
 

@@ -13,7 +13,7 @@ interface ImageFormatRepositoryInterface extends RepositoryInterface
      *
      * @return ImageFormat
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param ImageFormat $resource
@@ -21,7 +21,7 @@ interface ImageFormatRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(ImageFormat $resource, array $attributes = null);
+    public function update(ImageFormat $resource, array $attributes = []);
 
     /**
      * @param int    $index
@@ -31,13 +31,4 @@ interface ImageFormatRepositoryInterface extends RepositoryInterface
      * @return ImageFormat
      */
     public function read($index, array $scopes = [], array $columns = ['*']);
-
-    /**
-     * @param string $code
-     * @param array  $scopes
-     * @param array  $columns
-     *
-     * @return ImageFormat
-     */
-    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 }

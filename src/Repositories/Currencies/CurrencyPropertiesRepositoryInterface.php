@@ -17,20 +17,44 @@ interface CurrencyPropertiesRepositoryInterface extends RepositoryInterface
      *
      * @return CurrencyProperties
      */
-    public function instance(Currency $resource, Language $language, array $attributes);
+    public function createWithObjects(Currency $resource, Language $language, array $attributes);
+
+    /**
+     * @param int   $currencyId
+     * @param int   $languageId
+     * @param array $attributes
+     *
+     * @return CurrencyProperties
+     */
+    public function create($currencyId, $languageId, array $attributes);
 
     /**
      * @param CurrencyProperties $properties
-     * @param Currency|null $resource
-     * @param Language|null $language
-     * @param array|null    $attributes
+     * @param Currency|null      $resource
+     * @param Language|null      $language
+     * @param array|null         $attributes
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         CurrencyProperties $properties,
         Currency $resource = null,
         Language $language = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param CurrencyProperties $properties
+     * @param int|null           $currencyId
+     * @param int|null           $languageId
+     * @param array|null         $attributes
+     *
+     * @return void
+     */
+    public function update(
+        CurrencyProperties $properties,
+        $currencyId = null,
+        $languageId = null,
         array $attributes = null
     );
 

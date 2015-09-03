@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Repositories\Taxes;
 
 use \Neomerx\Core\Models\TaxRule;
-use \Neomerx\Core\Models\CustomerType;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Models\TaxRuleCustomerType;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
@@ -11,21 +11,38 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface TaxRuleCustomerTypeRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param TaxRule           $rule
-     * @param CustomerType|null $type
+     * @param TaxRule       $rule
+     * @param Nullable|null $type CustomerType
      *
      * @return TaxRuleCustomerType
      */
-    public function instance(TaxRule $rule, CustomerType $type = null);
+    public function createWithObjects(TaxRule $rule, Nullable $type = null);
+
+    /**
+     * @param int           $ruleId
+     * @param Nullable|null $typeId
+     *
+     * @return TaxRuleCustomerType
+     */
+    public function create($ruleId, Nullable $typeId = null);
 
     /**
      * @param TaxRuleCustomerType $resource
-     * @param TaxRule|null        $rule
-     * @param CustomerType|null   $type
+     * @param TaxRule|null       $rule
+     * @param Nullable|null      $type CustomerType
      *
      * @return void
      */
-    public function fill(TaxRuleCustomerType $resource, TaxRule $rule = null, CustomerType $type = null);
+    public function updateWithObjects(TaxRuleCustomerType $resource, TaxRule $rule = null, Nullable $type = null);
+
+    /**
+     * @param TaxRuleCustomerType $resource
+     * @param int|null           $ruleId
+     * @param Nullable|null      $typeId CustomerType Id
+     *
+     * @return void
+     */
+    public function update(TaxRuleCustomerType $resource, $ruleId = null, Nullable $typeId = null);
 
     /**
      * @param int   $resourceId

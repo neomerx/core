@@ -16,7 +16,16 @@ interface OrderStatusRuleRepositoryInterface extends RepositoryInterface
      * @return OrderStatusRule
      *
      */
-    public function instance(OrderStatus $statusFrom, OrderStatus $statusTo);
+    public function createWithObjects(OrderStatus $statusFrom, OrderStatus $statusTo);
+
+    /**
+     * @param int $statusIdFrom
+     * @param int $statusIdTo
+     *
+     * @return OrderStatusRule
+     *
+     */
+    public function create($statusIdFrom, $statusIdTo);
 
     /**
      * @param OrderStatusRule  $resource
@@ -26,7 +35,21 @@ interface OrderStatusRuleRepositoryInterface extends RepositoryInterface
      * @return void
      *
      */
-    public function fill(OrderStatusRule $resource, OrderStatus $statusFrom = null, OrderStatus $statusTo = null);
+    public function updateWithObjects(
+        OrderStatusRule $resource,
+        OrderStatus $statusFrom = null,
+        OrderStatus $statusTo = null
+    );
+
+    /**
+     * @param OrderStatusRule $resource
+     * @param int|null        $statusIdFrom
+     * @param int|null        $statusIdTo
+     *
+     * @return void
+     *
+     */
+    public function update(OrderStatusRule $resource, $statusIdFrom = null, $statusIdTo = null);
 
     /**
      * @param int   $resourceId

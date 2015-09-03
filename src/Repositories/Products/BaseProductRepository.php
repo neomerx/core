@@ -4,12 +4,12 @@ use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\Currency;
 use \Neomerx\Core\Models\BaseProduct;
 use \Neomerx\Core\Models\Manufacturer;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class BaseProductRepository extends IndexBasedResourceRepository implements BaseProductRepositoryInterface
+class BaseProductRepository extends BaseRepository implements BaseProductRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -22,29 +22,62 @@ class BaseProductRepository extends IndexBasedResourceRepository implements Base
     /**
      * @inheritdoc
      */
-    public function instance(
+    public function createWithObjects(
         Manufacturer $manufacturer,
         Currency $currency,
         array $attributes
     ) {
-        /** @var BaseProduct $base */
-        $base = $this->makeModel();
-        $this->fill($base, $manufacturer, $currency, $attributes);
-        return $base;
+        return $this->create($this->idOf($manufacturer), $this->idOf($currency), $attributes);
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function create(
+        $manufacturerId,
+        $currencyId,
+        array $attributes
+    ) {
+        $resource = $this->createWith($attributes, $this->getRelationships($manufacturerId, $currencyId));
+
+        return $resource;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function updateWithObjects(
         BaseProduct $base,
         Manufacturer $manufacturer = null,
         Currency $currency = null,
         array $attributes = null
     ) {
-        $this->fillModel($base, [
-            BaseProduct::FIELD_ID_CURRENCY     => $currency,
-            BaseProduct::FIELD_ID_MANUFACTURER => $manufacturer,
-        ], $attributes);
+        $this->update($base, $this->idOf($manufacturer), $this->idOf($currency), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        BaseProduct $base,
+        $manufacturerId = null,
+        $currencyId = null,
+        array $attributes = null
+    ) {
+        $this->updateWith($base, $attributes, $this->getRelationships($manufacturerId, $currencyId));
+    }
+
+    /**
+     * @param int $manufacturerId
+     * @param int $currencyId
+     *
+     * @return array
+     */
+    protected function getRelationships($manufacturerId, $currencyId)
+    {
+        return $this->filterNulls([
+            BaseProduct::FIELD_ID_CURRENCY     => $currencyId,
+            BaseProduct::FIELD_ID_MANUFACTURER => $manufacturerId,
+        ]);
     }
 }

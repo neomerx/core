@@ -13,7 +13,7 @@ interface CustomerRiskRepositoryInterface extends RepositoryInterface
      *
      * @return CustomerRisk
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param CustomerRisk $resource
@@ -21,7 +21,7 @@ interface CustomerRiskRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(CustomerRisk $resource, array $attributes);
+    public function update(CustomerRisk $resource, array $attributes);
 
     /**
      * @param string $code

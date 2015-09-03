@@ -4,19 +4,15 @@ use \DB;
 use \Closure;
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\BaseModel;
-use \Illuminate\Support\Facades\App;
-use \Neomerx\Core\Support\SearchParser;
-use \Neomerx\Core\Support\SearchGrammar;
-use \Illuminate\Database\Eloquent\Builder;
 use \Illuminate\Database\Eloquent\Collection;
-use \Neomerx\Core\Models\SelectByCodeInterface;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
  * @package Neomerx\Core
  *
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
-abstract class BaseRepository
+abstract class BaseRepository implements RepositoryInterface
 {
     /**
      * @var BaseModel
@@ -33,17 +29,77 @@ abstract class BaseRepository
      */
     public function __construct($modelBindName)
     {
-        assert('isset($modelBindName) && is_subclass_of(\''.$modelBindName.'\', \''.BaseModel::class.'\')');
-        assert('is_subclass_of(\''.get_class($this).'\', \''.RepositoryInterface::class.'\')');
+        assert('is_subclass_of(\''.$modelBindName.'\', \''.BaseModel::class.'\')');
 
         $this->modelBindName = $modelBindName;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function index(array $relations = [], array $columns = ['*'])
+    {
+        $builder = $this->getUnderlyingModel()->newQuery();
+        $result  = $builder->with($relations)->get($columns);
+
+        return $result;
+    }
+
+    /**
+     * Create resource with attributes and relationships.
+     *
+     * @param array $attributes
+     * @param array $relationships
+     *
+     * @return BaseModel
+     */
+    protected function createWith(array $attributes, array $relationships)
+    {
+        $model = $this->createModel();
+        $this->fillModel($model, $attributes, $relationships);
+        $model->saveOrFail();
+
+        return $model;
+    }
+
     /**
      * @inheritdoc
      */
     public function read($index, array $scopes = [], array $columns = ['*'])
     {
-        return $this->findModelById($index, $scopes, $columns);
+        $model = $this->getUnderlyingModel();
+        $keyColumn = $model->getKeyName();
+        $builder = $model->newQuery()->where($keyColumn, $index);
+        empty($scopes) === true ?: $builder->with($scopes);
+
+        return $builder->firstOrFail($columns);
+    }
+
+    /**
+     * Create resource with attributes and relationships.
+     *
+     * @param BaseModel $resource
+     * @param array     $attributes
+     * @param array     $relationships
+     *
+     * @return void
+     */
+    protected function updateWith(BaseModel $resource, array $attributes, array $relationships)
+    {
+        $this->fillModel($resource, $attributes, $relationships);
+        $resource->saveOrFail();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function delete($index)
+    {
+        $model   = $this->getUnderlyingModel();
+        $query   = $model->newQuery()->where($model->getKeyName(), '=', $index);
+        $deleted = $query->delete();
+
+        return $deleted > 0;
     }
 
     /**
@@ -51,158 +107,78 @@ abstract class BaseRepository
      */
     protected function getUnderlyingModel()
     {
-        $this->model !== null ?: ($this->model = $this->makeModel());
+        $this->model !== null ?: ($this->model = $this->createModel());
         return $this->model;
     }
 
     /**
      * @return BaseModel
      */
-    protected function makeModel()
+    protected function createModel()
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return App::make($this->modelBindName);
-    }
-
-    /**
-     * @param array $relations
-     *
-     * @return Builder
-     */
-    protected function createBuilder(array $relations = [])
-    {
-        $builder = $this->getUnderlyingModel()->newQuery();
-        empty($relations) === true ?: $builder->with($relations);
-
-        return $builder;
-    }
-
-    /**
-     * @param string $code
-     * @param array  $relations
-     *
-     * @return Builder
-     */
-    protected function makeBuilderByCode($code, array $relations = [])
-    {
-        assert('is_subclass_of(\''.$this->modelBindName.'\', \''.SelectByCodeInterface::class.'\')');
-
-        /** @var SelectByCodeInterface $model */
-        $model = $this->getUnderlyingModel();
-        $builder = $model->selectByCode($code);
-        empty($relations) === true ?: $builder->with($relations);
-        return $builder;
-    }
-
-    /**
-     * @param int   $modelId
-     * @param array $relations
-     *
-     * @return Builder
-     */
-    protected function makeBuilderById($modelId, array $relations = [])
-    {
-        $model = $this->getUnderlyingModel();
-        $keyColumn = $model->getKeyName();
-        $builder = $model->newQuery()->where($keyColumn, $modelId);
-        empty($relations) === true ?: $builder->with($relations);
-        return $builder;
+        return app($this->modelBindName);
     }
 
     /**
      * @param BaseModel  $model
-     * @param array      $objects
-     * @param array|null $attributes
+     * @param array      $attributes
+     * @param array      $relationships
      *
      * @return $this
      */
-    protected function fillModel(BaseModel $model, array $objects, array $attributes = null)
+    protected function fillModel(BaseModel $model, array $attributes, array $relationships)
     {
         empty($attributes) === true ?: $model->fill($attributes);
-        foreach ($objects as $attribute => $srcModel) {
-            /** @var BaseModel $srcModel */
-            $srcModel === null ?: $model->setAttribute($attribute, $srcModel->getKey());
+
+        foreach ($relationships as $relationshipColumn => $relationshipId) {
+            $model->setAttribute($relationshipColumn, $relationshipId);
         }
+
         return $this;
     }
 
     /**
-     * @param int   $modelId
-     * @param array $scopes
-     * @param array $columns
+     * @param BaseModel|null $model
      *
-     * @return BaseModel
+     * @return mixed
      */
-    protected function findModelById($modelId, array $scopes = [], array $columns = ['*'])
+    protected function idOf(BaseModel $model = null)
     {
-        /** @var BaseModel $result */
-        $result = $this->makeBuilderById($modelId, $scopes)->firstOrFail($columns);
-        return $result;
+        return $model === null ? null : $model->getKey();
     }
 
     /**
-     * @param string $code
-     * @param array  $scopes
-     * @param array  $columns
+     * @param S\Nullable|null $value
+     * @param string|null     $assertClass
      *
-     * @return BaseModel
+     * @return S\Nullable|null
      */
-    protected function findModelByCode($code, array $scopes = [], array $columns = ['*'])
+    protected function idOfNullable(S\Nullable $value = null, $assertClass = null)
     {
-        /** @var BaseModel $result */
-        $result = $this->makeBuilderByCode($code, $scopes)->firstOrFail($columns);
-        return $result;
-    }
+        // suppress 'unused' warning
+        $assertClass ?: null;
 
-    /**
-     * @param Builder $builder
-     * @param array   $columns
-     *
-     * @return Collection
-     */
-    protected function executeGet(Builder $builder, array $columns = ['*'])
-    {
-        /** @var Collection $result */
-        $result = $builder->get($columns);
+        $result = null;
 
-        return $result;
-    }
-
-    /**
-     * @param Builder $builder
-     * @param array   $columns
-     *
-     * @return BaseModel
-     */
-    protected function executeFirstOrFail(Builder $builder, array $columns = ['*'])
-    {
-        /** @var BaseModel $result */
-        $result = $builder->firstOrFail($columns);
-
-        return $result;
-    }
-
-    /**
-     * Search resources.
-     * If both $parameters and $rules are not specified then all resources will be returned.
-     *
-     * @param array      $relations
-     * @param array|null $parameters
-     * @param array|null $rules
-     * @param array      $columns
-     *
-     * @return Collection
-     */
-    public function search(array $relations = [], array $parameters = null, array $rules = null, array $columns = ['*'])
-    {
-        $builder = $this->createBuilder($relations);
-
-        if (empty($parameters) === false && empty($rules) === false) {
-            $parser  = new SearchParser(new SearchGrammar($builder), $rules);
-            $builder = $parser->buildQuery($parameters);
+        if ($value !== null) {
+            /** @var BaseModel|null $model */
+            $model = $value->value;
+            assert('$model === null || get_class($model) === $assertClass');
+            $resourceId = $model === null ? null : $model->getKey();
+            $result = new S\Nullable($resourceId, null);
         }
 
-        return $this->executeGet($builder, $columns);
+        return $result;
+    }
+
+    /**
+     * @param BaseModel $model
+     *
+     * @return S\Nullable
+     */
+    protected function getNullable(BaseModel $model)
+    {
+        return new S\Nullable($model);
     }
 
     /**
@@ -215,10 +191,65 @@ abstract class BaseRepository
         DB::beginTransaction();
         try {
             $closure();
-
             $allExecutedOk = true;
         } finally {
             isset($allExecutedOk) === true ? DB::commit() : DB::rollBack();
         }
+    }
+
+    /**
+     * @param array $values
+     * @param array $nullable
+     *
+     * @return array
+     */
+    protected function filterNulls(array $values, array $nullable = [])
+    {
+        $result = S\arrayFilterNulls($values);
+
+        if (empty($nullable) === false) {
+            $filteredNullable = S\arrayFilterNulls($nullable);
+            if (empty($filteredNullable) === false) {
+                $extractedNullable = array_map(function (S\Nullable $nullable) {
+                    return $nullable->value;
+                }, $filteredNullable);
+
+                if (empty($extractedNullable) === false) {
+                    $result = array_merge($result, $extractedNullable);
+                }
+            }
+        }
+
+        return $result;
+    }
+
+
+    /**
+     * Convert array of SdtClass objects to Collection of models.
+     *
+     * @param array $stdClasses
+     *
+     * @return Collection
+     */
+    protected function convertStdClassesToModels(array $stdClasses)
+    {
+        $models = [];
+        $model = $this->createModel();
+        $connection = $model->getConnection();
+        $connectionName = $connection->getName();
+        foreach ($stdClasses as $stdClass) {
+            $models[] = $model->newFromBuilder($stdClass, $connectionName);
+        }
+
+        // If 'Eager Loading' is used while selecting objects it will load them as well.
+        // This snippet is based on Laravel source code from \Illuminate\Database\Eloquent\Builder::get
+        if (empty($models) === false) {
+            $queryBuilder =
+                new QueryBuilder($connection, $connection->getQueryGrammar(), $connection->getPostProcessor());
+
+            $models = $model->newEloquentBuilder($queryBuilder)->eagerLoadRelations($models);
+        }
+
+        return $model->newCollection($models);
     }
 }

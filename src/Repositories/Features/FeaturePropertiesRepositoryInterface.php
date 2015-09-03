@@ -17,7 +17,16 @@ interface FeaturePropertiesRepositoryInterface extends RepositoryInterface
      *
      * @return FeatureProperties
      */
-    public function instance(Feature $resource, Language $language, array $attributes);
+    public function createWithObjects(Feature $resource, Language $language, array $attributes);
+
+    /**
+     * @param int   $featureId
+     * @param int   $languageId
+     * @param array $attributes
+     *
+     * @return FeatureProperties
+     */
+    public function create($featureId, $languageId, array $attributes);
 
     /**
      * @param FeatureProperties $properties
@@ -27,10 +36,25 @@ interface FeaturePropertiesRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         FeatureProperties $properties,
         Feature $resource = null,
         Language $language = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param FeatureProperties $properties
+     * @param int|null          $featureId
+     * @param int|null          $languageId
+     * @param array|null        $attributes
+     *
+     * @return void
+     */
+    public function update(
+        FeatureProperties $properties,
+        $featureId = null,
+        $languageId = null,
         array $attributes = null
     );
 

@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Images;
 
 use \Neomerx\Core\Models\ImageFormat;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class ImageFormatRepository extends CodeBasedResourceRepository implements ImageFormatRepositoryInterface
+class ImageFormatRepository extends BaseRepository implements ImageFormatRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,18 @@ class ImageFormatRepository extends CodeBasedResourceRepository implements Image
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var ImageFormat $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(ImageFormat $resource, array $attributes = null)
+    public function update(ImageFormat $resource, array $attributes = [])
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

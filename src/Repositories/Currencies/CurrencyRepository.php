@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Currencies;
 
 use \Neomerx\Core\Models\Currency;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class CurrencyRepository extends CodeBasedResourceRepository implements CurrencyRepositoryInterface
+class CurrencyRepository extends BaseRepository implements CurrencyRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,18 @@ class CurrencyRepository extends CodeBasedResourceRepository implements Currency
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var Currency $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Currency $resource, array $attributes)
+    public function update(Currency $resource, array $attributes)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

@@ -5,13 +5,14 @@ use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Country;
 use \Neomerx\Core\Models\TaxRule;
 use \Neomerx\Core\Models\BaseModel;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Models\TaxRuleTerritory;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class TaxRuleTerritoryRepository extends IndexBasedResourceRepository implements TaxRuleTerritoryRepositoryInterface
+class TaxRuleTerritoryRepository extends BaseRepository implements TaxRuleTerritoryRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -24,95 +25,67 @@ class TaxRuleTerritoryRepository extends IndexBasedResourceRepository implements
     /**
      * @inheritdoc
      */
-    public function instance(TaxRule $rule, BaseModel $territory)
+    public function createWithObjects(TaxRule $rule, BaseModel $territory)
     {
-        /** @var TaxRuleTerritory $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $rule, $territory);
+        return $this->create($this->idOf($rule), get_class($territory), $this->idOf($territory));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($ruleId, $territoryType, $territoryId)
+    {
+        $territoryType = $this->getTerritoryType($territoryType);
+
+        $resource = $this->createWith([], $this->filterNulls([
+            TaxRuleTerritory::FIELD_ID_TAX_RULE    => $ruleId,
+            TaxRuleTerritory::FIELD_TERRITORY_TYPE => $territoryType,
+            TaxRuleTerritory::FIELD_TERRITORY_ID   => $territoryId,
+        ]));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(TaxRuleTerritory $resource, TaxRule $rule = null, BaseModel $territory = null)
+    public function updateWithObjects(TaxRuleTerritory $resource, TaxRule $rule = null, BaseModel $territory = null)
     {
-        if ($territory !== null) {
-            $resource->{TaxRuleTerritory::FIELD_TERRITORY_ID}   = $territory->getKey();
-            $resource->{TaxRuleTerritory::FIELD_TERRITORY_TYPE} = S\arrayGetValueEx([
-                Country::class => TaxRuleTerritory::TERRITORY_TYPE_COUNTRY,
-                Region::class  => TaxRuleTerritory::TERRITORY_TYPE_REGION,
-            ], get_class($territory));
-        }
+        $territoryType = $territory === null ? null : get_class($territory);
+        $territoryId   = $this->idOfNullable($territory);
 
-        $this->fillModel($resource, [
-            TaxRuleTerritory::FIELD_ID_TAX_RULE => $rule,
+        $this->update($resource, $this->idOf($rule), $territoryType, $territoryId);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        TaxRuleTerritory $resource,
+        $ruleId = null,
+        $territoryType = null,
+        Nullable $territoryId = null
+    ) {
+        $relationships = $this->filterNulls([
+            TaxRuleTerritory::FIELD_ID_TAX_RULE    => $ruleId,
+            TaxRuleTerritory::FIELD_TERRITORY_TYPE => $territoryType,
+        ], [
+            TaxRuleTerritory::FIELD_TERRITORY_ID   => $territoryId,
         ]);
+
+        $this->updateWith($resource, [], $relationships);
     }
 
     /**
-     * @param TaxRule $rule
+     * @param string $territoryType
      *
-     * @return TaxRuleTerritory
-     *
+     * @return string
      */
-    public function instanceAllCountries(TaxRule $rule)
+    private function getTerritoryType($territoryType)
     {
-        /** @var TaxRuleTerritory $resource */
-        $resource = $this->makeModel();
-        $this->fillAllCountries($resource, $rule);
-        return $resource;
-    }
-
-    /**
-     * @param TaxRule $rule
-     *
-     * @return TaxRuleTerritory
-     *
-     */
-    public function instanceAllRegions(TaxRule $rule)
-    {
-        /** @var TaxRuleTerritory $resource */
-        $resource = $this->makeModel();
-        $this->fillAllRegions($resource, $rule);
-        return $resource;
-    }
-
-    /**
-     * @param TaxRuleTerritory $resource
-     * @param TaxRule|null     $rule
-     *
-     * @return void
-     */
-    public function fillAllCountries(TaxRuleTerritory $resource, TaxRule $rule = null)
-    {
-        $this->fillTerritory($resource, TaxRuleTerritory::TERRITORY_TYPE_COUNTRY);
-        $this->fillModel($resource, [TaxRuleTerritory::FIELD_ID_TAX_RULE => $rule]);
-    }
-
-    /**
-     * @param TaxRuleTerritory $resource
-     * @param TaxRule|null     $rule
-     *
-     * @return void
-     */
-    public function fillAllRegions(TaxRuleTerritory $resource, TaxRule $rule = null)
-    {
-        $this->fillTerritory($resource, TaxRuleTerritory::TERRITORY_TYPE_REGION);
-        $this->fillModel($resource, [TaxRuleTerritory::FIELD_ID_TAX_RULE => $rule]);
-    }
-
-    /**
-     * @param TaxRuleTerritory $resource
-     * @param string           $type
-     */
-    private function fillTerritory(TaxRuleTerritory $resource, $type)
-    {
-        if ($resource->exists === true) {
-            $resource->{TaxRuleTerritory::FIELD_TERRITORY_ID} = null;
-        } else {
-            unset($resource[TaxRuleTerritory::FIELD_TERRITORY_ID]);
-        }
-        $resource->{TaxRuleTerritory::FIELD_TERRITORY_TYPE} = $type;
+        return S\arrayGetValueEx([
+            Country::class => TaxRuleTerritory::TERRITORY_TYPE_COUNTRY,
+            Region::class  => TaxRuleTerritory::TERRITORY_TYPE_REGION,
+        ], $territoryType);
     }
 }

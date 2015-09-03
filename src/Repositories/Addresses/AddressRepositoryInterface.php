@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Repositories\Addresses;
 
-use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Address;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
 /**
@@ -10,21 +10,38 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface AddressRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param array       $attributes
-     * @param Region|null $region
+     * @param array         $attributes
+     * @param Nullable|null $region Region
      *
      * @return Address
      */
-    public function instance(array $attributes, Region $region = null);
+    public function createWithObjects(array $attributes, Nullable $region = null);
 
     /**
-     * @param Address     $resource
-     * @param array|null  $attributes
-     * @param Region|null $region
+     * @param array         $attributes
+     * @param Nullable|null $regionId
+     *
+     * @return Address
+     */
+    public function create(array $attributes, Nullable $regionId = null);
+
+    /**
+     * @param Address       $resource
+     * @param array|null    $attributes
+     * @param Nullable|null $region Region
      *
      * @return void
      */
-    public function fill(Address $resource, array $attributes = null, Region $region = null);
+    public function updateWithObjects(Address $resource, array $attributes = [], Nullable $region = null);
+
+    /**
+     * @param Address       $resource
+     * @param array|null    $attributes
+     * @param Nullable|null $regionId
+     *
+     * @return void
+     */
+    public function update(Address $resource, array $attributes = [], Nullable $regionId = null);
 
     /**
      * @param int   $resourceId

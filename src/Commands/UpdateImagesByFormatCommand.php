@@ -15,19 +15,19 @@ class UpdateImagesByFormatCommand extends Command implements SelfHandling
     /**
      * Constructor parameter.
      */
-    const PARAM_FORMAT_CODE = 'formatCode';
+    const PARAM_FORMAT_ID = 'formatId';
 
     /**
-     * @var string
+     * @var int
      */
-    private $formatCode;
+    private $formatId;
 
     /**
-     * @param string $formatCode
+     * @param string $formatId
      */
-    public function __construct($formatCode)
+    public function __construct($formatId)
     {
-        $this->formatCode = $formatCode;
+        $this->formatId = $formatId;
     }
 
     /**
@@ -40,7 +40,7 @@ class UpdateImagesByFormatCommand extends Command implements SelfHandling
      */
     public function handle(ImageFormatRepositoryInterface $formatRepo, ImagesInterface $images)
     {
-        $format = $formatRepo->readByCode($this->formatCode);
+        $format = $formatRepo->read($this->formatId);
         foreach ($format->{ImageFormat::FIELD_PATHS} as $path) {
             /** @var ImagePath $path */
             /** @var Image $image */

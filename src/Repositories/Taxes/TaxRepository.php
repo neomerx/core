@@ -1,12 +1,13 @@
 <?php namespace Neomerx\Core\Repositories\Taxes;
 
+use \DB;
 use \Neomerx\Core\Models\Tax;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class TaxRepository extends CodeBasedResourceRepository implements TaxRepositoryInterface
+class TaxRepository extends BaseRepository implements TaxRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,20 +20,19 @@ class TaxRepository extends CodeBasedResourceRepository implements TaxRepository
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var Tax $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Tax $resource, array $attributes)
+    public function update(Tax $resource, array $attributes)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 
     /**
@@ -45,8 +45,9 @@ class TaxRepository extends CodeBasedResourceRepository implements TaxRepository
         $customerTypeId,
         $productTaxTypeId
     ) {
-        /** @var Tax $resource */
-        $resource = $this->makeModel();
-        return $resource->selectTaxes($countryId, $regionId, $postcode, $customerTypeId, $productTaxTypeId);
+        return $this->convertStdClassesToModels(DB::select(
+            'call spSelectTaxes(?, ?, ?, ?, ?)',
+            [$countryId, $regionId, $postcode, $customerTypeId, $productTaxTypeId]
+        ));
     }
 }

@@ -13,7 +13,7 @@ interface ObjectTypeRepositoryInterface extends RepositoryInterface
      *
      * @return ObjectType
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param ObjectType $resource
@@ -21,7 +21,7 @@ interface ObjectTypeRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(ObjectType $resource, array $attributes);
+    public function update(ObjectType $resource, array $attributes);
 
     /**
      * @param int   $idx

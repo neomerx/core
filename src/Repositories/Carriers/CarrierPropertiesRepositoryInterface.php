@@ -11,26 +11,50 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface CarrierPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Carrier $resource
+     * @param Carrier  $resource
      * @param Language $language
      * @param array    $attributes
      *
      * @return CarrierProperties
      */
-    public function instance(Carrier $resource, Language $language, array $attributes);
+    public function createWithObjects(Carrier $resource, Language $language, array $attributes);
+
+    /**
+     * @param int   $carrierId
+     * @param int   $languageId
+     * @param array $attributes
+     *
+     * @return CarrierProperties
+     */
+    public function create($carrierId, $languageId, array $attributes);
 
     /**
      * @param CarrierProperties $properties
-     * @param Carrier|null $resource
-     * @param Language|null $language
-     * @param array|null    $attributes
+     * @param Carrier|null      $resource
+     * @param Language|null     $language
+     * @param array|null        $attributes
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         CarrierProperties $properties,
         Carrier $resource = null,
         Language $language = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param CarrierProperties $properties
+     * @param int|null          $carrierId
+     * @param int|null          $languageId
+     * @param array|null        $attributes
+     *
+     * @return void
+     */
+    public function update(
+        CarrierProperties $properties,
+        $carrierId = null,
+        $languageId = null,
         array $attributes = null
     );
 

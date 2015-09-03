@@ -11,7 +11,7 @@ use \Illuminate\Database\Eloquent\Collection;
  *
  * @package Neomerx\Core
  */
-class OrderStatus extends BaseModel implements SelectByCodeInterface
+class OrderStatus extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'order_statuses';
@@ -144,13 +144,5 @@ class OrderStatus extends BaseModel implements SelectByCodeInterface
             OrderStatusRule::FIELD_ID_ORDER_STATUS_TO
         );
 
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 }

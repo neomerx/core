@@ -11,13 +11,22 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface SupplierPropertiesRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Supplier $resource
+     * @param Supplier  $resource
      * @param Language $language
      * @param array    $attributes
      *
      * @return SupplierProperties
      */
-    public function instance(Supplier $resource, Language $language, array $attributes);
+    public function createWithObjects(Supplier $resource, Language $language, array $attributes);
+
+    /**
+     * @param int   $supplierId
+     * @param int   $languageId
+     * @param array $attributes
+     *
+     * @return SupplierProperties
+     */
+    public function create($supplierId, $languageId, array $attributes);
 
     /**
      * @param SupplierProperties $properties
@@ -27,10 +36,25 @@ interface SupplierPropertiesRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         SupplierProperties $properties,
         Supplier $resource = null,
         Language $language = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param SupplierProperties $properties
+     * @param int|null           $supplierId
+     * @param int|null           $languageId
+     * @param array|null         $attributes
+     *
+     * @return void
+     */
+    public function update(
+        SupplierProperties $properties,
+        $supplierId = null,
+        $languageId = null,
         array $attributes = null
     );
 

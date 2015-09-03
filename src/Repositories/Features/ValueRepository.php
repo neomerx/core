@@ -2,12 +2,12 @@
 
 use \Neomerx\Core\Models\Feature;
 use \Neomerx\Core\Models\FeatureValue;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class ValueRepository extends CodeBasedResourceRepository implements ValueRepositoryInterface
+class ValueRepository extends BaseRepository implements ValueRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -20,24 +20,52 @@ class ValueRepository extends CodeBasedResourceRepository implements ValueReposi
     /**
      * @inheritdoc
      */
-    public function instance(Feature $feature, array $attributes)
+    public function createWithObjects(Feature $feature, array $attributes)
     {
-        /** @var FeatureValue $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $feature, $attributes);
+        return $this->create($this->idOf($feature), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($featureId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($featureId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function updateWithObjects(
         FeatureValue $resource,
         Feature $feature = null,
         array $attributes = null
     ) {
-        $this->fillModel($resource, [
-            FeatureValue::FIELD_ID_FEATURE => $feature,
-        ], $attributes);
+        $this->update($resource, $this->idOf($feature), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        FeatureValue $resource,
+        $featureId = null,
+        array $attributes = null
+    ) {
+        $this->updateWith($resource, $attributes, $this->getRelationships($featureId));
+    }
+
+    /**
+     * @param int $featureId
+     *
+     * @return array
+     */
+    private function getRelationships($featureId)
+    {
+        return $this->filterNulls([
+            FeatureValue::FIELD_ID_FEATURE => $featureId,
+        ]);
     }
 }

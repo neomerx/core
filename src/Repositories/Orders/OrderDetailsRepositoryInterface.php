@@ -2,8 +2,8 @@
 
 use \Neomerx\Core\Models\Order;
 use \Neomerx\Core\Models\Product;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Models\OrderDetails;
-use \Neomerx\Core\Models\ShippingOrder;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
 /**
@@ -12,35 +12,67 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface OrderDetailsRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Order              $order
-     * @param Product            $product
-     * @param array              $attributes
-     * @param ShippingOrder|null $shippingOrder
+     * @param Order         $order
+     * @param Product       $product
+     * @param array         $attributes
+     * @param Nullable|null $shippingOrder ShippingOrder
      *
      * @return OrderDetails
      */
-    public function instance(
+    public function createWithObjects(
         Order $order,
         Product $product,
         array $attributes,
-        ShippingOrder $shippingOrder = null
+        Nullable $shippingOrder = null
     );
 
     /**
-     * @param OrderDetails       $details
-     * @param Order|null         $order
-     * @param Product|null       $product
-     * @param array|null         $attributes
-     * @param ShippingOrder|null $shippingOrder
+     * @param int           $orderId
+     * @param int           $productId
+     * @param array         $attributes
+     * @param Nullable|null $shippingOrderId
+     *
+     * @return OrderDetails
+     */
+    public function create(
+        $orderId,
+        $productId,
+        array $attributes,
+        Nullable $shippingOrderId = null
+    );
+
+    /**
+     * @param OrderDetails  $details
+     * @param Order|null    $order
+     * @param Product|null  $product
+     * @param array|null    $attributes
+     * @param Nullable|null $shippingOrder ShippingOrder
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         OrderDetails $details,
         Order $order = null,
         Product $product = null,
         array $attributes = null,
-        ShippingOrder $shippingOrder = null
+        Nullable $shippingOrder = null
+    );
+
+    /**
+     * @param OrderDetails  $details
+     * @param int|null      $orderId
+     * @param int|null      $productId
+     * @param array|null    $attributes
+     * @param Nullable|null $shippingOrderId
+     *
+     * @return void
+     */
+    public function update(
+        OrderDetails $details,
+        $orderId = null,
+        $productId = null,
+        array $attributes = null,
+        Nullable $shippingOrderId = null
     );
 
     /**

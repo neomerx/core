@@ -13,7 +13,7 @@ interface EmployeeRepositoryInterface extends RepositoryInterface
      *
      * @return Employee
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param Employee $resource
@@ -21,7 +21,7 @@ interface EmployeeRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(Employee $resource, array $attributes);
+    public function update(Employee $resource, array $attributes);
 
     /**
      * @param int   $resourceId

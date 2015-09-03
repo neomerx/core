@@ -2,12 +2,13 @@
 
 use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Address;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Support\Nullable;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class AddressRepository extends IndexBasedResourceRepository implements AddressRepositoryInterface
+class AddressRepository extends BaseRepository implements AddressRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -20,21 +21,46 @@ class AddressRepository extends IndexBasedResourceRepository implements AddressR
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes, Region $region = null)
+    public function createWithObjects(array $attributes, Nullable $region = null)
     {
-        /** @var Address $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes, $region);
+        return $this->create($attributes, $this->idOfNullable($region, Region::class));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create(array $attributes, Nullable $regionId = null)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($regionId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Address $resource, array $attributes = null, Region $region = null)
+    public function updateWithObjects(Address $resource, array $attributes = [], Nullable $region = null)
     {
-        $this->fillModel($resource, [
-            Address::FIELD_ID_REGION => $region,
-        ], $attributes);
+        $this->update($resource, $attributes, $this->idOfNullable($region, Region::class));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(Address $resource, array $attributes = [], Nullable $regionId = null)
+    {
+        $this->updateWith($resource, $attributes, $this->getRelationships($regionId));
+    }
+
+    /**
+     * @param Nullable $regionId
+     *
+     * @return array
+     */
+    protected function getRelationships(Nullable $regionId)
+    {
+        return $this->filterNulls([], [
+            Address::FIELD_ID_REGION => $regionId,
+        ]);
     }
 }

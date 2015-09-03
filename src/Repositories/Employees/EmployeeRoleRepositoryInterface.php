@@ -17,7 +17,16 @@ interface EmployeeRoleRepositoryInterface extends RepositoryInterface
      * @return EmployeeRole
      *
      */
-    public function instance(Employee $employee, Role $role);
+    public function createWithObjects(Employee $employee, Role $role);
+
+    /**
+     * @param int $employeeId
+     * @param int $roleId
+     *
+     * @return EmployeeRole
+     *
+     */
+    public function create($employeeId, $roleId);
 
     /**
      * @param EmployeeRole  $resource
@@ -26,7 +35,16 @@ interface EmployeeRoleRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(EmployeeRole $resource, Employee $employee = null, Role $role = null);
+    public function updateWithObjects(EmployeeRole $resource, Employee $employee = null, Role $role = null);
+
+    /**
+     * @param EmployeeRole $resource
+     * @param int|null     $employeeId
+     * @param int|null     $roleId
+     *
+     * @return void
+     */
+    public function update(EmployeeRole $resource, $employeeId = null, $roleId = null);
 
     /**
      * @param int   $resourceId

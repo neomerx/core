@@ -1,13 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Territories;
 
-use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Country;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class CountryRepository extends CodeBasedResourceRepository implements CountryRepositoryInterface
+class CountryRepository extends BaseRepository implements CountryRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -20,28 +19,18 @@ class CountryRepository extends CodeBasedResourceRepository implements CountryRe
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var Country $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Country $country, array $attributes = null)
+    public function update(Country $country, array $attributes = null)
     {
-        $this->fillModel($country, [], $attributes);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function regions(Country $resource)
-    {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return $resource->regions()->orderBy(Region::FIELD_POSITION, 'asc')->get();
+        $this->updateWith($country, $attributes, []);
     }
 }

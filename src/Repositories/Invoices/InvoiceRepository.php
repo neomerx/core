@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Invoices;
 
 use \Neomerx\Core\Models\Invoice;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class InvoiceRepository extends CodeBasedResourceRepository implements InvoiceRepositoryInterface
+class InvoiceRepository extends BaseRepository implements InvoiceRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,18 @@ class InvoiceRepository extends CodeBasedResourceRepository implements InvoiceRe
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var Invoice $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Invoice $resource, array $attributes = null)
+    public function update(Invoice $resource, array $attributes = null)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

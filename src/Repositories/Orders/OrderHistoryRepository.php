@@ -3,12 +3,12 @@
 use \Neomerx\Core\Models\Order;
 use \Neomerx\Core\Models\OrderStatus;
 use \Neomerx\Core\Models\OrderHistory;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class OrderHistoryRepository extends IndexBasedResourceRepository implements OrderHistoryRepositoryInterface
+class OrderHistoryRepository extends BaseRepository implements OrderHistoryRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -21,22 +21,48 @@ class OrderHistoryRepository extends IndexBasedResourceRepository implements Ord
     /**
      * @inheritdoc
      */
-    public function instance(Order $order, OrderStatus $status)
+    public function createWithObjects(Order $order, OrderStatus $status)
     {
-        /** @var OrderHistory $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $order, $status);
+        return $this->create($this->idOf($order), $this->idOf($status));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($orderId, $statusId)
+    {
+        $resource = $this->createWith([], $this->getRelationships($orderId, $statusId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(OrderHistory $resource, Order $order = null, OrderStatus $status = null)
+    public function updateWithObjects(OrderHistory $resource, Order $order = null, OrderStatus $status = null)
     {
-        $this->fillModel($resource, [
-            OrderHistory::FIELD_ID_ORDER        => $order,
-            OrderHistory::FIELD_ID_ORDER_STATUS => $status,
+        $this->update($resource, $this->idOf($order), $this->idOf($status));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(OrderHistory $resource, $orderId = null, $statusId = null)
+    {
+        $this->updateWith($resource, [], $this->getRelationships($orderId, $statusId));
+    }
+
+    /**
+     * @param int $orderId
+     * @param int $statusId
+     *
+     * @return array
+     */
+    private function getRelationships($orderId, $statusId)
+    {
+        return $this->filterNulls([
+            OrderHistory::FIELD_ID_ORDER        => $orderId,
+            OrderHistory::FIELD_ID_ORDER_STATUS => $statusId,
         ]);
     }
 }

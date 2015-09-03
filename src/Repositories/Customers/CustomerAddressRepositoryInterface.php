@@ -17,7 +17,16 @@ interface CustomerAddressRepositoryInterface extends RepositoryInterface
      *
      * @return CustomerAddress
      */
-    public function instance(Customer $customer, Address $address, array $attributes);
+    public function createWithObjects(Customer $customer, Address $address, array $attributes);
+
+    /**
+     * @param int   $customerId
+     * @param int   $addressId
+     * @param array $attributes
+     *
+     * @return CustomerAddress
+     */
+    public function create($customerId, $addressId, array $attributes);
 
     /**
      * @param CustomerAddress $resource
@@ -27,10 +36,25 @@ interface CustomerAddressRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         CustomerAddress $resource,
         Customer $customer = null,
         Address $address = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param CustomerAddress $resource
+     * @param int|null        $customerId
+     * @param int|null        $addressId
+     * @param array|null      $attributes
+     *
+     * @return void
+     */
+    public function update(
+        CustomerAddress $resource,
+        $customerId = null,
+        $addressId = null,
         array $attributes = null
     );
 

@@ -5,12 +5,12 @@ use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Category;
 use \Neomerx\Core\Models\BaseProduct;
 use \Neomerx\Core\Models\ProductTaxType;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class ProductRepository extends CodeBasedResourceRepository implements ProductRepositoryInterface
+class ProductRepository extends BaseRepository implements ProductRepositoryInterface
 {
     /**
      * @var AspectRepositoryInterface
@@ -18,74 +18,112 @@ class ProductRepository extends CodeBasedResourceRepository implements ProductRe
     private $aspectRepo;
 
     /**
+     * @var BaseProductRepositoryInterface
+     */
+    private $baseProductRepo;
+
+    /**
      * @inheritdoc
      */
-    public function __construct(AspectRepositoryInterface $aspectRepo)
+    public function __construct(AspectRepositoryInterface $aspectRepo, BaseProductRepositoryInterface $baseProductRepo)
     {
         parent::__construct(Product::class);
-        $this->aspectRepo = $aspectRepo;
+
+        $this->aspectRepo      = $aspectRepo;
+        $this->baseProductRepo = $baseProductRepo;
     }
 
     /**
      * @inheritdoc
      */
-    public function instance(
+    public function createWithObjects(
         BaseProduct $baseProduct,
         Category $category,
         ProductTaxType $taxType,
         array $attributes
     ) {
-        /** @var Product $product */
-        $product = $this->makeModel();
-        $this->fill($product, $baseProduct, $category, $taxType, $attributes);
+        $product = $this->createProduct($baseProduct, $this->idOf($category), $this->idOf($taxType), $attributes);
+
         return $product;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
-        Product $product,
-        BaseProduct $baseProduct = null,
-        Category $category = null,
-        ProductTaxType $taxType = null,
-        array $attributes = null
-    ) {
-        /** @var BaseProduct $baseProduct */
-        if ($baseProduct !== null) {
-            $product->setAttribute(Product::FIELD_SKU, $baseProduct->getAttribute(BaseProduct::FIELD_SKU));
-        }
+    public function create($baseProductId, $categoryId, $taxTypeId, array $attributes)
+    {
+        $baseProduct = $this->baseProductRepo->read($baseProductId, [BaseProduct::withProductAspectValues()]);
+        $product = $this->createProduct($baseProduct, $categoryId, $taxTypeId, $attributes);
 
-        $this->fillModel($product, [
-            Product::FIELD_ID_BASE_PRODUCT     => $baseProduct,
-            Product::FIELD_ID_CATEGORY_DEFAULT => $category,
-            Product::FIELD_ID_PRODUCT_TAX_TYPE => $taxType,
-        ], $attributes);
+        return $product;
     }
 
     /**
      * @inheritdoc
      */
-    public function create(
+    public function updateWithObjects(
+        Product $product,
+        Category $category = null,
+        ProductTaxType $taxType = null,
+        array $attributes = null
+    ) {
+        $this->update($product, $this->idOf($category), $this->idOf($taxType), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        Product $product,
+        $categoryId = null,
+        $taxTypeId = null,
+        array $attributes = null
+    ) {
+        $this->updateWith($product, $attributes, [
+            Product::FIELD_ID_CATEGORY_DEFAULT => $categoryId,
+            Product::FIELD_ID_PRODUCT_TAX_TYPE => $taxTypeId,
+        ]);
+    }
+
+    /**
+     * @param BaseProduct $baseProduct
+     * @param int         $categoryId
+     * @param int         $taxTypeId
+     * @param array       $attributes
+     *
+     * @return Product
+     */
+    private function createProduct(
         BaseProduct $baseProduct,
-        Category $category,
-        ProductTaxType $taxType,
+        $categoryId,
+        $taxTypeId,
         array $attributes
     ) {
         $defaultProduct = $baseProduct->getDefaultProduct();
         // for just created base products there is no default product yet
         $defaultAspects = $defaultProduct !== null ? $defaultProduct->{Product::FIELD_ASPECTS} : [];
 
-        $product = $this->instance($baseProduct, $category, $taxType, $attributes);
-
-        $this->executeInTransaction(function () use ($product, $defaultAspects, $baseProduct) {
-            $product->saveOrFail();
+        $product = null;
+        $baseProductId = $this->idOf($baseProduct);
+        $this->executeInTransaction(function () use (
+            &$product,
+            $defaultAspects,
+            $baseProductId,
+            $categoryId,
+            $taxTypeId,
+            $attributes
+        ) {
+            $product = $this->createWith($attributes, [
+                Product::FIELD_ID_BASE_PRODUCT     => $baseProductId,
+                Product::FIELD_ID_CATEGORY_DEFAULT => $categoryId,
+                Product::FIELD_ID_PRODUCT_TAX_TYPE => $taxTypeId,
+            ]);
+            $productId = $this->idOfNullable($this->getNullable($product), Product::class);
             foreach ($defaultAspects as $aspect) {
                 /** @var Aspect $aspect */
                 if ($aspect->{Aspect::FIELD_IS_SHARED} === false) {
-                    $this->aspectRepo
-                        ->instance($baseProduct, $aspect->value, $aspect->attributesToArray(), $product)
-                        ->saveOrFail();
+                    $valueId = $this->idOf($aspect->{Aspect::FIELD_VALUE});
+                    $this->aspectRepo->create($baseProductId, $valueId, $aspect->attributesToArray(), $productId);
                 }
             }
         });

@@ -5,13 +5,14 @@ use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Country;
 use \Neomerx\Core\Models\Carrier;
 use \Neomerx\Core\Models\BaseModel;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Models\CarrierTerritory;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class CarrierTerritoryRepository extends IndexBasedResourceRepository implements CarrierTerritoryRepositoryInterface
+class CarrierTerritoryRepository extends BaseRepository implements CarrierTerritoryRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -24,95 +25,67 @@ class CarrierTerritoryRepository extends IndexBasedResourceRepository implements
     /**
      * @inheritdoc
      */
-    public function instance(Carrier $carrier, BaseModel $territory)
+    public function createWithObjects(Carrier $carrier, BaseModel $territory)
     {
-        /** @var CarrierTerritory $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $carrier, $territory);
+        return $this->create($this->idOf($carrier), get_class($territory), $this->idOf($territory));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($carrierId, $territoryType, $territoryId)
+    {
+        $territoryType = $this->getTerritoryType($territoryType);
+
+        $resource = $this->createWith([], $this->filterNulls([
+            CarrierTerritory::FIELD_ID_CARRIER     => $carrierId,
+            CarrierTerritory::FIELD_TERRITORY_TYPE => $territoryType,
+            CarrierTerritory::FIELD_TERRITORY_ID   => $territoryId,
+        ]));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(CarrierTerritory $resource, Carrier $carrier = null, BaseModel $territory = null)
+    public function updateWithObjects(CarrierTerritory $resource, Carrier $carrier = null, BaseModel $territory = null)
     {
-        if ($territory !== null) {
-            $resource->{CarrierTerritory::FIELD_TERRITORY_ID}   = $territory->getKey();
-            $resource->{CarrierTerritory::FIELD_TERRITORY_TYPE} = S\arrayGetValueEx([
-                Country::class => CarrierTerritory::TERRITORY_TYPE_COUNTRY,
-                Region::class  => CarrierTerritory::TERRITORY_TYPE_REGION,
-            ], get_class($territory));
-        }
+        $territoryType = $territory === null ? null : get_class($territory);
+        $territoryId   = $this->idOfNullable($territory);
 
-        $this->fillModel($resource, [
-            CarrierTerritory::FIELD_ID_CARRIER => $carrier,
+        $this->update($resource, $this->idOf($carrier), $territoryType, $territoryId);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        CarrierTerritory $resource,
+        $carrierId = null,
+        $territoryType = null,
+        Nullable $territoryId = null
+    ) {
+        $relationships = $this->filterNulls([
+            CarrierTerritory::FIELD_ID_CARRIER     => $carrierId,
+            CarrierTerritory::FIELD_TERRITORY_TYPE => $territoryType,
+        ], [
+            CarrierTerritory::FIELD_TERRITORY_ID   => $territoryId,
         ]);
+
+        $this->updateWith($resource, [], $relationships);
     }
 
     /**
-     * @param Carrier $carrier
+     * @param string $territoryType
      *
-     * @return CarrierTerritory
-     *
+     * @return string
      */
-    public function instanceAllCountries(Carrier $carrier)
+    private function getTerritoryType($territoryType)
     {
-        /** @var CarrierTerritory $resource */
-        $resource = $this->makeModel();
-        $this->fillAllCountries($resource, $carrier);
-        return $resource;
-    }
-
-    /**
-     * @param Carrier $carrier
-     *
-     * @return CarrierTerritory
-     *
-     */
-    public function instanceAllRegions(Carrier $carrier)
-    {
-        /** @var CarrierTerritory $resource */
-        $resource = $this->makeModel();
-        $this->fillAllRegions($resource, $carrier);
-        return $resource;
-    }
-
-    /**
-     * @param CarrierTerritory $resource
-     * @param Carrier|null     $carrier
-     *
-     * @return void
-     */
-    public function fillAllCountries(CarrierTerritory $resource, Carrier $carrier = null)
-    {
-        $this->fillTerritory($resource, CarrierTerritory::TERRITORY_TYPE_COUNTRY);
-        $this->fillModel($resource, [CarrierTerritory::FIELD_ID_CARRIER => $carrier]);
-    }
-
-    /**
-     * @param CarrierTerritory $resource
-     * @param Carrier|null     $carrier
-     *
-     * @return void
-     */
-    public function fillAllRegions(CarrierTerritory $resource, Carrier $carrier = null)
-    {
-        $this->fillTerritory($resource, CarrierTerritory::TERRITORY_TYPE_REGION);
-        $this->fillModel($resource, [CarrierTerritory::FIELD_ID_CARRIER => $carrier]);
-    }
-
-    /**
-     * @param CarrierTerritory $resource
-     * @param string           $type
-     */
-    private function fillTerritory(CarrierTerritory $resource, $type)
-    {
-        if ($resource->exists === true) {
-            $resource->{CarrierTerritory::FIELD_TERRITORY_ID} = null;
-        } else {
-            unset($resource[CarrierTerritory::FIELD_TERRITORY_ID]);
-        }
-        $resource->{CarrierTerritory::FIELD_TERRITORY_TYPE} = $type;
+        return S\arrayGetValueEx([
+            Country::class => CarrierTerritory::TERRITORY_TYPE_COUNTRY,
+            Region::class  => CarrierTerritory::TERRITORY_TYPE_REGION,
+        ], $territoryType);
     }
 }

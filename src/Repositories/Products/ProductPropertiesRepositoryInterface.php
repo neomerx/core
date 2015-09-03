@@ -17,7 +17,16 @@ interface ProductPropertiesRepositoryInterface extends RepositoryInterface
      *
      * @return ProductProperties
      */
-    public function instance(Product $resource, Language $language, array $attributes);
+    public function createWithObjects(Product $resource, Language $language, array $attributes);
+
+    /**
+     * @param int   $product
+     * @param int   $languageId
+     * @param array $attributes
+     *
+     * @return ProductProperties
+     */
+    public function create($product, $languageId, array $attributes);
 
     /**
      * @param ProductProperties $properties
@@ -27,10 +36,25 @@ interface ProductPropertiesRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         ProductProperties $properties,
         Product $resource = null,
         Language $language = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param ProductProperties $properties
+     * @param int|null          $product
+     * @param int|null          $languageId
+     * @param array|null        $attributes
+     *
+     * @return void
+     */
+    public function update(
+        ProductProperties $properties,
+        $product = null,
+        $languageId = null,
         array $attributes = null
     );
 

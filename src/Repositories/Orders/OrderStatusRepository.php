@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Orders;
 
 use \Neomerx\Core\Models\OrderStatus;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class OrderStatusRepository extends CodeBasedResourceRepository implements OrderStatusRepositoryInterface
+class OrderStatusRepository extends BaseRepository implements OrderStatusRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,18 @@ class OrderStatusRepository extends CodeBasedResourceRepository implements Order
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var OrderStatus $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(OrderStatus $resource, array $attributes)
+    public function update(OrderStatus $resource, array $attributes)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

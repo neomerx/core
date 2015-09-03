@@ -2,14 +2,15 @@
 
 use \Neomerx\Core\Models\Order;
 use \Neomerx\Core\Models\Product;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Models\OrderDetails;
 use \Neomerx\Core\Models\ShippingOrder;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class OrderDetailsRepository extends IndexBasedResourceRepository implements OrderDetailsRepositoryInterface
+class OrderDetailsRepository extends BaseRepository implements OrderDetailsRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -22,32 +23,80 @@ class OrderDetailsRepository extends IndexBasedResourceRepository implements Ord
     /**
      * @inheritdoc
      */
-    public function instance(
+    public function createWithObjects(
         Order $order,
         Product $product,
         array $attributes,
-        ShippingOrder $shippingOrder = null
+        Nullable $shippingOrder = null
     ) {
-        /** @var OrderDetails $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $order, $product, $attributes, $shippingOrder);
+        return $this->create(
+            $this->idOf($order),
+            $this->idOf($product),
+            $attributes,
+            $this->idOfNullable($shippingOrder, ShippingOrder::class)
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create(
+        $orderId,
+        $productId,
+        array $attributes,
+        Nullable $shippingOrderId = null
+    ) {
+        $resource = $this->createWith($attributes, $this->getRelationships($orderId, $productId, $shippingOrderId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function updateWithObjects(
         OrderDetails $details,
         Order $order = null,
         Product $product = null,
         array $attributes = null,
-        ShippingOrder $shippingOrder = null
+        Nullable $shippingOrder = null
     ) {
-        $this->fillModel($details, [
-            OrderDetails::FIELD_ID_ORDER          => $order,
-            OrderDetails::FIELD_ID_PRODUCT        => $product,
-            OrderDetails::FIELD_ID_SHIPPING_ORDER => $shippingOrder,
-        ], $attributes);
+        $this->update(
+            $details,
+            $this->idOf($order),
+            $this->idOf($product),
+            $attributes,
+            $this->idOfNullable($shippingOrder, ShippingOrder::class)
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        OrderDetails $details,
+        $orderId = null,
+        $productId = null,
+        array $attributes = null,
+        Nullable $shippingOrderId = null
+    ) {
+        $this->updateWith($details, $attributes, $this->getRelationships($orderId, $productId, $shippingOrderId));
+    }
+
+    /**
+     * @param int|null      $orderId
+     * @param int|null      $productId
+     * @param Nullable|null $shippingOrderId
+     *
+     * @return array
+     */
+    protected function getRelationships($orderId = null, $productId = null, Nullable $shippingOrderId = null)
+    {
+        return $this->filterNulls([
+            OrderDetails::FIELD_ID_ORDER   => $orderId,
+            OrderDetails::FIELD_ID_PRODUCT => $productId,
+        ], [
+            OrderDetails::FIELD_ID_SHIPPING_ORDER => $shippingOrderId,
+        ]);
     }
 }

@@ -15,7 +15,15 @@ interface ValueRepositoryInterface extends RepositoryInterface
      *
      * @return FeatureValue
      */
-    public function instance(Feature $feature, array $attributes);
+    public function createWithObjects(Feature $feature, array $attributes);
+
+    /**
+     * @param int   $featureId
+     * @param array $attributes
+     *
+     * @return FeatureValue
+     */
+    public function create($featureId, array $attributes);
 
     /**
      * @param FeatureValue $resource
@@ -24,27 +32,31 @@ interface ValueRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         FeatureValue $resource,
         Feature $feature = null,
         array $attributes = null
     );
 
     /**
-     * @param int    $index
-     * @param array  $scopes
-     * @param array  $columns
+     * @param FeatureValue $resource
+     * @param int|null     $featureId
+     * @param array|null   $attributes
+     *
+     * @return void
+     */
+    public function update(
+        FeatureValue $resource,
+        $featureId = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param int   $index
+     * @param array $scopes
+     * @param array $columns
      *
      * @return FeatureValue
      */
     public function read($index, array $scopes = [], array $columns = ['*']);
-
-    /**
-     * @param string $code
-     * @param array  $scopes
-     * @param array  $columns
-     *
-     * @return FeatureValue
-     */
-    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 }

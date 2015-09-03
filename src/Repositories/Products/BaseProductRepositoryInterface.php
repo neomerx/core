@@ -17,9 +17,22 @@ interface BaseProductRepositoryInterface extends RepositoryInterface
      *
      * @return BaseProduct
      */
-    public function instance(
+    public function createWithObjects(
         Manufacturer $manufacturer,
         Currency $currency,
+        array $attributes
+    );
+
+   /**
+    * @param int   $manufacturerId
+    * @param int   $currencyId
+    * @param array $attributes
+     *
+     * @return BaseProduct
+     */
+    public function create(
+        $manufacturerId,
+        $currencyId,
         array $attributes
     );
 
@@ -31,7 +44,7 @@ interface BaseProductRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         BaseProduct $base,
         Manufacturer $manufacturer = null,
         Currency $currency = null,
@@ -39,11 +52,26 @@ interface BaseProductRepositoryInterface extends RepositoryInterface
     );
 
     /**
-     * @param string $sku
-     * @param array  $relations
-     * @param array  $columns
+     * @param BaseProduct $base
+     * @param int|null    $manufacturerId
+     * @param int|null    $currencyId
+     * @param array|null  $attributes
+     *
+     * @return void
+     */
+    public function update(
+        BaseProduct $base,
+        $manufacturerId = null,
+        $currencyId = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param int   $index
+     * @param array $relations
+     * @param array $columns
      *
      * @return BaseProduct
      */
-    public function read($sku, array $relations = [], array $columns = ['*']);
+    public function read($index, array $relations = [], array $columns = ['*']);
 }

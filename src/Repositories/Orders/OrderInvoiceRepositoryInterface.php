@@ -16,7 +16,15 @@ interface OrderInvoiceRepositoryInterface extends RepositoryInterface
      *
      * @return InvoiceOrder
      */
-    public function instance(Order $order, Invoice $invoice);
+    public function createWithObjects(Order $order, Invoice $invoice);
+
+    /**
+     * @param int $orderId
+     * @param int $invoiceId
+     *
+     * @return InvoiceOrder
+     */
+    public function create($orderId, $invoiceId);
 
     /**
      * @param InvoiceOrder $resource
@@ -25,7 +33,16 @@ interface OrderInvoiceRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(InvoiceOrder $resource, Order $order = null, Invoice $invoice = null);
+    public function updateWithObjects(InvoiceOrder $resource, Order $order = null, Invoice $invoice = null);
+
+    /**
+     * @param InvoiceOrder $resource
+     * @param int|null     $orderId
+     * @param int|null     $invoiceId
+     *
+     * @return void
+     */
+    public function update(InvoiceOrder $resource, $orderId = null, $invoiceId = null);
 
     /**
      * @param int   $resourceId

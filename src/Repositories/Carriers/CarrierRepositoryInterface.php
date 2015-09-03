@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Repositories\Carriers;
 
 use \Neomerx\Core\Models\Carrier;
-use \Neomerx\Core\Models\Currency;
+use \Neomerx\Core\Support\Nullable;
 use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
@@ -12,38 +12,46 @@ interface CarrierRepositoryInterface extends RepositoryInterface
 {
     /**
      * @param array    $attributes
-     * @param Currency $currency
+     * @param Nullable|null $currency Currency
      *
      * @return Carrier
      */
-    public function instance(array $attributes, Currency $currency);
+    public function createWithObjects(array $attributes, Nullable $currency = null);
+
+    /**
+     * @param array    $attributes
+     * @param Nullable|null $currencyId
+     *
+     * @return Carrier
+     */
+    public function create(array $attributes, Nullable $currencyId = null);
 
     /**
      * @param Carrier       $resource
      * @param array|null    $attributes
-     * @param Currency|null $currency
+     * @param Nullable|null $currency Currency
      *
      * @return void
      */
-    public function fill(Carrier $resource, array $attributes, Currency $currency = null);
+    public function updateWithObjects(Carrier $resource, array $attributes, Nullable $currency = null);
 
     /**
-     * @param int    $index
-     * @param array  $scopes
-     * @param array  $columns
+     * @param Carrier       $resource
+     * @param array|null    $attributes
+     * @param Nullable|null $currencyId
+     *
+     * @return void
+     */
+    public function update(Carrier $resource, array $attributes, Nullable $currencyId = null);
+
+    /**
+     * @param int   $index
+     * @param array $scopes
+     * @param array $columns
      *
      * @return Carrier
      */
     public function read($index, array $scopes = [], array $columns = ['*']);
-
-    /**
-     * @param string $code
-     * @param array  $scopes
-     * @param array  $columns
-     *
-     * @return Carrier
-     */
-    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 
     /**
      * @param int        $countryId

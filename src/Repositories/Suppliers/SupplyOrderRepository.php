@@ -5,12 +5,12 @@ use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\Supplier;
 use \Neomerx\Core\Models\Warehouse;
 use \Neomerx\Core\Models\SupplyOrder;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class SupplyOrderRepository extends IndexBasedResourceRepository implements SupplyOrderRepositoryInterface
+class SupplyOrderRepository extends BaseRepository implements SupplyOrderRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -23,23 +23,44 @@ class SupplyOrderRepository extends IndexBasedResourceRepository implements Supp
     /**
      * @inheritdoc
      */
-    public function instance(
+    public function createWithObjects(
         Supplier $supplier,
         Warehouse $warehouse,
         Currency $currency,
         Language $language,
         array $attributes
     ) {
-        /** @var SupplyOrder $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $supplier, $warehouse, $currency, $language, $attributes);
+        return $this->create(
+            $this->idOf($supplier),
+            $this->idOf($warehouse),
+            $this->idOf($currency),
+            $this->idOf($language),
+            $attributes
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create(
+        $supplierId,
+        $warehouseId,
+        $currencyId,
+        $languageId,
+        array $attributes
+    ) {
+        $resource = $this->createWith(
+            $attributes,
+            $this->getRelationships($supplierId, $warehouseId, $currencyId, $languageId)
+        );
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function updateWithObjects(
         SupplyOrder $resource,
         Supplier $supplier = null,
         Warehouse $warehouse = null,
@@ -47,11 +68,49 @@ class SupplyOrderRepository extends IndexBasedResourceRepository implements Supp
         Language $language = null,
         array $attributes = null
     ) {
-        $this->fillModel($resource, [
-            SupplyOrder::FIELD_ID_SUPPLIER  => $supplier,
-            SupplyOrder::FIELD_ID_WAREHOUSE => $warehouse,
-            SupplyOrder::FIELD_ID_CURRENCY  => $currency,
-            SupplyOrder::FIELD_ID_LANGUAGE  => $language,
-        ], $attributes);
+        $this->update(
+            $resource,
+            $this->idOf($supplier),
+            $this->idOf($warehouse),
+            $this->idOf($currency),
+            $this->idOf($language),
+            $attributes
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        SupplyOrder $resource,
+        $supplierId = null,
+        $warehouseId = null,
+        $currencyId = null,
+        $languageId = null,
+        array $attributes = null
+    ) {
+        $this->updateWith(
+            $resource,
+            $attributes,
+            $this->getRelationships($supplierId, $warehouseId, $currencyId, $languageId)
+        );
+    }
+
+    /**
+     * @param $supplierId
+     * @param $warehouseId
+     * @param $currencyId
+     * @param $languageId
+     *
+     * @return array
+     */
+    protected function getRelationships($supplierId, $warehouseId, $currencyId, $languageId)
+    {
+        return $this->filterNulls([
+            SupplyOrder::FIELD_ID_SUPPLIER  => $supplierId,
+            SupplyOrder::FIELD_ID_WAREHOUSE => $warehouseId,
+            SupplyOrder::FIELD_ID_CURRENCY  => $currencyId,
+            SupplyOrder::FIELD_ID_LANGUAGE  => $languageId,
+        ]);
     }
 }

@@ -3,12 +3,12 @@
 use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Models\ImagePath;
 use \Neomerx\Core\Models\ImageFormat;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class ImagePathRepository extends IndexBasedResourceRepository implements ImagePathRepositoryInterface
+class ImagePathRepository extends BaseRepository implements ImagePathRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -21,22 +21,56 @@ class ImagePathRepository extends IndexBasedResourceRepository implements ImageP
     /**
      * @inheritdoc
      */
-    public function instance(Image $image, ImageFormat $format, array $attributes)
+    public function createWithObjects(Image $image, ImageFormat $format, array $attributes)
     {
-        /** @var ImagePath $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $image, $format, $attributes);
+        return $this->create($this->idOf($image), $this->idOf($format), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($imageId, $formatId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($imageId, $formatId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(ImagePath $resource, Image $image = null, ImageFormat $format = null, array $attributes = null)
+    public function updateWithObjects(
+        ImagePath $resource,
+        Image $image = null,
+        ImageFormat $format = null,
+        array $attributes = null
+    ) {
+        $this->update($resource, $this->idOf($image), $this->idOf($format), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        ImagePath $resource,
+        $imageId = null,
+        $formatId = null,
+        array $attributes = null
+    ) {
+        $this->updateWith($resource, $attributes, $this->getRelationships($imageId, $formatId));
+    }
+
+    /**
+     * @param int $imageId
+     * @param int $formatId
+     *
+     * @return array
+     */
+    protected function getRelationships($imageId, $formatId)
     {
-        $this->fillModel($resource, [
-            ImagePath::FIELD_ID_IMAGE        => $image,
-            ImagePath::FIELD_ID_IMAGE_FORMAT => $format,
-        ], $attributes);
+        return $this->filterNulls([
+            ImagePath::FIELD_ID_IMAGE        => $imageId,
+            ImagePath::FIELD_ID_IMAGE_FORMAT => $formatId,
+        ]);
     }
 }

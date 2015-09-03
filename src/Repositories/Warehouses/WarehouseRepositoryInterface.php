@@ -1,8 +1,7 @@
 <?php namespace Neomerx\Core\Repositories\Warehouses;
 
-use \Neomerx\Core\Models\Store;
-use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Warehouse;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
 /**
@@ -11,23 +10,52 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface WarehouseRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param array        $attributes
-     * @param Address|null $address
-     * @param Store|null   $store
+     * @param array         $attributes
+     * @param Nullable|null $address Address
+     * @param Nullable|null $store   Store
      *
      * @return Warehouse
      */
-    public function instance(array $attributes, Address $address = null, Store $store = null);
+    public function createWithObjects(array $attributes, Nullable $address = null, Nullable $store = null);
 
     /**
-     * @param Warehouse    $resource
-     * @param array|null   $attributes
-     * @param Address|null $address
-     * @param Store|null   $store
+     * @param array         $attributes
+     * @param Nullable|null $addressId
+     * @param Nullable|null $storeId
+     *
+     * @return Warehouse
+     */
+    public function create(array $attributes, Nullable $addressId = null, Nullable $storeId = null);
+
+    /**
+     * @param Warehouse     $resource
+     * @param array|null    $attributes
+     * @param Nullable|null $address Address
+     * @param Nullable|null $store   Store
      *
      * @return void
      */
-    public function fill(Warehouse $resource, array $attributes = null, Address $address = null, Store $store = null);
+    public function updateWithObjects(
+        Warehouse $resource,
+        array $attributes = null,
+        Nullable $address = null,
+        Nullable $store = null
+    );
+
+    /**
+     * @param Warehouse     $resource
+     * @param array|null    $attributes
+     * @param Nullable|null $addressId
+     * @param Nullable|null $storeId
+     *
+     * @return void
+     */
+    public function update(
+        Warehouse $resource,
+        array $attributes = [],
+        Nullable $addressId = null,
+        Nullable $storeId = null
+    );
 
     /**
      * @param int    $index
@@ -37,13 +65,4 @@ interface WarehouseRepositoryInterface extends RepositoryInterface
      * @return Warehouse
      */
     public function read($index, array $scopes = [], array $columns = ['*']);
-
-    /**
-     * @param string $code
-     * @param array  $scopes
-     * @param array  $columns
-     *
-     * @return Warehouse
-     */
-    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 }

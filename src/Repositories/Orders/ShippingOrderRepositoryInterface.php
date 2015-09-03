@@ -17,7 +17,16 @@ interface ShippingOrderRepositoryInterface extends RepositoryInterface
      *
      * @return ShippingOrder
      */
-    public function instance(Carrier $carrier, ShippingOrderStatus $status, array $attributes);
+    public function createWithObjects(Carrier $carrier, ShippingOrderStatus $status, array $attributes);
+
+    /**
+     * @param int   $carrierId
+     * @param int   $statusId
+     * @param array $attributes
+     *
+     * @return ShippingOrder
+     */
+    public function create($carrierId, $statusId, array $attributes);
 
     /**
      * @param ShippingOrder            $resource
@@ -27,10 +36,25 @@ interface ShippingOrderRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         ShippingOrder $resource,
         Carrier $carrier = null,
         ShippingOrderStatus $status = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param ShippingOrder $resource
+     * @param int|null      $carrierId
+     * @param int|null      $statusId
+     * @param array|null    $attributes
+     *
+     * @return void
+     */
+    public function update(
+        ShippingOrder $resource,
+        $carrierId = null,
+        $statusId = null,
         array $attributes = null
     );
 

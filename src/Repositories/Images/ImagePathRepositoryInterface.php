@@ -17,7 +17,16 @@ interface ImagePathRepositoryInterface extends RepositoryInterface
      *
      * @return ImagePath
      */
-    public function instance(Image $image, ImageFormat $format, array $attributes);
+    public function createWithObjects(Image $image, ImageFormat $format, array $attributes);
+
+    /**
+     * @param int   $imageId
+     * @param int   $formatId
+     * @param array $attributes
+     *
+     * @return ImagePath
+     */
+    public function create($imageId, $formatId, array $attributes);
 
     /**
      * @param ImagePath        $resource
@@ -27,10 +36,25 @@ interface ImagePathRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         ImagePath $resource,
         Image $image = null,
         ImageFormat $format = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param ImagePath  $resource
+     * @param int|null   $imageId
+     * @param int|null   $formatId
+     * @param array|null $attributes
+     *
+     * @return void
+     */
+    public function update(
+        ImagePath $resource,
+        $imageId = null,
+        $formatId = null,
         array $attributes = null
     );
 

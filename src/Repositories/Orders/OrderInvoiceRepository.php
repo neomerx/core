@@ -3,12 +3,12 @@
 use \Neomerx\Core\Models\Order;
 use \Neomerx\Core\Models\Invoice;
 use \Neomerx\Core\Models\InvoiceOrder;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class OrderInvoiceRepository extends IndexBasedResourceRepository implements OrderInvoiceRepositoryInterface
+class OrderInvoiceRepository extends BaseRepository implements OrderInvoiceRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -21,22 +21,48 @@ class OrderInvoiceRepository extends IndexBasedResourceRepository implements Ord
     /**
      * @inheritdoc
      */
-    public function instance(Order $order, Invoice $invoice)
+    public function createWithObjects(Order $order, Invoice $invoice)
     {
-        /** @var InvoiceOrder $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $order, $invoice);
+        return $this->create($this->idOf($order), $this->idOf($invoice));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($orderId, $invoiceId)
+    {
+        $resource = $this->createWith([], $this->getRelationships($orderId, $invoiceId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(InvoiceOrder $resource, Order $order = null, Invoice $invoice = null)
+    public function updateWithObjects(InvoiceOrder $resource, Order $order = null, Invoice $invoice = null)
     {
-        $this->fillModel($resource, [
-            InvoiceOrder::FIELD_ID_ORDER   => $order,
-            InvoiceOrder::FIELD_ID_INVOICE => $invoice,
+        $this->update($resource, $this->idOf($order), $this->idOf($invoice));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(InvoiceOrder $resource, $orderId = null, $invoiceId = null)
+    {
+        $this->updateWith($resource, [], $this->getRelationships($orderId, $invoiceId));
+    }
+
+    /**
+     * @param int $orderId
+     * @param int $invoiceId
+     *
+     * @return array
+     */
+    private function getRelationships($orderId, $invoiceId)
+    {
+        return $this->filterNulls([
+            InvoiceOrder::FIELD_ID_ORDER   => $orderId,
+            InvoiceOrder::FIELD_ID_INVOICE => $invoiceId,
         ]);
     }
 }

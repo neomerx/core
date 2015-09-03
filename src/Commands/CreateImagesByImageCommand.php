@@ -48,10 +48,10 @@ class CreateImagesByImageCommand extends Command implements SelfHandling
         ImagesInterface $images
     ) {
         $image = $imageRepo->read($this->imageId);
-        foreach ($formatRepo->search() as $format) {
+        foreach ($formatRepo->index() as $format) {
             /** @var ImageFormat $format */
             $savedToFileName = $images->resize($image, $format);
-            $pathRepo->instance($image, $format, [ImagePath::FIELD_PATH => $savedToFileName])->saveOrFail();
+            $pathRepo->createWithObjects($image, $format, [ImagePath::FIELD_PATH => $savedToFileName]);
         }
     }
 }

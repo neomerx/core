@@ -10,7 +10,7 @@ use \Illuminate\Database\Eloquent\Collection;
  *
  * @package Neomerx\Core
  */
-class Invoice extends BaseModel implements SelectByCodeInterface
+class Invoice extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'invoices';
@@ -110,13 +110,5 @@ class Invoice extends BaseModel implements SelectByCodeInterface
             InvoiceOrder::FIELD_ID_INVOICE,
             InvoiceOrder::FIELD_ID_ORDER
         );
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 }

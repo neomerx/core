@@ -15,7 +15,15 @@ interface ProductRelatedRepositoryInterface extends RepositoryInterface
      *
      * @return ProductRelated
      */
-    public function instance(Product $product, Product $related);
+    public function createWithObjects(Product $product, Product $related);
+
+    /**
+     * @param int $productId
+     * @param int $relatedId
+     *
+     * @return ProductRelated
+     */
+    public function create($productId, $relatedId);
 
     /**
      * @param ProductRelated $resource
@@ -24,7 +32,16 @@ interface ProductRelatedRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(ProductRelated $resource, Product $product = null, Product $related = null);
+    public function updateWithObjects(ProductRelated $resource, Product $product = null, Product $related = null);
+
+    /**
+     * @param ProductRelated $resource
+     * @param int|null   $productId
+     * @param int|null   $relatedId
+     *
+     * @return void
+     */
+    public function update(ProductRelated $resource, $productId = null, $relatedId = null);
 
     /**
      * @param string $code

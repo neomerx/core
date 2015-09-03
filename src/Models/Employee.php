@@ -252,15 +252,12 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
     /**
      * Add role to employee.
      *
-     * @param string $code
+     * @param Role $role
      *
      * @return bool
      */
-    public function addRole($code)
+    public function addRole(Role $role)
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        /** @var \Neomerx\Core\Models\Role $role */
-        $role = $this->roleModel->selectByCode($code)->firstOrFail([Role::FIELD_ID]);
         $this->roles()->save($role);
         return $role->exists;
     }
@@ -268,15 +265,13 @@ class Employee extends BaseModel implements AuthenticatableContract, CanResetPas
     /**
      * Remove role from employee.
      *
-     * @param $code
+     * @param Role $role
      *
      * @return bool
      */
-    public function removeRole($code)
+    public function removeRole(Role $role)
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        $roleId = $this->roleModel->selectByCode($code)->firstOrFail([Role::FIELD_ID])->{Role::FIELD_ID};
-        return $this->roles()->detach($roleId) > 0;
+        return $this->roles()->detach($role->{Role::FIELD_ID}) > 0;
     }
 
     /**

@@ -94,11 +94,9 @@ namespace Neomerx\Core\Support {
      */
     function arrayFilterNulls(array $array)
     {
-        $result = [];
-        foreach ($array as $key => $item) {
-            $item === null ?: $result[$key] = $item;
-        }
-        return $result;
+        return array_filter($array, function ($value) {
+            return $value !== null;
+        });
     }
 
     /**

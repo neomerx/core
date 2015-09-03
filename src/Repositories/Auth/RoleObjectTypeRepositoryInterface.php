@@ -17,20 +17,44 @@ interface RoleObjectTypeRepositoryInterface extends RepositoryInterface
      *
      * @return RoleObjectType
      */
-    public function instance(Role $role, ObjectType $objectType, array $attributes);
+    public function createWithObjects(Role $role, ObjectType $objectType, array $attributes);
 
     /**
-     * @param ObjectType|null     $objectType
+     * @param int   $roleId
+     * @param int   $objectTypeId
+     * @param array $attributes
+     *
+     * @return RoleObjectType
+     */
+    public function create($roleId, $objectTypeId, array $attributes);
+
+    /**
      * @param RoleObjectType|null $resource
      * @param Role|null           $role
+     * @param ObjectType|null     $objectType
      * @param array|null          $attributes
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         RoleObjectType $resource,
         Role $role = null,
         ObjectType $objectType = null,
+        $attributes = null
+    );
+
+    /**
+     * @param RoleObjectType|null $resource
+     * @param int|null            $roleId
+     * @param int|null            $objectTypeId
+     * @param array|null          $attributes
+     *
+     * @return void
+     */
+    public function update(
+        RoleObjectType $resource,
+        $roleId = null,
+        $objectTypeId = null,
         $attributes = null
     );
 

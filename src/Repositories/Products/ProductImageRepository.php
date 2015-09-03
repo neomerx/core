@@ -2,14 +2,16 @@
 
 use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Models\Product;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Models\BaseProduct;
 use \Neomerx\Core\Models\ProductImage;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Illuminate\Database\Eloquent\Builder;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class ProductImageRepository extends IndexBasedResourceRepository implements ProductImageRepositoryInterface
+class ProductImageRepository extends BaseRepository implements ProductImageRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -22,45 +24,56 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
     /**
      * @inheritdoc
      */
-    public function instance(BaseProduct $base, Image $image, array $attributes, Product $product = null)
+    public function createWithObjects(BaseProduct $base, Image $image, array $attributes, Nullable $product = null)
     {
-        /** @var ProductImage $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $base, $image, $attributes, $product);
+        return $this->create(
+            $this->idOf($base),
+            $this->idOf($image),
+            $attributes,
+            $this->idOfNullable($product, Product::class)
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($baseProductId, $imageId, array $attributes, Nullable $productId = null)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($baseProductId, $imageId, $productId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function instanceForBaseProduct(BaseProduct $base, Image $image, array $attributes)
-    {
-        return $this->instance($base, $image, $attributes);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function instanceForProduct(Product $product, Image $image, array $attributes)
-    {
-        return $this->instance($product->{Product::FIELD_BASE_PRODUCT}, $image, $attributes, $product);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function fill(
+    public function updateWithObjects(
         ProductImage $resource,
         BaseProduct $base = null,
         Image $image = null,
         array $attributes = null,
-        Product $product = null
+        Nullable $product = null
     ) {
-        $this->fillModel($resource, [
-            ProductImage::FIELD_ID_BASE_PRODUCT => $base,
-            ProductImage::FIELD_ID_PRODUCT      => $product,
-            ProductImage::FIELD_ID_IMAGE        => $image,
-        ], $attributes);
+        $this->update(
+            $resource,
+            $this->idOf($base),
+            $this->idOf($image),
+            $attributes,
+            $this->idOfNullable($product, Product::class)
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        ProductImage $resource,
+        $baseProductId = null,
+        $imageId = null,
+        array $attributes = null,
+        Nullable $productId = null
+    ) {
+        $this->update($resource, $attributes, $this->getRelationships($baseProductId, $imageId, $productId));
     }
 
     /**
@@ -95,12 +108,14 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
     public function getBaseProductImages($baseProductId, array $relations = [], array $columns = ['*'])
     {
         /** @noinspection PhpUndefinedMethodInspection */
+        /** @var Builder $builder */
         $builder = $this
-            ->createBuilder($relations)
-            ->where(ProductImage::FIELD_ID_BASE_PRODUCT, '=', $baseProductId)
-            ->whereNull(ProductImage::FIELD_ID_PRODUCT);
+            ->getBuilder()
+                ->with($relations)
+                ->where(ProductImage::FIELD_ID_BASE_PRODUCT, '=', $baseProductId)
+                ->whereNull(ProductImage::FIELD_ID_PRODUCT);
 
-        return $this->executeGet($builder, $columns);
+        return $builder->get($columns);
     }
 
     /**
@@ -109,10 +124,11 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
     public function getProductOnlyImages($productId, array $relations = [], array $columns = ['*'])
     {
         $builder = $this
-            ->createBuilder($relations)
-            ->where(ProductImage::FIELD_ID_PRODUCT, '=', $productId);
+            ->getBuilder()
+                ->with($relations)
+                ->where(ProductImage::FIELD_ID_PRODUCT, '=', $productId);
 
-        return $this->executeGet($builder, $columns);
+        return $builder->get($columns);
     }
 
     /**
@@ -121,11 +137,12 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
     public function getProductImages($baseProductId, $productId, array $relations = [], array $columns = ['*'])
     {
         $builder = $this
-            ->createBuilder($relations)
-            ->where(ProductImage::FIELD_ID_BASE_PRODUCT, '=', $baseProductId)
-            ->orWhere(ProductImage::FIELD_ID_PRODUCT, '=', $productId);
+            ->getBuilder()
+            ->with($relations)
+                ->where(ProductImage::FIELD_ID_BASE_PRODUCT, '=', $baseProductId)
+                ->orWhere(ProductImage::FIELD_ID_PRODUCT, '=', $productId);
 
-        return $this->executeGet($builder, $columns);
+        return $builder->get($columns);
     }
 
     /**
@@ -134,11 +151,12 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
     public function getBaseProductImage($baseProductId, $productImageId, array $relations = [], array $columns = ['*'])
     {
         $builder = $this
-            ->createBuilder($relations)
-            ->where(ProductImage::FIELD_ID, '=', $productImageId)
-            ->where(ProductImage::FIELD_ID_BASE_PRODUCT, '=', $baseProductId);
+            ->getBuilder()
+            ->with($relations)
+                ->where(ProductImage::FIELD_ID, '=', $productImageId)
+                ->where(ProductImage::FIELD_ID_BASE_PRODUCT, '=', $baseProductId);
 
-        return $this->executeFirstOrFail($builder, $columns);
+        return $builder->firstOrFail($columns);
     }
 
     /**
@@ -147,10 +165,36 @@ class ProductImageRepository extends IndexBasedResourceRepository implements Pro
     public function getProductImage($productId, $productImageId, array $relations = [], array $columns = ['*'])
     {
         $builder = $this
-            ->createBuilder($relations)
-            ->where(ProductImage::FIELD_ID, '=', $productImageId)
-            ->where(ProductImage::FIELD_ID_PRODUCT, '=', $productId);
+            ->getBuilder()
+            ->with($relations)
+                ->where(ProductImage::FIELD_ID, '=', $productImageId)
+                ->where(ProductImage::FIELD_ID_PRODUCT, '=', $productId);
 
-        return $this->executeFirstOrFail($builder, $columns);
+        return $builder->firstOrFail($columns);
+    }
+
+    /**
+     * @param int           $baseProductId
+     * @param int           $imageId
+     * @param Nullable|null $productId
+     *
+     * @return array
+     */
+    protected function getRelationships($baseProductId, $imageId, Nullable $productId = null)
+    {
+        return $this->filterNulls([
+            ProductImage::FIELD_ID_BASE_PRODUCT => $baseProductId,
+            ProductImage::FIELD_ID_IMAGE        => $imageId,
+        ], [
+            ProductImage::FIELD_ID_PRODUCT      => $productId,
+        ]);
+    }
+
+    /**
+     * @return Builder
+     */
+    private function getBuilder()
+    {
+        return $this->getUnderlyingModel()->newQuery();
     }
 }

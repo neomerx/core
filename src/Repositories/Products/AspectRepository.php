@@ -1,19 +1,19 @@
 <?php namespace Neomerx\Core\Repositories\Products;
 
-use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\Aspect;
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Feature;
 use \Illuminate\Support\Facades\DB;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Models\BaseProduct;
 use \Neomerx\Core\Models\FeatureValue;
 use \Neomerx\Core\Exceptions\LogicException;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class AspectRepository extends IndexBasedResourceRepository implements AspectRepositoryInterface
+class AspectRepository extends BaseRepository implements AspectRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -26,33 +26,63 @@ class AspectRepository extends IndexBasedResourceRepository implements AspectRep
     /**
      * @inheritdoc
      */
-    public function instance(
+    public function createWithObjects(
         BaseProduct $base,
         FeatureValue $value,
         array $attributes,
-        Product $product = null
+        Nullable $product = null
     ) {
-        /** @var Aspect $aspect */
-        $aspect = $this->makeModel();
-        $this->fill($aspect, $base, $value, $attributes, $product);
-        return $aspect;
+        return $this->create(
+            $this->idOf($base),
+            $this->idOf($value),
+            $attributes,
+            $this->idOfNullable($product, Product::class)
+        );
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function create(
+        $baseId,
+        $valueId,
+        array $attributes,
+        Nullable $productId = null
+    ) {
+        $resource = $this->createWith($attributes, $this->getRelationships($baseId, $valueId, $productId));
+
+        return $resource;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function updateWithObjects(
         Aspect $aspect,
         BaseProduct $base = null,
         FeatureValue $value = null,
         array $attributes = null,
-        Product $product = null
+        Nullable $product = null
     ) {
-        $this->fillModel($aspect, [
-            Aspect::FIELD_ID_BASE_PRODUCT => $base,
-            Aspect::FIELD_ID_PRODUCT      => $product,
-            Aspect::FIELD_ID_VALUE        => $value,
-        ], $attributes);
+        $this->update(
+            $this->idOf($base),
+            $this->idOf($value),
+            $attributes,
+            $this->idOfNullable($product, Product::class)
+        );
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        Aspect $aspect,
+        $baseId = null,
+        $valueId = null,
+        array $attributes = null,
+        Nullable $productId = null
+    ) {
+        $this->updateWith($aspect, $attributes, $this->getRelationships($baseId, $valueId, $productId));
     }
 
     /**
@@ -67,7 +97,7 @@ class AspectRepository extends IndexBasedResourceRepository implements AspectRep
         // 2-3 should be done in transaction.
         $base     = $aspect->{Aspect::FIELD_BASE_PRODUCT};
         $products = $base->{BaseProduct::FIELD_PRODUCTS};
-        $value    = $aspect->value;
+        $value    = $aspect->{Aspect::FIELD_VALUE};
 
         $attributes = $aspect->attributesToArray();
 
@@ -79,7 +109,7 @@ class AspectRepository extends IndexBasedResourceRepository implements AspectRep
                     $aspect->{Aspect::FIELD_ID_PRODUCT} = $product->{Product::FIELD_ID};
                     $aspect->saveOrFail();
                 } else {
-                    $this->instance($base, $value, $attributes, $product)->saveOrFail();
+                    $this->createWithObjects($base, $value, $attributes, $this->getNullable($product));
                 }
             }
         });
@@ -150,5 +180,22 @@ class AspectRepository extends IndexBasedResourceRepository implements AspectRep
             ->where(Aspect::FIELD_ID_BASE_PRODUCT, '=', $base->{BaseProduct::FIELD_ID})
             ->max(Aspect::FIELD_POSITION);
         return $position === null ? 0 : (int)$position;
+    }
+
+    /**
+     * @param int|null      $baseId
+     * @param int|null      $valueId
+     * @param Nullable|null $productId
+     *
+     * @return array
+     */
+    protected function getRelationships($baseId = null, $valueId = null, Nullable $productId = null)
+    {
+        return $this->filterNulls([
+            Aspect::FIELD_ID_BASE_PRODUCT => $baseId,
+            Aspect::FIELD_ID_VALUE        => $valueId,
+        ], [
+            Aspect::FIELD_ID_PRODUCT      => $productId,
+        ]);
     }
 }

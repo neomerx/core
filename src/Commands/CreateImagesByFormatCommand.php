@@ -16,19 +16,19 @@ class CreateImagesByFormatCommand extends Command implements SelfHandling
     /**
      * Constructor parameter.
      */
-    const PARAM_FORMAT_CODE = 'formatCode';
+    const PARAM_FORMAT_ID = 'formatId';
 
     /**
-     * @var string
+     * @var int
      */
-    private $formatCode;
+    private $formatId;
 
     /**
-     * @param string $formatCode
+     * @param string $formatId
      */
-    public function __construct($formatCode)
+    public function __construct($formatId)
     {
-        $this->formatCode = $formatCode;
+        $this->formatId = $formatId;
     }
 
     /**
@@ -47,11 +47,11 @@ class CreateImagesByFormatCommand extends Command implements SelfHandling
         ImagePathRepositoryInterface $pathRepo,
         ImagesInterface $images
     ) {
-        $format = $formatRepo->readByCode($this->formatCode);
-        foreach ($imageRepo->search() as $image) {
+        $format = $formatRepo->read($this->formatId);
+        foreach ($imageRepo->index() as $image) {
             /** @var Image $image */
             $savedToFileName = $images->resize($image, $format);
-            $pathRepo->instance($image, $format, [ImagePath::FIELD_PATH => $savedToFileName])->saveOrFail();
+            $pathRepo->createWithObjects($image, $format, [ImagePath::FIELD_PATH => $savedToFileName]);
         }
     }
 }

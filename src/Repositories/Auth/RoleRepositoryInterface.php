@@ -13,7 +13,7 @@ interface RoleRepositoryInterface extends RepositoryInterface
      *
      * @return Role
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param Role  $resource
@@ -21,23 +21,14 @@ interface RoleRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(Role $resource, array $attributes);
+    public function update(Role $resource, array $attributes);
 
     /**
-     * @param int    $index
-     * @param array  $scopes
-     * @param array  $columns
+     * @param int   $index
+     * @param array $scopes
+     * @param array $columns
      *
      * @return Role
      */
     public function read($index, array $scopes = [], array $columns = ['*']);
-
-    /**
-     * @param string $code
-     * @param array  $scopes
-     * @param array  $columns
-     *
-     * @return Role
-     */
-    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 }

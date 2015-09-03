@@ -29,7 +29,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class BaseProduct extends BaseModel implements SelectByCodeInterface, GetAspectsInterface
+class BaseProduct extends BaseModel implements GetAspectsInterface
 {
     /** Model table name */
     const TABLE_NAME = 'base_products';
@@ -211,6 +211,14 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetAspects
     }
 
     /**
+     * @return string
+     */
+    public static function withProductAspectValues()
+    {
+        return self::FIELD_PRODUCTS.'.'.Product::withAspectValues();
+    }
+
+    /**
      * Relation to product language properties (translations).
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -274,28 +282,6 @@ class BaseProduct extends BaseModel implements SelectByCodeInterface, GetAspects
     public function products()
     {
         return $this->hasMany(Product::class, Product::FIELD_ID_BASE_PRODUCT, self::FIELD_ID);
-    }
-
-    /**
-     * @param string $sku
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function selectByCode($sku)
-    {
-        return $this->newQuery()->where(self::FIELD_SKU, '=', $sku);
-    }
-
-    /**
-     * @param array $baseSKUs
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function selectByCodes(array $baseSKUs)
-    {
-        $builder = $this->newQuery();
-        $builder->getQuery()->whereIn(self::FIELD_SKU, $baseSKUs);
-        return $builder;
     }
 
     /**

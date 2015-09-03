@@ -10,7 +10,7 @@ use \Illuminate\Database\Eloquent\Collection;
  *
  * @package Neomerx\Core
  */
-class CustomerRisk extends BaseModel implements SelectByCodeInterface
+class CustomerRisk extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'customer_risks';
@@ -103,13 +103,5 @@ class CustomerRisk extends BaseModel implements SelectByCodeInterface
     public function customers()
     {
         return $this->hasMany(Customer::class, Customer::FIELD_ID_CUSTOMER_RISK, self::FIELD_ID);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 }

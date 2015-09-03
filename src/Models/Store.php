@@ -13,7 +13,7 @@ use \Illuminate\Database\Eloquent\Collection;
  *
  * @package Neomerx\Core
  */
-class Store extends BaseModel implements SelectByCodeInterface
+class Store extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'stores';
@@ -162,13 +162,5 @@ class Store extends BaseModel implements SelectByCodeInterface
     {
         /** @noinspection PhpUndefinedMethodInspection */
         return $this->hasMany(Order::class, Order::FIELD_ID_STORE, self::FIELD_ID);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 }

@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Repositories\Carriers;
 
 use \Neomerx\Core\Models\Carrier;
-use \Neomerx\Core\Models\CustomerType;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Models\CarrierCustomerType;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
@@ -11,27 +11,45 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface CarrierCustomerTypeRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Carrier           $carrier
-     * @param CustomerType|null $type
+     * @param Carrier       $carrier
+     * @param Nullable|null $type CustomerType
      *
      * @return CarrierCustomerType
      */
-    public function instance(Carrier $carrier, CustomerType $type = null);
+    public function createWithObjects(Carrier $carrier, Nullable $type = null);
+
+    /**
+     * @param int           $carrierId
+     * @param Nullable|null $typeId
+     *
+     * @return CarrierCustomerType
+     */
+    public function create($carrierId, Nullable $typeId = null);
 
     /**
      * @param CarrierCustomerType $resource
      * @param Carrier|null        $carrier
-     * @param CustomerType|null   $type
-     * @param bool                $isTypeEmpty Treat null in $type as 'all types' or 'not set'.
-     *                                         Allows skip saving $type.
+     * @param Nullable|null       $type CustomerType
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         CarrierCustomerType $resource,
         Carrier $carrier = null,
-        CustomerType $type = null,
-        $isTypeEmpty = false
+        Nullable $type = null
+    );
+
+    /**
+     * @param CarrierCustomerType $resource
+     * @param int|null            $carrierId
+     * @param Nullable|null       $typeId
+     *
+     * @return void
+     */
+    public function update(
+        CarrierCustomerType $resource,
+        $carrierId = null,
+        Nullable $typeId = null
     );
 
     /**

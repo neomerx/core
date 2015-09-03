@@ -13,7 +13,7 @@ interface ShippingStatusRepositoryInterface extends RepositoryInterface
      *
      * @return ShippingOrderStatus
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param ShippingOrderStatus $resource
@@ -21,7 +21,7 @@ interface ShippingStatusRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(ShippingOrderStatus $resource, array $attributes);
+    public function update(ShippingOrderStatus $resource, array $attributes);
 
     /**
      * @param string $code

@@ -19,7 +19,7 @@ interface ProductRepositoryInterface extends RepositoryInterface
      *
      * @return Product
      */
-    public function instance(
+    public function createWithObjects(
         BaseProduct $baseProduct,
         Category $category,
         ProductTaxType $taxType,
@@ -27,34 +27,48 @@ interface ProductRepositoryInterface extends RepositoryInterface
     );
 
     /**
+     * @param int   $baseProductId
+     * @param int   $categoryId
+     * @param int   $taxTypeId
+     * @param array $attributes
+     *
+     * @return Product
+     */
+    public function create(
+        $baseProductId,
+        $categoryId,
+        $taxTypeId,
+        array $attributes
+    );
+
+    /**
      * @param Product             $product
-     * @param BaseProduct|null    $baseProduct
      * @param Category|null       $category
      * @param ProductTaxType|null $taxType
      * @param array|null          $attributes
      *
+     * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         Product $product,
-        BaseProduct $baseProduct = null,
         Category $category = null,
         ProductTaxType $taxType = null,
         array $attributes = null
     );
 
     /**
-     * @param BaseProduct    $baseProduct
-     * @param Category       $category
-     * @param ProductTaxType $taxType
-     * @param array          $attributes
+     * @param Product    $product
+     * @param int|null   $categoryId
+     * @param int|null   $taxTypeId
+     * @param array|null $attributes
      *
-     * @return Product
+     * @return void
      */
-    public function create(
-        BaseProduct $baseProduct,
-        Category $category,
-        ProductTaxType $taxType,
-        array $attributes
+    public function update(
+        Product $product,
+        $categoryId = null,
+        $taxTypeId = null,
+        array $attributes = null
     );
 
     /**
@@ -65,13 +79,4 @@ interface ProductRepositoryInterface extends RepositoryInterface
      * @return Product
      */
     public function read($index, array $relations = [], array $columns = ['*']);
-
-    /**
-     * @param string $sku
-     * @param array  $relations
-     * @param array  $columns
-     *
-     * @return Product
-     */
-    public function readByCode($sku, array $relations = [], array $columns = ['*']);
 }

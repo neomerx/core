@@ -15,7 +15,15 @@ interface SupplierRepositoryInterface extends RepositoryInterface
      *
      * @return Supplier
      */
-    public function instance(Address $address, array $attributes);
+    public function createWithObjects(Address $address, array $attributes);
+
+    /**
+     * @param array $attributes
+     * @param int   $addressId
+     *
+     * @return Supplier
+     */
+    public function create($addressId, array $attributes);
 
     /**
      * @param Supplier     $resource
@@ -24,7 +32,16 @@ interface SupplierRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(Supplier $resource, Address $address = null, array $attributes = null);
+    public function updateWithObjects(Supplier $resource, Address $address = null, array $attributes = []);
+
+    /**
+     * @param Supplier   $resource
+     * @param int|null   $addressId
+     * @param array|null $attributes
+     *
+     * @return void
+     */
+    public function update(Supplier $resource, $addressId = null, array $attributes = []);
 
     /**
      * @param int    $index
@@ -34,13 +51,4 @@ interface SupplierRepositoryInterface extends RepositoryInterface
      * @return Supplier
      */
     public function read($index, array $scopes = [], array $columns = ['*']);
-
-    /**
-     * @param string $code
-     * @param array  $scopes
-     * @param array  $columns
-     *
-     * @return Supplier
-     */
-    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 }

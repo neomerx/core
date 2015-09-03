@@ -3,12 +3,12 @@
 use \Neomerx\Core\Models\Image;
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\ImageProperties;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class ImagePropertiesRepository extends IndexBasedResourceRepository implements ImagePropertiesRepositoryInterface
+class ImagePropertiesRepository extends BaseRepository implements ImagePropertiesRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -21,24 +21,56 @@ class ImagePropertiesRepository extends IndexBasedResourceRepository implements 
     /**
      * @inheritdoc
      */
-    public function instance(Image $image, Language $language, array $attributes)
+    public function createWithObjects(Image $resource, Language $language, array $attributes)
     {
-        /** @var ImageProperties $properties */
-        $properties = $this->makeModel();
-        $this->fill($properties, $image, $language, $attributes);
-        return $properties;
+        return $this->create($this->idOf($resource), $this->idOf($language), $attributes);
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function create($resourceId, $languageId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($resourceId, $languageId));
+
+        return $resource;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function updateWithObjects(
         ImageProperties $properties,
-        Image $image = null,
+        Image $resource = null,
         Language $language = null,
         array $attributes = null
     ) {
-        $data = [ImageProperties::FIELD_ID_IMAGE => $image, ImageProperties::FIELD_ID_LANGUAGE => $language];
-        $this->fillModel($properties, $data, $attributes);
+        $this->update($properties, $this->idOf($resource), $this->idOf($language), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        ImageProperties $properties,
+        $resourceId = null,
+        $languageId = null,
+        array $attributes = null
+    ) {
+        $this->updateWith($properties, $attributes, $this->getRelationships($resourceId, $languageId));
+    }
+
+    /**
+     * @param int $resourceId
+     * @param int $languageId
+     *
+     * @return array
+     */
+    protected function getRelationships($resourceId, $languageId)
+    {
+        return $this->filterNulls([
+            ImageProperties::FIELD_ID_IMAGE    => $resourceId,
+            ImageProperties::FIELD_ID_LANGUAGE => $languageId,
+        ]);
     }
 }

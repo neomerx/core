@@ -2,12 +2,12 @@
 
 use \Neomerx\Core\Models\Tax;
 use \Neomerx\Core\Models\TaxRule;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class TaxRuleRepository extends IndexBasedResourceRepository implements TaxRuleRepositoryInterface
+class TaxRuleRepository extends BaseRepository implements TaxRuleRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -20,21 +20,46 @@ class TaxRuleRepository extends IndexBasedResourceRepository implements TaxRuleR
     /**
      * @inheritdoc
      */
-    public function instance(Tax $tax, array $attributes)
+    public function createWithObjects(Tax $tax, array $attributes)
     {
-        /** @var TaxRule $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $tax, $attributes);
+        return $this->create($this->idOf($tax), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($taxId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($taxId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(TaxRule $resource, Tax $tax = null, array $attributes = null)
+    public function updateWithObjects(TaxRule $resource, Tax $tax = null, array $attributes = null)
     {
-        $this->fillModel($resource, [
-            TaxRule::FIELD_ID_TAX => $tax,
-        ], $attributes);
+        $this->update($resource, $this->idOf($tax), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(TaxRule $resource, $taxId = null, array $attributes = null)
+    {
+        $this->updateWith($resource, $attributes, $this->getRelationships($taxId));
+    }
+
+    /**
+     * @param int $taxId
+     *
+     * @return array
+     */
+    private function getRelationships($taxId)
+    {
+        return $this->filterNulls([
+            TaxRule::FIELD_ID_TAX => $taxId,
+        ]);
     }
 }

@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Orders;
 
 use \Neomerx\Core\Models\ShippingOrderStatus;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class ShippingStatusRepository extends CodeBasedResourceRepository implements ShippingStatusRepositoryInterface
+class ShippingStatusRepository extends BaseRepository implements ShippingStatusRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,18 @@ class ShippingStatusRepository extends CodeBasedResourceRepository implements Sh
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var ShippingOrderStatus $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(ShippingOrderStatus $resource, array $attributes)
+    public function update(ShippingOrderStatus $resource, array $attributes)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

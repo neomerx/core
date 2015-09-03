@@ -3,12 +3,12 @@
 use \Neomerx\Core\Models\Carrier;
 use \Neomerx\Core\Models\ShippingOrder;
 use \Neomerx\Core\Models\ShippingOrderStatus;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class ShippingOrderRepository extends IndexBasedResourceRepository implements ShippingOrderRepositoryInterface
+class ShippingOrderRepository extends BaseRepository implements ShippingOrderRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -21,26 +21,56 @@ class ShippingOrderRepository extends IndexBasedResourceRepository implements Sh
     /**
      * @inheritdoc
      */
-    public function instance(Carrier $carrier, ShippingOrderStatus $status, array $attributes)
+    public function createWithObjects(Carrier $carrier, ShippingOrderStatus $status, array $attributes)
     {
-        /** @var ShippingOrder $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $carrier, $status, $attributes);
+        return $this->create($this->idOf($carrier), $this->idOf($status), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($carrierId, $statusId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($carrierId, $statusId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function updateWithObjects(
         ShippingOrder $resource,
         Carrier $carrier = null,
         ShippingOrderStatus $status = null,
         array $attributes = null
     ) {
-        $this->fillModel($resource, [
-            ShippingOrder::FIELD_ID_CARRIER               => $carrier,
-            ShippingOrder::FIELD_ID_SHIPPING_ORDER_STATUS => $status,
-        ], $attributes);
+        $this->update($resource, $this->idOf($carrier), $this->idOf($status), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        ShippingOrder $resource,
+        $carrierId = null,
+        $statusId = null,
+        array $attributes = null
+    ) {
+        $this->updateWith($resource, $attributes, $this->getRelationships($carrierId, $statusId));
+    }
+
+    /**
+     * @param int $carrierId
+     * @param int $statusId
+     *
+     * @return array
+     */
+    protected function getRelationships($carrierId, $statusId)
+    {
+        return $this->filterNulls([
+            ShippingOrder::FIELD_ID_CARRIER               => $carrierId,
+            ShippingOrder::FIELD_ID_SHIPPING_ORDER_STATUS => $statusId,
+        ]);
     }
 }

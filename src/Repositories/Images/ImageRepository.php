@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Images;
 
 use \Neomerx\Core\Models\Image;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class ImageRepository extends IndexBasedResourceRepository implements ImageRepositoryInterface
+class ImageRepository extends BaseRepository implements ImageRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,18 @@ class ImageRepository extends IndexBasedResourceRepository implements ImageRepos
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var Image $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Image $resource, array $attributes = null)
+    public function update(Image $resource, array $attributes = [])
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

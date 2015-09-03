@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Categories;
 
 use \Neomerx\Core\Models\Category;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class CategoryRepository extends CodeBasedResourceRepository implements CategoryRepositoryInterface
+class CategoryRepository extends BaseRepository implements CategoryRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,18 @@ class CategoryRepository extends CodeBasedResourceRepository implements Category
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var Category $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Category $resource, array $attributes)
+    public function update(Category $resource, array $attributes)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

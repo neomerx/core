@@ -10,7 +10,7 @@ use \Illuminate\Database\Eloquent\Collection;
  *
  * @package Neomerx\Core
  */
-class ShippingOrderStatus extends BaseModel implements SelectByCodeInterface
+class ShippingOrderStatus extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'shipping_order_statuses';
@@ -103,13 +103,5 @@ class ShippingOrderStatus extends BaseModel implements SelectByCodeInterface
     public function shippingOrders()
     {
         return $this->hasMany(ShippingOrder::class, ShippingOrder::FIELD_ID_SHIPPING_ORDER_STATUS, self::FIELD_ID);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 }

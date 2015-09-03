@@ -2,12 +2,12 @@
 
 use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Manufacturer;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class ManufacturerRepository extends CodeBasedResourceRepository implements ManufacturerRepositoryInterface
+class ManufacturerRepository extends BaseRepository implements ManufacturerRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -20,21 +20,46 @@ class ManufacturerRepository extends CodeBasedResourceRepository implements Manu
     /**
      * @inheritdoc
      */
-    public function instance(Address $address, array $attributes)
+    public function createWithObjects(Address $address, array $attributes)
     {
-        /** @var Manufacturer $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $address, $attributes);
+        return $this->create($this->idOf($address), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($addressId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($addressId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Manufacturer $resource, Address $address = null, array $attributes = null)
+    public function updateWithObjects(Manufacturer $resource, Address $address = null, array $attributes = null)
     {
-        $this->fillModel($resource, [
-            Manufacturer::FIELD_ID_ADDRESS => $address,
-        ], $attributes);
+        $this->update($resource, $this->idOf($address), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(Manufacturer $resource, $addressId = null, array $attributes = null)
+    {
+        $this->update($resource, $attributes, $this->getRelationships($addressId));
+    }
+
+    /**
+     * @param int $addressId
+     *
+     * @return array
+     */
+    protected function getRelationships($addressId)
+    {
+        return $this->filterNulls([
+            Manufacturer::FIELD_ID_ADDRESS => $addressId,
+        ]);
     }
 }

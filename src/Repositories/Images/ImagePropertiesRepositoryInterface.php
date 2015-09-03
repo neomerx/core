@@ -11,26 +11,50 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface ImagePropertiesRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param Image    $image
+     * @param Image    $resource
      * @param Language $language
      * @param array    $attributes
      *
      * @return ImageProperties
      */
-    public function instance(Image $image, Language $language, array $attributes);
+    public function createWithObjects(Image $resource, Language $language, array $attributes);
+
+    /**
+     * @param int   $imageId
+     * @param int   $languageId
+     * @param array $attributes
+     *
+     * @return ImageProperties
+     */
+    public function create($imageId, $languageId, array $attributes);
 
     /**
      * @param ImageProperties $properties
-     * @param Image|null      $image
+     * @param Image|null      $resource
      * @param Language|null   $language
      * @param array|null      $attributes
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         ImageProperties $properties,
-        Image $image = null,
+        Image $resource = null,
         Language $language = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param ImageProperties $properties
+     * @param int|null        $imageId
+     * @param int|null        $languageId
+     * @param array|null      $attributes
+     *
+     * @return void
+     */
+    public function update(
+        ImageProperties $properties,
+        $imageId = null,
+        $languageId = null,
         array $attributes = null
     );
 

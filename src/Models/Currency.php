@@ -12,7 +12,7 @@ use \Illuminate\Database\Eloquent\Collection;
  *
  * @package Neomerx\Core
  */
-class Currency extends BaseModel implements SelectByCodeInterface
+class Currency extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'currencies';
@@ -136,13 +136,5 @@ class Currency extends BaseModel implements SelectByCodeInterface
     public function properties()
     {
         return $this->hasMany(CurrencyProperties::class, CurrencyProperties::FIELD_ID_CURRENCY, self::FIELD_ID);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 }

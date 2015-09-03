@@ -15,7 +15,15 @@ interface TaxRuleRepositoryInterface extends RepositoryInterface
      *
      * @return TaxRule
      */
-    public function instance(Tax $tax, array $attributes);
+    public function createWithObjects(Tax $tax, array $attributes);
+
+    /**
+     * @param int   $taxId
+     * @param array $attributes
+     *
+     * @return TaxRule
+     */
+    public function create($taxId, array $attributes);
 
     /**
      * @param TaxRule    $resource
@@ -24,7 +32,16 @@ interface TaxRuleRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(TaxRule $resource, Tax $tax = null, array $attributes = null);
+    public function updateWithObjects(TaxRule $resource, Tax $tax = null, array $attributes = null);
+
+    /**
+     * @param TaxRule    $resource
+     * @param int|null   $taxId
+     * @param array|null $attributes
+     *
+     * @return void
+     */
+    public function update(TaxRule $resource, $taxId = null, array $attributes = null);
 
     /**
      * @param int   $resourceId

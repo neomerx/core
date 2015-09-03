@@ -14,7 +14,7 @@ use \Illuminate\Database\Eloquent\Collection;
  *
  * @package Neomerx\Core
  */
-class Supplier extends BaseModel implements SelectByCodeInterface
+class Supplier extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'suppliers';
@@ -137,13 +137,5 @@ class Supplier extends BaseModel implements SelectByCodeInterface
     public function properties()
     {
         return $this->hasMany(SupplierProperties::class, SupplierProperties::FIELD_ID_SUPPLIER, self::FIELD_ID);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 }

@@ -15,7 +15,15 @@ interface CarrierPostcodeRepositoryInterface extends RepositoryInterface
      *
      * @return CarrierPostcode
      */
-    public function instance(Carrier $carrier, array $attributes = null);
+    public function createWithObjects(Carrier $carrier, array $attributes = []);
+
+    /**
+     * @param int        $carrierId
+     * @param array|null $attributes
+     *
+     * @return CarrierPostcode
+     */
+    public function create($carrierId, array $attributes = []);
 
     /**
      * @param CarrierPostcode $resource
@@ -24,7 +32,16 @@ interface CarrierPostcodeRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(CarrierPostcode $resource, Carrier $carrier = null, array $attributes = null);
+    public function updateWithObjects(CarrierPostcode $resource, Carrier $carrier = null, array $attributes = []);
+
+    /**
+     * @param CarrierPostcode $resource
+     * @param int|null        $carrierId
+     * @param array|null      $attributes
+     *
+     * @return void
+     */
+    public function update(CarrierPostcode $resource, $carrierId = null, array $attributes = []);
 
     /**
      * @param int   $resourceId

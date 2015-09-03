@@ -15,7 +15,15 @@ interface StoreRepositoryInterface extends RepositoryInterface
      *
      * @return Store
      */
-    public function instance(Address $address, array $attributes);
+    public function createWithObjects(Address $address, array $attributes);
+
+    /**
+     * @param int   $addressId
+     * @param array $attributes
+     *
+     * @return Store
+     */
+    public function create($addressId, array $attributes);
 
     /**
      * @param Store        $resource
@@ -24,7 +32,16 @@ interface StoreRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(Store $resource, Address $address = null, array $attributes = null);
+    public function updateWithObjects(Store $resource, Address $address = null, array $attributes = []);
+
+    /**
+     * @param Store      $resource
+     * @param int|null   $addressId
+     * @param array|null $attributes
+     *
+     * @return void
+     */
+    public function update(Store $resource, $addressId = null, array $attributes = []);
 
     /**
      * @param string $code

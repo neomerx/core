@@ -13,7 +13,7 @@ interface InvoiceRepositoryInterface extends RepositoryInterface
      *
      * @return Invoice
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param Invoice    $resource
@@ -21,7 +21,7 @@ interface InvoiceRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(Invoice $resource, array $attributes);
+    public function update(Invoice $resource, array $attributes);
 
     /**
      * @param int    $index
@@ -31,13 +31,4 @@ interface InvoiceRepositoryInterface extends RepositoryInterface
      * @return Invoice
      */
     public function read($index, array $scopes = [], array $columns = ['*']);
-
-    /**
-     * @param string $code
-     * @param array  $scopes
-     * @param array  $columns
-     *
-     * @return Invoice
-     */
-    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 }

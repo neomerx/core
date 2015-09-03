@@ -17,7 +17,16 @@ interface ProductCategoryRepositoryInterface extends RepositoryInterface
      *
      * @return ProductCategory
      */
-    public function instance(Product $product, Category $category, array $attributes);
+    public function createWithObjects(Product $product, Category $category, array $attributes);
+
+    /**
+     * @param int   $productId
+     * @param int   $categoryId
+     * @param array $attributes
+     *
+     * @return ProductCategory
+     */
+    public function create($productId, $categoryId, array $attributes);
 
     /**
      * @param ProductCategory $resource
@@ -27,10 +36,25 @@ interface ProductCategoryRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         ProductCategory $resource,
         Product $product = null,
         Category $category = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param ProductCategory $resource
+     * @param int|null        $productId
+     * @param int|null        $categoryId
+     * @param array|null      $attributes
+     *
+     * @return void
+     */
+    public function update(
+        ProductCategory $resource,
+        $productId = null,
+        $categoryId = null,
         array $attributes = null
     );
 

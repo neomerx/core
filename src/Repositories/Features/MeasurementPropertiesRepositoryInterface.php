@@ -17,7 +17,16 @@ interface MeasurementPropertiesRepositoryInterface extends RepositoryInterface
      *
      * @return MeasurementProperties
      */
-    public function instance(Measurement $resource, Language $language, array $attributes);
+    public function createWithObjects(Measurement $resource, Language $language, array $attributes);
+
+    /**
+     * @param int   $measurementId
+     * @param int   $languageId
+     * @param array $attributes
+     *
+     * @return MeasurementProperties
+     */
+    public function create($measurementId, $languageId, array $attributes);
 
     /**
      * @param MeasurementProperties $properties
@@ -27,10 +36,25 @@ interface MeasurementPropertiesRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         MeasurementProperties $properties,
         Measurement $resource = null,
         Language $language = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param MeasurementProperties $properties
+     * @param int|null              $measurementId
+     * @param int|null              $languageId
+     * @param array|null            $attributes
+     *
+     * @return void
+     */
+    public function update(
+        MeasurementProperties $properties,
+        $measurementId = null,
+        $languageId = null,
         array $attributes = null
     );
 

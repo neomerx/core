@@ -13,22 +13,22 @@ interface LanguageRepositoryInterface extends RepositoryInterface
      *
      * @return Language
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
-     * @param Language   $resource
-     * @param array|null $attributes
+     * @param Language $resource
+     * @param array    $attributes
      *
      * @return void
      */
-    public function fill(Language $resource, array $attributes = null);
+    public function update(Language $resource, array $attributes);
 
     /**
-     * @param string $code
-     * @param array  $relations
-     * @param array  $columns
+     * @param int   $index
+     * @param array $relations
+     * @param array $columns
      *
      * @return Language
      */
-    public function read($code, array $relations = [], array $columns = ['*']);
+    public function read($index, array $relations = [], array $columns = ['*']);
 }

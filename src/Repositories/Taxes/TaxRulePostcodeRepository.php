@@ -2,12 +2,12 @@
 
 use \Neomerx\Core\Models\TaxRule;
 use \Neomerx\Core\Models\TaxRulePostcode;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class TaxRulePostcodeRepository extends IndexBasedResourceRepository implements TaxRulePostcodeRepositoryInterface
+class TaxRulePostcodeRepository extends BaseRepository implements TaxRulePostcodeRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -20,21 +20,46 @@ class TaxRulePostcodeRepository extends IndexBasedResourceRepository implements 
     /**
      * @inheritdoc
      */
-    public function instance(TaxRule $rule, array $attributes = null)
+    public function createWithObjects(TaxRule $rule, array $attributes = [])
     {
-        /** @var TaxRulePostcode $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $rule, $attributes);
+        return $this->create($this->idOf($rule), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($ruleId, array $attributes = [])
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($ruleId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(TaxRulePostcode $resource, TaxRule $rule = null, array $attributes = null)
+    public function updateWithObjects(TaxRulePostcode $resource, TaxRule $rule = null, array $attributes = [])
     {
-        $this->fillModel($resource, [
-            TaxRulePostcode::FIELD_ID_TAX_RULE => $rule,
-        ], $attributes);
+        $this->update($resource, $this->idOf($rule), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(TaxRulePostcode $resource, $ruleId = null, array $attributes = [])
+    {
+        $this->updateWith($resource, $attributes, $this->getRelationships($ruleId));
+    }
+
+    /**
+     * @param int $ruleId
+     *
+     * @return array
+     */
+    protected function getRelationships($ruleId)
+    {
+        return $this->filterNulls([
+            TaxRulePostcode::FIELD_ID_TAX_RULE => $ruleId,
+        ]);
     }
 }

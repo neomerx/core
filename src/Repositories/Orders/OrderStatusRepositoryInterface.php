@@ -13,7 +13,7 @@ interface OrderStatusRepositoryInterface extends RepositoryInterface
      *
      * @return OrderStatus
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param OrderStatus $resource
@@ -21,7 +21,7 @@ interface OrderStatusRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(OrderStatus $resource, array $attributes);
+    public function update(OrderStatus $resource, array $attributes);
 
     /**
      * @param string $code

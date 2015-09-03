@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Customers;
 
 use \Neomerx\Core\Models\CustomerType;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class CustomerTypeRepository extends CodeBasedResourceRepository implements CustomerTypeRepositoryInterface
+class CustomerTypeRepository extends BaseRepository implements CustomerTypeRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,18 @@ class CustomerTypeRepository extends CodeBasedResourceRepository implements Cust
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var CustomerType $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(CustomerType $resource, array $attributes)
+    public function update(CustomerType $resource, array $attributes)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

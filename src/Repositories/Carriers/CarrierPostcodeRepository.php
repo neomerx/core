@@ -2,12 +2,12 @@
 
 use \Neomerx\Core\Models\Carrier;
 use \Neomerx\Core\Models\CarrierPostcode;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class CarrierPostcodeRepository extends IndexBasedResourceRepository implements CarrierPostcodeRepositoryInterface
+class CarrierPostcodeRepository extends BaseRepository implements CarrierPostcodeRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -20,21 +20,46 @@ class CarrierPostcodeRepository extends IndexBasedResourceRepository implements 
     /**
      * @inheritdoc
      */
-    public function instance(Carrier $carrier, array $attributes = null)
+    public function createWithObjects(Carrier $carrier, array $attributes = [])
     {
-        /** @var CarrierPostcode $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $carrier, $attributes);
+        return $this->create($this->idOf($carrier), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($carrierId, array $attributes = [])
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($carrierId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(CarrierPostcode $resource, Carrier $carrier = null, array $attributes = null)
+    public function updateWithObjects(CarrierPostcode $resource, Carrier $carrier = null, array $attributes = [])
     {
-        $this->fillModel($resource, [
-            CarrierPostcode::FIELD_ID_CARRIER => $carrier,
-        ], $attributes);
+        $this->update($resource, $this->idOf($carrier), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(CarrierPostcode $resource, $carrierId = null, array $attributes = [])
+    {
+        $this->updateWith($resource, $attributes, $this->getRelationships($carrierId));
+    }
+
+    /**
+     * @param int $carrierId
+     *
+     * @return array
+     */
+    protected function getRelationships($carrierId)
+    {
+        return $this->filterNulls([
+            CarrierPostcode::FIELD_ID_CARRIER => $carrierId,
+        ]);
     }
 }

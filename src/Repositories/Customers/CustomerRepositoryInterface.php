@@ -2,7 +2,7 @@
 
 use \Neomerx\Core\Models\Customer;
 use \Neomerx\Core\Models\Language;
-use \Neomerx\Core\Models\CustomerRisk;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Models\CustomerType;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
@@ -12,30 +12,57 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface CustomerRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param CustomerType      $type
-     * @param Language          $language
-     * @param array             $attributes
-     * @param CustomerRisk|null $risk
+     * @param CustomerType  $type
+     * @param Language      $language
+     * @param array         $attributes
+     * @param Nullable|null $risk CustomerRisk
      *
      * @return Customer
      */
-    public function instance(CustomerType $type, Language $language, array $attributes, CustomerRisk $risk = null);
+    public function createWithObjects(CustomerType $type, Language $language, array $attributes, Nullable $risk = null);
+
+    /**
+     * @param int           $typeId
+     * @param int           $languageId
+     * @param array         $attributes
+     * @param Nullable|null $riskId
+     *
+     * @return Customer
+     */
+    public function create($typeId, $languageId, array $attributes, Nullable $riskId = null);
 
     /**
      * @param Customer          $resource
      * @param CustomerType|null $type
      * @param Language|null     $language
      * @param array|null        $attributes
-     * @param CustomerRisk|null $risk
+     * @param Nullable|null     $risk CustomerRisk
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         Customer $resource,
         CustomerType $type = null,
         Language $language = null,
         array $attributes = null,
-        CustomerRisk $risk = null
+        Nullable $risk = null
+    );
+
+    /**
+     * @param Customer      $resource
+     * @param int|null      $typeId
+     * @param int|null      $languageId
+     * @param array|null    $attributes
+     * @param Nullable|null $riskId
+     *
+     * @return void
+     */
+    public function update(
+        Customer $resource,
+        $typeId = null,
+        $languageId = null,
+        array $attributes = null,
+        Nullable $riskId = null
     );
 
     /**

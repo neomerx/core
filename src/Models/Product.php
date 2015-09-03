@@ -30,7 +30,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Product extends BaseModel implements SelectByCodeInterface, GetAspectsInterface
+class Product extends BaseModel implements GetAspectsInterface
 {
     /** Model table name */
     const TABLE_NAME = 'products';
@@ -201,6 +201,16 @@ class Product extends BaseModel implements SelectByCodeInterface, GetAspectsInte
     }
 
     /**
+     * Get model relation.
+     *
+     * @return string
+     */
+    public static function withAspectValues()
+    {
+        return self::FIELD_ASPECTS.'.'.Aspect::FIELD_VALUE;
+    }
+
+    /**
      * Relation to categories directly.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -365,28 +375,6 @@ class Product extends BaseModel implements SelectByCodeInterface, GetAspectsInte
     public static function selectDefault(BaseProduct $base)
     {
         return static::query()->where(self::FIELD_SKU, '=', $base->{BaseProduct::FIELD_SKU});
-    }
-
-    /**
-     * @param string $sku
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function selectByCode($sku)
-    {
-        return $this->newQuery()->where(self::FIELD_SKU, '=', $sku);
-    }
-
-    /**
-     * @param array $productSKUs
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function selectByCodes(array $productSKUs)
-    {
-        $builder = $this->newQuery();
-        $builder->getQuery()->whereIn(self::FIELD_SKU, $productSKUs);
-        return $builder;
     }
 
     /**

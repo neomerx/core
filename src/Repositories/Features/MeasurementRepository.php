@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Features;
 
 use \Neomerx\Core\Models\Measurement;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class MeasurementRepository extends CodeBasedResourceRepository implements MeasurementRepositoryInterface
+class MeasurementRepository extends BaseRepository implements MeasurementRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,18 @@ class MeasurementRepository extends CodeBasedResourceRepository implements Measu
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var Measurement $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Measurement $resource, array $attributes)
+    public function update(Measurement $resource, array $attributes)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

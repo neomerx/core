@@ -13,7 +13,7 @@ interface MeasurementRepositoryInterface extends RepositoryInterface
      *
      * @return Measurement
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param Measurement $resource
@@ -21,7 +21,7 @@ interface MeasurementRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(Measurement $resource, array $attributes);
+    public function update(Measurement $resource, array $attributes);
 
     /**
      * @param int    $index
@@ -31,13 +31,4 @@ interface MeasurementRepositoryInterface extends RepositoryInterface
      * @return Measurement
      */
     public function read($index, array $scopes = [], array $columns = ['*']);
-
-    /**
-     * @param string $code
-     * @param array  $scopes
-     * @param array  $columns
-     *
-     * @return Measurement
-     */
-    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 }

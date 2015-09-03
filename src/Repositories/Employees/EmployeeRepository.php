@@ -2,12 +2,12 @@
 
 use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Models\Employee;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class EmployeeRepository extends IndexBasedResourceRepository implements EmployeeRepositoryInterface
+class EmployeeRepository extends BaseRepository implements EmployeeRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -20,19 +20,18 @@ class EmployeeRepository extends IndexBasedResourceRepository implements Employe
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var Employee $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Employee $resource, array $attributes)
+    public function update(Employee $resource, array $attributes)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

@@ -13,7 +13,7 @@ interface ImageRepositoryInterface extends RepositoryInterface
      *
      * @return Image
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param Image      $resource
@@ -21,7 +21,7 @@ interface ImageRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(Image $resource, array $attributes = null);
+    public function update(Image $resource, array $attributes = []);
 
     /**
      * @param int   $resourceId

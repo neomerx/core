@@ -15,7 +15,7 @@ use \Illuminate\Database\Eloquent\Collection;
  *
  * @package Neomerx\Core
  */
-class Feature extends BaseModel implements SelectByCodeInterface
+class Feature extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'features';
@@ -154,13 +154,5 @@ class Feature extends BaseModel implements SelectByCodeInterface
     public function measurement()
     {
         return $this->belongsTo(Measurement::class, self::FIELD_ID_MEASUREMENT, Measurement::FIELD_ID);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 }

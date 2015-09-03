@@ -17,7 +17,16 @@ interface OrderHistoryRepositoryInterface extends RepositoryInterface
      * @return OrderHistory
      *
      */
-    public function instance(Order $order, OrderStatus $status);
+    public function createWithObjects(Order $order, OrderStatus $status);
+
+    /**
+     * @param int $orderId
+     * @param int $statusId
+     *
+     * @return OrderHistory
+     *
+     */
+    public function create($orderId, $statusId);
 
     /**
      * @param OrderHistory     $resource
@@ -27,7 +36,17 @@ interface OrderHistoryRepositoryInterface extends RepositoryInterface
      * @return void
      *
      */
-    public function fill(OrderHistory $resource, Order $order = null, OrderStatus $status = null);
+    public function updateWithObjects(OrderHistory $resource, Order $order = null, OrderStatus $status = null);
+
+    /**
+     * @param OrderHistory $resource
+     * @param int|null     $orderId
+     * @param int|null     $statusId
+     *
+     * @return void
+     *
+     */
+    public function update(OrderHistory $resource, $orderId = null, $statusId = null);
 
     /**
      * @param int   $resourceId

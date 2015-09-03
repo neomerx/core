@@ -1,7 +1,6 @@
 <?php namespace Neomerx\Core\Models;
 
 use \Neomerx\Core\Support as S;
-use \Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Facades\App;
 use \Illuminate\Database\Eloquent\Collection;
 use \Symfony\Component\ExpressionLanguage\ExpressionLanguage;
@@ -16,7 +15,7 @@ use \Symfony\Component\ExpressionLanguage\ExpressionLanguage;
  *
  * @package Neomerx\Core
  */
-class Tax extends BaseModel implements SelectByCodeInterface
+class Tax extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'taxes';
@@ -145,14 +144,6 @@ class Tax extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
-    }
-
-    /**
      * Relation to tax rules.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -203,29 +194,6 @@ class Tax extends BaseModel implements SelectByCodeInterface
     private function isFormula($value)
     {
         return (!empty($value) && trim($value)[0] === '=');
-    }
-
-    /**
-     * @param int   $countryId
-     * @param int   $regionId
-     * @param mixed $postcode
-     * @param int   $customerTypeId
-     * @param int   $productTaxTypeId
-     *
-     * @return Collection
-     */
-    public function selectTaxes(
-        $countryId,
-        $regionId,
-        $postcode,
-        $customerTypeId,
-        $productTaxTypeId
-    ) {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return $this->convertStdClassesToModels(DB::select(
-            'call spSelectTaxes(?, ?, ?, ?, ?)',
-            [$countryId, $regionId, $postcode, $customerTypeId, $productTaxTypeId]
-        ));
     }
 
     /**

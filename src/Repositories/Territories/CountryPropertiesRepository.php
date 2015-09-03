@@ -3,12 +3,12 @@
 use \Neomerx\Core\Models\Country;
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CountryProperties;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class CountryPropertiesRepository extends IndexBasedResourceRepository implements CountryPropertiesRepositoryInterface
+class CountryPropertiesRepository extends BaseRepository implements CountryPropertiesRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -21,24 +21,56 @@ class CountryPropertiesRepository extends IndexBasedResourceRepository implement
     /**
      * @inheritdoc
      */
-    public function instance(Country $resource, Language $language, array $attributes)
+    public function createWithObjects(Country $resource, Language $language, array $attributes)
     {
-        /** @var CountryProperties $properties */
-        $properties = $this->makeModel();
-        $this->fill($properties, $resource, $language, $attributes);
-        return $properties;
+        return $this->create($this->idOf($resource), $this->idOf($language), $attributes);
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function create($resourceId, $languageId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($resourceId, $languageId));
+
+        return $resource;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function updateWithObjects(
         CountryProperties $properties,
         Country $resource = null,
         Language $language = null,
         array $attributes = null
     ) {
-        $data = [CountryProperties::FIELD_ID_COUNTRY => $resource, CountryProperties::FIELD_ID_LANGUAGE => $language];
-        $this->fillModel($properties, $data, $attributes);
+        $this->update($properties, $this->idOf($resource), $this->idOf($language), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        CountryProperties $properties,
+        $resourceId = null,
+        $languageId = null,
+        array $attributes = null
+    ) {
+        $this->updateWith($properties, $attributes, $this->getRelationships($resourceId, $languageId));
+    }
+
+    /**
+     * @param int $resourceId
+     * @param int $languageId
+     *
+     * @return array
+     */
+    protected function getRelationships($resourceId, $languageId)
+    {
+        return $this->filterNulls([
+            CountryProperties::FIELD_ID_COUNTRY  => $resourceId,
+            CountryProperties::FIELD_ID_LANGUAGE => $languageId,
+        ]);
     }
 }

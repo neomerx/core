@@ -15,7 +15,7 @@ use \Illuminate\Database\Eloquent\Collection;
  *
  * @package Neomerx\Core
  */
-class FeatureValue extends BaseModel implements SelectByCodeInterface
+class FeatureValue extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'feature_values';
@@ -148,25 +148,5 @@ class FeatureValue extends BaseModel implements SelectByCodeInterface
     public function aspects()
     {
         return $this->hasMany(Aspect::class, Aspect::FIELD_ID_VALUE, self::FIELD_ID);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
-    }
-
-    /**
-     * @param array $codes
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function selectByCodes(array $codes)
-    {
-        $builder = $this->newQuery();
-        $builder->getQuery()->whereIn(self::FIELD_CODE, $codes);
-        return $builder;
     }
 }

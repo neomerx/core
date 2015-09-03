@@ -2,12 +2,12 @@
 
 use \Neomerx\Core\Models\Invoice;
 use \Neomerx\Core\Models\InvoicePayment;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class InvoicePaymentRepository extends IndexBasedResourceRepository implements InvoicePaymentRepositoryInterface
+class InvoicePaymentRepository extends BaseRepository implements InvoicePaymentRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -20,21 +20,46 @@ class InvoicePaymentRepository extends IndexBasedResourceRepository implements I
     /**
      * @inheritdoc
      */
-    public function instance(Invoice $invoice, array $attributes)
+    public function createWithObjects(Invoice $invoice, array $attributes)
     {
-        /** @var InvoicePayment $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $invoice, $attributes);
+        return $this->create($this->idOf($invoice), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($invoiceId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($invoiceId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(InvoicePayment $resource, Invoice $invoice = null, array $attributes = null)
+    public function updateWithObjects(InvoicePayment $resource, Invoice $invoice = null, array $attributes = null)
     {
-        $this->fillModel($resource, [
-            InvoicePayment::FIELD_ID_INVOICE => $invoice,
-        ], $attributes);
+        $this->update($resource, $this->idOf($invoice), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(InvoicePayment $resource, $invoiceId = null, array $attributes = null)
+    {
+        $this->updateWith($resource, $attributes, $this->getRelationships($invoiceId));
+    }
+
+    /**
+     * @param int $invoiceId
+     *
+     * @return array
+     */
+    protected function getRelationships($invoiceId)
+    {
+        return $this->filterNulls([
+            InvoicePayment::FIELD_ID_INVOICE => $invoiceId,
+        ]);
     }
 }

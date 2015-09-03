@@ -2,12 +2,12 @@
 
 use \Neomerx\Core\Models\Region;
 use \Neomerx\Core\Models\Country;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class RegionRepository extends CodeBasedResourceRepository implements RegionRepositoryInterface
+class RegionRepository extends BaseRepository implements RegionRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -20,21 +20,46 @@ class RegionRepository extends CodeBasedResourceRepository implements RegionRepo
     /**
      * @inheritdoc
      */
-    public function instance(Country $country, array $attributes)
+    public function createWithObjects(Country $country, array $attributes)
     {
-        /** @var Region $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $country, $attributes);
+        return $this->create($this->idOf($country), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($countryId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($countryId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Region $resource, Country $country = null, array $attributes = null)
+    public function updateWithObjects(Region $resource, Country $country = null, array $attributes = null)
     {
-        $this->fillModel($resource, [
-            Region::FIELD_ID_COUNTRY => $country,
-        ], $attributes);
+        $this->update($resource, $this->idOf($country), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(Region $resource, $countryId = null, array $attributes = null)
+    {
+        $this->updateWith($resource, $attributes, $this->getRelationships($countryId));
+    }
+
+    /**
+     * @param int $countryId
+     *
+     * @return array
+     */
+    protected function getRelationships($countryId)
+    {
+        return $this->filterNulls([
+            Region::FIELD_ID_COUNTRY => $countryId,
+        ]);
     }
 }

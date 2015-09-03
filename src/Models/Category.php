@@ -29,7 +29,7 @@ use \Neomerx\Core\Exceptions\InvalidArgumentException;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Category extends BaseModel implements SelectByCodeInterface
+class Category extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'categories';
@@ -523,23 +523,13 @@ class Category extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
-    }
-
-    /**
-     * @param array $codes
+     * @param string $code
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function selectByCodes(array $codes)
+    private function selectByCode($code)
     {
-        $builder = $this->newQuery();
-        $builder->getQuery()->whereIn(self::FIELD_CODE, $codes);
-        return $builder;
+        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 
     /**

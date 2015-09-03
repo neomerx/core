@@ -15,7 +15,15 @@ interface RegionRepositoryInterface extends RepositoryInterface
      *
      * @return Region
      */
-    public function instance(Country $country, array $attributes);
+    public function createWithObjects(Country $country, array $attributes);
+
+    /**
+     * @param int   $countryId
+     * @param array $attributes
+     *
+     * @return Region
+     */
+    public function create($countryId, array $attributes);
 
     /**
      *
@@ -25,7 +33,17 @@ interface RegionRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(Region $resource, Country $country = null, array $attributes = null);
+    public function updateWithObjects(Region $resource, Country $country = null, array $attributes = null);
+
+    /**
+     *
+     * @param Region     $resource
+     * @param int|null   $countryId
+     * @param array|null $attributes
+     *
+     * @return void
+     */
+    public function update(Region $resource, $countryId = null, array $attributes = null);
 
     /**
      * @param int    $index
@@ -35,13 +53,4 @@ interface RegionRepositoryInterface extends RepositoryInterface
      * @return Region
      */
     public function read($index, array $relations = [], array $columns = ['*']);
-
-    /**
-     * @param string $code
-     * @param array  $relations
-     * @param array  $columns
-     *
-     * @return Region
-     */
-    public function readByCode($code, array $relations = [], array $columns = ['*']);
 }

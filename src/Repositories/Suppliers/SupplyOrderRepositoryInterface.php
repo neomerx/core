@@ -21,11 +21,28 @@ interface SupplyOrderRepositoryInterface extends RepositoryInterface
      *
      * @return SupplyOrder
      */
-    public function instance(
+    public function createWithObjects(
         Supplier $supplier,
         Warehouse $warehouse,
         Currency $currency,
         Language $language,
+        array $attributes
+    );
+
+    /**
+     * @param int   $supplierId
+     * @param int   $warehouseId
+     * @param int   $currencyId
+     * @param int   $languageId
+     * @param array $attributes
+     *
+     * @return SupplyOrder
+     */
+    public function create(
+        $supplierId,
+        $warehouseId,
+        $currencyId,
+        $languageId,
         array $attributes
     );
 
@@ -39,12 +56,31 @@ interface SupplyOrderRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         SupplyOrder $resource,
         Supplier $supplier = null,
         Warehouse $warehouse = null,
         Currency $currency = null,
         Language $language = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param SupplyOrder $resource
+     * @param int|null    $supplierId
+     * @param int|null    $warehouseId
+     * @param int|null    $currencyId
+     * @param int|null    $languageId
+     * @param array|null  $attributes
+     *
+     * @return void
+     */
+    public function update(
+        SupplyOrder $resource,
+        $supplierId = null,
+        $warehouseId = null,
+        $currencyId = null,
+        $languageId = null,
         array $attributes = null
     );
 

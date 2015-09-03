@@ -13,7 +13,7 @@ interface CategoryRepositoryInterface extends RepositoryInterface
      *
      * @return Category
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param Category $resource
@@ -21,7 +21,7 @@ interface CategoryRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(Category $resource, array $attributes);
+    public function update(Category $resource, array $attributes);
 
     /**
      * @param int    $index
@@ -31,13 +31,4 @@ interface CategoryRepositoryInterface extends RepositoryInterface
      * @return Category
      */
     public function read($index, array $scopes = [], array $columns = ['*']);
-
-    /**
-     * @param string $code
-     * @param array  $scopes
-     * @param array  $columns
-     *
-     * @return Category
-     */
-    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 }

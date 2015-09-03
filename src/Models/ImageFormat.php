@@ -20,7 +20,7 @@ use \Neomerx\Core\Commands\UpdateImagesByFormatCommand;
  *
  * @package Neomerx\Core
  */
-class ImageFormat extends BaseModel implements SelectByCodeInterface
+class ImageFormat extends BaseModel
 {
     use DispatchesJobs;
 
@@ -125,18 +125,6 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
     }
 
     /**
-     * Select format by code.
-     *
-     * @param string $code
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
-    }
-
-    /**
      * @inheritdoc
      *
      * Generates image paths for new format.
@@ -147,7 +135,7 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
 
         $command = app()->make(
             CreateImagesByFormatCommand::class,
-            [CreateImagesByFormatCommand::PARAM_FORMAT_CODE => $this->{self::FIELD_CODE}]
+            [CreateImagesByFormatCommand::PARAM_FORMAT_ID => $this->{self::FIELD_ID}]
         );
         $this->dispatch($command);
 
@@ -165,7 +153,7 @@ class ImageFormat extends BaseModel implements SelectByCodeInterface
 
         $command = app()->make(
             UpdateImagesByFormatCommand::class,
-            [UpdateImagesByFormatCommand::PARAM_FORMAT_CODE => $this->{self::FIELD_CODE}]
+            [UpdateImagesByFormatCommand::PARAM_FORMAT_ID => $this->{self::FIELD_ID}]
         );
         $this->dispatch($command);
 

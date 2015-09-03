@@ -12,7 +12,7 @@
  *
  * @package Neomerx\Core
  */
-class Warehouse extends BaseModel implements SelectByCodeInterface
+class Warehouse extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'warehouses';
@@ -174,13 +174,5 @@ class Warehouse extends BaseModel implements SelectByCodeInterface
     public function inventory()
     {
         return $this->hasMany(Inventory::class, Inventory::FIELD_ID_WAREHOUSE, self::FIELD_ID);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 }

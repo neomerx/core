@@ -1,15 +1,16 @@
 <?php namespace Neomerx\Core\Repositories\Carriers;
 
 use \Neomerx\Core\Models\Carrier;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Models\CustomerType;
 use \Neomerx\Core\Models\CarrierCustomerType;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 use \Neomerx\Core\Repositories\Carriers\CarrierCustomerTypeRepositoryInterface as RepositoryInterface;
 
 /**
  * @package Neomerx\Core
  */
-class CarrierCustomerTypeRepository extends IndexBasedResourceRepository implements RepositoryInterface
+class CarrierCustomerTypeRepository extends BaseRepository implements RepositoryInterface
 {
     /**
      * @inheritdoc
@@ -22,31 +23,55 @@ class CarrierCustomerTypeRepository extends IndexBasedResourceRepository impleme
     /**
      * @inheritdoc
      */
-    public function instance(Carrier $carrier, CustomerType $type = null)
+    public function createWithObjects(Carrier $carrier, Nullable $type = null)
     {
-        /** @var CarrierCustomerType $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $carrier, $type, $type === null);
+        return $this->create($this->idOf($carrier), $this->idOfNullable($type, CustomerType::class));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($carrierId, Nullable $typeId = null)
+    {
+        $resource = $this->createWith([], $this->getRelationships($carrierId, $typeId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function updateWithObjects(
         CarrierCustomerType $resource,
         Carrier $carrier = null,
-        CustomerType $type = null,
-        $isTypeEmpty = false
+        Nullable $type = null
     ) {
-        $input = [
-            CarrierCustomerType::FIELD_ID_CARRIER => $carrier,
-        ];
-        if ($isTypeEmpty === false) {
-            $idx = $type === null ? null : $type->{CustomerType::FIELD_ID};
-            $resource->{CarrierCustomerType::FIELD_ID_CUSTOMER_TYPE} = $idx;
-        }
+        $this->update($resource, $this->idOf($carrier), $this->idOfNullable($type, CustomerType::class));
+    }
 
-        $this->fillModel($resource, $input);
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        CarrierCustomerType $resource,
+        $carrierId = null,
+        Nullable $typeId = null
+    ) {
+        $this->updateWith($resource, [], $this->getRelationships($carrierId, $typeId));
+    }
+
+    /**
+     * @param int           $carrierId
+     * @param Nullable|null $typeId
+     *
+     * @return array
+     */
+    protected function getRelationships($carrierId, Nullable $typeId = null)
+    {
+        return $this->filterNulls([
+            CarrierCustomerType::FIELD_ID_CARRIER => $carrierId,
+        ], [
+            CarrierCustomerType::FIELD_ID_CUSTOMER_TYPE => $typeId,
+        ]);
     }
 }

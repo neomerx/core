@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Auth;
 
 use \Neomerx\Core\Models\ObjectType;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class ObjectTypeRepository extends IndexBasedResourceRepository implements ObjectTypeRepositoryInterface
+class ObjectTypeRepository extends BaseRepository implements ObjectTypeRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,18 @@ class ObjectTypeRepository extends IndexBasedResourceRepository implements Objec
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var ObjectType $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(ObjectType $resource, array $attributes)
+    public function update(ObjectType $resource, array $attributes)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

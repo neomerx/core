@@ -4,7 +4,6 @@ use \Neomerx\Core\Support as S;
 use \Neomerx\Core\Exceptions\Exception;
 use \Illuminate\Database\Eloquent\Model;
 use \Illuminate\Database\Eloquent\Builder;
-use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Auth\ObjectIdentityInterface;
 use \Neomerx\Core\Models\Traits\RelationsTrait;
 use \Neomerx\Core\Models\Traits\ValidationTrait;
@@ -270,31 +269,5 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
     public function getIdentifier()
     {
         return [get_class($this), $this->getKey()];
-    }
-
-    /**
-     * Convert array of SdtClass objects to Collection of models.
-     *
-     * @param array $stdClasses
-     *
-     * @return Collection
-     */
-    protected function convertStdClassesToModels(array $stdClasses)
-    {
-        $models = [];
-        $connection = $this->getConnection()->getName();
-        foreach ($stdClasses as $stdClass) {
-            $models[] = $model = $this->newFromBuilder($stdClass);
-            $model->setConnection($connection);
-        }
-
-        // If 'Eager Loading' is used while selecting objects it will load them as well.
-        // This snippet is based on Laravel source code from \Illuminate\Database\Eloquent\Builder::get
-        if (empty($models) === false) {
-            $builder = $this->newEloquentBuilder($this->newBaseQueryBuilder());
-            $models = $builder->eagerLoadRelations($models);
-        }
-
-        return $this->newCollection($models);
     }
 }

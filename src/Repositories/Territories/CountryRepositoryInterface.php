@@ -1,7 +1,6 @@
 <?php namespace Neomerx\Core\Repositories\Territories;
 
 use \Neomerx\Core\Models\Country;
-use \Illuminate\Database\Eloquent\Collection;
 use \Neomerx\Core\Repositories\RepositoryInterface;
 
 /**
@@ -14,7 +13,7 @@ interface CountryRepositoryInterface extends RepositoryInterface
      *
      * @return Country
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param Country    $country
@@ -22,7 +21,7 @@ interface CountryRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(Country $country, array $attributes = null);
+    public function update(Country $country, array $attributes = null);
 
     /**
      * @param int    $index
@@ -32,20 +31,4 @@ interface CountryRepositoryInterface extends RepositoryInterface
      * @return Country
      */
     public function read($index, array $relations = [], array $columns = ['*']);
-
-    /**
-     * @param string $code
-     * @param array  $relations
-     * @param array  $columns
-     *
-     * @return Country
-     */
-    public function readByCode($code, array $relations = [], array $columns = ['*']);
-
-    /**
-     * @param Country $resource
-     *
-     * @return Collection
-     */
-    public function regions(Country $resource);
 }

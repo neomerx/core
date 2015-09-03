@@ -11,7 +11,7 @@ use \Carbon\Carbon;
  *
  * @package Neomerx\Core
  */
-class Language extends BaseModel implements SelectByCodeInterface
+class Language extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'languages';
@@ -96,13 +96,5 @@ class Language extends BaseModel implements SelectByCodeInterface
             self::FIELD_ISO_CODE => 'sometimes|required|alpha|min:2|max:'.self::ISO_CODE_MAX_LENGTH.
                 '|unique:'.self::TABLE_NAME,
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($isoCode)
-    {
-        return $this->newQuery()->where(self::FIELD_ISO_CODE, '=', $isoCode);
     }
 }

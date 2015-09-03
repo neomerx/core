@@ -3,12 +3,12 @@
 use \Neomerx\Core\Models\Currency;
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CurrencyProperties;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class CurrencyPropertiesRepository extends IndexBasedResourceRepository implements CurrencyPropertiesRepositoryInterface
+class CurrencyPropertiesRepository extends BaseRepository implements CurrencyPropertiesRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -21,27 +21,56 @@ class CurrencyPropertiesRepository extends IndexBasedResourceRepository implemen
     /**
      * @inheritdoc
      */
-    public function instance(Currency $resource, Language $language, array $attributes)
+    public function createWithObjects(Currency $resource, Language $language, array $attributes)
     {
-        /** @var CurrencyProperties $properties */
-        $properties = $this->makeModel();
-        $this->fill($properties, $resource, $language, $attributes);
-        return $properties;
+        return $this->create($this->idOf($resource), $this->idOf($language), $attributes);
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function create($resourceId, $languageId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($resourceId, $languageId));
+
+        return $resource;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function updateWithObjects(
         CurrencyProperties $properties,
         Currency $resource = null,
         Language $language = null,
         array $attributes = null
     ) {
-        $data = [
-            CurrencyProperties::FIELD_ID_CURRENCY => $resource,
-            CurrencyProperties::FIELD_ID_LANGUAGE => $language
-        ];
-        $this->fillModel($properties, $data, $attributes);
+        $this->update($properties, $this->idOf($resource), $this->idOf($language), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        CurrencyProperties $properties,
+        $resourceId = null,
+        $languageId = null,
+        array $attributes = null
+    ) {
+        $this->updateWith($properties, $attributes, $this->getRelationships($resourceId, $languageId));
+    }
+
+    /**
+     * @param int $resourceId
+     * @param int $languageId
+     *
+     * @return array
+     */
+    protected function getRelationships($resourceId, $languageId)
+    {
+        return $this->filterNulls([
+            CurrencyProperties::FIELD_ID_CURRENCY => $resourceId,
+            CurrencyProperties::FIELD_ID_LANGUAGE => $languageId,
+        ]);
     }
 }

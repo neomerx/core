@@ -3,12 +3,12 @@
 use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Customer;
 use \Neomerx\Core\Models\CustomerAddress;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class CustomerAddressRepository extends IndexBasedResourceRepository implements CustomerAddressRepositoryInterface
+class CustomerAddressRepository extends BaseRepository implements CustomerAddressRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -21,27 +21,43 @@ class CustomerAddressRepository extends IndexBasedResourceRepository implements 
     /**
      * @inheritdoc
      */
-    public function instance(Customer $customer, Address $address, array $attributes)
+    public function createWithObjects(Customer $customer, Address $address, array $attributes)
     {
-        /** @var CustomerAddress $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $customer, $address, $attributes);
+        return $this->create($this->idOf($customer), $this->idOf($address), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($customerId, $addressId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($customerId, $addressId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function updateWithObjects(
         CustomerAddress $resource,
         Customer $customer = null,
         Address $address = null,
         array $attributes = null
     ) {
-        $this->fillModel($resource, [
-            CustomerAddress::FIELD_ID_ADDRESS  => $address,
-            CustomerAddress::FIELD_ID_CUSTOMER => $customer,
-        ], $attributes);
+        $this->update($resource, $this->idOf($customer), $this->idOf($address), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        CustomerAddress $resource,
+        $customerId = null,
+        $addressId = null,
+        array $attributes = null
+    ) {
+        $this->updateWith($resource, $attributes, $this->getRelationships($customerId, $addressId));
     }
 
     /**
@@ -64,5 +80,19 @@ class CustomerAddressRepository extends IndexBasedResourceRepository implements 
             $allAddressQry->update([CustomerAddress::FIELD_IS_DEFAULT => false]);
             $customerAddressQry->update([CustomerAddress::FIELD_IS_DEFAULT => true]);
         });
+    }
+
+    /**
+     * @param int $customerId
+     * @param int $addressId
+     *
+     * @return array
+     */
+    protected function getRelationships($customerId, $addressId)
+    {
+        return $this->filterNulls([
+            CustomerAddress::FIELD_ID_ADDRESS  => $addressId,
+            CustomerAddress::FIELD_ID_CUSTOMER => $customerId,
+        ]);
     }
 }

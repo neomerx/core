@@ -14,6 +14,7 @@ use \Neomerx\Core\Repositories\Auth\RoleObjectTypeRepositoryInterface;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PHPMD.TooManyMethods)
  *
  * @package Neomerx\Core
  */
@@ -114,7 +115,7 @@ class CachePermissionManager implements RolePermissionManagerInterface
         return function () {
             /** @var RoleObjectTypeRepositoryInterface $roleObjectTypeRepo */
             $roleObjectTypeRepo = $this->container->make(RoleObjectTypeRepositoryInterface::class);
-            $allPermissions     = $roleObjectTypeRepo->search([RoleObjectType::withType()]);
+            $allPermissions     = $roleObjectTypeRepo->index([RoleObjectType::withType()]);
 
             $result = [];
             foreach ($allPermissions as $permission) {

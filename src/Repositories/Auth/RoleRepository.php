@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Auth;
 
 use \Neomerx\Core\Models\Role;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class RoleRepository extends CodeBasedResourceRepository implements RoleRepositoryInterface
+class RoleRepository extends BaseRepository implements RoleRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,18 @@ class RoleRepository extends CodeBasedResourceRepository implements RoleReposito
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var Role $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Role $resource, array $attributes)
+    public function update(Role $resource, array $attributes)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

@@ -13,7 +13,7 @@ use \Illuminate\Database\Eloquent\Collection;
  *
  * @package Neomerx\Core
  */
-class ProductTaxType extends BaseModel implements SelectByCodeInterface
+class ProductTaxType extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'product_tax_types';
@@ -121,13 +121,5 @@ class ProductTaxType extends BaseModel implements SelectByCodeInterface
     public function products()
     {
         return $this->hasMany(Product::class, Product::FIELD_ID_PRODUCT_TAX_TYPE, self::FIELD_ID);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
     }
 }

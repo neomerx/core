@@ -17,7 +17,16 @@ interface InventoryRepositoryInterface extends RepositoryInterface
      *
      * @return Inventory
      */
-    public function instance(Product $product, Warehouse $warehouse, array $attributes);
+    public function createWithObjects(Product $product, Warehouse $warehouse, array $attributes);
+
+    /**
+     * @param int   $productId
+     * @param int   $warehouseId
+     * @param array $attributes
+     *
+     * @return Inventory
+     */
+    public function create($productId, $warehouseId, array $attributes);
 
     /**
      * @param Inventory      $resource
@@ -27,10 +36,25 @@ interface InventoryRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         Inventory $resource,
         Product $product = null,
         Warehouse $warehouse = null,
+        array $attributes = null
+    );
+
+    /**
+     * @param Inventory  $resource
+     * @param int|null   $productId
+     * @param int|null   $warehouseId
+     * @param array|null $attributes
+     *
+     * @return void
+     */
+    public function update(
+        Inventory $resource,
+        $productId = null,
+        $warehouseId = null,
         array $attributes = null
     );
 

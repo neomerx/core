@@ -3,12 +3,12 @@
 use \Neomerx\Core\Models\Role;
 use \Neomerx\Core\Models\Employee;
 use \Neomerx\Core\Models\EmployeeRole;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class EmployeeRoleRepository extends IndexBasedResourceRepository implements EmployeeRoleRepositoryInterface
+class EmployeeRoleRepository extends BaseRepository implements EmployeeRoleRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -21,22 +21,48 @@ class EmployeeRoleRepository extends IndexBasedResourceRepository implements Emp
     /**
      * @inheritdoc
      */
-    public function instance(Employee $employee, Role $role)
+    public function createWithObjects(Employee $employee, Role $role)
     {
-        /** @var EmployeeRole $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $employee, $role);
+        return $this->create($this->idOf($employee), $this->idOf($role));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($employeeId, $roleId)
+    {
+        $resource = $this->createWith([], $this->getRelationships($employeeId, $roleId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(EmployeeRole $resource, Employee $employee = null, Role $role = null)
+    public function updateWithObjects(EmployeeRole $resource, Employee $employee = null, Role $role = null)
     {
-        $this->fillModel($resource, [
-            EmployeeRole::FIELD_ID_EMPLOYEE => $employee,
-            EmployeeRole::FIELD_ID_ROLE     => $role,
+        $this->update($resource, $this->idOf($employee), $this->idOf($role));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(EmployeeRole $resource, $employeeId = null, $roleId = null)
+    {
+        $this->updateWith($resource, [], $this->getRelationships($employeeId, $roleId));
+    }
+
+    /**
+     * @param int $employeeId
+     * @param int $roleId
+     *
+     * @return array
+     */
+    protected function getRelationships($employeeId, $roleId)
+    {
+        return $this->filterNulls([
+            EmployeeRole::FIELD_ID_EMPLOYEE => $employeeId,
+            EmployeeRole::FIELD_ID_ROLE     => $roleId,
         ]);
     }
 }

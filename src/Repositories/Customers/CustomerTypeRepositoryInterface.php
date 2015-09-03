@@ -13,7 +13,7 @@ interface CustomerTypeRepositoryInterface extends RepositoryInterface
      *
      * @return CustomerType
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param CustomerType $resource
@@ -21,7 +21,7 @@ interface CustomerTypeRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(CustomerType $resource, array $attributes);
+    public function update(CustomerType $resource, array $attributes);
 
     /**
      * @param string $code

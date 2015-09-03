@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Languages;
 
 use \Neomerx\Core\Models\Language;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class LanguageRepository extends CodeBasedResourceRepository implements LanguageRepositoryInterface
+class LanguageRepository extends BaseRepository implements LanguageRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,16 @@ class LanguageRepository extends CodeBasedResourceRepository implements Language
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var Language $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
-        return $resource;
+        return $this->createWith($attributes, []);
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Language $resource, array $attributes = null)
+    public function update(Language $resource, array $attributes)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $this->filterNulls($attributes), []);
     }
 }

@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Customers;
 
 use \Neomerx\Core\Models\CustomerRisk;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class CustomerRiskRepository extends CodeBasedResourceRepository implements CustomerRiskRepositoryInterface
+class CustomerRiskRepository extends BaseRepository implements CustomerRiskRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,18 @@ class CustomerRiskRepository extends CodeBasedResourceRepository implements Cust
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var CustomerRisk $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(CustomerRisk $resource, array $attributes)
+    public function update(CustomerRisk $resource, array $attributes)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

@@ -2,14 +2,14 @@
 
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\Manufacturer;
+use \Neomerx\Core\Repositories\BaseRepository;
 use \Neomerx\Core\Models\ManufacturerProperties;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
 use \Neomerx\Core\Repositories\Manufacturers\ManufacturerPropertiesRepositoryInterface as PropertiesRepositoryInterface;
 
 /**
  * @package Neomerx\Core
  */
-class ManufacturerPropertiesRepository extends IndexBasedResourceRepository implements PropertiesRepositoryInterface
+class ManufacturerPropertiesRepository extends BaseRepository implements PropertiesRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -22,27 +22,56 @@ class ManufacturerPropertiesRepository extends IndexBasedResourceRepository impl
     /**
      * @inheritdoc
      */
-    public function instance(Manufacturer $resource, Language $language, array $attributes)
+    public function createWithObjects(Manufacturer $resource, Language $language, array $attributes)
     {
-        /** @var ManufacturerProperties $properties */
-        $properties = $this->makeModel();
-        $this->fill($properties, $resource, $language, $attributes);
-        return $properties;
+        return $this->create($this->idOf($resource), $this->idOf($language), $attributes);
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function create($resourceId, $languageId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($resourceId, $languageId));
+
+        return $resource;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function updateWithObjects(
         ManufacturerProperties $properties,
         Manufacturer $resource = null,
         Language $language = null,
         array $attributes = null
     ) {
-        $data = [
-            ManufacturerProperties::FIELD_ID_MANUFACTURER => $resource,
-            ManufacturerProperties::FIELD_ID_LANGUAGE     => $language
-        ];
-        $this->fillModel($properties, $data, $attributes);
+        $this->update($properties, $this->idOf($resource), $this->idOf($language), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        ManufacturerProperties $properties,
+        $resourceId = null,
+        $languageId = null,
+        array $attributes = null
+    ) {
+        $this->updateWith($properties, $attributes, $this->getRelationships($resourceId, $languageId));
+    }
+
+    /**
+     * @param int $resourceId
+     * @param int $languageId
+     *
+     * @return array
+     */
+    protected function getRelationships($resourceId, $languageId)
+    {
+        return $this->filterNulls([
+            ManufacturerProperties::FIELD_ID_MANUFACTURER => $resourceId,
+            ManufacturerProperties::FIELD_ID_LANGUAGE     => $languageId,
+        ]);
     }
 }

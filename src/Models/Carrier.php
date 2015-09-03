@@ -1,7 +1,6 @@
 <?php namespace Neomerx\Core\Models;
 
 use \Carbon\Carbon;
-use \Illuminate\Support\Facades\DB;
 use \Illuminate\Database\Eloquent\Collection;
 
 /**
@@ -30,7 +29,7 @@ use \Illuminate\Database\Eloquent\Collection;
  *
  * @package Neomerx\Core
  */
-class Carrier extends BaseModel implements SelectByCodeInterface
+class Carrier extends BaseModel
 {
     /** Model table name */
     const TABLE_NAME = 'carriers';
@@ -285,40 +284,5 @@ class Carrier extends BaseModel implements SelectByCodeInterface
     public function currency()
     {
         return $this->belongsTo(Currency::class, self::FIELD_ID_CURRENCY, Currency::FIELD_ID);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function selectByCode($code)
-    {
-        return $this->newQuery()->where(self::FIELD_CODE, '=', $code);
-    }
-
-    /**
-     * @param int        $countryId
-     * @param int        $regionId
-     * @param mixed      $postcode
-     * @param int        $customerTypeId
-     * @param float|null $pkgWeight
-     * @param float|null $maxDimension
-     * @param float|null $pkgCost
-     *
-     * @return Collection
-     */
-    public function selectCarriers(
-        $countryId,
-        $regionId,
-        $postcode,
-        $customerTypeId,
-        $pkgWeight = null,
-        $maxDimension = null,
-        $pkgCost = null
-    ) {
-        /** @noinspection PhpUndefinedMethodInspection */
-        return $this->convertStdClassesToModels(DB::select(
-            'call spSelectCarriers(?, ?, ?, ?, ?, ?, ?)',
-            [$countryId, $regionId, $postcode, $customerTypeId, $pkgWeight, $maxDimension, $pkgCost]
-        ));
     }
 }

@@ -3,12 +3,12 @@
 use \Neomerx\Core\Models\Carrier;
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\CarrierProperties;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class CarrierPropertiesRepository extends IndexBasedResourceRepository implements CarrierPropertiesRepositoryInterface
+class CarrierPropertiesRepository extends BaseRepository implements CarrierPropertiesRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -21,24 +21,56 @@ class CarrierPropertiesRepository extends IndexBasedResourceRepository implement
     /**
      * @inheritdoc
      */
-    public function instance(Carrier $resource, Language $language, array $attributes)
+    public function createWithObjects(Carrier $resource, Language $language, array $attributes)
     {
-        /** @var CarrierProperties $properties */
-        $properties = $this->makeModel();
-        $this->fill($properties, $resource, $language, $attributes);
-        return $properties;
+        return $this->create($this->idOf($resource), $this->idOf($language), $attributes);
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function create($resourceId, $languageId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($resourceId, $languageId));
+
+        return $resource;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function updateWithObjects(
         CarrierProperties $properties,
         Carrier $resource = null,
         Language $language = null,
         array $attributes = null
     ) {
-        $data = [CarrierProperties::FIELD_ID_CARRIER => $resource, CarrierProperties::FIELD_ID_LANGUAGE => $language];
-        $this->fillModel($properties, $data, $attributes);
+        $this->update($properties, $this->idOf($resource), $this->idOf($language), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        CarrierProperties $properties,
+        $resourceId = null,
+        $languageId = null,
+        array $attributes = null
+    ) {
+        $this->updateWith($properties, $attributes, $this->getRelationships($resourceId, $languageId));
+    }
+
+    /**
+     * @param int $resourceId
+     * @param int $languageId
+     *
+     * @return array
+     */
+    protected function getRelationships($resourceId, $languageId)
+    {
+        return $this->filterNulls([
+            CarrierProperties::FIELD_ID_CARRIER  => $resourceId,
+            CarrierProperties::FIELD_ID_LANGUAGE => $languageId,
+        ]);
     }
 }

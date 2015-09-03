@@ -1,12 +1,12 @@
 <?php namespace Neomerx\Core\Repositories\Products;
 
 use \Neomerx\Core\Models\ProductTaxType;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class ProductTaxTypeRepository extends CodeBasedResourceRepository implements ProductTaxTypeRepositoryInterface
+class ProductTaxTypeRepository extends BaseRepository implements ProductTaxTypeRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -19,19 +19,18 @@ class ProductTaxTypeRepository extends CodeBasedResourceRepository implements Pr
     /**
      * @inheritdoc
      */
-    public function instance(array $attributes)
+    public function create(array $attributes)
     {
-        /** @var ProductTaxType $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $attributes);
+        $resource = $this->createWith($attributes, []);
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(ProductTaxType $resource, array $attributes)
+    public function update(ProductTaxType $resource, array $attributes)
     {
-        $this->fillModel($resource, [], $attributes);
+        $this->updateWith($resource, $attributes, []);
     }
 }

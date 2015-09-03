@@ -1,7 +1,7 @@
 <?php namespace Neomerx\Core\Repositories\Products;
 
 use \Neomerx\Core\Models\Image;
-use \Neomerx\Core\Models\Product;
+use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Models\BaseProduct;
 use \Neomerx\Core\Models\ProductImage;
 use \Illuminate\Database\Eloquent\Collection;
@@ -13,48 +13,57 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface ProductImageRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param BaseProduct  $base
-     * @param Image        $image
-     * @param array        $attributes
-     * @param Product|null $product
+     * @param BaseProduct   $base
+     * @param Image         $image
+     * @param array         $attributes
+     * @param Nullable|null $product Product
      *
      * @return ProductImage
      */
-    public function instance(BaseProduct $base, Image $image, array $attributes, Product $product = null);
+    public function createWithObjects(BaseProduct $base, Image $image, array $attributes, Nullable $product = null);
 
     /**
-     * @param BaseProduct $base
-     * @param Image       $image
-     * @param array       $attributes
+     * @param int           $baseProductId
+     * @param int           $imageId
+     * @param array         $attributes
+     * @param Nullable|null $productId
      *
      * @return ProductImage
      */
-    public function instanceForBaseProduct(BaseProduct $base, Image $image, array $attributes);
-
-    /**
-     * @param Product $product
-     * @param Image   $image
-     * @param array   $attributes
-     *
-     * @return ProductImage
-     */
-    public function instanceForProduct(Product $product, Image $image, array $attributes);
+    public function create($baseProductId, $imageId, array $attributes, Nullable $productId = null);
 
     /**
      * @param ProductImage     $resource
      * @param BaseProduct|null $base
      * @param Image|null       $image
      * @param array|null       $attributes
-     * @param Product|null     $product
+     * @param Nullable|null    $product Product
      *
      * @return void
      */
-    public function fill(
+    public function updateWithObjects(
         ProductImage $resource,
         BaseProduct $base = null,
         Image $image = null,
         array $attributes = null,
-        Product $product = null
+        Nullable $product = null
+    );
+
+    /**
+     * @param ProductImage  $resource
+     * @param int|null      $baseProductId
+     * @param int|null      $imageId
+     * @param array|null    $attributes
+     * @param Nullable|null $productId
+     *
+     * @return void
+     */
+    public function update(
+        ProductImage $resource,
+        $baseProductId = null,
+        $imageId = null,
+        array $attributes = null,
+        Nullable $productId = null
     );
 
     /**

@@ -2,12 +2,12 @@
 
 use \Neomerx\Core\Models\Address;
 use \Neomerx\Core\Models\Supplier;
-use \Neomerx\Core\Repositories\CodeBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class SupplierRepository extends CodeBasedResourceRepository implements SupplierRepositoryInterface
+class SupplierRepository extends BaseRepository implements SupplierRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -20,21 +20,46 @@ class SupplierRepository extends CodeBasedResourceRepository implements Supplier
     /**
      * @inheritdoc
      */
-    public function instance(Address $address, array $attributes)
+    public function createWithObjects(Address $address, array $attributes)
     {
-        /** @var Supplier $resource */
-        $resource = $this->makeModel();
-        $this->fill($resource, $address, $attributes);
+        return $this->create($this->idOf($address), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function create($addressId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($addressId));
+
         return $resource;
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(Supplier $resource, Address $address = null, array $attributes = null)
+    public function updateWithObjects(Supplier $resource, Address $address = null, array $attributes = [])
     {
-        $this->fillModel($resource, [
-            Supplier::FIELD_ID_ADDRESS => $address,
-        ], $attributes);
+        $this->update($resource, $this->idOf($address), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(Supplier $resource, $addressId = null, array $attributes = [])
+    {
+        $this->updateWith($resource, $attributes, $this->getRelationships($addressId));
+    }
+
+    /**
+     * @param int $addressId
+     *
+     * @return array
+     */
+    protected function getRelationships($addressId)
+    {
+        return $this->filterNulls([
+            Supplier::FIELD_ID_ADDRESS => $addressId,
+        ]);
     }
 }

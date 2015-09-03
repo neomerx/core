@@ -13,7 +13,7 @@ interface CurrencyRepositoryInterface extends RepositoryInterface
      *
      * @return Currency
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param Currency $resource
@@ -21,7 +21,7 @@ interface CurrencyRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(Currency $resource, array $attributes);
+    public function update(Currency $resource, array $attributes);
 
     /**
      * @param string $code
@@ -31,13 +31,4 @@ interface CurrencyRepositoryInterface extends RepositoryInterface
      * @return Currency
      */
     public function read($code, array $scopes = [], array $columns = ['*']);
-
-    /**
-     * @param string $code
-     * @param array  $scopes
-     * @param array  $columns
-     *
-     * @return Currency
-     */
-    public function readByCode($code, array $scopes = [], array $columns = ['*']);
 }

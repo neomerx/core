@@ -13,7 +13,7 @@ interface ProductTaxTypeRepositoryInterface extends RepositoryInterface
      *
      * @return ProductTaxType
      */
-    public function instance(array $attributes);
+    public function create(array $attributes);
 
     /**
      * @param ProductTaxType $resource
@@ -21,7 +21,7 @@ interface ProductTaxTypeRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(ProductTaxType $resource, array $attributes);
+    public function update(ProductTaxType $resource, array $attributes);
 
     /**
      * @param string $code

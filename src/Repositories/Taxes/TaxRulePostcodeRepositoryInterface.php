@@ -10,12 +10,20 @@ use \Neomerx\Core\Repositories\RepositoryInterface;
 interface TaxRulePostcodeRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param TaxRule    $rule
-     * @param array|null $attributes
+     * @param TaxRule $rule
+     * @param array   $attributes
      *
      * @return TaxRulePostcode
      */
-    public function instance(TaxRule $rule, array $attributes = null);
+    public function createWithObjects(TaxRule $rule, array $attributes = []);
+
+    /**
+     * @param int   $ruleId
+     * @param array $attributes
+     *
+     * @return TaxRulePostcode
+     */
+    public function create($ruleId, array $attributes = []);
 
     /**
      * @param TaxRulePostcode $resource
@@ -24,7 +32,16 @@ interface TaxRulePostcodeRepositoryInterface extends RepositoryInterface
      *
      * @return void
      */
-    public function fill(TaxRulePostcode $resource, TaxRule $rule = null, array $attributes = null);
+    public function updateWithObjects(TaxRulePostcode $resource, TaxRule $rule = null, array $attributes = []);
+
+    /**
+     * @param TaxRulePostcode $resource
+     * @param int|null        $ruleId
+     * @param array|null      $attributes
+     *
+     * @return void
+     */
+    public function update(TaxRulePostcode $resource, $ruleId = null, array $attributes = []);
 
     /**
      * @param int   $resourceId

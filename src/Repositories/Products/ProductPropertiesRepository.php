@@ -3,12 +3,12 @@
 use \Neomerx\Core\Models\Product;
 use \Neomerx\Core\Models\Language;
 use \Neomerx\Core\Models\ProductProperties;
-use \Neomerx\Core\Repositories\IndexBasedResourceRepository;
+use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
  * @package Neomerx\Core
  */
-class ProductPropertiesRepository extends IndexBasedResourceRepository implements ProductPropertiesRepositoryInterface
+class ProductPropertiesRepository extends BaseRepository implements ProductPropertiesRepositoryInterface
 {
     /**
      * @inheritdoc
@@ -21,24 +21,56 @@ class ProductPropertiesRepository extends IndexBasedResourceRepository implement
     /**
      * @inheritdoc
      */
-    public function instance(Product $resource, Language $language, array $attributes)
+    public function createWithObjects(Product $resource, Language $language, array $attributes)
     {
-        /** @var ProductProperties $properties */
-        $properties = $this->makeModel();
-        $this->fill($properties, $resource, $language, $attributes);
-        return $properties;
+        return $this->create($this->idOf($resource), $this->idOf($language), $attributes);
     }
 
     /**
      * @inheritdoc
      */
-    public function fill(
+    public function create($resourceId, $languageId, array $attributes)
+    {
+        $resource = $this->createWith($attributes, $this->getRelationships($resourceId, $languageId));
+
+        return $resource;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function updateWithObjects(
         ProductProperties $properties,
         Product $resource = null,
         Language $language = null,
         array $attributes = null
     ) {
-        $data = [ProductProperties::FIELD_ID_PRODUCT => $resource, ProductProperties::FIELD_ID_LANGUAGE => $language];
-        $this->fillModel($properties, $data, $attributes);
+        $this->update($properties, $this->idOf($resource), $this->idOf($language), $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function update(
+        ProductProperties $properties,
+        $resourceId = null,
+        $languageId = null,
+        array $attributes = null
+    ) {
+        $this->updateWith($properties, $attributes, $this->getRelationships($resourceId, $languageId));
+    }
+
+    /**
+     * @param int $resourceId
+     * @param int $languageId
+     *
+     * @return array
+     */
+    protected function getRelationships($resourceId, $languageId)
+    {
+        return $this->filterNulls([
+            ProductProperties::FIELD_ID_PRODUCT  => $resourceId,
+            ProductProperties::FIELD_ID_LANGUAGE => $languageId,
+        ]);
     }
 }
