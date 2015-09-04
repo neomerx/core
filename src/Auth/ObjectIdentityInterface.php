@@ -10,7 +10,14 @@ interface ObjectIdentityInterface
     /**
      * Get object identifier.
      *
-     * @return array
+     * @return int
      */
     public function getIdentifier();
+
+    /**
+     * Get object type.
+     *
+     * @return string
+     */
+    public function getTypeName();
 }

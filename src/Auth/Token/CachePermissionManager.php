@@ -75,8 +75,8 @@ class CachePermissionManager implements RolePermissionManagerInterface
      */
     public function has(ObjectIdentityInterface $object, Permission $permission)
     {
-        $currentUser      = $this->auth->user();
-        list($objectType) = $object->getIdentifier();
+        $currentUser = $this->auth->user();
+        $objectType  = $object->getTypeName();
 
         $userPermissionMask = 0;
 

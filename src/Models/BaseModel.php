@@ -268,6 +268,14 @@ abstract class BaseModel extends Model implements BaseModelInterface, ObjectIden
      */
     public function getIdentifier()
     {
-        return [get_class($this), $this->getKey()];
+        return $this->getKey();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTypeName()
+    {
+        return get_class($this);
     }
 }
