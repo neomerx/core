@@ -116,7 +116,7 @@ class Supplier extends BaseModel
      */
     public static function withProperties()
     {
-        return self::FIELD_PROPERTIES.'.'.ManufacturerProperties::FIELD_LANGUAGE;
+        return self::FIELD_PROPERTIES.'.'.ManufacturerProperty::FIELD_LANGUAGE;
     }
 
     /**
@@ -136,6 +136,6 @@ class Supplier extends BaseModel
      */
     public function properties()
     {
-        return $this->hasMany(SupplierProperties::class, SupplierProperties::FIELD_ID_SUPPLIER, self::FIELD_ID);
+        return $this->hasMany(SupplierProperty::class, SupplierProperty::FIELD_ID_SUPPLIER, self::FIELD_ID);
     }
 }

@@ -102,7 +102,7 @@ class Measurement extends BaseModel
      */
     public static function withProperties()
     {
-        return self::FIELD_PROPERTIES.'.'.MeasurementProperties::FIELD_LANGUAGE;
+        return self::FIELD_PROPERTIES.'.'.MeasurementProperty::FIELD_LANGUAGE;
     }
 
     /**
@@ -124,8 +124,8 @@ class Measurement extends BaseModel
     {
         /** @noinspection PhpUndefinedMethodInspection */
         return $this->hasMany(
-            MeasurementProperties::class,
-            MeasurementProperties::FIELD_ID_MEASUREMENT,
+            MeasurementProperty::class,
+            MeasurementProperty::FIELD_ID_MEASUREMENT,
             self::FIELD_ID
         );
     }

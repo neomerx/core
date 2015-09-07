@@ -120,7 +120,7 @@ class Manufacturer extends BaseModel
      */
     public static function withProperties()
     {
-        return self::FIELD_PROPERTIES.'.'.ManufacturerProperties::FIELD_LANGUAGE;
+        return self::FIELD_PROPERTIES.'.'.ManufacturerProperty::FIELD_LANGUAGE;
     }
 
     /**
@@ -151,8 +151,8 @@ class Manufacturer extends BaseModel
     public function properties()
     {
         return $this->hasMany(
-            ManufacturerProperties::class,
-            ManufacturerProperties::FIELD_ID_MANUFACTURER,
+            ManufacturerProperty::class,
+            ManufacturerProperty::FIELD_ID_MANUFACTURER,
             self::FIELD_ID
         );
     }

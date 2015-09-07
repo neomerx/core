@@ -194,7 +194,7 @@ class Carrier extends BaseModel
      */
     public static function withProperties()
     {
-        return self::FIELD_PROPERTIES.'.'.CarrierProperties::FIELD_LANGUAGE;
+        return self::FIELD_PROPERTIES.'.'.CarrierProperty::FIELD_LANGUAGE;
     }
 
     /**
@@ -243,7 +243,7 @@ class Carrier extends BaseModel
     public function properties()
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        return $this->hasMany(CarrierProperties::class, CarrierProperties::FIELD_ID_CARRIER, self::FIELD_ID);
+        return $this->hasMany(CarrierProperty::class, CarrierProperty::FIELD_ID_CARRIER, self::FIELD_ID);
     }
 
     /**

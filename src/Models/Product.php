@@ -169,7 +169,7 @@ class Product extends BaseModel implements GetAspectsInterface
      */
     public static function withProperties()
     {
-        return self::FIELD_PROPERTIES.'.'.ProductProperties::FIELD_LANGUAGE;
+        return self::FIELD_PROPERTIES.'.'.ProductProperty::FIELD_LANGUAGE;
     }
 
     /**
@@ -352,7 +352,7 @@ class Product extends BaseModel implements GetAspectsInterface
      */
     public function properties()
     {
-        return $this->hasMany(ProductProperties::class, ProductProperties::FIELD_ID_PRODUCT, self::FIELD_ID);
+        return $this->hasMany(ProductProperty::class, ProductProperty::FIELD_ID_PRODUCT, self::FIELD_ID);
     }
 
     /**

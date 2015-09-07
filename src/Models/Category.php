@@ -195,7 +195,7 @@ class Category extends BaseModel
      */
     public static function withProperties()
     {
-        return self::FIELD_PROPERTIES.'.'.CategoryProperties::FIELD_LANGUAGE;
+        return self::FIELD_PROPERTIES.'.'.CategoryProperty::FIELD_LANGUAGE;
     }
 
     /**
@@ -229,7 +229,7 @@ class Category extends BaseModel
      */
     public function properties()
     {
-        return $this->hasMany(CategoryProperties::class, CategoryProperties::FIELD_ID_CATEGORY, self::FIELD_ID);
+        return $this->hasMany(CategoryProperty::class, CategoryProperty::FIELD_ID_CATEGORY, self::FIELD_ID);
     }
 
     /**
@@ -556,7 +556,7 @@ class Category extends BaseModel
             ->where(self::FIELD_ID_ANCESTOR, '=', $this->{self::FIELD_ID})
             ->where(self::FIELD_CODE, '<>', self::ROOT_CODE)
             ->orderBy(self::FIELD_LFT, 'asc')
-            ->with(self::FIELD_PROPERTIES.'.'.CategoryProperties::FIELD_LANGUAGE)
+            ->with(self::FIELD_PROPERTIES.'.'.CategoryProperty::FIELD_LANGUAGE)
             ->get();
         return $descendants;
     }

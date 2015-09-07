@@ -122,7 +122,7 @@ class ShippingOrder extends BaseModel
      */
     public static function withCarrier()
     {
-        return  self::FIELD_CARRIER.'.'.Carrier::FIELD_PROPERTIES.'.'.CarrierProperties::FIELD_LANGUAGE;
+        return  self::FIELD_CARRIER.'.'.Carrier::FIELD_PROPERTIES.'.'.CarrierProperty::FIELD_LANGUAGE;
     }
 
     /**

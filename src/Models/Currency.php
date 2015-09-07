@@ -35,7 +35,7 @@ class Currency extends BaseModel
     /** Model field name */
     const FIELD_DECIMAL_DIGITS           = 'decimal_digits';
     /** Model field name */
-    const FIELD_DECIMAL_POINTS_SEPARATOR = 'decimal_point';
+    const FIELD_DECIMAL_POINTS_SEPARATOR = 'decimal_point_separator';
     /** Model field name */
     const FIELD_THOUSANDS_SEPARATOR      = 'thousands_separator';
     /** Model field name */
@@ -125,7 +125,7 @@ class Currency extends BaseModel
      */
     public static function withProperties()
     {
-        return self::FIELD_PROPERTIES.'.'.CurrencyProperties::FIELD_LANGUAGE;
+        return self::FIELD_PROPERTIES.'.'.CurrencyProperty::FIELD_LANGUAGE;
     }
 
     /**
@@ -135,6 +135,6 @@ class Currency extends BaseModel
      */
     public function properties()
     {
-        return $this->hasMany(CurrencyProperties::class, CurrencyProperties::FIELD_ID_CURRENCY, self::FIELD_ID);
+        return $this->hasMany(CurrencyProperty::class, CurrencyProperty::FIELD_ID_CURRENCY, self::FIELD_ID);
     }
 }

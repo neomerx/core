@@ -113,7 +113,7 @@ class Feature extends BaseModel
      */
     public static function withProperties()
     {
-        return self::FIELD_PROPERTIES.'.'.FeatureProperties::FIELD_LANGUAGE;
+        return self::FIELD_PROPERTIES.'.'.FeatureProperty::FIELD_LANGUAGE;
     }
 
     /**
@@ -123,7 +123,7 @@ class Feature extends BaseModel
      */
     public static function withMeasurement()
     {
-        return self::FIELD_MEASUREMENT.'.'.Measurement::FIELD_PROPERTIES.'.'.MeasurementProperties::FIELD_LANGUAGE;
+        return self::FIELD_MEASUREMENT.'.'.Measurement::FIELD_PROPERTIES.'.'.MeasurementProperty::FIELD_LANGUAGE;
     }
 
     /**
@@ -133,7 +133,7 @@ class Feature extends BaseModel
      */
     public function properties()
     {
-        return $this->hasMany(FeatureProperties::class, FeatureProperties::FIELD_ID_FEATURE, self::FIELD_ID);
+        return $this->hasMany(FeatureProperty::class, FeatureProperty::FIELD_ID_FEATURE, self::FIELD_ID);
     }
 
     /**

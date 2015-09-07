@@ -109,7 +109,7 @@ class Image extends BaseModel
      */
     public static function withProperties()
     {
-        return self::FIELD_PROPERTIES.'.'.ImageProperties::FIELD_LANGUAGE;
+        return self::FIELD_PROPERTIES.'.'.ImageProperty::FIELD_LANGUAGE;
     }
 
     /**
@@ -137,7 +137,7 @@ class Image extends BaseModel
      */
     public function properties()
     {
-        return $this->hasMany(ImageProperties::class, ImageProperties::FIELD_ID_IMAGE, self::FIELD_ID);
+        return $this->hasMany(ImageProperty::class, ImageProperty::FIELD_ID_IMAGE, self::FIELD_ID);
     }
 
     /**

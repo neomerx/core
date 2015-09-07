@@ -112,7 +112,7 @@ class FeatureValue extends BaseModel
      */
     public static function withProperties()
     {
-        return self::FIELD_PROPERTIES.'.'.FeatureValueProperties::FIELD_LANGUAGE;
+        return self::FIELD_PROPERTIES.'.'.FeatureValueProperty::FIELD_LANGUAGE;
     }
 
     /**
@@ -134,8 +134,8 @@ class FeatureValue extends BaseModel
     {
         /** @noinspection PhpUndefinedMethodInspection */
         return $this->hasMany(
-            FeatureValueProperties::class,
-            FeatureValueProperties::FIELD_ID_FEATURE_VALUE,
+            FeatureValueProperty::class,
+            FeatureValueProperty::FIELD_ID_FEATURE_VALUE,
             self::FIELD_ID
         );
     }

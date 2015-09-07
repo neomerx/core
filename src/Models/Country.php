@@ -103,7 +103,7 @@ class Country extends BaseModel
      */
     public static function withProperties()
     {
-        return self::FIELD_PROPERTIES.'.'.CountryProperties::FIELD_LANGUAGE;
+        return self::FIELD_PROPERTIES.'.'.CountryProperty::FIELD_LANGUAGE;
     }
 
     /**
@@ -113,7 +113,7 @@ class Country extends BaseModel
      */
     public function properties()
     {
-        return $this->hasMany(CountryProperties::class, CountryProperties::FIELD_ID_COUNTRY, self::FIELD_ID);
+        return $this->hasMany(CountryProperty::class, CountryProperty::FIELD_ID_COUNTRY, self::FIELD_ID);
     }
 
     /**
