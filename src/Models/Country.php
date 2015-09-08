@@ -92,7 +92,8 @@ class Country extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_CODE => 'sometimes|required|forbidden',
+            self::FIELD_CODE => 'sometimes|required|code|min:1|max:'.self::CODE_MAX_LENGTH.
+                '|unique:'.self::TABLE_NAME,
         ];
     }
 
