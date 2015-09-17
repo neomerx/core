@@ -100,6 +100,40 @@ namespace Neomerx\Core\Support {
     }
 
     /**
+     * @param array $array
+     * @param mixed $key1
+     *
+     * @return bool
+     */
+    function arrayKeyExists(array $array, $key1)
+    {
+        return array_key_exists($key1, $array) === true;
+    }
+
+    /**
+     * @param array $array
+     * @param mixed $key1
+     *
+     * @return bool
+     */
+    function arrayKeyExists1d(array $array, $key1)
+    {
+        return arrayKeyExists($array, $key1);
+    }
+
+    /**
+     * @param array $array
+     * @param mixed $key1
+     * @param mixed $key2
+     *
+     * @return bool
+     */
+    function arrayKeyExists2d(array $array, $key1, $key2)
+    {
+        return array_key_exists($key1, $array) === true && array_key_exists($key2, $array[$key1]) === true;
+    }
+
+    /**
      * Convert class name with namespace to a form suitable for storing in database enum.
      *
      * @param string $className
