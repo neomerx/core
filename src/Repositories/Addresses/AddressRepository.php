@@ -53,11 +53,11 @@ class AddressRepository extends BaseRepository implements AddressRepositoryInter
     }
 
     /**
-     * @param Nullable $regionId
+     * @param Nullable|null $regionId
      *
      * @return array
      */
-    protected function getRelationships(Nullable $regionId)
+    protected function getRelationships(Nullable $regionId = null)
     {
         return $this->filterNulls([], [
             Address::FIELD_ID_REGION => $regionId,
