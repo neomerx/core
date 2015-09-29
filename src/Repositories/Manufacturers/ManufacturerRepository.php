@@ -48,7 +48,7 @@ class ManufacturerRepository extends BaseRepository implements ManufacturerRepos
      */
     public function update(Manufacturer $resource, $addressId = null, array $attributes = null)
     {
-        $this->update($resource, $attributes, $this->getRelationships($addressId));
+        $this->updateWith($resource, $attributes, $this->getRelationships($addressId));
     }
 
     /**
