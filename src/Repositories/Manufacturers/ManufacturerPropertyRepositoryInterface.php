@@ -63,7 +63,7 @@ interface ManufacturerPropertyRepositoryInterface extends RepositoryInterface
      * @param array $scopes
      * @param array $columns
      *
-     * @return Manufacturer
+     * @return ManufacturerProperty
      */
     public function read($resourceId, array $scopes = [], array $columns = ['*']);
 }

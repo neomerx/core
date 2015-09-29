@@ -63,7 +63,7 @@ interface SupplierPropertyRepositoryInterface extends RepositoryInterface
      * @param array $scopes
      * @param array $columns
      *
-     * @return Supplier
+     * @return SupplierProperty
      */
     public function read($resourceId, array $scopes = [], array $columns = ['*']);
 }
