@@ -169,12 +169,12 @@ class Carrier extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_CODE        => 'sometimes|required|forbidden',
+            self::FIELD_CODE => 'sometimes|required|code|min:1|max:'.self::CODE_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
+
             self::FIELD_MIN_WEIGHT  => 'sometimes|required|numeric|min:0',
             self::FIELD_MAX_WEIGHT  => 'sometimes|required|numeric|min:0',
             self::FIELD_MIN_COST    => 'sometimes|required|integer|min:0',
             self::FIELD_MAX_COST    => 'sometimes|required|integer|min:0',
-
             self::FIELD_ID_CURRENCY => 'sometimes|required|integer|min:1|max:4294967295|exists:'.Currency::TABLE_NAME,
 
             self::FIELD_MIN_DIMENSION   => 'sometimes|required|numeric|min:0',
