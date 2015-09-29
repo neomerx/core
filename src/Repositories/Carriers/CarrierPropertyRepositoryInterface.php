@@ -63,7 +63,7 @@ interface CarrierPropertyRepositoryInterface extends RepositoryInterface
      * @param array $scopes
      * @param array $columns
      *
-     * @return Carrier
+     * @return CarrierProperty
      */
     public function read($resourceId, array $scopes = [], array $columns = ['*']);
 }
