@@ -3,7 +3,6 @@
 use \DB;
 use \Neomerx\Core\Models\Carrier;
 use \Neomerx\Core\Models\Currency;
-use \Neomerx\Core\Support\Nullable;
 use \Neomerx\Core\Repositories\BaseRepository;
 
 /**
@@ -22,15 +21,15 @@ class CarrierRepository extends BaseRepository implements CarrierRepositoryInter
     /**
      * @inheritdoc
      */
-    public function createWithObjects(array $attributes, Nullable $currency = null)
+    public function createWithObjects(Currency $currency, array $attributes)
     {
-        return $this->create($attributes, $this->idOfNullable($currency, Currency::class));
+        return $this->create($this->idOf($currency), $attributes);
     }
 
     /**
      * @inheritdoc
      */
-    public function create(array $attributes, Nullable $currencyId = null)
+    public function create($currencyId, array $attributes)
     {
         $resource = $this->createWith($attributes, $this->getRelationships($currencyId));
 
@@ -40,15 +39,15 @@ class CarrierRepository extends BaseRepository implements CarrierRepositoryInter
     /**
      * @inheritdoc
      */
-    public function updateWithObjects(Carrier $resource, array $attributes, Nullable $currency = null)
+    public function updateWithObjects(Carrier $resource, Currency $currency = null, array $attributes = null)
     {
-        $this->update($resource, $attributes, $this->idOfNullable($currency, Currency::class));
+        $this->update($resource, $this->idOf($currency), $attributes);
     }
 
     /**
      * @inheritdoc
      */
-    public function update(Carrier $resource, array $attributes, Nullable $currencyId = null)
+    public function update(Carrier $resource, $currencyId = null, array $attributes = [])
     {
         $this->updateWith($resource, $attributes, $this->getRelationships($currencyId));
     }
@@ -72,13 +71,13 @@ class CarrierRepository extends BaseRepository implements CarrierRepositoryInter
     }
 
     /**
-     * @param Nullable|null $currencyId
+     * @param int|null $currencyId
      *
      * @return array
      */
-    protected function getRelationships(Nullable $currencyId = null)
+    protected function getRelationships($currencyId)
     {
-        return $this->filterNulls([], [
+        return $this->filterNulls([
             Carrier::FIELD_ID_CURRENCY => $currencyId,
         ]);
     }
