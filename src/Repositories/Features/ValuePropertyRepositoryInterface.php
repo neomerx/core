@@ -63,7 +63,7 @@ interface ValuePropertyRepositoryInterface extends RepositoryInterface
      * @param array $scopes
      * @param array $columns
      *
-     * @return FeatureValue
+     * @return FeatureValueProperty
      */
     public function read($resourceId, array $scopes = [], array $columns = ['*']);
 }

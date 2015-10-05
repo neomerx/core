@@ -63,7 +63,7 @@ interface MeasurementPropertyRepositoryInterface extends RepositoryInterface
      * @param array $scopes
      * @param array $columns
      *
-     * @return Measurement
+     * @return MeasurementProperty
      */
     public function read($resourceId, array $scopes = [], array $columns = ['*']);
 }
