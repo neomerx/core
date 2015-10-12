@@ -185,17 +185,19 @@ abstract class BaseRepository implements RepositoryInterface
      * Execute closure in transaction. If closure returns 'false' or throws an exception
      * the transaction will be roll-backed otherwise committed.
      *
-     * @param Closure $closure
+     * @param Closure      $closure
+     * @param Closure|null $finallyClosure
      *
      * @return void
      */
-    protected function executeInTransaction(Closure $closure)
+    protected function executeInTransaction(Closure $closure, Closure $finallyClosure = null)
     {
         DB::beginTransaction();
         try {
             $isOk = ($closure() === false ? null : true);
         } finally {
             isset($isOk) === true ? DB::commit() : DB::rollBack();
+            $finallyClosure === null ?: $finallyClosure();
         }
     }
 
