@@ -29,6 +29,8 @@ class Category extends BaseModel
 
     /** Root category code */
     const ROOT_CODE       = '-';
+    /** Root category code */
+    const ROOT_INDEX      = 1;
     /** Model field length */
     const CODE_MAX_LENGTH = 50;
     /** Model field length */

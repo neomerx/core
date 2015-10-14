@@ -63,7 +63,7 @@ interface CategoryPropertyRepositoryInterface extends RepositoryInterface
      * @param array $scopes
      * @param array $columns
      *
-     * @return Category
+     * @return CategoryProperty
      */
     public function read($resourceId, array $scopes = [], array $columns = ['*']);
 }

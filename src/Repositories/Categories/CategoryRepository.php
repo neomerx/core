@@ -22,6 +22,16 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
     /**
      * @inheritdoc
      */
+    public function index(array $scopes = [], array $columns = ['*'])
+    {
+        $result  = $this->readDescendants(Category::ROOT_INDEX, $scopes, $columns);
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function create($ancestorId, array $attributes)
     {
         /** @var Category $parent */
@@ -59,14 +69,19 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
     /**
      * @inheritdoc
      */
-    public function readDescendants($index)
+    public function readDescendants($index, array $scopes = [], array $columns = ['*'])
     {
         /** @noinspection PhpUndefinedMethodInspection */
-        $descendants = $this->getUnderlyingModel()->newQuery()
+        $query = $this->getUnderlyingModel()->newQuery()
             ->where(Category::FIELD_ID_ANCESTOR, '=', $index)
             ->where(Category::FIELD_CODE, '<>', Category::ROOT_CODE)
-            ->orderBy(Category::FIELD_LFT, 'asc')
-            ->get();
+            ->orderBy(Category::FIELD_LFT, 'asc');
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        empty($scopes) === true ?: $query->with($scopes);
+
+        /** @noinspection PhpUndefinedMethodInspection */
+        $descendants = $query->get($columns);
 
         return $descendants;
     }

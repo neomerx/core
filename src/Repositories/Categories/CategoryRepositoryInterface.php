@@ -38,11 +38,13 @@ interface CategoryRepositoryInterface extends RepositoryInterface
     /**
      * Read descendant categories.
      *
-     * @param int $index
+     * @param int   $index
+     * @param array $scopes
+     * @param array $columns
      *
      * @return Collection
      */
-    public function readDescendants($index);
+    public function readDescendants($index, array $scopes = [], array $columns = ['*']);
 
     /**
      * Switch the subtree node with a node on the left if there are any with the same parent.
