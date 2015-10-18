@@ -8,7 +8,7 @@ use \Neomerx\Core\Commands\CreateImagesByImageCommand;
 
 /**
  * @property      int          id_image
- * @property      string       original_file
+ * @property      string       original_ext
  * @property-read Carbon       created_at
  * @property-read Carbon       updated_at
  * @property      Collection   paths
@@ -25,12 +25,12 @@ class Image extends BaseModel
     const TABLE_NAME = 'images';
 
     /** Model field length */
-    const ORIGINAL_FILE_NAME_MAX_LENGTH = 255;
+    const ORIGINAL_FILE_EXT_MAX_LENGTH = 10;
 
     /** Model field name */
     const FIELD_ID            = 'id_image';
     /** Model field name */
-    const FIELD_ORIGINAL_FILE = 'original_file';
+    const FIELD_ORIGINAL_EXT  = 'original_ext';
     /** Model field name */
     const FIELD_PROPERTIES    = 'properties';
     /** Model field name */
@@ -66,7 +66,7 @@ class Image extends BaseModel
      * @inheritdoc
      */
     protected $fillable = [
-        self::FIELD_ORIGINAL_FILE,
+        self::FIELD_ORIGINAL_EXT,
     ];
 
     /**
@@ -89,8 +89,7 @@ class Image extends BaseModel
     public function getDataOnCreateRules()
     {
         return [
-            self::FIELD_ORIGINAL_FILE => 'required|alpha_dash_dot_space|min:1|max:'.
-                self::ORIGINAL_FILE_NAME_MAX_LENGTH.'|unique:'.self::TABLE_NAME,
+            self::FIELD_ORIGINAL_EXT => 'required|alpha_dash|min:1|max:'.self::ORIGINAL_FILE_EXT_MAX_LENGTH,
         ];
     }
 
@@ -100,7 +99,7 @@ class Image extends BaseModel
     public function getDataOnUpdateRules()
     {
         return [
-            self::FIELD_ORIGINAL_FILE => 'sometimes|required|forbidden',
+            self::FIELD_ORIGINAL_EXT => 'sometimes|required|forbidden',
         ];
     }
 
@@ -183,7 +182,7 @@ class Image extends BaseModel
             /** @var ImagePath $path */
             $pathFileNames[] = $path->{ImagePath::FIELD_PATH};
         }
-        $pathFileNames[] = $this->{self::FIELD_ORIGINAL_FILE};
+        $pathFileNames[] = $this->getKey() . '.' . $this->{self::FIELD_ORIGINAL_EXT};
 
         $command = app()->make(
             DeleteImageFilesCommand::class,

@@ -26,7 +26,7 @@ class Images implements ImagesInterface
         $relative = false
     ) {
         $disk     = $this->getImageDisk();
-        $pathFrom = $this->getPathToOriginalsFolder($image->{Image::FIELD_ORIGINAL_FILE});
+        $pathFrom = $this->getPathToOriginalsFolder($image);
         list($fileTo, $extension) = $this->getFormattedFileName($image, $format);
         $pathTo = $this->getPathToFormatsFolder($fileTo);
 
@@ -63,7 +63,7 @@ class Images implements ImagesInterface
      */
     protected function getPathToOriginalsFolder($fileName)
     {
-        return Config::KEY_IMAGE_FOLDER_ORIGINALS.DIRECTORY_SEPARATOR.$fileName;
+        return Config::KEY_IMAGE_FOLDER_ORIGINALS . DIRECTORY_SEPARATOR . $fileName;
     }
 
     /**
@@ -85,6 +85,18 @@ class Images implements ImagesInterface
     }
 
     /**
+     * @param Image $image
+     *
+     * @return string
+     */
+    protected function getFileName(Image $image)
+    {
+        $fileName = $image->getKey() . '.' . $image->{Image::FIELD_ORIGINAL_EXT};
+
+        return $fileName;
+    }
+
+    /**
      * @param Image       $image
      * @param ImageFormat $format
      *
@@ -92,9 +104,8 @@ class Images implements ImagesInterface
      */
     protected function getFormattedFileName(Image $image, ImageFormat $format)
     {
-        $originalFileName = $image->{Image::FIELD_ORIGINAL_FILE};
-        $fileName         = pathinfo($originalFileName, PATHINFO_FILENAME);
-        $fileExt          = pathinfo($originalFileName, PATHINFO_EXTENSION);
+        $fileName = $image->getKey();
+        $fileExt  = $image->{Image::FIELD_ORIGINAL_EXT};
 
         return [$fileName.'-'.$format->{ImageFormat::FIELD_CODE}.'.'.$fileExt, $fileExt];
     }

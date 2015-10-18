@@ -2,8 +2,8 @@
 
 use \Closure;
 use \Illuminate\Support\Facades\Facade;
-use \Neomerx\Core\Filesystem\FilesystemInterface;
 use \Neomerx\Core\Filesystem\FilesystemManager;
+use \Neomerx\Core\Filesystem\FilesystemInterface;
 
 /**
  * @method static FilesystemInterface drive(string $name = null)
