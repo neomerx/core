@@ -66,4 +66,76 @@ interface InventoryRepositoryInterface extends RepositoryInterface
      * @return Inventory
      */
     public function read($resourceId, array $scopes = [], array $columns = ['*']);
+
+    /**
+     * Increment 'in' value.
+     *
+     * @param int $productId
+     * @param int $warehouseId
+     * @param int $quantity
+     *
+     * @return void
+     */
+    public function incrementProduct($productId, $warehouseId, $quantity);
+
+    /**
+     * Increment 'out' value.
+     *
+     * @param int $productId
+     * @param int $warehouseId
+     * @param int $quantity
+     *
+     * @return void
+     */
+    public function decrementProduct($productId, $warehouseId, $quantity);
+
+    /**
+     * Increment 'reserved' value.
+     *
+     * @param int $productId
+     * @param int $warehouseId
+     * @param int $quantity
+     *
+     * @return void
+     */
+    public function incrementReserve($productId, $warehouseId, $quantity);
+    /**
+     * Decrement 'reserved' value.
+     *
+     * @param int $productId
+     * @param int $warehouseId
+     * @param int $quantity
+     *
+     * @return void
+     */
+    public function decrementReserve($productId, $warehouseId, $quantity);
+
+    /**
+     * Move products between warehouses.
+     *
+     * @param int $productId
+     * @param int $warehouseFromId
+     * @param int $warehouseToId
+     * @param int $quantity
+     *
+     * @return void
+     */
+    public function moveProduct($productId, $warehouseFromId, $warehouseToId, $quantity);
+
+    /**
+     * Select inventory by parameters.
+     *
+     * @param int|null $productId
+     * @param int|null $warehouseId
+     * @param array    $columns
+     * @param array    $relations
+     *
+     * @return array
+     */
+    public function selectInventory(
+        $productId = null,
+        $warehouseId = null,
+        array $columns = ['*'],
+        array $relations = []
+    );
 }

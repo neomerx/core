@@ -63,7 +63,7 @@ interface BaseProductPropertyRepositoryInterface extends RepositoryInterface
      * @param array $scopes
      * @param array $columns
      *
-     * @return BaseProduct
+     * @return BaseProductProperty
      */
     public function read($resourceId, array $scopes = [], array $columns = ['*']);
 }

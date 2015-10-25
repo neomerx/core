@@ -79,10 +79,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $taxTypeId = null,
         array $attributes = null
     ) {
-        $this->updateWith($product, $attributes, [
+        $this->updateWith($product, $attributes, $this->filterNulls([
             Product::FIELD_ID_CATEGORY_DEFAULT => $categoryId,
             Product::FIELD_ID_PRODUCT_TAX_TYPE => $taxTypeId,
-        ]);
+        ]));
     }
 
     /**

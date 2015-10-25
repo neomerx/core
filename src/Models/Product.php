@@ -22,7 +22,7 @@ use \Illuminate\Database\Eloquent\Collection;
  * @property      Collection     related
  * @property      Collection     relatedProducts
  * @property      Collection     aspects
- * @property      Collection     images
+ * @property      Collection     productImages
  * @property      Collection     inventories
  *
  * @package Neomerx\Core
@@ -303,7 +303,7 @@ class Product extends BaseModel implements GetAspectsInterface
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function images()
+    public function productImages()
     {
         // all images of the base product + images of the product
 

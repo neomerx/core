@@ -8,8 +8,10 @@ use \Carbon\Carbon;
  * @property      int       id_warehouse
  * @property      int       in
  * @property      int       out
- * @property      int       reserved
+ * @property      int       reserved_in
+ * @property      int       reserved_out
  * @property-read int       available
+ * @property-read int       reserved
  * @property-read int       quantity
  * @property-read Carbon    created_at
  * @property-read Carbon    updated_at
@@ -35,6 +37,10 @@ class Inventory extends BaseModel
     const FIELD_OUT          = 'out';
     /** Model field name */
     const FIELD_RESERVED     = 'reserved';
+    /** Model field name */
+    const FIELD_RESERVED_IN  = 'reserved_in';
+    /** Model field name */
+    const FIELD_RESERVED_OUT = 'reserved_out';
     /** Model field name */
     const FIELD_AVAILABLE    = 'available';
     /** Model field name */
@@ -74,7 +80,8 @@ class Inventory extends BaseModel
     protected $fillable = [
         self::FIELD_IN,
         self::FIELD_OUT,
-        self::FIELD_RESERVED,
+        self::FIELD_RESERVED_IN,
+        self::FIELD_RESERVED_OUT,
     ];
 
     /**
@@ -99,6 +106,8 @@ class Inventory extends BaseModel
      */
     protected $appends = [
         self::FIELD_QUANTITY,
+        self::FIELD_RESERVED,
+        self::FIELD_AVAILABLE,
     ];
 
     /**
@@ -110,7 +119,8 @@ class Inventory extends BaseModel
             self::FIELD_ID_PRODUCT   => 'required|integer|min:1|max:4294967295|exists:'.Product::TABLE_NAME,
             self::FIELD_IN           => 'sometimes|required|integer|min:0|max:18446744073709551615',
             self::FIELD_OUT          => 'sometimes|required|integer|min:0|max:18446744073709551615',
-            self::FIELD_RESERVED     => 'sometimes|required|integer|min:0|max:4294967295',
+            self::FIELD_RESERVED_IN  => 'sometimes|required|integer|min:0|max:4294967295',
+            self::FIELD_RESERVED_OUT => 'sometimes|required|integer|min:0|max:4294967295',
             self::FIELD_ID_WAREHOUSE => 'required|integer|min:1|max:4294967295',
         ];
     }
@@ -124,7 +134,8 @@ class Inventory extends BaseModel
             self::FIELD_ID_PRODUCT   => 'forbidden',
             self::FIELD_IN           => 'sometimes|required|integer|min:0|max:18446744073709551615',
             self::FIELD_OUT          => 'sometimes|required|integer|min:0|max:18446744073709551615',
-            self::FIELD_RESERVED     => 'sometimes|required|integer|min:0|max:4294967295',
+            self::FIELD_RESERVED_IN  => 'sometimes|required|integer|min:0|max:4294967295',
+            self::FIELD_RESERVED_OUT => 'sometimes|required|integer|min:0|max:4294967295',
             self::FIELD_ID_WAREHOUSE => 'forbidden',
         ];
     }
@@ -136,8 +147,12 @@ class Inventory extends BaseModel
      */
     public function getAvailableAttribute()
     {
-        return (int)$this->attributes[self::FIELD_IN] - (int)$this->attributes[self::FIELD_OUT] -
-        (int)$this->attributes[self::FIELD_RESERVED];
+        $quantity = $this->getQuantityAttribute();
+        $reserved = $this->getReservedAttribute();
+        $result   = $quantity - $reserved;
+
+        return $result;
+
     }
 
     /**
@@ -148,6 +163,16 @@ class Inventory extends BaseModel
     public function getQuantityAttribute()
     {
         return (int)$this->attributes[self::FIELD_IN] - (int)$this->attributes[self::FIELD_OUT];
+    }
+
+    /**
+     * Get quantity of items (incl. reserved).
+     *
+     * @return int
+     */
+    public function getReservedAttribute()
+    {
+        return (int)$this->attributes[self::FIELD_RESERVED_IN] - (int)$this->attributes[self::FIELD_RESERVED_OUT];
     }
 
     /**
@@ -168,66 +193,5 @@ class Inventory extends BaseModel
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class, self::FIELD_ID_WAREHOUSE, Warehouse::FIELD_ID);
-    }
-
-    /**
-     * @param int $productId
-     * @param int $warehouseId
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function selectByProductAndWarehouse($productId, $warehouseId)
-    {
-        return $this->newQuery()
-            ->where(self::FIELD_ID_PRODUCT, $productId)
-            ->where(self::FIELD_ID_WAREHOUSE, $warehouseId);
-    }
-
-    /**
-     * Increment 'in' value.
-     *
-     * @param int $quantity
-     *
-     * @return int
-     */
-    public function incrementIn($quantity)
-    {
-        return $this->increment(self::FIELD_IN, $quantity);
-    }
-
-    /**
-     * Increment 'out' value.
-     *
-     * @param int $quantity
-     *
-     * @return int
-     */
-    public function incrementOut($quantity)
-    {
-        return $this->increment(self::FIELD_OUT, $quantity);
-    }
-
-    /**
-     * Increment 'reserved' value.
-     *
-     * @param int $quantity
-     *
-     * @return int
-     */
-    public function incrementReserved($quantity)
-    {
-        return $this->increment(self::FIELD_RESERVED, $quantity);
-    }
-
-    /**
-     * Decrement 'reserved' value.
-     *
-     * @param int $quantity
-     *
-     * @return int
-     */
-    public function decrementReserved($quantity)
-    {
-        return $this->decrement(self::FIELD_RESERVED, $quantity);
     }
 }
